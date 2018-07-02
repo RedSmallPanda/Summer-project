@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import HeaderMenu from './HeaderMenu'
+import InfoSpace from './InfoSpace'
 import '../css/App.css';
 
 class App extends Component {
@@ -7,6 +8,7 @@ class App extends Component {
     return (
       <div className="App">
           <HeaderMenu/>
+          <InfoSpace/>
       </div>
     );
   }
