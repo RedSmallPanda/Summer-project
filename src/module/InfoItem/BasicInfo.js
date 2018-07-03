@@ -20,7 +20,7 @@ class BasicInfo extends Component {
                         <Button type="primary" htmlType="submit" className="login-form-button">
                             Log in
                         </Button>
-                        Or <a href="">register now!</a>
+                        Or <a href="/home">register now!</a>
                     </FormItem>
                 </Form>
             </div>

@@ -4,7 +4,7 @@ class Password extends Component {
     render(){
         return(
             <div>
-                content
+                Password
             </div>
         )
     }

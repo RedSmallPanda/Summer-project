@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import HeaderMenu from './HeaderMenu'
-import InfoSpace from './InfoSpace'
 import '../css/App.css';
-import BasicInfo from "./InfoItem/BasicInfo";
+import MyRouter from '../MyRouter'
+
 
 class App extends Component {
   render() {
     return (
       <div className="App">
           <HeaderMenu/>
-          <InfoSpace/>
+          <MyRouter/>
       </div>
     );
   }

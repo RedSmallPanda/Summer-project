@@ -11,7 +11,7 @@ class InfoSpace extends Component{
 
     state = {
         SelectedKeys:'9',
-        OpenKeys:'sub3',
+        OpenKeys:['sub1','sub2','sub3']
 
     };
 
@@ -19,7 +19,6 @@ class InfoSpace extends Component{
         this.setState({
             SelectedKeys:e.key
         });
-        //alert(this.state.SelectedKeys)
     };
 
    renderContent = () =>{
@@ -31,15 +30,15 @@ class InfoSpace extends Component{
     render(){
         let basicInfo = <BasicInfo/>;
         let password = <Password/>;
-        let InfoContent = null;
+        let infoContent = null;
         if(this.state.SelectedKeys==='9'){
-            InfoContent = basicInfo
+            infoContent = basicInfo
         }
         else if(this.state.SelectedKeys==='10'){
-            InfoContent = password
+            infoContent = password
         }
 
-        const renderInfoBar =
+        const infoBar =
             <div style={{marginTop:20}}>
                 <Row>
                     <Col span={4}/>
@@ -48,7 +47,7 @@ class InfoSpace extends Component{
                             onClick={this.handleClick}
                             style={{ width: 200 }}
                             defaultSelectedKeys={[this.state.SelectedKeys]}
-                            defaultOpenKeys={[this.state.OpenKeys]}
+                            defaultOpenKeys={this.state.OpenKeys}
                             mode="inline"
                         >
                             <SubMenu key="sub1" title={<span>订单管理</span>}>
@@ -68,7 +67,7 @@ class InfoSpace extends Component{
                     </Col>
                     <Col span={12}>
                         <div>
-                            {InfoContent}
+                            {infoContent}
                         </div>
                     </Col>
 
@@ -76,7 +75,7 @@ class InfoSpace extends Component{
             </div>;
 
         return(
-            renderInfoBar
+            infoBar
         )
     }
 

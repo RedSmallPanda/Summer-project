@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu, Icon, Input, Avatar} from 'antd';
+import { Router, Route, Link, hashHistory} from 'react-router'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -22,6 +23,10 @@ class HeaderMenu extends Component {
         })
     };
 
+    handleHomePage = () =>{
+        hashHistory.push('/home');
+    };
+
     renderHeader = () =>{
         if(this.state.isLogin){
             return (
@@ -31,7 +36,7 @@ class HeaderMenu extends Component {
                         <Col span={4}><Icon type="global" />聚票网</Col>
                         <Col span={6}>
                         <Menu mode="horizontal" style={{border:0}}>
-                            <Menu.Item>首页</Menu.Item>
+                            <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
                             <Menu.Item>全部分类</Menu.Item>
                         </Menu>
                         </Col>
@@ -70,7 +75,7 @@ class HeaderMenu extends Component {
                             <Col span={4}><Icon type="global" />聚票网</Col>
                             <Col span={6}>
                                 <Menu mode="horizontal" style={{border:0}}>
-                                    <Menu.Item>首页</Menu.Item>
+                                    <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
                                     <Menu.Item>全部分类</Menu.Item>
                                 </Menu>
                             </Col>
@@ -86,7 +91,7 @@ class HeaderMenu extends Component {
                             </Col>
                             <Col span={3}>
                                 <Menu mode="horizontal" style={{border:0}}>
-                                    <Menu.Item onClick={this.handleLogin}>登录</Menu.Item>
+                                    <Menu.Item>登录</Menu.Item>
                                     <Menu.Item>注册</Menu.Item>
                                 </Menu>
                             </Col>
