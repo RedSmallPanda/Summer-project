@@ -1,3 +1,13 @@
-/**
- * Created by DNZ on 2018/7/2.
- */
+import React, { Component } from 'react';
+
+class Password extends Component {
+    render(){
+        return(
+            <div>
+                content
+            </div>
+        )
+    }
+}
+
+export default Password;

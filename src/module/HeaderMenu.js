@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon, Input } from 'antd';
+import { Row, Col, Menu, Icon, Input, Avatar} from 'antd';
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -41,12 +41,15 @@ class HeaderMenu extends Component {
                                 enterButton
                             />
                         </Col>
-                        <Col span={4}/>
+                        <Col span={3}/>
+                        <Col span={1}>
+                            <Avatar icon="user" />
+                        </Col>
                         <Col span={2}>
                             <Menu mode="horizontal" style={{border:0}}>
                                 <SubMenu title={<span>个人信息<Icon type="down" /></span>}>
                                     <Menu.Item>我的订单</Menu.Item>
-                                    <Menu.Item>我的钱包</Menu.Item>
+                                    <Menu.Item>我的动态</Menu.Item>
                                     <Menu.Item>账号设置</Menu.Item>
                                     <Menu.Item onClick={this.handleLogout}>退出登录</Menu.Item>
                                 </SubMenu>
@@ -77,11 +80,14 @@ class HeaderMenu extends Component {
                                     enterButton
                                 />
                             </Col>
-                            <Col span={4}/>
+                            <Col span={3}/>
+                            <Col span={1}>
+                                <Avatar icon="user" />
+                            </Col>
                             <Col span={3}>
                                 <Menu mode="horizontal" style={{border:0}}>
-                                    <Menu.Item>注册</Menu.Item>
                                     <Menu.Item onClick={this.handleLogin}>登录</Menu.Item>
+                                    <Menu.Item>注册</Menu.Item>
                                 </Menu>
                             </Col>
                         </Row>
