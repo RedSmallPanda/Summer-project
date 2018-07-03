@@ -6,6 +6,13 @@ import "../App.css"
 const FormItem = Form.Item;
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
+        username_validate=(rule,value,callback)=>{
+            //   const form = this.formRef.props.form;
+                                                              //value's type need to transform
+            if(String(value).length>10){callback("username >10 ");}
+            else {callback("username<10 ")}
+            callback()
+        }
         render() {
             const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
@@ -23,7 +30,19 @@ const CollectionCreateForm = Form.create()(
                     <Form layout="vertical" >
                         <FormItem label={null}>
                             {getFieldDecorator('username', {
-                                rules: [{ required: true, message: '请输入用户名' }],
+                                rules: [
+                                    { required: true, message: '请输入用户名' },
+             //                       { max:12,message:'用户名长度不超过12', },
+                                    {validator:(rule,value,callback)=>{
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>10){callback("username >10 ");}
+                                        else {callback()}
+
+                                    }},
+
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <p>
                                 <Input className="input" placeholder="Enter your username"
@@ -78,7 +97,7 @@ class CollectionsPage extends Component {
     render() {
         return (
             <div>
-                <Button type="primary" onClick={this.showModal}>New Collection</Button>
+                <Button type="primary" onClick={this.showModal}>登录</Button>
                 <CollectionCreateForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
