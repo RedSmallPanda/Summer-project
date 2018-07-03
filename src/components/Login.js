@@ -1,45 +1,43 @@
 import React, { Component } from 'react';
-import {Button, Modal, Form, Input,Icon,Radio} from 'antd'
-
+import {Button, Modal, Form, Input,Icon,} from 'antd'
+import "../App.css"
 
 
 const FormItem = Form.Item;
-
 const CollectionCreateForm = Form.create()(
     class extends React.Component {
         render() {
-            const { visible, onCancel, onCreate, form } = this.props;
+            const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
             return (
                 <Modal
                     visible={visible}
-                    title="Create a new collection"
-                    okText="Create"
+                    title={null}
                     onCancel={onCancel}
-                    onOk={onCreate}
+                    footer={null}
+                    maskClosable={false}
+                    destroyOnClose={true}
                 >
-                    <Form layout="vertical">
-                        <FormItem label="Title">
-                            {getFieldDecorator('title', {
-                                rules: [{ required: true, message: 'Please input the title of collection!' }],
+                    <div className="padding">
+                        <p className="letters">请登录</p>
+                    <Form layout="vertical" >
+                        <FormItem label={null}>
+                            {getFieldDecorator('username', {
+                                rules: [{ required: true, message: '请输入用户名' }],
                             })(
-                                <Input />
+                                <p>
+                                <Input className="input" placeholder="Enter your username"
+                                       prefix={<Icon type="user"   />}/>
+                                </p>
                             )}
                         </FormItem>
-                        <FormItem label="Description">
-                            {getFieldDecorator('description')(<Input type="textarea" />)}
+                        <FormItem label={null}>
+                            {getFieldDecorator('password',{rules:[{required:true,}]})(<p><Input className="input" placeholder="Enter your password" prefix={<Icon type="lock" />}  type="password" /></p>)}
                         </FormItem>
-                        <FormItem className="collection-create-form_last-form-item">
-                            {getFieldDecorator('modifier', {
-                                initialValue: 'public',
-                            })(
-                                <Radio.Group>
-                                    <Radio value="public">Public</Radio>
-                                    <Radio value="private">Private</Radio>
-                                </Radio.Group>
-                            )}
-                        </FormItem>
+                        <Button type="primary" onClick={onLogin}> 登录 </Button>
+                        <FormItem/>
                     </Form>
+                    </div>
                 </Modal>
             );
         }
@@ -66,7 +64,8 @@ class CollectionsPage extends Component {
                 return;
             }
 
-            console.log('Received values of form: ', values);
+            console.log('Received values of form username: '+form.getFieldValue("username") );
+            console.log('password: '+form.getFieldValue("password"))
             form.resetFields();
             this.setState({ visible: false });
         });
@@ -84,69 +83,11 @@ class CollectionsPage extends Component {
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
-                    onCreate={this.handleCreate}
+                    onLogin={this.handleCreate}
                 />
             </div>
         );
     }
 }
 
-
-
-
-/*
-class Login extends Component{
-    constructor(props){
-        super(props);
-        this.state={
-            visible:false,
-        };
-    }
-    showmodal=()=>{
-        this.setState({visible:true})
-    }
-    cancel=()=>{
-        this.setState({visible:false})
-    }
-    handleSubmit=()=>{
-        console.log("sad");
-        alert(this.props.form.getFieldValue('userName')+"-"+this.props.form.getFieldValue('passWord'));
-    }
-    render(){
-        const FormItem = Form.Item;
-        const { getFieldProps } = this.props.form;
-
-        return(
-            <div>
-                <Button onClick={this.showmodal}>登录</Button>
-            <Modal
-                visible={this.state.visible}
-                title="test"
-                footer={null}
-                maskClosable={false}
-                onCancel={this.cancel}
-            >
-
-                <Form inline onSubmit={this.handleSubmit}>
-                    <FormItem label="Account">
-                        {
-                            <Input placeholder="please input the account" {...getFieldProps('userName')}/>
-                        }
-                    </FormItem>
-                    <FormItem label="Password">
-                        {
-                            <Input type="password" placeholder="Please input the pasword" {...getFieldProps('passWord')}/>
-                        }
-                    </FormItem>
-                    <Button type="primary" htmlType="submit">Submit</Button>
-                </Form>
-
-
-            </Modal>
-            </div>
-        )
-    }
-
-}
-*/
 export default CollectionsPage;
