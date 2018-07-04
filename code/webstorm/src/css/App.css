@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import '../../node_modules/antd/dist/antd.css';
 
 .App {
   text-align: center;
@@ -28,6 +28,24 @@
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
 }
+
+.InfoBar {
+  width:40%
+}
+
+/* For demo */
+.ant-carousel .slick-slide {
+  text-align: center;
+  height: 300px;
+  line-height: 160px;
+  background: #364d79;
+  overflow: hidden;
+}
+
+.ant-carousel .slick-slide h3 {
+  color: #fff;
+}
+
 
 .padding{
   padding-top: 30px;
