@@ -1,6 +1,10 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
+<<<<<<< HEAD
+=======
+/code/webstorm/.idea/workspace.xml
+>>>>>>> dev
 /code/webstorm/node_modules
 
 # testing
