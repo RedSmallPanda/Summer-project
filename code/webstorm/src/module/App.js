@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import HeaderMenu from './HeaderMenu'
 import '../css/App.css';
 import MyRouter from '../MyRouter'
+import CollectionsPage from './Login'
+import Register from './Register'
 
 
 class App extends Component {
@@ -10,6 +12,8 @@ class App extends Component {
       <div className="App">
           <HeaderMenu/>
           <MyRouter/>
+          <CollectionsPage/>
+          <Register/>
       </div>
     );
   }
