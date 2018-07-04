@@ -1,3 +1,13 @@
-/**
- * Created by DNZ on 2018/7/2.
- */
+import React, { Component } from 'react';
+
+class Collection extends Component {
+    render(){
+        return(
+            <div>
+                Collection
+            </div>
+        )
+    }
+}
+
+export default Collection;

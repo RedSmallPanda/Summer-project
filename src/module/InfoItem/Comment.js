@@ -1,3 +1,13 @@
-/**
- * Created by DNZ on 2018/7/2.
- */
+import React, { Component } from 'react';
+
+class Comment extends Component {
+    render(){
+        return(
+            <div>
+                Comment
+            </div>
+        )
+    }
+}
+
+export default Comment;

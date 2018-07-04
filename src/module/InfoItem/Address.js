@@ -1,3 +1,13 @@
-/**
- * Created by DNZ on 2018/7/2.
- */
+import React, { Component } from 'react';
+
+class Address extends Component {
+    render(){
+        return(
+            <div>
+                Address
+            </div>
+        )
+    }
+}
+
+export default Address;

@@ -2,7 +2,10 @@ import React, { Component } from 'react';
 import { Row, Col, Menu, Icon} from 'antd'
 import BasicInfo from './InfoItem/BasicInfo'
 import Password from './InfoItem/Password'
-import '../css/App.css';
+import Address from "./InfoItem/Address";
+import Collection from "./InfoItem/Collection";
+import Comment from "./InfoItem/Comment";
+import Order from './InfoItem/Order'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -28,15 +31,38 @@ class InfoSpace extends Component{
    };
 
     render(){
+        let address = <Address/>;
         let basicInfo = <BasicInfo/>;
+        let collection = <Collection/>;
+        let comment = <Comment/>;
+        let order = <Order/>;
         let password = <Password/>;
+
         let infoContent = null;
-        if(this.state.SelectedKeys==='9'){
-            infoContent = basicInfo
+        switch (this.state.SelectedKeys){
+            case '1':
+            case '2':
+                infoContent = order;
+                break;
+            case '5':
+                infoContent = collection;
+                break;
+            case '6':
+                infoContent = comment;
+                break;
+            case '9':
+                infoContent = basicInfo;
+                break;
+            case '10':
+                infoContent = password;
+                break;
+            case '11':
+                infoContent = address;
+                break;
+            default:
+                infoContent = order;
         }
-        else if(this.state.SelectedKeys==='10'){
-            infoContent = password
-        }
+
 
         const infoBar =
             <div style={{marginTop:20}}>

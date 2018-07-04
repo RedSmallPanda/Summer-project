@@ -27,6 +27,15 @@ class HeaderMenu extends Component {
         hashHistory.push('/home');
     };
 
+    handleInfoSpace = () =>{
+        hashHistory.push('/info');
+    };
+
+    handleDirectory = () =>{
+        hashHistory.push('/all')
+    };
+
+
     renderHeader = () =>{
         if(this.state.isLogin){
             return (
@@ -37,7 +46,7 @@ class HeaderMenu extends Component {
                         <Col span={6}>
                         <Menu mode="horizontal" style={{border:0}}>
                             <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
-                            <Menu.Item>全部分类</Menu.Item>
+                            <Menu.Item onClick={this.handleDirectory}>全部分类</Menu.Item>
                         </Menu>
                         </Col>
                         <Col span={7}>
@@ -52,7 +61,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={2}>
                             <Menu mode="horizontal" style={{border:0}}>
-                                <SubMenu title={<span>个人信息<Icon type="down" /></span>}>
+                                <SubMenu title={<span onClick={this.handleInfoSpace}>个人信息<Icon type="down" /></span>}>
                                     <Menu.Item>我的订单</Menu.Item>
                                     <Menu.Item>我的动态</Menu.Item>
                                     <Menu.Item>账号设置</Menu.Item>
@@ -76,7 +85,7 @@ class HeaderMenu extends Component {
                             <Col span={6}>
                                 <Menu mode="horizontal" style={{border:0}}>
                                     <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
-                                    <Menu.Item>全部分类</Menu.Item>
+                                    <Menu.Item onClick={this.handleDirectory}>全部分类</Menu.Item>
                                 </Menu>
                             </Col>
                             <Col span={7}>
@@ -91,7 +100,7 @@ class HeaderMenu extends Component {
                             </Col>
                             <Col span={3}>
                                 <Menu mode="horizontal" style={{border:0}}>
-                                    <Menu.Item>登录</Menu.Item>
+                                    <Menu.Item onClick={this.handleLogin}>登录</Menu.Item>
                                     <Menu.Item>注册</Menu.Item>
                                 </Menu>
                             </Col>
