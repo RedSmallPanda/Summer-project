@@ -45,3 +45,16 @@
 .ant-carousel .slick-slide h3 {
   color: #fff;
 }
+
+.padding{
+  padding-top: 30px;
+}
+.letters{
+  font-family: "Microsoft YaHei UI";
+  font-size: 18px;
+  color: #222222;
+  outline: 0;
+}
+.input{
+  width: 30px;
+}
