@@ -6,6 +6,7 @@ import Address from "./InfoItem/Address";
 import Collection from "./InfoItem/Collection";
 import Comment from "./InfoItem/Comment";
 import Order from './InfoItem/Order'
+import HistoryOrder from './InfoItem/historyOrder'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -37,12 +38,15 @@ class InfoSpace extends Component{
         let comment = <Comment/>;
         let order = <Order/>;
         let password = <Password/>;
+        let historyOrder=<HistoryOrder/>;
 
         let infoContent = null;
         switch (this.state.SelectedKeys){
             case '1':
-            case '2':
                 infoContent = order;
+                break;
+            case '2':
+                infoContent = historyOrder;
                 break;
             case '5':
                 infoContent = collection;

@@ -33,7 +33,7 @@ const columns = [{
         key: 'action',
         render: () => (
             <span>
-      <a href="javascript:;">退款</a>
+      <a href="javascript:;">评价</a>
       <Divider type="vertical" />
     </span>
         ),
@@ -52,20 +52,6 @@ const data = [{
     price: '￥2000',
     amount: 2,
     totalPrice:'￥4000'
-}, {
-    key: '3',
-    img:'https://img1.tking.cn/assets/img/YnPS4jNY6p.jpg',
-    name: 'CCG门票',
-    price: '￥300',
-    amount: 1,
-    totalPrice:'￥300'
-}, {
-    key: '4',
-    img:'https://pimg.dmcdn.cn/perform/project/1521/152193_n.jpg',
-    name: '迪士尼门票',
-    price: '￥688',
-    amount: 1,
-    totalPrice:'￥688'
 }];
 
 const rowSelection = {
@@ -110,10 +96,7 @@ class Order extends Component {
         const hasSelected = selectedRowKeys.length > 0;
         let orderTable=
             <div>
-                <Table columns={columns} dataSource={data}
-                       pagination={{
-                           pageSize: 10,
-                       }}/>
+                <Table columns={columns} dataSource={data} />
             </div>;
         return(
             orderTable
