@@ -8,6 +8,7 @@ class MyRouter extends Component{
     render(){
         return(
             <Router history={hashHistory}>
+                <Route path='/' component={HomePage}/>
                 <Route path='/home' component={HomePage}/>
                 <Route path='/info' component={InfoSpace}/>
                 <Route path='/all' component={Directory}/>
