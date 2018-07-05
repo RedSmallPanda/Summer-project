@@ -14,11 +14,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
-      <file leaf-file-name="Collection.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Collection.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/module/InfoItem/Collection.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="75">
-              <caret line="3" column="36" lean-forward="true" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
+            <state relative-caret-position="50">
+              <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
               </folding>
@@ -26,13 +26,15 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="ResultList.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="ResultList.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/module/ResultList.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2550">
-              <caret line="102" column="26" lean-forward="true" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
+            <state relative-caret-position="274">
+              <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
               <folding>
                 <element signature="e#0#41#0" expanded="true" />
+                <element signature="n#!!block;n#cancelHeart#0;n#ResultList#0" />
+                <element signature="n#!!block;n#judgeDate#0;n#ResultList#0" />
               </folding>
             </state>
           </provider>
@@ -77,8 +79,8 @@
         <option value="$PROJECT_DIR$/src/module/Login.js" />
         <option value="$PROJECT_DIR$/src/MyRouter.js" />
         <option value="$PROJECT_DIR$/src/module/ToTop.js" />
-        <option value="$PROJECT_DIR$/src/module/ResultList.js" />
         <option value="$PROJECT_DIR$/src/module/InfoItem/Collection.js" />
+        <option value="$PROJECT_DIR$/src/module/ResultList.js" />
       </list>
     </option>
   </component>
@@ -223,21 +225,25 @@
       <workItem from="1530672870771" duration="1450000" />
       <workItem from="1530682179708" duration="13629000" />
       <workItem from="1530751356202" duration="10857000" />
+      <workItem from="1530768493634" duration="3087000" />
+      <workItem from="1530772163682" duration="187000" />
+      <workItem from="1530772364948" duration="3740000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="78427000" />
+    <option name="totallyTimeSpent" value="85441000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="878" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.7120419" visible="true" weight="0.1516927" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.70811516" visible="true" weight="0.1516927" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.5006794" side_tool="true" weight="0.3281046" />
       <window_info anchor="bottom" id="Version Control" order="7" />
-      <window_info id="npm" order="2" sideWeight="0.28795812" side_tool="true" visible="true" weight="0.1516927" />
+      <window_info id="npm" order="2" sideWeight="0.2918848" side_tool="true" visible="true" weight="0.1516927" />
       <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932066" weight="0.2657068" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="7" weight="0.32853404" />
@@ -260,7 +266,7 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="4" />
+      <option name="time" value="5" />
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
@@ -499,32 +505,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/ToTop.js">
+    <entry file="file://$PROJECT_DIR$/src/module/ToTop.js" />
+    <entry file="file://$PROJECT_DIR$/src/module/InfoItem/Collection.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="50">
-          <caret line="2" lean-forward="true" selection-start-line="2" selection-end-line="16" selection-end-column="21" />
+          <caret line="3" column="36" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#41#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/module/ResultList.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2550">
-          <caret line="102" column="26" lean-forward="true" selection-start-line="102" selection-start-column="26" selection-end-line="102" selection-end-column="26" />
+        <state relative-caret-position="274">
+          <caret line="28" column="16" selection-start-line="28" selection-start-column="16" selection-end-line="28" selection-end-column="16" />
           <folding>
             <element signature="e#0#41#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/module/InfoItem/Collection.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="75">
-          <caret line="3" column="36" lean-forward="true" selection-start-line="3" selection-start-column="36" selection-end-line="3" selection-end-column="36" />
-          <folding>
-            <element signature="e#0#41#0" expanded="true" />
+            <element signature="n#!!block;n#cancelHeart#0;n#ResultList#0" />
+            <element signature="n#!!block;n#judgeDate#0;n#ResultList#0" />
           </folding>
         </state>
       </provider>
