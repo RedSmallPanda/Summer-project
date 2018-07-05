@@ -1,93 +1,145 @@
 import React, { Component } from 'react';
-import {Form, Input, Button, Checkbox, Radio, Row, Col, message} from 'antd';
+import '../../css/BasicInfo.css';
+import {
+    Form, Select, InputNumber, Switch, Radio,
+    Slider, Button, Upload, Icon, Rate, Input, Avatar
+} from 'antd';
+
 const FormItem = Form.Item;
+const Option = Select.Option;
+const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 
-/*const Demo = React.createClass({
-    mixins: [Form.ValueMixin],
+class Demo extends React.Component {
+    state={
+        formData:{
+            name:'王小明',
+            sex:'male',
+            nickname:'暗影之王',
+            email:'12345678@qq.com',
+            img:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+        },
+    };
 
-    getInitialState() {
-        return {
-            formData: {
-                userName: '大眼萌 minion',
-                password: undefined,
-                gender: 'male',
-                remark: undefined,
-                agreement: undefined,
-            }
-        };
-    },
+    sexOnChange = (e) => {
+        console.log('radio checked', e.target.value);
+        let newForm=this.state.formData;
+        newForm.sex=e.target.value;
+        this.setState({
+            formData:newForm,
+        });
+    }
 
-    handleSubmit(e) {
+    handleSubmit = (e) => {
         e.preventDefault();
-        message.success('收到表单值~~~ ：' + JSON.stringify(this.state.formData, function(k, v) {
-            if (typeof v === 'undefined') {
-                return '';
+        this.props.form.validateFields((err, values) => {
+            if (!err) {
+                console.log('Received values of form: ', values);
             }
-            return v;
-        }));
-    },
+        });
+    }
+
 
     render() {
-        const formData = this.state.formData;
+        const { getFieldDecorator } = this.props.form;
+        const formItemLayout = {
+            labelCol: { span: 6 },
+            wrapperCol: { span: 7},
+        };
         return (
-            <Form horizontal onSubmit={this.handleSubmit}>
-                <FormItem
-                    label="用户名："
-                    labelCol={{span: 6}}
-                    wrapperCol={{span: 6}}
-                    required>
-                    <p className="ant-form-text" id="userName" name="userName">大眼萌 minion</p>
-                </FormItem>
-                <FormItem
-                    id="password"
-                    label="密码："
-                    labelCol={{span: 6}}
-                    wrapperCol={{span: 14}}
-                    required>
-                    <Input type="password" id="password" name="password" placeholder="请输入密码" value={formData.password} onChange={this.setValue.bind(this, 'password')} />
-                </FormItem>
-                <FormItem
-                    label="您的性别："
-                    labelCol={{span: 6}}
-                    wrapperCol={{span: 14}}
-                    required>
-                    <RadioGroup name="gender" value={formData.gender} onChange={this.setValue.bind(this, 'gender')} >
-                        <Radio value="male">男的</Radio>
-                        <Radio value="female">女的</Radio>
-                    </RadioGroup>
-                </FormItem>
-                <FormItem
-                    id="remark"
-                    label="备注："
-                    labelCol={{span: 6}}
-                    wrapperCol={{span: 14}}
-                    required
-                    help="随便写点什么">
-                    <Input type="textarea" placeholder="随便写" id="remark" name="remark" value={formData.remark} onChange={this.setValue.bind(this, 'remark')} />
-                </FormItem>
-                <FormItem
-                    wrapperCol={{span: 14, offset: 6}} >
-                    <label>
-                        <Checkbox name="agreement" value={formData.agreement} onChange={this.setValue.bind(this, 'agreement')} /> 同意
-                    </label>
-                </FormItem>
-                <Row>
-                    <Col span="16" offset="6">
-                        <Button type="primary" htmlType="submit">确定</Button>
-                    </Col>
-                </Row>
-            </Form>
+            <div>
+                <br/>
+                <br/>
+                <br/>
+                <Form onSubmit={this.handleSubmit}>
+                    <FormItem
+                        {...formItemLayout}
+                        label="头像"
+                    >
+                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img} /></div>
+                    </FormItem>
+                    <FormItem
+                        {...formItemLayout}
+                        label="名字"
+                    >
+                        <span className="ant-form-text">{this.state.formData.name}</span>
+                    </FormItem>
+
+                    <FormItem
+                        {...formItemLayout}
+                        label="性别"
+                    >
+                        {getFieldDecorator('radio-group')(
+                            <div>
+                                <RadioGroup onChange={this.sexOnChange} defaultValue={this.state.formData.sex}>
+                                    <Radio value="male">男</Radio>
+                                    <Radio value="female">女</Radio>
+                                </RadioGroup>
+                            </div>
+                        )}
+                    </FormItem>
+
+                    <FormItem
+                        {...formItemLayout}
+                        label="昵称"
+                    >
+                        {getFieldDecorator('nickname', {
+                            rules: [
+                                {
+                                    required: true, message: '请输入昵称!',
+                                },
+                                { max:12,message:'昵称长度不超过12', },
+                                /*{validator:(rule,value,callback)=>{
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>10){callback("username >10 ");}
+                                        else {callback()}
+
+                                    }},*/
+
+                            ],
+                        })(
+                            <div>
+                                <Input defaultValue={this.state.formData.nickname}/>
+                            </div>
+                        )}
+                    </FormItem>
+
+                    <FormItem
+                        {...formItemLayout}
+                        label="E-mail"
+                    >
+                        {getFieldDecorator('email', {
+                            rules: [{
+                                type: 'email', message: '不合法的E-mail地址!',
+                            },
+                            ],
+                        })(
+                            <div>
+                                <Input defaultValue={this.state.formData.email}/>
+                            </div>
+                        )}
+                    </FormItem>
+
+                    <FormItem
+                        wrapperCol={{ span: 6, offset: 6 }}
+                    >
+                        <Button type="primary" htmlType="submit">Submit</Button>
+                    </FormItem>
+                </Form>
+            </div>
         );
     }
-});
-*/
+}
+
+const WrappedDemo = Form.create()(Demo);
+
 
 class BasicInfo extends Component {
     render(){
         return(
             <div>
-                BasicInfo
+                <WrappedDemo />
             </div>
         )
     }
