@@ -15,7 +15,7 @@ class Demo extends React.Component {
         formData:{
             name:'王小明',
             sex:'male',
-            nickname:'暗影之',
+            nickname:'暗影之王',
             email:'12345678@qq.com',
             img:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
         },
