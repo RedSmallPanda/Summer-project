@@ -4,18 +4,16 @@ import '../css/App.css';
 import MyRouter from '../MyRouter'
 import CollectionsPage from './Login'
 import Register from './Register'
+import GoodDetailPage from "./Gooditem/GoodDetailPage";
 
 
 class App extends Component {
   render() {
     return (
       <div className="App">
-          <HeaderMenu/>
-          <MyRouter/>
-          <CollectionsPage/>
-          <Register/>
+          <GoodDetailPage/>
       </div>
-    );
+  );
   }
 }
 

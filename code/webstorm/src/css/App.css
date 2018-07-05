@@ -58,3 +58,34 @@
 .input{
   width: 450px;
 }
+.basicinfo{
+  margin-left: 50px;
+  margin-right: 50px;
+  width: 1200px;
+}
+.postblock{
+  width: 280px;
+  text-align: center;
+}
+.post{
+  width: auto;
+  height: auto;
+  max-width:100%;
+  max-height:100%;
+}
+.postheader{
+  padding-top: 5px;
+  height: 40px;
+  text-align: left;
+}
+.onsale{
+
+}
+.datepickblock{
+  height: 80px;
+  text-align: left;
+}
+.datepick{
+  padding-top: 20px;
+  margin-left: 30px;
+}
