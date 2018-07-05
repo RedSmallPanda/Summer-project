@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { Menu, Row, Col, Carousel } from 'antd'
 import '../css/App.css'
 
-const SubMenu = Menu.SubMenu;
-
 class HomePage extends Component{
 
     render(){
