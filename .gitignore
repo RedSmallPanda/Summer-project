@@ -3,6 +3,7 @@
 # dependencies
 /code/webstorm/.idea/workspace.xml
 /code/webstorm/node_modules
+/code/webstorm/package-lock.json
 
 # testing
 /coverage
