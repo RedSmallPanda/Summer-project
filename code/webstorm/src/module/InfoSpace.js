@@ -87,7 +87,7 @@ class InfoSpace extends Component{
                             <SubMenu key="sub3" title={<span>账号设置</span>}>
                                 <Menu.Item key="9">基本信息</Menu.Item>
                                 <Menu.Item key="10">修改密码</Menu.Item>
-                                <Menu.Item key="11">收获地址</Menu.Item>
+                                <Menu.Item key="11">收货地址</Menu.Item>
                             </SubMenu>
                         </Menu>
                     </Col>

@@ -40,7 +40,7 @@ class HeaderMenu extends Component {
 
 
     handleDirectory = () =>{
-        hashHistory.push('/all')
+        hashHistory.push('/dir/all')
     };
 
     showModal = () => {
@@ -57,7 +57,6 @@ class HeaderMenu extends Component {
             if (err) {
                 return;
             }
-
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
             form.resetFields();
@@ -101,8 +100,8 @@ class HeaderMenu extends Component {
                 />
                 <Menu mode="horizontal">
                     <Row>
-                        <Col span={4}>
-                            <span onClick={this.handleHomePage}><Icon type="global" />聚票网</span>
+                        <Col span={4} onClick={this.handleHomePage}>
+                            <span><Icon type="global" />聚票网</span>
                         </Col>
                         <Col span={6}>
                             <Menu mode="horizontal" style={{border:0}}>

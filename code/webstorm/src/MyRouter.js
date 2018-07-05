@@ -12,7 +12,7 @@ class MyRouter extends Component{
                 <Route path='/' component={HomePage}/>
                 <Route path='/home' component={HomePage}/>
                 <Route path='/info/:keyId' component={InfoSpace}/>
-                <Route path='/all' component={Directory}/>
+                <Route path='/dir/:type' component={Directory}/>
                 <Route path="/item" component={TicketItem}/>
             </Router>
         )
