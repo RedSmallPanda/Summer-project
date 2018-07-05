@@ -19,17 +19,17 @@ class InfoSpace extends Component{
 
     };
 
-   handleClick = (e) =>{
+    componentWillMount() {
+        this.setState({
+            SelectedKeys: this.props.params.keyId
+        })
+    };
+
+    handleClick = (e) =>{
         this.setState({
             SelectedKeys:e.key
         });
     };
-
-   renderContent = () =>{
-       return(
-           <BasicInfo/>
-       )
-   };
 
     render(){
         let address = <Address/>;

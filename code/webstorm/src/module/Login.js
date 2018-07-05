@@ -4,15 +4,15 @@ import "../css/App.css"
 
 
 const FormItem = Form.Item;
-const CollectionCreateForm = Form.create()(
+const Login = Form.create()(
     class extends React.Component {
         username_validate=(rule,value,callback)=>{
             //   const form = this.formRef.props.form;
-                                                              //value's type need to transform
+            //value's type need to transform
             if(String(value).length>10){callback("username >10 ");}
             else {callback("username<10 ")}
             callback()
-        }
+        };
         render() {
             const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
@@ -45,13 +45,13 @@ const CollectionCreateForm = Form.create()(
                                 validateTrigger:'onBlur',
                             })(
                                 <p>
-                                <Input className="input" placeholder="Enter your username"
+                                <Input className="input"  placeholder="Enter your username"
                                        prefix={<Icon type="user"   />}/>
                                 </p>
                             )}
                         </FormItem>
                         <FormItem label={null}>
-                            {getFieldDecorator('password',{rules:[{required:true,}]})(<p><Input className="input" placeholder="Enter your password" prefix={<Icon type="lock" />}  type="password" /></p>)}
+                            {getFieldDecorator('password',{rules:[{required:true,}]})(<p><Input className="input"  placeholder="Enter your password" prefix={<Icon type="lock" />}  type="password" /></p>)}
                         </FormItem>
                         <Button type="primary" onClick={onLogin}> 登录 </Button>
                         <FormItem/>
@@ -63,50 +63,5 @@ const CollectionCreateForm = Form.create()(
     }
 );
 
-class CollectionsPage extends Component {
-    state = {
-        visible: false,
-    };
 
-    showModal = () => {
-        this.setState({ visible: true });
-    }
-
-    handleCancel = () => {
-        this.setState({ visible: false });
-    }
-
-    handleCreate = () => {
-        const form = this.formRef.props.form;
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-
-            console.log('Received values of form username: '+form.getFieldValue("username") );
-            console.log('password: '+form.getFieldValue("password"))
-            form.resetFields();
-            this.setState({ visible: false });
-        });
-    }
-
-    saveFormRef = (formRef) => {
-        this.formRef = formRef;
-    }
-
-    render() {
-        return (
-            <div>
-                <Button type="primary" onClick={this.showModal}>登录</Button>
-                <CollectionCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onLogin={this.handleCreate}
-                />
-            </div>
-        );
-    }
-}
-
-export default CollectionsPage;
+export default Login;
