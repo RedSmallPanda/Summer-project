@@ -49,7 +49,7 @@ class Ticknumpick extends Component {
         else{
             console.log("must have value")
             this.setState({inputValue:1})
-            this.props.setnum(this.state.inputValue);
+            this.props.setnum(1);
         }
     }
 

@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Menu, Icon, Input, Avatar,Affix,Radio,DatePicker} from 'antd';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
-import Ticknumpick from "./Ticknumpick";
+import Ticknumpick from "./TickNumpick";
+import DatePick from './DatePick'
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
@@ -18,20 +19,30 @@ class GoodDetailPage extends Component{
         priceclass:["40","60","80","100"],
         pickprice:"40",
         pickticknum:1,
-        tickmaxnum:20,
+        tickmaxnum:100,
+        totalprice:40,
     };
 
 
-    defaultdate=moment(this.state.enableddate[0],"YYYY-MM-DD-dddd")  //set default time picker
-    defaulttime=this.state.times[0]
-    timepickerformat="YYYY-MM-DD-dddd";
-
-    ontimechange=(value,dateString)=>{
-        console.log("you picked : "+dateString);
-        this.setState({pickeddate:String(moment(value).format(this.timepickerformat))});
+    scrollToAnchor = (anchorName) => {
+        if (anchorName) {
+            // 找到锚点
+            let anchorElement = document.getElementById(anchorName);
+            // 如果对应id的锚点存在，就跳转到锚点
+            if(anchorElement) { anchorElement.scrollIntoView({
+                block: 'start',
+                behavior: 'smooth'
+            }); }
+        }
     }
+
+    onsetpickdate=(value)=>{
+        this.setState({pickeddate:value})
+    }
+
+
     selecttime=(e)=>{
-        console.log("pick time :"+e.target.value)
+        console.log("pick time :"+e.target.value)           //get <Radiobutton value=xxx>'s  value
         this.setState({picktime:e.target.value})
     }
 
@@ -41,22 +52,6 @@ class GoodDetailPage extends Component{
         console.log("pick price: "+e.target.value)
         this.setState({pickprice:e.target.value})
     }
-
-
-
-
-
-    disabledDate=(time)=>{
-        let enabledate=this.state.enableddate;
-        let picked_time=String(moment(time).format("YYYY-MM-DD"));
-        for(var j = 0; j < enabledate.length; j++) {
-
-            if(enabledate[j]===picked_time){return false;}
-        }
-        //    if(picked_time==="2018-07-05"){console.log("ojbk")}
-        return (true);                       //return true to disable
-    }
-
 
     setticknum=(value)=> {
         console.log("tick num: "+value)
@@ -69,16 +64,20 @@ class GoodDetailPage extends Component{
         var timebutton=[]
         for(let i=0;i<this.state.times.length;i++){
             let temp=this.state.times[i];
-            timebutton.push(<RadioButton value={temp}>{temp}</RadioButton>)
+            timebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={temp}>{temp}</RadioButton></div>)
         }
         var pricebutton=[]
         for(let i=0;i<this.state.priceclass.length;i++){
             let temp=this.state.priceclass[i];
-            pricebutton.push(<RadioButton value={temp}>{temp}</RadioButton>)
+            pricebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={temp}>{temp}</RadioButton></div>)
         }
         return(
-            <div className="basicinfo">
-                <Row align="top">
+            <Row>
+                <div className="body">
+                <Col span={2}></Col>
+                <Col span={20}>
+                <div className="basicinfo">
+                 <Row align="top">
                     <Col span={18} id="post&buy">
                         <div className="postheader">某某某某噢摸摸摸摸摸摸票</div>
                         <Row>
@@ -97,15 +96,11 @@ class GoodDetailPage extends Component{
                                     <Col>
                                         <div className="datepickblock">
                                             <div className="datepick">
-                                                <div >选择日期</div>
-                                            <DatePicker
-                                                allowClear={false}
-                                                defaultValue={this.defaultdate}
-                                                format={this.timepickerformat}
-                                                size="large"
-                                                onChange={this.ontimechange}
-                                                disabledDate={this.disabledDate}
-                                            />
+                                                <Row>
+                                                    <Col span={4}><div className="datepickletter">选择日期:</div></Col>
+                                                    <Col span={2}/>
+                                                    <Col><div><DatePick Dates={this.state.enableddate} setdate={this.onsetpickdate}/></div></Col>
+                                                </Row>
                                             </div>
                                         </div>
 
@@ -113,8 +108,8 @@ class GoodDetailPage extends Component{
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div>
-                                        <RadioGroup onChange={this.selecttime} defaultValue={this.state.picktime}>
+                                        <div className="timepickblock">
+                                        <RadioGroup  onChange={this.selecttime} defaultValue={this.state.picktime}>
                                             {timebutton}
                                         </RadioGroup>
                                         </div>
@@ -122,7 +117,7 @@ class GoodDetailPage extends Component{
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div id="tickprice">
+                                        <div className="pricepickblock">
                                             <RadioGroup onChange={this.selectprice} defaultValue={this.state.pickprice}>
                                                 {pricebutton}
                                             </RadioGroup>
@@ -132,26 +127,62 @@ class GoodDetailPage extends Component{
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div id="ticknum">
+                                        <div className="numpickblock">
                                             <Ticknumpick setnum={this.setticknum} maxnum={this.state.tickmaxnum}/>
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div id="ticknum">
-                                            <p>{}</p>
+                                        <div className="totalpriceblock">
+                                            <p >{this.state.totalprice}</p>
                                         </div>
                                     </Col>
                                 </Row>
                             </Col>
                         </Row>
                     </Col>
-                    <Col span={6} id="side">
+                    <Col span={6} id="side" className="test">
                         213
                     </Col>
                 </Row>
-            </div>
+                <Row >
+                    <p className="blank" ></p>
+                </Row>
+                <Row>
+                    <Col span={18}>
+                        <Affix offsetTop={20}>
+                        <Row>
+                            <Col span={4}>
+                                <a onClick={()=>this.scrollToAnchor("block1")} className="tab">演出详情</a>
+                            </Col>
+                            <Col span={4}>
+                                <a href="#block2" className="tab">评论</a>
+                            </Col>
+                            <Col span={4}>
+                                <a href="#block3" className="tab">温馨提示</a>
+                            </Col>
+                        </Row>
+                        </Affix>
+                        <Row>
+                            <Col>
+                                <div id="block1" style={{height:1000}}> <a ></a>
+                                    <div style={{height:80}}></div>
+                                    <div>演出详情</div>
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span={6} className="test">
+                        side bar
+                    </Col>
+                </Row>
+                </div>
+                </Col>
+                <Col span={2}>
+                </Col>
+                </div>
+            </Row>
         )
     }
 }
