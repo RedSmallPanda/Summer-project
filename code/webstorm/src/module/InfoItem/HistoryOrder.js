@@ -13,10 +13,17 @@ const columns = [{
     title: '缩略图',
     key: 'img',
     render: (text, record) => (<img style={{width:'60px'}} src={record.img}/>)
-},{
+},/*{
     title: '票品信息',
     dataIndex: 'name',
     render: text => <a href="javascript:;">{text}</a>,
+},*/{
+    title: '票品信息',
+    dataIndex: 'detailInfo',
+    render: (text, record) => (<div>
+        <p><a href="javascript:;">{record.detailInfo.name}</a></p>
+        <p>{record.detailInfo.date}</p>
+    </div>)
 }, {
     title: '单价',
     dataIndex: 'price',
@@ -37,17 +44,24 @@ const columns = [{
     </span>
         ),
     }];
+
 const data = [{
     key: '1',
     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-    name: '周杰伦演唱会',
+    detailInfo: {
+        name:'周杰伦演唱会',
+        date:'2018/1/2'
+    },
     price: '￥1200',
     amount: 1,
     totalPrice:'￥1200'
 }, {
     key: '2',
     img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-    name: '张学友演唱会',
+    detailInfo: {
+        name:'张学友演唱会',
+        date:'2017/2/14'
+    },
     price: '￥2000',
     amount: 2,
     totalPrice:'￥4000'
