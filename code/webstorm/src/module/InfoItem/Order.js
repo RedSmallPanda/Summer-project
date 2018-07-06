@@ -34,7 +34,6 @@ const columns = [{
         render: () => (
             <span>
       <a href="javascript:;">退款</a>
-      <Divider type="vertical" />
     </span>
         ),
     }];

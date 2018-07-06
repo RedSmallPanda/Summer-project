@@ -34,7 +34,6 @@ const columns = [{
         render: () => (
             <span>
       <a href="javascript:;">评价</a>
-      <Divider type="vertical" />
     </span>
         ),
     }];

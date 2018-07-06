@@ -2,13 +2,38 @@ import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
     Form, Select, InputNumber, Switch, Radio,
-    Slider, Button, Upload, Icon, Rate, Input, Avatar
+    Slider, Button, Upload, Icon, Rate, Input, Avatar, DatePicker,
 } from 'antd';
+import moment from 'moment';
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+
+const residences = [{
+    value: 'zhejiang',
+    label: 'Zhejiang',
+    children: [{
+        value: 'hangzhou',
+        label: 'Hangzhou',
+        children: [{
+            value: 'xihu',
+            label: 'West Lake',
+        }],
+    }],
+}, {
+    value: 'jiangsu',
+    label: 'Jiangsu',
+    children: [{
+        value: 'nanjing',
+        label: 'Nanjing',
+        children: [{
+            value: 'zhonghuamen',
+            label: 'Zhong Hua Men',
+        }],
+    }],
+}];
 
 class Demo extends React.Component {
     state={
@@ -17,9 +42,23 @@ class Demo extends React.Component {
             sex:'male',
             nickname:'暗影之王',
             email:'12345678@qq.com',
-            img:'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png'
+            birthday:'2000/1/5',
+            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
+            '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
+            province:'zhejiang',
+            city:'hangzhou',
+            district:'xihu'
+
         },
     };
+
+    nicknameOnChange = () => {
+        let newForm=this.state.formData;
+        newForm.nickname=document.getElementById("inputNickname").value;
+        this.setState({
+            formData:newForm,
+        });
+    }
 
     sexOnChange = (e) => {
         console.log('radio checked', e.target.value);
@@ -41,6 +80,7 @@ class Demo extends React.Component {
 
 
     render() {
+        const dateFormat = 'YYYY/MM/DD';
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -48,7 +88,6 @@ class Demo extends React.Component {
         };
         return (
             <div>
-                <br/>
                 <br/>
                 <br/>
                 <Form onSubmit={this.handleSubmit}>
@@ -79,28 +118,39 @@ class Demo extends React.Component {
                         )}
                     </FormItem>
 
+                        <FormItem
+                            {...formItemLayout}
+                            label="出生日期"
+                        >
+                            {getFieldDecorator('date-picker')(
+                                <div>
+                                    <DatePicker defaultValue={moment(this.state.formData.birthday, dateFormat)} format={dateFormat} />
+                                </div>
+                            )}
+                        </FormItem>
+
                     <FormItem
                         {...formItemLayout}
                         label="昵称"
                     >
                         {getFieldDecorator('nickname', {
                             rules: [
-                                {
-                                    required: true, message: '请输入昵称!',
-                                },
-                                { max:12,message:'昵称长度不超过12', },
-                                /*{validator:(rule,value,callback)=>{
+                                //{
+                                  //  required: true, message: '请输入昵称!',
+                                //},
+                                {max:12,message:'昵称长度不能超过12', },
+                                {validator:(rule,value,callback)=>{
                                         //   const form = this.formRef.props.form;
                                         //value's type need to transform
-                                        if(String(value).length>10){callback("username >10 ");}
+                                        if(String(value).length<1){callback("昵称不能为空");}
                                         else {callback()}
 
-                                    }},*/
+                                    }},
 
                             ],
                         })(
                             <div>
-                                <Input defaultValue={this.state.formData.nickname}/>
+                                <Input id="inputNickname" value={this.state.formData.nickname} onChange={this.nicknameOnChange}/>
                             </div>
                         )}
                     </FormItem>
@@ -113,6 +163,13 @@ class Demo extends React.Component {
                             rules: [{
                                 type: 'email', message: '不合法的E-mail地址!',
                             },
+                                {validator:(rule,value,callback)=>{
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length<1){callback("邮箱地址不能为空");}
+                                        else {callback()}
+
+                                    }},
                             ],
                         })(
                             <div>
@@ -124,9 +181,10 @@ class Demo extends React.Component {
                     <FormItem
                         wrapperCol={{ span: 6, offset: 6 }}
                     >
-                        <Button type="primary" htmlType="submit">Submit</Button>
+                        <Button type="primary" htmlType="submit">确认提交</Button>
                     </FormItem>
                 </Form>
+
             </div>
         );
     }

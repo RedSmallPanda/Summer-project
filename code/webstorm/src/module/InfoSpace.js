@@ -6,7 +6,7 @@ import Address from "./InfoItem/Address";
 import Collection from "./InfoItem/Collection";
 import Comment from "./InfoItem/Comment";
 import Order from './InfoItem/Order'
-import HistoryOrder from './InfoItem/historyOrder'
+import HistoryOrder from './InfoItem/HistoryOrder'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
