@@ -5,7 +5,7 @@ import InfoSpace from './module/InfoSpace'
 import Directory from './module/Directory'
 import TicketItem from './module/TicketItem'
 import AdminSpace from './module/AdminSpace'
-
+import BuyStep from './module/BuyStep'
 class MyRouter extends Component{
     render(){
         return(
@@ -16,6 +16,7 @@ class MyRouter extends Component{
                 <Route path='/dir/:type' component={Directory}/>
                 <Route path="/item" component={TicketItem}/>
                 <Route path="/admin/:keyId" component={AdminSpace}/>
+                <Route path="/buyStep" component={BuyStep}/>
             </Router>
         )
     }

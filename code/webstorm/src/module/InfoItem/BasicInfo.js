@@ -42,6 +42,7 @@ class Demo extends React.Component {
             sex:'male',
             nickname:'暗影之王',
             email:'12345678@qq.com',
+            phone:'12345678901',
             birthday:'2000/1/5',
             img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
             '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
@@ -60,6 +61,35 @@ class Demo extends React.Component {
         });
     }
 
+    emailOnChange = () => {
+        let newForm=this.state.formData;
+        newForm.email=document.getElementById("inputEmail").value;
+        this.setState({
+            formData:newForm,
+        });
+    }
+
+    phoneOnChange = () => {
+        let newForm=this.state.formData;
+        newForm.phone=document.getElementById("inputPhone").value;
+        this.setState({
+            formData:newForm,
+        });
+    }
+
+    dateOnChange = (date,dateString) => {
+        let newForm=this.state.formData;
+        newForm.birthday=String(dateString);
+        if(String(date)==null){
+            date=this.state.formData.birthday;
+        }
+        console.log("date:"+String(date));
+        console.log("dateString:"+String(dateString));
+        this.setState({
+            formData:newForm,
+        });
+    }
+
     sexOnChange = (e) => {
         console.log('radio checked', e.target.value);
         let newForm=this.state.formData;
@@ -73,7 +103,7 @@ class Demo extends React.Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
+                console.log('Received values of form: ', this.state.formData);    //Silly method
             }
         });
     }
@@ -121,10 +151,11 @@ class Demo extends React.Component {
                         <FormItem
                             {...formItemLayout}
                             label="出生日期"
+                            hasFeedback
                         >
                             {getFieldDecorator('date-picker')(
                                 <div>
-                                    <DatePicker defaultValue={moment(this.state.formData.birthday, dateFormat)} format={dateFormat} />
+                                    <DatePicker id="datePicker" allowClear={false} value={moment(this.state.formData.birthday, dateFormat)} format={dateFormat} onChange={this.dateOnChange}/>
                                 </div>
                             )}
                         </FormItem>
@@ -173,7 +204,34 @@ class Demo extends React.Component {
                             ],
                         })(
                             <div>
-                                <Input defaultValue={this.state.formData.email}/>
+                                <Input id="inputEmail" value={this.state.formData.email} onChange={this.emailOnChange}/>
+                            </div>
+                        )}
+                    </FormItem>
+
+                    <FormItem
+                        {...formItemLayout}
+                        label="手机号"
+                        initialValue={this.state.formData.phone}
+                    >
+                        {getFieldDecorator('phone', {
+                            rules: [
+                                {validator:(rule,value,callback)=>{
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(value==null){
+                                            value=this.state.formData.phone;
+                                        }
+                                        {console.log(String(value));}
+                                        if(String(value).length!==11){callback("手机号格式错误");}
+                                        //else if(String(value).length<11){callback("手机号格式错误");}
+                                        else {callback()}
+
+                                    }},
+                            ],
+                        })(
+                            <div>
+                                <Input id="inputPhone" value={this.state.formData.phone} onChange={this.phoneOnChange}/>
                             </div>
                         )}
                     </FormItem>
