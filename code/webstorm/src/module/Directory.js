@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Radio, Menu } from 'antd'
 import '../css/App.css'
+import ResultList from "./ResultList";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -8,7 +9,7 @@ const RadioGroup = Radio.Group;
 
 class Directory extends Component {
     state = {
-        city:'all',
+        city:"all",
         type:"all",
         time:"all",
     };
@@ -81,6 +82,7 @@ class Directory extends Component {
                             </RadioGroup>
                         </div>
                         </div>
+                        <ResultList filter={this.state}/>
                     </Col>
                 </Row>
             </div>

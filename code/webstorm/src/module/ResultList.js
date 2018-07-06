@@ -3,6 +3,7 @@ import { List, Button, Icon, BackTop, Rate } from 'antd';
 const listData = [];
 for (let i = 0; i < 10; i++) {
     listData.push({
+        key: i,
         href: 'http://ant.design',//detail info
         image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
         title: `jpw ${i}`,//name
@@ -14,7 +15,8 @@ for (let i = 0; i < 10; i++) {
         stock: i,
         heart: true,
         comments: i,
-        price: 99.99
+        price: 99.99,
+        city: "sh",
     });
 }
 
@@ -25,9 +27,9 @@ let IconText = ({ type, text, onClick}) => (
   </span>
 );
 class ResultList extends Component {
-    constructor(type){
-        super();
-        this.type = type;
+    constructor(props){
+        super(props);
+        //POST to get data
         this.state = {
             data: listData,
         };
@@ -59,6 +61,7 @@ class ResultList extends Component {
     render(){
         return (
             <div>
+                <br/>
                 <List
                     size="large"
                     itemLayout='horizontal'
@@ -105,10 +108,19 @@ class ResultList extends Component {
                         </List.Item>
                     )}
                 />
+                <br/><br/><br/>
                 <BackTop/>
             </div>
         );
     }
 }
 
+ResultList.defaultProps = {
+    filter: {
+        city: "all",
+        type: "all",
+        time: "all",
+    },
+    type: "default",
+};
 export default ResultList;
