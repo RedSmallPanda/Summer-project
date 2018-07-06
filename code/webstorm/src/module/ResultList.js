@@ -1,5 +1,25 @@
 import React, { Component } from 'react';
-import { List, Button, Icon, BackTop, Rate } from 'antd';
+import { Menu, Dropdown, List, Button, Icon, BackTop, Rate } from 'antd';
+const menu = (
+    <Menu>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+                <Icon type="qq" /> QQ
+            </a>
+        </Menu.Item>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
+                <Icon type="wechat" /> WeChat
+            </a>
+        </Menu.Item>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+                <Icon type="weibo" /> weibo
+            </a>
+        </Menu.Item>
+    </Menu>
+);
+
 const listData = [];
 for (let i = 0; i < 10; i++) {
     listData.push({
@@ -80,7 +100,10 @@ class ResultList extends Component {
                             key={item.title}
                             actions={[
                                 <IconText type={item.heart ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
-                                <IconText type="message" text={item.comments}/>
+                                <IconText type="message" text={item.comments}/>,
+                                <Dropdown overlay={menu} placement="bottomRight">
+                                    <Icon type="share-alt" />
+                                </Dropdown>,
                             ]}
                         >
                             <List.Item.Meta
@@ -109,7 +132,6 @@ class ResultList extends Component {
                     )}
                 />
                 <br/><br/><br/>
-                <BackTop/>
             </div>
         );
     }
