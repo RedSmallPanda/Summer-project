@@ -46,6 +46,13 @@
   color: #fff;
 }
 
+.body{
+  min-width: 1200px;
+
+}
+.tichname{
+  font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;
+}
 .padding{
   padding-top: 30px;
 }
@@ -56,12 +63,100 @@
   outline: 0;
 }
 .input{
+  width: 450px;
+}
+.basicinfo{
+  margin-left: 5px;
+  margin-right: 5px;
+  min-width: 1100px;
+}
+.postblock{
+  width: 240px;
+  text-align: center;
+}
+.post{
+  width: auto;
+  height: auto;
+  max-width:100%;
+  max-height:100%;
+}
+.postheader{
+  font: 20px/2 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;
+  padding-top: 20px;
+  height: 60px;
+  text-align: left;
+}
+.onsale{
 
 }
-
-.ant-radio-button{
-
+.datepickletter{
+  font-size: 15px;
+  text-align: center;
+  padding-bottom: 0px;
+}
+.datepickblock{
+  min-width: 400px;
+  float:left;
+  height: 80px;
+  text-align: left;
+}
+.datepick{
+  float: left;
+  width: 400px;
+  margin-left: 20px;
+  padding-top: 40px;
+}
+.pricepickblock,.timepickblock,.totalpriceblock,.numpickblock{
+  float: left;
+  width: 480px;
+  margin-left: 20px;
+  text-align: left;
+  padding-top: 25px;
 }
 
-.selectBar{
+
+
+.blank{
+  height: 40px;
+}
+.tab {
+  position: relative;
+  top: 1px;
+  font-size: 18px;
+  height: 44px;
+  line-height: 44px;
+  padding: 0 4px;
+  margin: 0 30px 0 0;
+  float: left;
+  color: #676a78;
+  border-right: 0;
+  border-bottom: 0;
+  cursor: pointer;
+}
+.tabactive {
+  border-bottom: 3px solid #ff513c;
+  color: #333;
+  background-color: #fff;
+  cursor: default;
+}
+.affix{
+  height: 70px;
+}
+.test{
+  text-align: right;
+}
+.radiobuttonblock
+{
+  margin-left: 2px;
+  float: left;
+  height: 40px;
+  line-height: 40px;
+}
+.radiobutton
+{
+  height: 35px;
+  line-height: 35px;
+  padding: 0 17px;
+  margin-left: auto;
+  margin-right: auto;
 }

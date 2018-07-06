@@ -6,6 +6,7 @@ import "../css/App.css"
 const FormItem = Form.Item;
 const Login = Form.create()(
     class extends React.Component {
+        //自定义 validator函数
         username_validate=(rule,value,callback)=>{
             //   const form = this.formRef.props.form;
             //value's type need to transform
