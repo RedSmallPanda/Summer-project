@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import { List, Button, Icon, BackTop, Rate, Avatar, Spin } from 'antd';
-import TicketComment from "../TicketComment";
 
 const comments = [];
-for (let i = 0; i < 10; i++) {
+for (let i = 0; i < 100; i++) {
     comments.push({
         key: i,
-        href: 'http://ant.design',//detail info
-        image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//ticket image
-        title: `jpw ${i}`,//ticket name
+        image: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",//ticket image
+        username: `jpw user ${i}`,//ticket name
         time: "2018/07/02",
         content: 'comment',
         like: false,
@@ -25,7 +23,7 @@ let IconText = ({ type, text, onClick}) => (
   </span>
 );
 
-class Comment extends Component {
+class TicketComment extends Component {
     constructor(props){
         super(props);
         if (true);//POST to get data
@@ -36,10 +34,10 @@ class Comment extends Component {
     }
     cancelLike(e) {
         e.preventDefault();
-        let title = e.target.parentNode.parentNode.parentNode.parentNode
+        let username = e.target.parentNode.parentNode.parentNode.parentNode
             .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML;
         comments.forEach(function (item) {
-            if(item.title===title){
+            if(item.username===username){
                 if (true){//after modify database successfully
                     item.like = !item.like;
                     item.likes += (item.like ? 1 : -1);
@@ -56,10 +54,8 @@ class Comment extends Component {
             <div>
                 <br/>
                 <List
-                    size="large"
                     itemLayout='horizontal'
                     dataSource={this.state.data}
-                    footer={<a href="/"><b>find</b> more</a>}
                     loading={false}
                     pagination={{
                         onChange: (page) => {
@@ -70,36 +66,34 @@ class Comment extends Component {
 
                     renderItem={item => (
                         <List.Item
-                            key={item.title}
+                            key={item.username}
                             actions={[
-                                <Icon type="edit" />,
-                                <Icon type="delete" />,
                                 <IconText type={item.like ? "like" : "like-o"} text={item.likes} onClick={this.cancelLike}/>,
-                                <IconText type="message" text={item.comments}/>,
+                                <IconText type="message" text={item.comments}/>
                             ]}
-
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={80} alt="logo" src={item.image}/>}
-                                title={<a href={item.href}>{item.title}</a>}
+                                avatar={<Avatar size='large' src={item.image}/>}
+                                title={
+                                    <a>{item.username}</a>
+                                }
                                 description={
                                     <p>
-                                        <Rate defaultValue={item.grade}/><br/>
+                                        <Rate disabled defaultValue={item.grade}/><br/>
                                         {item.content}<br/><br/>
                                         {item.time}
                                     </p>
                                 }
                             />
-                            {}
                         </List.Item>
                     )}
                 />
+                <p>footer</p>
                 <br/><br/><br/>
-                <TicketComment/>
             </div>
         );
     }
 }
 
-export default Comment;
+export default TicketComment;

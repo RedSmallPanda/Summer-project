@@ -132,7 +132,6 @@ class ResultList extends Component {
                     )}
                 />
                 <br/><br/><br/>
-                <BackTop/>
             </div>
         );
     }
