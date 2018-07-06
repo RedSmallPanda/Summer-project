@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Menu, Row, Col, Carousel,Card, Icon,Avatar } from 'antd'
+import { Menu, Row, Col, Carousel,Card, Icon,Avatar,Layout } from 'antd'
 import '../css/App.css'
 import { hashHistory} from 'react-router'
 
-const { Meta } = Card;
 
+const { Meta } = Card;
+const Sider = Layout.Sider;
 class HomePage extends Component{
 
     handleDirectory = (e) =>{
@@ -15,8 +16,8 @@ class HomePage extends Component{
 
     render(){
         const homeBar =
-            <div>
-                <Menu>
+            <div align="center">
+                <Menu >
                     <Menu.Item key="concert" onClick={this.handleDirectory}>演唱会</Menu.Item>
                     <Menu.Item key="music" onClick={this.handleDirectory}>音乐会</Menu.Item>
                     <Menu.Item key="cnopera" onClick={this.handleDirectory}>曲苑杂坛</Menu.Item>
@@ -104,7 +105,7 @@ class HomePage extends Component{
         const homeContainer =
             <div>
                 <Row>
-                    <Col span={4}>
+                    <Col span={3}>
                         {homeBar}
                     </Col>
                     <Col span={1}/>
@@ -113,14 +114,20 @@ class HomePage extends Component{
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={4}>
-                        <div style={{marginTop:20}}><h3>今日推荐</h3></div><br/>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    <Col span={3}/>
+                    <Col span={20}>
+                        <Row>
+                            <Col span={4}>
+                                <div style={{marginTop:20}}><h3>今日推荐</h3></div><br/>
+                            </Col>
+                        </Row>
                         {homeRecommend}
                         {homeRecommend}
+                        {homeRecommend}
+                        {homeRecommend}
+                        {homeRecommend}
+                        {homeRecommend}
+
                     </Col>
                 </Row>
             </div>;

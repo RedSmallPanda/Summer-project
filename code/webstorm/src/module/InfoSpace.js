@@ -71,11 +71,11 @@ class InfoSpace extends Component{
         const infoBar =
             <div style={{marginTop:20}}>
                 <Row>
-                    <Col span={4}/>
-                    <Col span={4}>
+                    <Col span={3}/>
+                    <Col span={3}>
+                        <div align="center">
                         <Menu
                             onClick={this.handleClick}
-                            style={{ width: 200 }}
                             defaultSelectedKeys={[this.state.SelectedKeys]}
                             defaultOpenKeys={this.state.OpenKeys}
                             mode="inline"
@@ -94,9 +94,10 @@ class InfoSpace extends Component{
                                 <Menu.Item key="11">收货地址</Menu.Item>
                             </SubMenu>
                         </Menu>
+                        </div>
                     </Col>
-                    <Col span={12}>
-                        <div>
+                    <Col span={15}>
+                        <div style={{ marginLeft:20}}>
                             {infoContent}
                         </div>
                     </Col>

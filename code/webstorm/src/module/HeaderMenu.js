@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon, Input, Avatar } from 'antd';
+import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
 import { hashHistory} from 'react-router'
 import Login from './Login'
 import "../css/App.css"
@@ -11,18 +11,15 @@ class HeaderMenu extends Component {
 
     state = {
         isLogin:false,
+        isAdmin:false,
         visible:false,
-    };
-
-    handleLogin = () =>{
-        this.setState({
-            isLogin:true,
-        })
+        type:''
     };
 
     handleLogout = () =>{
         this.setState({
             isLogin:false,
+            isAdmin:false,
         });
         this.handleHomePage()
     };
@@ -37,7 +34,11 @@ class HeaderMenu extends Component {
         });
     };
 
-
+    handleAdminSpace = (e) =>{
+        hashHistory.push({
+            pathname:'/admin/'+e.key
+        });
+    };
 
     handleDirectory = () =>{
         hashHistory.push('/dir/all')
@@ -60,6 +61,14 @@ class HeaderMenu extends Component {
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
             form.resetFields();
+            if(values.username === 'admin'){
+                this.setState({
+                    visible: false,
+                    isLogin: true,
+                    isAdmin:true,
+                });
+                return;
+            }
             this.setState({
                 visible: false,
                 isLogin: true,
@@ -89,7 +98,29 @@ class HeaderMenu extends Component {
                 </SubMenu>
             </Menu>;
 
-        let loginOrInfo = this.state.isLogin ? infoButton : loginButton;
+        let adminButton =
+            <Menu mode="horizontal" style={{border:0}}>
+                <SubMenu title={<span>管理员<Icon type="down" /></span>}>
+                    <Menu.Item key="1" onClick={this.handleAdminSpace}>用户管理</Menu.Item>
+                    <Menu.Item key="2" onClick={this.handleAdminSpace}>票品管理</Menu.Item>
+                    <Menu.Item key="3" onClick={this.handleAdminSpace}>退款审核</Menu.Item>
+                    <Menu.Item key="4" onClick={this.handleAdminSpace}>销量统计</Menu.Item>
+                    <Menu.Item onClick={this.handleLogout}>退出登录</Menu.Item>
+                </SubMenu>
+            </Menu>;
+
+        let loginOrInfo = null;
+
+        if(this.state.isLogin && this.state.isAdmin){
+            loginOrInfo = adminButton;
+        }
+        else if(this.state.isLogin && !this.state.isAdmin){
+            loginOrInfo = infoButton;
+        }
+        else{
+            loginOrInfo = loginButton;
+        }
+
         let renderHeader =
             <div>
                 <Login
@@ -100,10 +131,10 @@ class HeaderMenu extends Component {
                 />
                 <Menu mode="horizontal">
                     <Row>
-                        <Col span={4} onClick={this.handleHomePage}>
-                            <span><Icon type="global" />聚票网</span>
+                        <Col span={3} onClick={this.handleHomePage}>
+                            <div align="center"><Icon type="global" />聚票网</div>
                         </Col>
-                        <Col span={6}>
+                        <Col span={7}>
                             <Menu mode="horizontal" style={{border:0}}>
                                 <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
                                 <Menu.Item onClick={this.handleDirectory}>全部分类</Menu.Item>
@@ -124,6 +155,7 @@ class HeaderMenu extends Component {
                         </Col>
                     </Row>
                 </Menu>
+                <BackTop/>
             </div>;
         return (
             renderHeader

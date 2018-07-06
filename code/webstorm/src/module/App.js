@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import HeaderMenu from './HeaderMenu'
 import '../css/App.css';
 import MyRouter from '../MyRouter'
+import Footer from './Footer'
 
 
 class App extends Component {
