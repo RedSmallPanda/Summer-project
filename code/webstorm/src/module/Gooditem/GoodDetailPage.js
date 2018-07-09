@@ -97,8 +97,8 @@ class GoodDetailPage extends Component{
                                         <div className="datepickblock">
                                             <div className="datepick">
                                                 <Row>
-                                                    <Col span={4}><div className="datepickletter">选择日期:</div></Col>
-                                                    <Col span={2}/>
+                                                    <Col span={3}><div className="datepickletter">选择日期:</div></Col>
+                                                    <Col span={1}/>
                                                     <Col><div><DatePick Dates={this.state.enableddate} setdate={this.onsetpickdate}/></div></Col>
                                                 </Row>
                                             </div>
@@ -109,18 +109,30 @@ class GoodDetailPage extends Component{
                                 <Row>
                                     <Col>
                                         <div className="timepickblock">
-                                        <RadioGroup  onChange={this.selecttime} defaultValue={this.state.picktime}>
-                                            {timebutton}
-                                        </RadioGroup>
+                                            <Row>
+                                                <Col span={3}><div className="timepickletter">选择时间:</div></Col>
+                                                <Col span={1}></Col>
+                                                <Col>
+                                                       <RadioGroup  onChange={this.selecttime} defaultValue={this.state.picktime}>
+                                                        {timebutton}
+                                                       </RadioGroup>
+                                                </Col>
+                                            </Row>
                                         </div>
                                      </Col>
                                 </Row>
                                 <Row>
                                     <Col>
                                         <div className="pricepickblock">
-                                            <RadioGroup onChange={this.selectprice} defaultValue={this.state.pickprice}>
-                                                {pricebutton}
-                                            </RadioGroup>
+                                            <Row>
+                                                <Col span={3}><div className="timepickletter">选择价格:</div></Col>
+                                                <Col span={1}></Col>
+                                                <Col>
+                                                    <RadioGroup onChange={this.selectprice} defaultValue={this.state.pickprice}>
+                                                        {pricebutton}
+                                                    </RadioGroup>
+                                                </Col>
+                                            </Row>
                                         </div>
 
                                     </Col>
@@ -128,13 +140,19 @@ class GoodDetailPage extends Component{
                                 <Row>
                                     <Col>
                                         <div className="numpickblock">
-                                            <Ticknumpick setnum={this.setticknum} maxnum={this.state.tickmaxnum}/>
+                                            <Row>
+                                                <Col span={3}><div className="timepickletter">选择数量:</div></Col>
+                                                <Col span={1}></Col>
+                                                <Col>
+                                                    <Ticknumpick setnum={this.setticknum} maxnum={this.state.tickmaxnum}/>
+                                                </Col>
+                                            </Row>
                                         </div>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div className="totalpriceblock">
+                                        <div className="totalpriceblock">总价
                                             <p >{this.state.totalprice}</p>
                                         </div>
                                     </Col>
