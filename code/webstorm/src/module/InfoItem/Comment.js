@@ -85,7 +85,7 @@ class Comment extends Component {
                                 title={<a href={item.href}>{item.title}</a>}
                                 description={
                                     <p>
-                                        <Rate defaultValue={item.grade}/><br/>
+                                        <Rate allowHalf defaultValue={item.grade}/><br/>
                                         {item.content}<br/><br/>
                                         {item.time}
                                     </p>
