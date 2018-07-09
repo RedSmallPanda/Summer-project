@@ -1,0 +1,17 @@
+
+
+.radioStyle{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    font-size:20px;
+}
+
+.recBorder{
+    height: 80px;
+    border:1px solid #1890ff;
+    border-radius: 15px;
+    background: #edfaff;
+    line-height: 80px;
+    font-size: 25px;
+}
