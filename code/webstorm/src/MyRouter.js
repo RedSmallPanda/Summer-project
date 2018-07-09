@@ -3,9 +3,10 @@ import { Router, Route, Link, hashHistory} from 'react-router'
 import HomePage from './module/HomePage'
 import InfoSpace from './module/InfoSpace'
 import Directory from './module/Directory'
-import TicketItem from './module/TicketItem'
 import AdminSpace from './module/AdminSpace'
 import BuyStep from './module/BuyStep'
+import CommentPage from './module/CommentPage'
+import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
 class MyRouter extends Component{
     render(){
         return(
@@ -14,9 +15,11 @@ class MyRouter extends Component{
                 <Route path='/home' component={HomePage}/>
                 <Route path='/info/:keyId' component={InfoSpace}/>
                 <Route path='/dir/:type' component={Directory}/>
-                <Route path="/item" component={TicketItem}/>
+                <Route path="/commentPage" component={CommentPage}/>
+                <Route path="/detail" component={GoodDetailPage}/>
                 <Route path="/admin/:keyId" component={AdminSpace}/>
                 <Route path="/buyStep" component={BuyStep}/>
+                <Route path="/commentPage" component={CommentPage}/>
             </Router>
         )
     }
