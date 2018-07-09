@@ -117,7 +117,7 @@ html, body {
 .onsale{
 
 }
-.datepickletter{
+.datepickletter,.timepickletter{
   font-size: 15px;
   text-align: center;
   padding-bottom: 0px;
@@ -130,17 +130,20 @@ html, body {
 }
 .datepick{
   float: left;
-  width: 400px;
+  width: 550px;
   margin-left: 20px;
   padding-top: 40px;
 }
 .pricepickblock,.timepickblock,.totalpriceblock,.numpickblock{
   float: left;
-  width: 480px;
+  width: 550px;
   margin-left: 20px;
   text-align: left;
   padding-top: 25px;
 }
+
+
+
 .blank{
   height: 40px;
 }
