@@ -73,10 +73,29 @@ html, body {
 
 
 
+.box3{
+  margin: 20px auto;
+  padding: 10px;
+  position:relative;
+  background: -webkit-gradient(linear, 0% 20%, 0% 92%, from(#fff), to(#f3f3f3), color-stop(.1,#fff));
+  border: 1px solid #ccc;
+  -webkit-border-radius: 60px 5px;
+
+}
+
 
 .body{
   min-width: 1200px;
 
+}
+.topblock{
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  -webkit-box-shadow: inset 0 1px 1px 0 #c7c7c7;
+  -moz-box-shadow: inset 0 1px 1px 0 #c7c7c7;
+  box-shadow: inset 0 1px 1px 0 #c7c7c7;
+  display: block;
 }
 .tichname{
   font: 12px/1 Tahoma,Helvetica,Arial,"\5b8b\4f53",sans-serif;
@@ -114,10 +133,8 @@ html, body {
   height: 60px;
   text-align: left;
 }
-.onsale{
 
-}
-.datepickletter,.timepickletter{
+.datepickletter,.timepickletter,.infoletter{
   font-size: 15px;
   text-align: center;
   padding-bottom: 0px;
@@ -134,7 +151,7 @@ html, body {
   margin-left: 20px;
   padding-top: 40px;
 }
-.pricepickblock,.timepickblock,.totalpriceblock,.numpickblock{
+.pricepickblock,.timepickblock,.totalpriceblock,.numpickblock,.onsaleinfoblock{
   float: left;
   width: 550px;
   margin-left: 20px;
@@ -146,6 +163,10 @@ html, body {
 
 .blank{
   height: 40px;
+}
+.affixbar{
+
+  background-color: #ffffff;
 }
 .tab {
   position: relative;
@@ -182,9 +203,31 @@ html, body {
 }
 .radiobutton
 {
+  width: 80px;
   height: 35px;
   line-height: 35px;
-  padding: 0 17px;
+  padding: 0 25px;
   margin-left: auto;
   margin-right: auto;
+
+
+  border-radius: 2px 2px 2px 2px;
+  -webkit-box-shadow: 0 10px 6px -6px #777;
+  -moz-box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0 5px 3px -3px #777;
+}
+.editor{
+  background: #fff;
+  margin: 20px auto;
+  display: block;
+  min-height: 310px;
+  padding:20px;
+  border-radius: 2px 2px 2px 2px;
+  -webkit-box-shadow: 0 1px 4px
+  rgba(0, 0, 0, 0.3), 0 0 40px
+  rgba(0, 0, 0, 0.1) inset;
+  -moz-box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3), 0 0 40px rgba(0, 0, 0, 0.1) inset;
+  box-shadow: 0 1px 4px
+  rgba(0, 0, 0, 0.3), 0 0 40px
+  rgba(0, 0, 0, 0.1) inset;
 }
