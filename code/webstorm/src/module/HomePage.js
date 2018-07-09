@@ -31,7 +31,7 @@ class HomePage extends Component{
         const homeCarousel =
             <div style={{marginTop:20}}>
                 <Carousel autoplay effect="fade">
-                    <div><img src="https://img.piaoniu.com/banner/5860c8c8158e6eed07d32785a3cf8a0015bdcc84.jpg&quot"/></div>
+                    <div><h3>1</h3></div>
                     <div><h3>2</h3></div>
                     <div><h3>3</h3></div>
                     <div><h3>4</h3></div>
@@ -45,55 +45,55 @@ class HomePage extends Component{
                         <Col span={4}>
                             <Card
                                 style={{ width: 200 }}
-                                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
                             >
                                 <Meta
-                                    title="Ticket title"
-                                    description="This is the description"
+                                    title="周杰伦演唱会"
+                                    description="地表最强"
                                 />
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card
                                 style={{ width: 200 }}
-                                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
                             >
                                 <Meta
-                                    title="Ticket title"
-                                    description="This is the description"
+                                    title="周杰伦演唱会"
+                                    description="地表最强"
                                 />
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card
                                 style={{ width: 200 }}
-                                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
                             >
                                 <Meta
-                                    title="Ticket title"
-                                    description="This is the description"
+                                    title="周杰伦演唱会"
+                                    description="地表最强"
                                 />
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card
                                 style={{ width: 200 }}
-                                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
                             >
                                 <Meta
-                                    title="Ticket title"
-                                    description="This is the description"
+                                    title="周杰伦演唱会"
+                                    description="地表最强"
                                 />
                             </Card>
                         </Col>
                         <Col span={4}>
                             <Card
                                 style={{ width: 200 }}
-                                cover={<img alt="example" src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png" />}
+                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
                             >
                                 <Meta
-                                    title="Ticket title"
-                                    description="This is the description"
+                                    title="周杰伦演唱会"
+                                    description="地表最强"
                                 />
                             </Card>
                         </Col>
