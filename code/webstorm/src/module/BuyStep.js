@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
-import { Steps, Row, Col, Icon, Table, Button} from 'antd';
+import { Steps, Row, Col, Icon, Table, Button, Radio, Divider} from 'antd';
+import '../css/BuyStep.css';
 
 const Step=Steps.Step;
+
+const RadioGroup = Radio.Group;
 
 const ticketInfo = [{
     key: '1',
@@ -99,17 +102,26 @@ class BuyStep extends Component {
     }
 
     render() {
+
         let step0Page=<div>
             <Table columns ={addressColumns} dataSource={address}/>
             <br/>
             <br/>
             <Table columns ={dataColumns} dataSource={ticketInfo}/>
-            <br/>
-            <br/>
-            <Button type="primary" onClick={this.confirmS1}>确认</Button>
+            <Button style={{float:"right"}} type="primary" onClick={this.confirmS1}>确认</Button>
         </div>;
 
         let step1Page=<div>
+            <br/>
+            <br/>
+            <RadioGroup defaultValue={1}>
+                <Radio className="radioStyle" value={1}><Icon type="alipay" />   支付宝</Radio>
+                <Divider/>
+                <Radio className="radioStyle" value={2}><Icon type="wechat" />   微信支付</Radio>
+                <Divider/>
+                <Radio className="radioStyle" value={3}><Icon type="credit-card" />   银行卡</Radio>
+            </RadioGroup>
+            <br/>
             <br/>
             <br/>
             <br/>
@@ -118,9 +130,9 @@ class BuyStep extends Component {
 
         let step2Page=<div>
             <br/>
-            <br/>
-            <br/>
-            <p>您已完成付款</p>
+            <div className="recBorder">
+                &emsp;<Icon type="check" style={{ fontSize: 50, color: '#4cc232'}}/>&ensp;您已完成付款!
+            </div>
         </div>
 
         let showPage=null;
@@ -141,9 +153,9 @@ class BuyStep extends Component {
                     <Col span={4}/>
                     <Col span={16}>
                         <Steps current={this.state.firstStep+this.state.secondStep} align="left">
-                            <Step title="Finished" description="This is a description." />
-                            <Step title="In Progress" description="This is a description." />
-                            <Step title="Waiting" description="This is a description." />
+                            <Step title="确认信息" />
+                            <Step title="付款" />
+                            <Step title="付款成功" />
                         </Steps>
                         <br/>
                         <br/>
