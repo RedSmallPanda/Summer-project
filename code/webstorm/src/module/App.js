@@ -5,6 +5,7 @@ import MyRouter from '../MyRouter'
 import CollectionsPage from './Login'
 import Register from './Register'
 import GoodDetailPage from "./Gooditem/GoodDetailPage";
+import Footer from "./Footer";
 
 
 class App extends Component {
@@ -13,6 +14,7 @@ class App extends Component {
       <div className="App">
           <HeaderMenu/>
           <MyRouter/>
+          <Footer/>
       </div>
   );
   }

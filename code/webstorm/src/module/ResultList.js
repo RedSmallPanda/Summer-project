@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Dropdown, List, Button, Icon, BackTop, Rate } from 'antd';
+import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 const menu = (
     <Menu>
         <Menu.Item>
@@ -28,7 +28,7 @@ for (let i = 0; i < 10; i++) {
         image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
         title: `jpw ${i}`,//name
         start: "2018/07/02",
-        end: "2018/07/27",
+        end: `2018/07/${(7 + i) < 10 ? `0${7 + i}` : 7 + i}`,
         address: "SE 3-101",
         grade: 4.5,
         description: 'description',
@@ -49,7 +49,7 @@ let IconText = ({ type, text, onClick}) => (
 class ResultList extends Component {
     constructor(props){
         super(props);
-        //POST to get data
+        //POST to get data and filter
         this.state = {
             data: listData,
         };
@@ -81,7 +81,6 @@ class ResultList extends Component {
     render(){
         return (
             <div>
-                <br/>
                 <List
                     size="large"
                     itemLayout='horizontal'
@@ -92,7 +91,7 @@ class ResultList extends Component {
                         onChange: (page) => {
                             console.log(page);
                         },
-                        pageSize: 8,
+                        pageSize: 3,
                     }}
 
                     renderItem={item => (

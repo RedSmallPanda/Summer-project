@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { List, Button, Icon, BackTop, Rate, Avatar, Spin } from 'antd';
+import { List, Icon, Rate, Avatar, Button} from 'antd';
+import { hashHistory } from 'react-router';
 
 const comments = [];
 for (let i = 0; i < 100; i++) {
@@ -8,7 +9,8 @@ for (let i = 0; i < 100; i++) {
         image: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",//ticket image
         username: `jpw user ${i}`,//ticket name
         time: "2018/07/02",
-        content: 'comment',
+        content: 'commentssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss' +
+        'ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
         like: false,
         likes: i + 1,
         comments: i,
@@ -31,6 +33,11 @@ class TicketComment extends Component {
             data: comments,
         };
         this.cancelLike = this.cancelLike.bind(this);
+        this.detailComment = this.detailComment.bind(this);
+    }
+    detailComment(e){
+        e.preventDefault();
+        hashHistory.push({pathname: '/commentPage'});
     }
     cancelLike(e) {
         e.preventDefault();
@@ -68,7 +75,8 @@ class TicketComment extends Component {
                         <List.Item
                             key={item.username}
                             actions={[
-                                <IconText type={item.like ? "like" : "like-o"} text={item.likes} onClick={this.cancelLike}/>,
+                                <IconText type={item.like ? "like" : "like-o"} text={item.likes}
+                                          onClick={this.cancelLike}/>,
                                 <IconText type="message" text={item.comments}/>
                             ]}
                         >
@@ -76,20 +84,21 @@ class TicketComment extends Component {
                                 align='left'
                                 avatar={<Avatar size='large' src={item.image}/>}
                                 title={
-                                    <a>{item.username}</a>
+                                    <a onClick={this.detailComment}>{item.username}</a>
                                 }
                                 description={
-                                    <p>
+                                    <div>
                                         <Rate disabled defaultValue={item.grade}/><br/>
                                         {item.content}<br/><br/>
                                         {item.time}
-                                    </p>
+                                    </div>
                                 }
                             />
+                            {"content"}
                         </List.Item>
                     )}
                 />
-                <p>footer</p>
+                <Button onClick={this.detailComment}>发表我的评论</Button>
                 <br/><br/><br/>
             </div>
         );
