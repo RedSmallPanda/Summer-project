@@ -143,5 +143,6 @@ ResultList.defaultProps = {
         time: "all",
     },
     type: "default",
+    search: "",
 };
 export default ResultList;
