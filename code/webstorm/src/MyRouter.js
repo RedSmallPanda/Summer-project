@@ -15,11 +15,11 @@ class MyRouter extends Component{
             <Router history={hashHistory}>
                 <Route path='/' component={HomePage}/>
                 <Route path='/home' component={HomePage}/>
-                <Route path='/info/:keyId' component={InfoSpace}/>
+                <Route path='/info' component={InfoSpace}/>
                 <Route path='/dir/:type' component={Directory}/>
                 <Route path="/commentPage" component={CommentPage}/>
                 <Route path="/detail" component={GoodDetailPage}/>
-                <Route path="/admin/:keyId" component={AdminSpace}/>
+                <Route path="/admin" component={AdminSpace}/>
                 <Route path="/buyStep" component={BuyStep}/>
                 <Route path="/commentPage" component={CommentPage}/>
                 <Route path="/us" component={Us}/>

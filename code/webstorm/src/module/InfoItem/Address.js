@@ -1,6 +1,26 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Radio,Icon,Cascader, Table, Divider, InputNumber } from 'antd';
 
+const data = [{
+    key:'1',
+    name: 'John Brown',
+    phone: 18800000000,
+    city:'上海 闵行',
+    detail:'无',
+}, {
+    key:'2',
+    name: 'Jim Green',
+    phone:18700000000,
+    city:'浙江 杭州 上城区',
+    detail:'无',
+}, {
+    key:'3',
+    name: 'Joe Black',
+    phone:13800000000,
+    city:'上海 闵行',
+    detail:'东川路800号',
+}];
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -210,25 +230,8 @@ class Address extends Component {
             city:'',
             detail:''
         }],
-        data : [{
-            key:'1',
-            name: 'John Brown',
-            phone: 18800000000,
-            city:'上海 闵行',
-            detail:'无',
-        }, {
-            key:'2',
-            name: 'Jim Green',
-            phone:18700000000,
-            city:'浙江 杭州 上城区',
-            detail:'无',
-        }, {
-            key:'3',
-            name: 'Joe Black',
-            phone:13800000000,
-            city:'上海 闵行',
-            detail:'东川路800号',
-        }]
+        data : data,
+        key:data.length
     };
 
     showModal = () => {
@@ -258,6 +261,7 @@ class Address extends Component {
             }
 
             let newAddr = {
+                key:(this.state.key + 1).toString(),
                 name:values.name,
                 phone:values.phone,
                 city:newCity,
@@ -266,7 +270,8 @@ class Address extends Component {
 
             this.setState({
                 visible:false,
-                data:this.state.data.concat([newAddr])
+                data:this.state.data.concat([newAddr]),
+                key:this.state.key + 1
             })
 
         });

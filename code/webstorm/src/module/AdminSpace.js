@@ -8,15 +8,21 @@ import RefundAudit from './AdminItem/RefundAudit'
 class AdminSpace extends Component{
 
     state = {
-        SelectedKeys:'1',
+        SelectedKeys:localStorage.getItem('key'),
         OpenKeys:['sub1','sub2','sub3']
     };
 
-    componentWillMount() {
+    /*componentWillMount() {
         this.setState({
-            SelectedKeys: this.props.params.keyId
+            SelectedKeys: localStorage.getItem('key')
         })
-    };
+    };*/
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            SelectedKeys:localStorage.getItem('key')
+        })
+    }
 
     handleClick = (e) =>{
         this.setState({
@@ -33,7 +39,8 @@ class AdminSpace extends Component{
 
         let adminContent = null;
 
-        switch (this.state.SelectedKeys){
+        let key = this.state.SelectedKeys;
+        switch (key){
             case '1':
                 adminContent = userManage;
                 break;
@@ -50,22 +57,26 @@ class AdminSpace extends Component{
                 adminContent = userManage;
         }
 
-        const adminBar =
+        alert(key);
+        let menu = <Menu
+            onClick={this.handleClick}
+            defaultSelectedKeys={[key]}
+            //SelectedKeys={[this.state.SelectedKeys]}
+            mode="inline"
+        >
+            <Menu.Item key="1">用户管理</Menu.Item>
+            <Menu.Item key="2">票品管理</Menu.Item>
+            <Menu.Item key="3">退款审核</Menu.Item>
+            <Menu.Item key="4">销量统计</Menu.Item>
+        </Menu>
+        //alert
+        let adminBar =
             <div style={{marginTop:20}}>
                 <Row>
                     <Col span={3}/>
                     <Col span={3}>
                         <div align="center">
-                        <Menu
-                            onClick={this.handleClick}
-                            defaultSelectedKeys={[this.state.SelectedKeys]}
-                            mode="inline"
-                        >
-                            <Menu.Item key="1">用户管理</Menu.Item>
-                            <Menu.Item key="2">票品管理</Menu.Item>
-                            <Menu.Item key="3">退款审核</Menu.Item>
-                            <Menu.Item key="4">销量统计</Menu.Item>
-                        </Menu>
+                            {menu}
                         </div>
                     </Col>
                     <Col span={15}>
