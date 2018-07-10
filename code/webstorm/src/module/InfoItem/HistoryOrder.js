@@ -40,7 +40,7 @@ const columns = [{
         key: 'action',
         render: () => (
             <span>
-      <a href="javascript:;">评价</a>
+      <a href="#/commentPage">评价</a>
     </span>
         ),
     }];

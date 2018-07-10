@@ -9,6 +9,7 @@ import CommentPage from './module/CommentPage'
 import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
 import Us from "./module/Us";
 import Help from "./module/Help";
+import RefundPage from "./module/RefundPage";
 class MyRouter extends Component{
     render(){
         return(
@@ -24,6 +25,7 @@ class MyRouter extends Component{
                 <Route path="/commentPage" component={CommentPage}/>
                 <Route path="/us" component={Us}/>
                 <Route path="/help" component={Help}/>
+                <Route path="/refundPage" component={RefundPage}/>
             </Router>
         )
     }
