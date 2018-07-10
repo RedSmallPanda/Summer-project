@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
+import { hashHistory } from "react-router";
 const menu = (
     <Menu>
         <Menu.Item>
@@ -19,7 +20,6 @@ const menu = (
         </Menu.Item>
     </Menu>
 );
-
 const listData = [];
 for (let i = 0; i < 10; i++) {
     listData.push({
@@ -55,7 +55,9 @@ class ResultList extends Component {
         };
         this.cancelHeart = this.cancelHeart.bind(this);
         this.judgeDate = this.judgeDate.bind(this);
+        this.detail = this.detail.bind(this);
     }
+    //todo: do cancel in database
     cancelHeart(e) {
         e.preventDefault();
         let title = e.target.parentNode.parentNode.parentNode.parentNode
@@ -69,6 +71,9 @@ class ResultList extends Component {
             data: listData,
         });
     }
+
+    //judge out-of-date
+    //todo: judge by exact time
     judgeDate(end){
         let date = new Date();
         let year = date.getFullYear();
@@ -76,6 +81,11 @@ class ResultList extends Component {
         let day = date.getDate();
         let currentDate = year + "/" + (month < 10 ? "0" : "") + month + "/" + (day < 10 ? "0" : "") + day;
         return currentDate < end;
+    }
+
+    detail(e){
+        e.preventDefault();
+        hashHistory.push("/detail");
     }
 
     render(){
@@ -107,8 +117,8 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src={item.image}/>}
-                                title={<a href={item.href}>{item.title}</a>}
+                                avatar={<img width={120} alt="logo" src={item.image} onClick={this.detail}/>}
+                                title={<a onClick={this.detail}>{item.title}</a>}
                                 description={
                                     <p>
                                         {item.description}<br/><br/>
@@ -122,7 +132,9 @@ class ResultList extends Component {
                                 <div>
                                     <h3><b>{"￥" + item.price}</b>{" 起"}</h3>
                                     <Button type={this.judgeDate(item.end) && item.stock ? "primary" : "dashed"}
-                                            size="large">{
+                                            size="large"
+                                            onClick={this.detail}
+                                    >{
                                         this.judgeDate(item.end) ? (item.stock ? "购买" : "售罄") : "过期"
                                     }</Button>
                                 </div>

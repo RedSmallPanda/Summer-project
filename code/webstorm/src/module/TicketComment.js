@@ -83,9 +83,7 @@ class TicketComment extends Component {
                             <List.Item.Meta
                                 align='left'
                                 avatar={<Avatar size='large' src={item.image}/>}
-                                title={
-                                    <a onClick={this.detailComment}>{item.username}</a>
-                                }
+                                title={item.username}
                                 description={
                                     <div>
                                         <Rate disabled defaultValue={item.grade}/><br/>

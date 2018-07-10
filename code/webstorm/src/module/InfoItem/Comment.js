@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { List, Button, Icon, BackTop, Rate, Avatar, Spin } from 'antd';
 import TicketComment from "../TicketComment";
+import {hashHistory} from "react-router";
 
 const comments = [];
 for (let i = 0; i < 10; i++) {
@@ -33,6 +34,7 @@ class Comment extends Component {
             data: comments,
         };
         this.cancelLike = this.cancelLike.bind(this);
+        this.detail = this.detail.bind(this);
     }
     cancelLike(e) {
         e.preventDefault();
@@ -50,7 +52,11 @@ class Comment extends Component {
             data: comments,
         });
     }
-
+    detail(e){
+        e.preventDefault();
+        alert(e.target.innerHTML);
+        hashHistory.push("/detail");
+    }
     render(){
         return (
             <div>
@@ -82,7 +88,7 @@ class Comment extends Component {
                             <List.Item.Meta
                                 align='left'
                                 avatar={<img width={80} alt="logo" src={item.image}/>}
-                                title={<a href={item.href}>{item.title}</a>}
+                                title={<a onClick={this.detail}>{item.title}</a>}
                                 description={
                                     <p>
                                         <Rate allowHalf defaultValue={item.grade}/><br/>
@@ -95,8 +101,6 @@ class Comment extends Component {
                         </List.Item>
                     )}
                 />
-                <br/><br/><br/>
-                <TicketComment/>
             </div>
         );
     }
