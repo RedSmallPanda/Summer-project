@@ -10,6 +10,8 @@ import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
 import Us from "./module/Us";
 import Help from "./module/Help";
 import RefundPage from "./module/RefundPage";
+import Coupon from "./module/InfoItem/Coupon";
+
 class MyRouter extends Component{
     render(){
         return(
@@ -26,6 +28,7 @@ class MyRouter extends Component{
                 <Route path="/us" component={Us}/>
                 <Route path="/help" component={Help}/>
                 <Route path="/refundPage" component={RefundPage}/>
+                <Route path="/coupon" component={Coupon}/>
             </Router>
         )
     }

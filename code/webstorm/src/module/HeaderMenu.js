@@ -107,6 +107,7 @@ class HeaderMenu extends Component {
             <Menu mode="horizontal" style={{border:0}}>
                 <SubMenu title={<span>个人信息<Icon type="down" /></span>}>
                     <Menu.Item key="1" onClick={this.handleInfoSpace}>我的订单</Menu.Item>
+                    <Menu.Item key="3" onClick={this.handleInfoSpace}>我的优惠券</Menu.Item>
                     <Menu.Item key="5" onClick={this.handleInfoSpace}>我的动态</Menu.Item>
                     <Menu.Item key="9" onClick={this.handleInfoSpace}>账号设置</Menu.Item>
                     <Menu.Item onClick={this.handleLogout}>退出登录</Menu.Item>

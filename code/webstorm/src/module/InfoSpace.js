@@ -7,6 +7,7 @@ import Collection from "./InfoItem/Collection";
 import Comment from "./InfoItem/Comment";
 import Order from './InfoItem/Order'
 import HistoryOrder from './InfoItem/HistoryOrder'
+import Coupon from './InfoItem/Coupon'
 
 const SubMenu = Menu.SubMenu;
 const MenuItemGroup = Menu.ItemGroup;
@@ -15,8 +16,7 @@ class InfoSpace extends Component{
 
     state = {
         SelectedKeys:localStorage.getItem('key'),
-        OpenKeys:['sub1','sub2','sub3']
-
+        OpenKeys:['sub1','sub2','sub3','sub4']
     };
 
     /*componentWillReceiveProps(nextProps) {
@@ -39,6 +39,7 @@ class InfoSpace extends Component{
         let order = <Order/>;
         let password = <Password/>;
         let historyOrder=<HistoryOrder/>;
+        let coupon=<Coupon/>;
 
         let infoContent = null;
         switch (this.state.SelectedKeys){
@@ -47,6 +48,9 @@ class InfoSpace extends Component{
                 break;
             case '2':
                 infoContent = historyOrder;
+                break;
+            case '3':
+                infoContent = coupon;
                 break;
             case '5':
                 infoContent = collection;
@@ -83,6 +87,9 @@ class InfoSpace extends Component{
                             <SubMenu key="sub1" title={<span>订单管理</span>}>
                                 <Menu.Item key='1'>当前订单</Menu.Item>
                                 <Menu.Item key='2'>历史订单</Menu.Item>
+                            </SubMenu>
+                            <SubMenu key="sub4" title={<span>优惠券</span>}>
+                                <Menu.Item key='3'>我的优惠券</Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub2" title={<span>动态管理</span>}>
                                 <Menu.Item key="5">我的收藏</Menu.Item>
