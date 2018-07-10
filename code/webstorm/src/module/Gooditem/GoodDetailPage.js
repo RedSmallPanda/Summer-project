@@ -170,8 +170,16 @@ class GoodDetailPage extends Component{
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <div className="totalpriceblock">总价
-                                            <p >{this.state.totalprice}</p>
+                                        <div className="totalpriceblock">
+                                        <Row>
+                                            <Col span={3}><div className="timepickletter">总价格:</div></Col>
+                                            <Col span={1}></Col>
+                                            <Col>
+                                                <div>
+                                                    <p className="price">{'￥'+parseInt(this.state.pickprice)*this.state.pickticknum}</p>
+                                                </div>
+                                            </Col>
+                                        </Row>
                                         </div>
                                     </Col>
                                 </Row>
