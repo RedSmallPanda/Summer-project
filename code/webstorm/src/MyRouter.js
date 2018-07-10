@@ -7,6 +7,8 @@ import AdminSpace from './module/AdminSpace'
 import BuyStep from './module/BuyStep'
 import CommentPage from './module/CommentPage'
 import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
+import Us from "./module/Us";
+import Help from "./module/Help";
 class MyRouter extends Component{
     render(){
         return(
@@ -20,6 +22,8 @@ class MyRouter extends Component{
                 <Route path="/admin/:keyId" component={AdminSpace}/>
                 <Route path="/buyStep" component={BuyStep}/>
                 <Route path="/commentPage" component={CommentPage}/>
+                <Route path="/us" component={Us}/>
+                <Route path="/help" component={Help}/>
             </Router>
         )
     }
