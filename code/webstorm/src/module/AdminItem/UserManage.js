@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { Table, Input, InputNumber, Popconfirm, Form, Avatar, Divider, Button, Icon } from 'antd';
+import { Table, Input, InputNumber, Modal, Form, Avatar, Divider, Button, Icon } from 'antd';
 
 const data = [];
 for(let i = 0; i < 20; i++){
@@ -66,10 +66,65 @@ class EditableCell extends React.Component {
     }
 }
 
+const UserForm = Form.create()(
+    class extends React.Component {
+        render() {
+            const { visible, onCancel, onCreate, form } = this.props;
+            const { getFieldDecorator } = form;
+            return (
+                <Modal
+                    visible={visible}
+                    title="新增用户"
+                    okText="确定"
+                    cancelText="取消"
+                    onCancel={onCancel}
+                    onOk={onCreate}
+                >
+                    <Form layout="vertical">
+                        <FormItem label="用户名">
+                            {getFieldDecorator('username', {
+                                rules: [{ required: true, message: '请输入用户名' }],
+                            })(
+                                <Input type="textarea" placeholder="用户名"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="密码">
+                            {getFieldDecorator('password', {
+                                rules: [{ required: true, message: '请输入密码' }],
+                            })(
+                                <Input type="textarea" placeholder="密码"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="手机号">
+                            {getFieldDecorator('phone', {
+                                rules: [{ required: true, message: '请输入手机号' }],
+                            })(
+                                <Input type="textarea" placeholder="手机号" />
+                            )}
+                        </FormItem>
+                        <FormItem label="邮箱">
+                            {getFieldDecorator('email',{
+                                rules:[{ required:true, message:'请输入邮箱'}]
+                            })(
+                                <Input type="textarea" placeholder="邮箱"/>
+                            )}
+                        </FormItem>
+                    </Form>
+                </Modal>
+            );
+        }
+    }
+);
+
 class UserManage extends React.Component {
     constructor(props) {
         super(props);
-        this.state = { data, editingKey: '' };
+        this.state = {
+            data,
+            editingKey: '' ,
+            visible:false,
+            key:data.length,
+        };
         this.columns = [{
             title:'头像',
             dataIndex:'avatar',
@@ -146,6 +201,48 @@ class UserManage extends React.Component {
         }];
     }
 
+    showModal = () => {
+        this.setState({ visible: true });
+    };
+
+    handleCancel = () => {
+        this.setState({ visible: false });
+    };
+
+    handleCreate = () => {
+        const form = this.formRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            form.resetFields();
+
+            let newUser = {
+                avatar:<Avatar icon="user" />,
+                username:values.username,
+                password:values.password,
+                phone:values.phone,
+                email:values.email,
+                key:(this.state.key + 1).toString()
+            };
+
+            let newData = this.state.data;
+            newData.unshift(newUser);
+
+            this.setState({
+                visible:false,
+                data:newData,
+                key:this.state.key + 1
+            })
+        });
+    };
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    };
+
     isEditing = (record) => {
         return record.key === this.state.editingKey;
     };
@@ -215,13 +312,19 @@ class UserManage extends React.Component {
 
         return (
             <div>
-                <Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增票品</Button>
+                <Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增用户</Button>
                 <Table
                     components={components}
                     dataSource={this.state.data}
                     columns={columns}
                     rowClassName="editable-row"
                     style={{marginTop:16}}
+                />
+                <UserForm
+                    wrappedComponentRef={this.saveFormRef}
+                    visible={this.state.visible}
+                    onCancel={this.handleCancel}
+                    onCreate={this.handleCreate}
                 />
             </div>
         );

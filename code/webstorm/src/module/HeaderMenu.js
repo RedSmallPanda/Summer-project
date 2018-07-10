@@ -29,19 +29,34 @@ class HeaderMenu extends Component {
     };
 
     handleInfoSpace = (e) =>{
+        localStorage.setItem('key',e.key);
         hashHistory.push({
-            pathname:'/info/'+e.key
+            pathname:'/info'
         });
     };
 
     handleAdminSpace = (e) =>{
+        localStorage.setItem('key',e.key);
         hashHistory.push({
-            pathname:'/admin/'+e.key
+            pathname:'/admin'
         });
     };
 
     handleDirectory = () =>{
         hashHistory.push('/dir/all')
+    };
+
+    handleAvatar = () =>{
+        if(this.state.isLogin){
+            localStorage.setItem('key',9);
+            hashHistory.push({
+                pathname:'/info'
+            })
+        }
+        else{
+            this.showModal()
+        }
+
     };
 
     showModal = () => {
@@ -148,7 +163,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={3}/>
                         <Col span={1}>
-                            <Avatar icon="user" />
+                            <Avatar icon="user" onClick={this.handleAvatar}/>
                         </Col>
                         <Col span={3}>
                             {loginOrInfo}

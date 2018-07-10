@@ -14,16 +14,16 @@ const MenuItemGroup = Menu.ItemGroup;
 class InfoSpace extends Component{
 
     state = {
-        SelectedKeys:'9',
+        SelectedKeys:localStorage.getItem('key'),
         OpenKeys:['sub1','sub2','sub3']
 
     };
 
-    componentWillMount() {
+    /*componentWillReceiveProps(nextProps) {
         this.setState({
-            SelectedKeys: this.props.params.keyId
+            SelectedKeys:localStorage.getItem('key')
         })
-    };
+    }*/
 
     handleClick = (e) =>{
         this.setState({
