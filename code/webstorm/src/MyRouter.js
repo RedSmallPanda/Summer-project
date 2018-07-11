@@ -11,6 +11,7 @@ import Us from "./module/Us";
 import Help from "./module/Help";
 import RefundPage from "./module/RefundPage";
 import Coupon from "./module/InfoItem/Coupon";
+import Register from "./module/Register";
 
 class MyRouter extends Component{
     render(){
@@ -29,6 +30,7 @@ class MyRouter extends Component{
                 <Route path="/help" component={Help}/>
                 <Route path="/refundPage" component={RefundPage}/>
                 <Route path="/coupon" component={Coupon}/>
+                <Route path="/register" component={Register}/>
             </Router>
         )
     }
