@@ -57,7 +57,6 @@ class AdminSpace extends Component{
                 adminContent = userManage;
         }
 
-        alert(key);
         let menu = <Menu
             onClick={this.handleClick}
             defaultSelectedKeys={[key]}

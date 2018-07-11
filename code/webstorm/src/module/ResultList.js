@@ -32,7 +32,7 @@ for (let i = 0; i < 10; i++) {
         address: "SE 3-101",
         grade: 4.5,
         description: 'description',
-        stock: i,
+        stock: 0,
         heart: true,
         comments: i,
         price: 99.99,

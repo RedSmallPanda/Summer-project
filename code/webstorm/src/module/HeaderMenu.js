@@ -158,7 +158,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={7}>
                             <Search
-                                placeholder="搜索"
+                                placeholder="搜索   TODO: 分享  购物车  销量  回复  退款申请  找回密码"
                                 enterButton
                             />
                         </Col>
