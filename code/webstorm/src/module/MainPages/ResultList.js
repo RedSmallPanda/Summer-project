@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { hashHistory } from "react-router";
-
+import axios from 'axios';
 const menu = (
     <Menu>
         <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+            <a target="_blank" rel="noopener noreferrer" href="http://wiki.open.qq.com/wiki/website/API列表">
                 <Icon type="qq" /> QQ
             </a>
         </Menu.Item>
@@ -50,8 +50,27 @@ let IconText = ({ type, text, onClick}) => (
 class ResultList extends Component {
     constructor(props){
         super(props);
-        //POST to get data and filter
         this.state = {
+            loading: true,
+            data: []
+        };
+        // POST to get data and filter
+        axios.get("http://localhost:8080/shows",{
+            params: {
+                type: "default",
+                search: "",
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                alert(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        this.state={
+            loading: false,
             data: listData,
         };
         this.cancelHeart = this.cancelHeart.bind(this);
@@ -97,7 +116,7 @@ class ResultList extends Component {
                     itemLayout='horizontal'
                     dataSource={this.state.data}
                     footer={<a href="/"><b>find</b> more</a>}
-                    loading={false}
+                    loading={this.state.loading}
                     pagination={{
                         onChange: (page) => {
                             console.log(page);
