@@ -3,22 +3,23 @@ package com.sjtu.jpw.Domain;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import java.util.Objects;
 
 @Entity
 public class Admin {
-    private Integer adminId;
+    private int adminId;
     private String username;
     private String password;
     private Integer level;
 
-    @Basic
-    @Column(name = "admin_id", nullable = true)
-    public Integer getAdminId() {
+    @Id
+    @Column(name = "admin_id", nullable = false)
+    public int getAdminId() {
         return adminId;
     }
 
-    public void setAdminId(Integer adminId) {
+    public void setAdminId(int adminId) {
         this.adminId = adminId;
     }
 
@@ -57,7 +58,7 @@ public class Admin {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Admin admin = (Admin) o;
-        return Objects.equals(adminId, admin.adminId) &&
+        return adminId == admin.adminId &&
                 Objects.equals(username, admin.username) &&
                 Objects.equals(password, admin.password) &&
                 Objects.equals(level, admin.level);

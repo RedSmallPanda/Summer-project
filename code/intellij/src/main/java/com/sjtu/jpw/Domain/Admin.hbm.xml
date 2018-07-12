@@ -5,9 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.sjtu.jpw.Domain.Admin" table="Admin" schema="jpw">
-        <property name="adminId">
-            <column name="admin_id" sql-type="int(11)" not-null="true"/>
-        </property>
+        <id name="adminId">
+            <column name="admin_id" sql-type="int(11)"/>
+        </id>
         <property name="username">
             <column name="username" sql-type="text" not-null="true"/>
         </property>

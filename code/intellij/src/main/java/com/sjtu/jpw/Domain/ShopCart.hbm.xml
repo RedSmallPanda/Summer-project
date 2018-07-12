@@ -5,6 +5,14 @@
 <hibernate-mapping>
 
     <class name="com.sjtu.jpw.Domain.ShopCart" table="ShopCart" schema="jpw">
+        <composite-id mapped="true" class="com.sjtu.jpw.Domain.ShopCartPK">
+            <key-property name="ticketId">
+                <column name="ticket_id" sql-type="int(11)"/>
+            </key-property>
+            <key-property name="userId">
+                <column name="user_id" sql-type="int(11)"/>
+            </key-property>
+        </composite-id>
         <property name="number">
             <column name="number" sql-type="int(11)" not-null="true"/>
         </property>
