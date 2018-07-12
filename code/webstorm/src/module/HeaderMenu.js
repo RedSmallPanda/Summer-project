@@ -3,6 +3,7 @@ import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
 import { hashHistory} from 'react-router'
 import Login from './Login'
 import "../css/App.css"
+import axios from 'axios';
 
 const SubMenu = Menu.SubMenu;
 const Search = Input.Search;
@@ -16,6 +17,16 @@ class HeaderMenu extends Component {
         type:''
     };
 
+    testAxios = () => {
+        axios.get("http://localhost:8080/hi")
+            .then(function (response) {
+                console.log(response);
+                alert(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
     handleLogout = () =>{
         this.setState({
             isLogin:false,
@@ -159,6 +170,7 @@ class HeaderMenu extends Component {
                         <Col span={7}>
                             <Search
                                 placeholder="搜索   TODO: 分享  购物车  销量  回复  退款申请  找回密码"
+                                onSearch={this.testAxios}
                                 enterButton
                             />
                         </Col>

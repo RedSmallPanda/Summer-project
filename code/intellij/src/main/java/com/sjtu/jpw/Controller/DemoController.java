@@ -6,11 +6,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class DemoController {
-    @Autowired
-    @RequestMapping("/#/a/hello")
-    public String Hello() {
+
+    @RequestMapping("/hi")
+    public String Hello(HttpServletRequest request, HttpServletResponse response) {
         return "Hello";
     }
 }
