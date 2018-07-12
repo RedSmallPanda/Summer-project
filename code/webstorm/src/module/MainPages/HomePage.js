@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
-import { Menu, Row, Col, Carousel,Card, Icon,Avatar,Layout } from 'antd'
-import '../css/App.css'
-import { hashHistory} from 'react-router'
+import { Menu, Row, Col, Carousel,Card} from 'antd'
+import '../../css/App.css'
+import { browserHistory} from 'react-router'
 
 
 const { Meta } = Card;
-const Sider = Layout.Sider;
 class HomePage extends Component{
 
     handleDirectory = (e) =>{
-        hashHistory.push({
+        browserHistory.push({
             pathname:'/dir/'+e.key
         });
     };

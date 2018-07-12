@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
-import { hashHistory} from 'react-router'
+import { browserHistory} from 'react-router'
 import Login from './Login'
-import "../css/App.css"
 import axios from 'axios';
+import "../../css/App.css"
+
 
 const SubMenu = Menu.SubMenu;
 const Search = Input.Search;
@@ -36,31 +37,31 @@ class HeaderMenu extends Component {
     };
 
     handleHomePage = () =>{
-        hashHistory.push('/home');
+        browserHistory.push('/home');
     };
 
     handleInfoSpace = (e) =>{
         localStorage.setItem('key',e.key);
-        hashHistory.push({
+        browserHistory.push({
             pathname:'/info'
         });
     };
 
     handleAdminSpace = (e) =>{
         localStorage.setItem('key',e.key);
-        hashHistory.push({
+        browserHistory.push({
             pathname:'/admin'
         });
     };
 
     handleDirectory = () =>{
-        hashHistory.push('/dir/all')
+        browserHistory.push('/dir/all')
     };
 
     handleAvatar = () =>{
         if(this.state.isLogin){
             localStorage.setItem('key',9);
-            hashHistory.push({
+            browserHistory.push({
                 pathname:'/info'
             })
         }

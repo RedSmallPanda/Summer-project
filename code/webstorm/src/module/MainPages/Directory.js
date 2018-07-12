@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Row, Col, Radio, Menu } from 'antd'
-import '../css/App.css'
+import { Row, Col, Radio } from 'antd'
+import '../../css/App.css'
 import ResultList from "./ResultList";
 
 const RadioButton = Radio.Button;

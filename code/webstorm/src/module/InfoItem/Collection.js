@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ResultList from "../ResultList";
+import ResultList from "../MainPages/ResultList";
 import { Tabs, Modal, Button } from 'antd';
 
 const TabPane = Tabs.TabPane;

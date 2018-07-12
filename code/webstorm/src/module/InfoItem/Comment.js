@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { List, Button, Icon, BackTop, Rate, Avatar, Spin } from 'antd';
-import TicketComment from "../TicketComment";
+import { List,  Icon,  Rate, } from 'antd';
 import {hashHistory} from "react-router";
 
 const comments = [];

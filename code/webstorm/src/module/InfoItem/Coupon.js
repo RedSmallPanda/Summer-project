@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Row, Col, Divider} from 'antd';
+import {Row, Col} from 'antd';
 import '../../css/Coupon.css';
 
 
@@ -57,9 +57,7 @@ const discountData=[
 
 
 class CouponItem extends Component{
-    constructor(props){
-        super(props);
-    }
+
     render(){
         return(
 

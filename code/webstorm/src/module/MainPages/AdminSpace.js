@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon} from 'antd'
-import TicketManage from './AdminItem/TicketManage'
-import SalesData from './AdminItem/SalesData'
-import UserManage from './AdminItem/UserManage'
-import RefundAudit from './AdminItem/RefundAudit'
+import { Row, Col, Menu } from 'antd'
+import TicketManage from '../AdminItem/TicketManage'
+import SalesData from '../AdminItem/SalesData'
+import UserManage from '../AdminItem/UserManage'
+import RefundAudit from '../AdminItem/RefundAudit'
 
 class AdminSpace extends Component{
 
