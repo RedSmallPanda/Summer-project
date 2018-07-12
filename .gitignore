@@ -10,6 +10,8 @@
 
 # production
 /build
+/code/intellij/out/
+/code/webstorm/build/
 
 # misc
 .DS_Store
