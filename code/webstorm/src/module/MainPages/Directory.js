@@ -12,8 +12,15 @@ class Directory extends Component {
         city:"all",
         type:"all",
         time:"all",
+        search: localStorage.getItem('search'),
     };
 
+    componentWillReceiveProps(nextProps) {
+        this.setState({
+            search:localStorage.getItem('search')
+        });
+        localStorage.setItem('search','')
+    }
     componentWillMount() {
         this.setState({
             type: this.props.params.type

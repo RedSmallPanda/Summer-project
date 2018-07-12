@@ -55,10 +55,11 @@ class ResultList extends Component {
             data: []
         };
         // POST to get data and filter
+
         axios.get("http://localhost:8080/shows",{
             params: {
                 type: "default",
-                search: "",
+                search: this.props.filter.search,
             }
         })
             .then(function (response) {
@@ -77,6 +78,7 @@ class ResultList extends Component {
         this.judgeDate = this.judgeDate.bind(this);
         this.detail = this.detail.bind(this);
     }
+
     //todo: do cancel in database
     cancelHeart(e) {
         e.preventDefault();
@@ -109,6 +111,7 @@ class ResultList extends Component {
     }
 
     render(){
+        alert("ResultList: "+this.props.filter.search);
         return (
             <div>
                 <List
@@ -173,8 +176,8 @@ ResultList.defaultProps = {
         city: "all",
         type: "all",
         time: "all",
+        search: "",
     },
     type: "default",
-    search: "",
 };
 export default ResultList;

@@ -15,18 +15,23 @@ class HeaderMenu extends Component {
         isLogin:false,
         isAdmin:false,
         visible:false,
-        type:''
+        type:'',
+        search:localStorage.getItem('search'),
     };
 
-    testAxios = () => {
+    handleSearch = (value) => {
         axios.get("http://localhost:8080/hi")
             .then(function (response) {
                 console.log(response);
-                alert(response.data);
+                alert(response.data+" (this ajax should be deleted.)");
             })
             .catch(function (error) {
                 console.log(error);
             });
+        localStorage.setItem('search',value);
+        browserHistory.push({
+            pathname:'/dir/all'
+        });
     };
     handleLogout = () =>{
         this.setState({
@@ -171,7 +176,8 @@ class HeaderMenu extends Component {
                         <Col span={7}>
                             <Search
                                 placeholder="搜索   TODO: 分享  购物车  销量  回复  退款申请  找回密码"
-                                onSearch={this.testAxios}
+                                onSearch={value=>this.handleSearch(value)}
+                                defaultValue={this.state.search}
                                 enterButton
                             />
                         </Col>
