@@ -1,16 +1,15 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon} from 'antd'
-import BasicInfo from './InfoItem/BasicInfo'
-import Password from './InfoItem/Password'
-import Address from "./InfoItem/Address";
-import Collection from "./InfoItem/Collection";
-import Comment from "./InfoItem/Comment";
-import Order from './InfoItem/Order'
-import HistoryOrder from './InfoItem/HistoryOrder'
-import Coupon from './InfoItem/Coupon'
+import { Row, Col, Menu} from 'antd'
+import BasicInfo from '../InfoItem/BasicInfo'
+import Password from '../InfoItem/Password'
+import Address from "../InfoItem/Address";
+import Collection from "../InfoItem/Collection";
+import Comment from "../InfoItem/Comment";
+import Order from '../InfoItem/Order'
+import HistoryOrder from '../InfoItem/HistoryOrder'
+import Coupon from '../InfoItem/Coupon'
 
 const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
 
 class InfoSpace extends Component{
 

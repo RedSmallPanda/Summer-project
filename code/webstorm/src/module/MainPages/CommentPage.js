@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Form, Rate, Button, Input, Card, Icon} from 'antd';
+import {Row, Col, Form, Rate, Button, Card, Icon} from 'antd';
 
 const FormItem = Form.Item;
 

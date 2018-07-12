@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon, Input, Avatar,Affix,Radio,DatePicker} from 'antd';
+import { Row, Col, Affix,Radio} from 'antd';
 import moment from 'moment'
-import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'moment/locale/zh-cn';
 import Ticknumpick from "./TickNumpick";
 import DatePick from './DatePick'
 import CommentEditor from "./CommentEditor";
-import TicketComment from "../TicketComment";
+import TicketComment from "../MainPages/TicketComment";
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
@@ -95,7 +94,7 @@ class GoodDetailPage extends Component{
                         <Row>
                             <Col span={8} >
                                 <div className="postblock">
-                                    <img className="post" src="http://pimg.dmcdn.cn/perform/project/1497/149703_n.jpg"/>
+                                    <img className="post" src="http://pimg.dmcdn.cn/perform/project/1497/149703_n.jpg" alt="default"/>
                                 </div>
                             </Col>
                             <Col span={16}>
@@ -176,7 +175,7 @@ class GoodDetailPage extends Component{
                                             <Col span={1}></Col>
                                             <Col>
                                                 <div>
-                                                    <p className="price">{'￥'+parseInt(this.state.pickprice)*this.state.pickticknum}</p>
+                                                    <p className="price">{'￥'+parseInt(this.state.pickprice,10)*this.state.pickticknum}</p>
                                                 </div>
                                             </Col>
                                         </Row>

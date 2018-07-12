@@ -1,13 +1,13 @@
-import { Row, Col, Menu, Icon, Input, Avatar,Affix,Radio,DatePicker} from 'antd';
+import {DatePicker} from 'antd';
 import React, { Component } from 'react';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 class DatePick extends Component {
-    //props: func:  setdate(),   date : enableddate
-  //  componentWillMount(){
+   //  props: func:  setdate(),   date : enableddate
+   // componentWillMount(){
    //     this.setState({enableddate:this.props.Dates})
-  //  }
+   // }
     state = {
         enableddate:this.props.Dates,
         pickeddate:this.props.Dates[0],

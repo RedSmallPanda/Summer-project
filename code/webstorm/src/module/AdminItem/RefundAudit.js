@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Avatar, Divider } from 'antd';
+import { Table, Divider } from 'antd';
 
 const columns = [{
     title:'订单编号',
@@ -26,9 +26,9 @@ const columns = [{
     key:'action',
     render: (text) => (
         <span>
-      <a href="javascript:;">批准</a>
+      <a>批准</a>
       <Divider type="vertical" />
-      <a href="javascript:;">拒绝</a>
+      <a>拒绝</a>
     </span>
     ),
 }];
@@ -48,6 +48,7 @@ for(let i = 1; i < 20; i++){
 }
 
 class RefundAudit extends Component{
+
     render(){
         return(
             <div>

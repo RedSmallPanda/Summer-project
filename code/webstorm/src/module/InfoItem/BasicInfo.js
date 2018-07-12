@@ -1,39 +1,12 @@
 import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
-    Form, Select, InputNumber, Switch, Radio,
-    Slider, Button, Upload, Icon, Rate, Input, Avatar, DatePicker,
+    Form, Radio, Button, Input, DatePicker,
 } from 'antd';
 import moment from 'moment';
 
 const FormItem = Form.Item;
-const Option = Select.Option;
-const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
-
-const residences = [{
-    value: 'zhejiang',
-    label: 'Zhejiang',
-    children: [{
-        value: 'hangzhou',
-        label: 'Hangzhou',
-        children: [{
-            value: 'xihu',
-            label: 'West Lake',
-        }],
-    }],
-}, {
-    value: 'jiangsu',
-    label: 'Jiangsu',
-    children: [{
-        value: 'nanjing',
-        label: 'Nanjing',
-        children: [{
-            value: 'zhonghuamen',
-            label: 'Zhong Hua Men',
-        }],
-    }],
-}];
 
 class Demo extends React.Component {
     state={
@@ -59,7 +32,7 @@ class Demo extends React.Component {
         this.setState({
             formData:newForm,
         });
-    }
+    };
 
     emailOnChange = () => {
         let newForm=this.state.formData;
@@ -67,7 +40,7 @@ class Demo extends React.Component {
         this.setState({
             formData:newForm,
         });
-    }
+    };
 
     phoneOnChange = () => {
         let newForm=this.state.formData;
@@ -75,12 +48,12 @@ class Demo extends React.Component {
         this.setState({
             formData:newForm,
         });
-    }
+    };
 
     dateOnChange = (date,dateString) => {
         let newForm=this.state.formData;
         newForm.birthday=String(dateString);
-        if(String(date)==null){
+        if(String(date)===null){
             date=this.state.formData.birthday;
         }
         console.log("date:"+String(date));
@@ -88,7 +61,7 @@ class Demo extends React.Component {
         this.setState({
             formData:newForm,
         });
-    }
+    };
 
     sexOnChange = (e) => {
         console.log('radio checked', e.target.value);
@@ -97,7 +70,7 @@ class Demo extends React.Component {
         this.setState({
             formData:newForm,
         });
-    }
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -106,7 +79,7 @@ class Demo extends React.Component {
                 console.log('Received values of form: ', this.state.formData);    //Silly method
             }
         });
-    }
+    };
 
 
     render() {
@@ -125,7 +98,7 @@ class Demo extends React.Component {
                         {...formItemLayout}
                         label="头像"
                     >
-                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img} /></div>
+                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img} alt="default"/></div>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
@@ -222,7 +195,7 @@ class Demo extends React.Component {
                                         if(value==null){
                                             value=this.state.formData.phone;
                                         }
-                                        {console.log(String(value));}
+                                        console.log(String(value));
                                         if(String(value).length!==11){callback("手机号格式错误");}
                                         //else if(String(value).length<11){callback("手机号格式错误");}
                                         else {callback()}

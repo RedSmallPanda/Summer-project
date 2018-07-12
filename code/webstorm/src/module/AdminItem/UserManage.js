@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { Table, Input, InputNumber, Modal, Form, Avatar, Divider, Button, Icon } from 'antd';
 
 const data = [];
@@ -14,6 +14,7 @@ for(let i = 0; i < 20; i++){
 }
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
+
 
 const EditableRow = ({ form, index, ...props }) => (
     <EditableContext.Provider value={form}>
@@ -36,9 +37,7 @@ class EditableCell extends React.Component {
             editing,
             dataIndex,
             title,
-            inputType,
             record,
-            index,
             ...restProps
         } = this.props;
         return (
@@ -173,13 +172,11 @@ class UserManage extends React.Component {
                                     {
                                         form =>(
                                             <span>
-                                            <a href="javascript:;"
-                                               onClick={()=>this.save(form,record.key)}>
+                                            <a onClick={()=>this.save(form,record.key)}>
                                                 保存
                                             </a>
                                             <Divider type="vertical" />
-                                            <a href="javascript:;"
-                                                onClick={this.cancel}>取消</a>
+                                            <a onClick={this.cancel}>取消</a>
                                             </span>
                                         )
                                     }
@@ -191,7 +188,7 @@ class UserManage extends React.Component {
                                 <Divider type="vertical" />
                                 <a onClick={()=>this.handleDelete(record.key)}>删除</a>
                                 <Divider type="vertical" />
-                                <a href="javascript:;" onClick={this.cancel}>禁用</a>
+                                <a onClick={this.cancel}>禁用</a>
                             </span>
                         )}
                     </div>

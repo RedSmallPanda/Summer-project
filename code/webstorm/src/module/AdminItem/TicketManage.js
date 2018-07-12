@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Radio, Icon, Table, Divider } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table, Divider } from 'antd';
 import Avatar from "./Avatar";
 
 const FormItem = Form.Item;
@@ -7,7 +7,7 @@ const FormItem = Form.Item;
 const columns = [{
     title: '缩略图',
     key: 'image',
-    render: (text, record) => (<img style={{width:'60px'}} src={record.image}/>)
+    render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
 },{
     title: '票品名称',
     dataIndex: 'ticketName',
@@ -33,9 +33,9 @@ const columns = [{
     key:'action',
     render: (text) => (
         <span>
-      <a href="javascript:;">编辑</a>
+      <a>编辑</a>
       <Divider type="vertical" />
-      <a href="javascript:;">下架</a>
+      <a>下架</a>
     </span>
     ),
 }];

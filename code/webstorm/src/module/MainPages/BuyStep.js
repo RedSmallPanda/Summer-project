@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Steps, Row, Col, Icon, Table, Button, Radio, Divider} from 'antd';
-import '../css/BuyStep.css';
+import '../../css/BuyStep.css';
 
 const Step=Steps.Step;
 
@@ -31,7 +31,7 @@ const ticketInfo = [{
 const dataColumns = [{
     title: '缩略图',
     key: 'img',
-    render: (text, record) => (<img style={{width:'60px'}} src={record.img}/>)
+    render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
 },/*{
     title: '票品信息',
     dataIndex: 'name',
@@ -40,7 +40,7 @@ const dataColumns = [{
     title: '票品信息',
     dataIndex: 'detailInfo',
     render: (text, record) => (<div>
-        <p><a href="javascript:;">{record.detailInfo.name}</a></p>
+        <p><a>{record.detailInfo.name}</a></p>
         <p>{record.detailInfo.date}</p>
     </div>)
 }, {

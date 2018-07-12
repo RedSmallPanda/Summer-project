@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { hashHistory } from "react-router";
+
 const menu = (
     <Menu>
         <Menu.Item>

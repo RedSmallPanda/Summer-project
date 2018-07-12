@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import '../css/App.css'
+import '../../css/App.css'
 import { Divider } from 'antd';
 
 class Footer extends Component{

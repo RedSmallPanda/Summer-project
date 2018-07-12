@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Radio,Icon,Cascader, Table, Divider, InputNumber } from 'antd';
+import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber } from 'antd';
 
 const data = [{
     key:'1',
@@ -198,13 +198,11 @@ class Address extends Component {
                                     {
                                         form =>(
                                             <span>
-                                            <a href="javascript:;"
-                                               onClick={()=>this.save(form,record.key)}>
+                                            <a onClick={()=>this.save(form,record.key)}>
                                                 保存
                                             </a>
                                             <Divider type="vertical" />
-                                            <a href="javascript:;"
-                                               onClick={this.cancel}>取消</a>
+                                            <a onClick={this.cancel}>取消</a>
                                             </span>
                                         )
                                     }
