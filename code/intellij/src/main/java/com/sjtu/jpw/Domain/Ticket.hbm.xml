@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.sjtu.jpw.Domain.Ticket" table="Ticket" schema="jpw">
+        <id name="ticketId">
+            <column name="ticket_id" sql-type="int(11)"/>
+        </id>
+        <property name="time">
+            <column name="time" sql-type="datetime" not-null="true"/>
+        </property>
+        <property name="price">
+            <column name="price" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="seat">
+            <column name="seat" sql-type="text" not-null="true"/>
+        </property>
+        <property name="amount">
+            <column name="amount" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="stock">
+            <column name="stock" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

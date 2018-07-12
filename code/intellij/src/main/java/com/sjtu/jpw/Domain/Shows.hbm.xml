@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.sjtu.jpw.Domain.Shows" table="Shows" schema="jpw">
+        <id name="showId">
+            <column name="show_id" sql-type="int(11)"/>
+        </id>
+        <property name="title">
+            <column name="title" sql-type="text" not-null="true"/>
+        </property>
+        <property name="info">
+            <column name="info" sql-type="text" not-null="true"/>
+        </property>
+        <property name="city">
+            <column name="city" sql-type="text" not-null="true"/>
+        </property>
+        <property name="type">
+            <column name="type" sql-type="text" not-null="true"/>
+        </property>
+        <property name="address">
+            <column name="address" sql-type="text" not-null="true"/>
+        </property>
+        <property name="rate">
+            <column name="rate" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

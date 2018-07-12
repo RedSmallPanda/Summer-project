@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.sjtu.jpw.Domain.ShopCart" table="ShopCart" schema="jpw">
+        <property name="number">
+            <column name="number" sql-type="int(11)" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>

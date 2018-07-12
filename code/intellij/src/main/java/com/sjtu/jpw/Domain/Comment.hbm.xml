@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.sjtu.jpw.Domain.Comment" table="Comment" schema="jpw">
+        <id name="commentId">
+            <column name="comment_id" sql-type="int(11)"/>
+        </id>
+        <property name="parentId">
+            <column name="parent_id" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="content">
+            <column name="content" sql-type="text" not-null="true"/>
+        </property>
+        <property name="rate">
+            <column name="rate" sql-type="int(11)" not-null="true"/>
+        </property>
+        <property name="thread">
+            <column name="thread" sql-type="text" not-null="true"/>
+        </property>
+    </class>
+</hibernate-mapping>
