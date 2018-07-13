@@ -31,4 +31,26 @@ public class UserRepositoryController {
         u.setPhone("18817716520");
         userRepository.save(u);
     }
+
+    /**
+     * @param userId
+     * @return
+     */
+    @RequestMapping("findUser")
+    @ResponseBody
+    public void findUserbyId(String userId) {
+       User user= userRepository.findByUserId(Integer.parseInt(userId,10));
+        System.out.println(user.getNickname());
+    }
+
+    /**
+     * @param name
+     * @return
+     */
+    @RequestMapping("findUserbyNickname")
+    @ResponseBody
+    public void findUserbyNickname(String name) {
+        User user= userRepository.findAllByNickname(name);
+        System.out.println(user.getNickname());
+    }
 }
