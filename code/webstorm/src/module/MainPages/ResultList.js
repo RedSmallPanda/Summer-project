@@ -107,13 +107,19 @@ class ResultList extends Component {
 
     detail(e){
         e.preventDefault();
+        alert(e.target.parentNode.parentNode.parentNode.parentNode
+            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
         browserHistory.push({
             pathname:"/detail",
         });
     }
     comment(e){
         e.preventDefault();
-
+        alert(e.target.parentNode.parentNode.parentNode.parentNode
+            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+        browserHistory.push({
+            pathname:"/detail",
+        });
     }
 
     render(){
