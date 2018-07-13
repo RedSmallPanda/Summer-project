@@ -60,7 +60,7 @@ class AdminSpace extends Component{
         let menu = <Menu
             onClick={this.handleClick}
             defaultSelectedKeys={[key]}
-            //SelectedKeys={[this.state.SelectedKeys]}
+            selectedKeys={[this.state.SelectedKeys]}
             mode="inline"
         >
             <Menu.Item key="1">用户管理</Menu.Item>

@@ -25,6 +25,10 @@ class Directory extends Component {
         this.setState(this.props.location.state);
     };
 
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps.location.state);
+    }
+
     handleCity = (e) =>{
         this.setState({
             city:e.target.value
