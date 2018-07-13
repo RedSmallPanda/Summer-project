@@ -18,11 +18,11 @@ class InfoSpace extends Component{
         OpenKeys:['sub1','sub2','sub3','sub4']
     };
 
-    /*componentWillReceiveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         this.setState({
             SelectedKeys:localStorage.getItem('key')
         })
-    }*/
+    }
 
     handleClick = (e) =>{
         this.setState({

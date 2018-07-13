@@ -18,6 +18,16 @@ class HeaderMenu extends Component {
         type:''
     };
 
+    componentWillMount(){
+        let key = document.cookie.split(";")[0].split("=")[0];
+        let username = document.cookie.split(";")[0].split("=")[1];
+        if (username&&key==="username") {
+            this.setState({
+                isLogin:true
+            })
+        }
+    }
+
     testAxios = () => {
         axios.get("http://localhost:8080/hi")
             .then(function (response) {
@@ -33,6 +43,7 @@ class HeaderMenu extends Component {
             isLogin:false,
             isAdmin:false,
         });
+        document.cookie="username=";
         this.handleHomePage()
     };
 
@@ -55,7 +66,7 @@ class HeaderMenu extends Component {
     };
 
     handleDirectory = () =>{
-        browserHistory.push('/dir/all')
+        browserHistory.push('/dir')
     };
 
     handleAvatar = () =>{
@@ -88,6 +99,7 @@ class HeaderMenu extends Component {
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
             form.resetFields();
+            document.cookie="username="+values.username;
             if(values.username === 'admin'){
                 this.setState({
                     visible: false,
