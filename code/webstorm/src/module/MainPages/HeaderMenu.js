@@ -16,7 +16,8 @@ class HeaderMenu extends Component {
         isAdmin:false,
         visible:false,
         type:'',
-        search:localStorage.getItem('search'),
+        search:'',
+        current: "home",
     };
 
     handleSearch = (value) => {
@@ -28,9 +29,13 @@ class HeaderMenu extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        localStorage.setItem('search',value);
+        // localStorage.setItem('search',value);
         browserHistory.push({
-            pathname:'/dir/all'
+            pathname:'/dir/all',
+            state: value,
+        });
+        this.setState({
+            current: "dir"
         });
     };
     handleLogout = () =>{
@@ -43,12 +48,18 @@ class HeaderMenu extends Component {
 
     handleHomePage = () =>{
         browserHistory.push('/home');
+        this.setState({
+            current: "home",
+        });
     };
 
     handleInfoSpace = (e) =>{
         localStorage.setItem('key',e.key);
         browserHistory.push({
             pathname:'/info'
+        });
+        this.setState({
+            current: ""
         });
     };
 
@@ -57,10 +68,16 @@ class HeaderMenu extends Component {
         browserHistory.push({
             pathname:'/admin'
         });
+        this.setState({
+            current: ""
+        });
     };
 
     handleDirectory = () =>{
-        browserHistory.push('/dir/all')
+        browserHistory.push('/dir/all');
+        this.setState({
+            current: "dir"
+        });
     };
 
     handleAvatar = () =>{
@@ -68,7 +85,10 @@ class HeaderMenu extends Component {
             localStorage.setItem('key',9);
             browserHistory.push({
                 pathname:'/info'
-            })
+            });
+            this.setState({
+                current: ""
+            });
         }
         else{
             this.showModal()
@@ -165,18 +185,23 @@ class HeaderMenu extends Component {
                 <Menu mode="horizontal">
                     <Row>
                         <Col span={3} onClick={this.handleHomePage}>
-                            <div align="center"><Icon type="global" />聚票网</div>
+                            <div align="center"><Icon type="global"/>聚票网</div>
                         </Col>
                         <Col span={7}>
-                            <Menu mode="horizontal" style={{border:0}}>
-                                <Menu.Item onClick={this.handleHomePage}>首页</Menu.Item>
-                                <Menu.Item onClick={this.handleDirectory}>全部分类</Menu.Item>
+                            <Menu
+                                mode="horizontal"
+                                style={{border: 0}}
+                                selectedKeys={[this.state.current]}
+                                defaultSelectedKeys="home"
+                            >
+                                <Menu.Item key="home" onClick={this.handleHomePage}>首页</Menu.Item>
+                                <Menu.Item key="dir" onClick={this.handleDirectory}>全部分类</Menu.Item>
                             </Menu>
                         </Col>
                         <Col span={7}>
                             <Search
                                 placeholder="搜索   TODO: 分享  购物车  销量  回复  退款申请  找回密码"
-                                onSearch={value=>this.handleSearch(value)}
+                                onSearch={value => this.handleSearch(value)}
                                 defaultValue={this.state.search}
                                 enterButton
                             />

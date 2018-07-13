@@ -12,18 +12,19 @@ class Directory extends Component {
         city:"all",
         type:"all",
         time:"all",
-        search: localStorage.getItem('search'),
+        search: '',// localStorage.getItem('search'),
     };
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            search:localStorage.getItem('search')
-        });
-        localStorage.setItem('search','')
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     this.setState({
+    //         search:localStorage.getItem('search')
+    //     });
+    //     localStorage.setItem('search','')
+    // }
     componentWillMount() {
         this.setState({
-            type: this.props.params.type
+            type: this.props.params.type,
+            search: this.props.location.state,
         })
     };
 
