@@ -1,6 +1,7 @@
 package com.sjtu.jpw.Controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,7 +18,11 @@ public class ShowsController {
 
         System.out.println("get ticket");
         Thread.currentThread().sleep(500);
-        return "Request sent by ResultList\ntype: " + request.getParameter("type") + "\nrespond after 0.5s\nHello";
+        return "Request sent by ResultList.  " +
+                "\ntype: " + request.getParameter("type") +
+                "\nsearch by: " + request.getParameter("search") +
+                "\nrespond after 0.5s" +
+                "\nHello";
     }
 
 }

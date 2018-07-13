@@ -33,14 +33,6 @@ class HeaderMenu extends Component {
     }
 
     handleSearch = (value) => {
-        axios.get("http://localhost:8080/hi")
-            .then(function (response) {
-                console.log(response);
-                alert(response.data+" (this ajax should be deleted.)");
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
         // localStorage.setItem('search',value);
         browserHistory.push({
             pathname:'/dir',
@@ -82,9 +74,11 @@ class HeaderMenu extends Component {
     };
 
     handleAdminSpace = (e) =>{
-        localStorage.setItem('key',e.key);
         browserHistory.push({
-            pathname:'/admin'
+            pathname:'/admin',
+            state:{
+                SelectedKeys: e.key
+            }
         });
         this.setState({
             current: ""

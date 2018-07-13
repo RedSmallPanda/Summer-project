@@ -54,12 +54,20 @@ class ResultList extends Component {
             loading: true,
             data: []
         };
-        // POST to get data and filter
+        this.getResult(this.props);
 
+        this.cancelHeart = this.cancelHeart.bind(this);
+        this.judgeDate = this.judgeDate.bind(this);
+        this.detail = this.detail.bind(this);
+        this.getResult = this.getResult.bind(this);
+    }
+
+    // POST to get data and filter
+    getResult(prop){
         axios.get("http://localhost:8080/shows",{
             params: {
                 type: "default",
-                search: this.props.filter.search,
+                search: prop.filter.search,
             }
         })
             .then(function (response) {
@@ -74,9 +82,9 @@ class ResultList extends Component {
             loading: false,
             data: listData,
         };
-        this.cancelHeart = this.cancelHeart.bind(this);
-        this.judgeDate = this.judgeDate.bind(this);
-        this.detail = this.detail.bind(this);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.getResult(nextProps);
     }
 
     //todo: do cancel in database
@@ -107,23 +115,23 @@ class ResultList extends Component {
 
     detail(e){
         e.preventDefault();
-        alert(e.target.parentNode.parentNode.parentNode.parentNode
-            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+        // alert(e.target.parentNode.parentNode.parentNode.parentNode
+        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
         browserHistory.push({
             pathname:"/detail",
         });
     }
     comment(e){
         e.preventDefault();
-        alert(e.target.parentNode.parentNode.parentNode.parentNode
-            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+        // alert(e.target.parentNode.parentNode.parentNode.parentNode
+        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
         browserHistory.push({
             pathname:"/detail",
         });
     }
 
     render(){
-        alert("ResultList: "+this.props.filter.search);
+        // alert("ResultList: "+this.props.filter.search);
         return (
             <div>
                 <List
