@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
-import { hashHistory } from "react-router";
+import { browserHistory } from 'react-router'
 import axios from 'axios';
 const menu = (
     <Menu>
@@ -107,7 +107,13 @@ class ResultList extends Component {
 
     detail(e){
         e.preventDefault();
-        hashHistory.push("/detail");
+        browserHistory.push({
+            pathname:"/detail",
+        });
+    }
+    comment(e){
+        e.preventDefault();
+
     }
 
     render(){
@@ -132,7 +138,7 @@ class ResultList extends Component {
                             key={item.title}
                             actions={[
                                 <IconText type={item.heart ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
-                                <IconText type="message" text={item.comments}/>,
+                                <IconText type="message" text={item.comments} onClick={this.comment}/>,
                                 <Dropdown overlay={menu} placement="bottomRight">
                                     <Icon type="share-alt" />
                                 </Dropdown>,

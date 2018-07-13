@@ -22,10 +22,7 @@ class Directory extends Component {
     //     localStorage.setItem('search','')
     // }
     componentWillMount() {
-        this.setState({
-            type: this.props.params.type,
-            search: this.props.location.state,
-        })
+        this.setState(this.props.location.state);
     };
 
     handleCity = (e) =>{

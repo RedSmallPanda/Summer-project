@@ -16,8 +16,8 @@ class HeaderMenu extends Component {
         isAdmin:false,
         visible:false,
         type:'',
-        search:'',
         current: "home",
+        search: '',
     };
 
     componentWillMount(){
@@ -41,8 +41,10 @@ class HeaderMenu extends Component {
             });
         // localStorage.setItem('search',value);
         browserHistory.push({
-            pathname:'/dir/all',
-            state: value,
+            pathname:'/dir',
+            state: {
+                search: value,
+            },
         });
         this.setState({
             current: "dir"
@@ -131,12 +133,14 @@ class HeaderMenu extends Component {
                     isLogin: true,
                     isAdmin:true,
                 });
+                window.location.reload(true);
                 return;
             }
             this.setState({
                 visible: false,
                 isLogin: true,
             });
+            window.location.reload(true);
         });
     };
 

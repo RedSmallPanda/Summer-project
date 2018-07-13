@@ -70,7 +70,6 @@ class InfoSpace extends Component{
                 infoContent = order;
         }
 
-
         const infoBar =
             <div style={{marginTop:20}}>
                 <Row>
@@ -80,6 +79,7 @@ class InfoSpace extends Component{
                         <Menu
                             onClick={this.handleClick}
                             defaultSelectedKeys={[this.state.SelectedKeys]}
+                            SelectedKeys={[this.state.SelectedKeys]}
                             defaultOpenKeys={this.state.OpenKeys}
                             mode="inline"
                         >
