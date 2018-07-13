@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {Button, Modal, Form, Input,Icon,} from 'antd'
 import "../../css/App.css"
 
 
 const FormItem = Form.Item;
-const CollectionCreateForm = Form.create()(
+const Register = Form.create()(
     class extends React.Component {
         username_validate=(rule,value,callback)=>{
             //   const form = this.formRef.props.form;
@@ -111,51 +111,5 @@ const CollectionCreateForm = Form.create()(
         }
     }
 );
-
-class Register extends Component {
-    state = {
-        visible: false,
-    };
-
-    showModal = () => {
-        this.setState({ visible: true });
-    }
-
-    handleCancel = () => {
-        this.setState({ visible: false });
-    }
-
-    handleCreate = () => {
-        const form = this.formRef.props.form;
-        form.validateFields((err, values) => {
-            if (err) {
-                return;
-            }
-
-            console.log('Received values of form username: '+form.getFieldValue("username") );
-            console.log('password: '+form.getFieldValue("password"))
-            form.resetFields();
-            this.setState({ visible: false });
-        });
-    }
-
-    saveFormRef = (formRef) => {
-        this.formRef = formRef;
-    }
-
-    render() {
-        return (
-            <div>
-                <Button type="primary" onClick={this.showModal}>登录</Button>
-                <CollectionCreateForm
-                    wrappedComponentRef={this.saveFormRef}
-                    visible={this.state.visible}
-                    onCancel={this.handleCancel}
-                    onLogin={this.handleCreate}
-                />
-            </div>
-        );
-    }
-}
 
 export default Register;

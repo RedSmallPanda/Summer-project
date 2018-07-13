@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
 import { browserHistory} from 'react-router'
 import Login from './Login'
+import Register from './Register'
 import axios from 'axios';
 import "../../css/App.css"
 
@@ -15,6 +16,7 @@ class HeaderMenu extends Component {
         isLogin:false,
         isAdmin:document.cookie.split(";")[0].split("=")[1]==='admin',
         visible:false,
+        regVisible:false,
         type:'',
         current: "home",
         search: '',
@@ -148,11 +150,37 @@ class HeaderMenu extends Component {
         this.formRef = formRef;
     };
 
+    showRegModal = () => {
+        this.setState({ regVisible: true });
+    };
+
+    handleRegCancel = () => {
+        this.setState({ regVisible: false });
+    };
+
+    handleRegCreate = () => {
+        const form = this.regFormRef.props.form;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form username: '+form.getFieldValue("username") );
+            console.log('password: '+form.getFieldValue("password"))
+            form.resetFields();
+            this.setState({ regVisible: false });
+        });
+    };
+
+    saveRegFormRef = (formRef) => {
+        this.regFormRef = formRef;
+    };
+
     render() {
         let loginButton =
             <Menu mode="horizontal" style={{border:0}}>
                 <Menu.Item onClick={this.showModal}>登录</Menu.Item>
-                <Menu.Item>注册</Menu.Item>
+                <Menu.Item onClick={this.showRegModal}>注册</Menu.Item>
             </Menu>;
 
         let infoButton =
@@ -195,6 +223,12 @@ class HeaderMenu extends Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onLogin={this.handleCreate}
+                />
+                <Register
+                    wrappedComponentRef={this.saveRegFormRef}
+                    visible={this.state.regVisible}
+                    onCancel={this.handleRegCancel}
+                    onLogin={this.handleRegCreate}
                 />
                 <Menu mode="horizontal">
                     <Row>
