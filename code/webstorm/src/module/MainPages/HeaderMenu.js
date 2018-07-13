@@ -67,9 +67,12 @@ class HeaderMenu extends Component {
     };
 
     handleInfoSpace = (e) =>{
-        localStorage.setItem('key',e.key);
+        // localStorage.setItem('key',e.key);
         browserHistory.push({
-            pathname:'/info'
+            pathname:'/info',
+            state:{
+                SelectedKeys: e.key
+            }
         });
         this.setState({
             current: ""

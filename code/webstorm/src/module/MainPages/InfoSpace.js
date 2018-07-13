@@ -14,14 +14,16 @@ const SubMenu = Menu.SubMenu;
 class InfoSpace extends Component{
 
     state = {
-        SelectedKeys:localStorage.getItem('key'),
-        OpenKeys:['sub1','sub2','sub3','sub4']
+        SelectedKeys: '1',//localStorage.getItem('key'),
+        OpenKeys: ['sub1', 'sub2', 'sub3', 'sub4']
+    };
+
+    componentWillMount() {
+        this.setState(this.props.location.state);
     };
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            SelectedKeys:localStorage.getItem('key')
-        })
+        this.setState(nextProps.location.state);
     }
 
     handleClick = (e) =>{
@@ -79,7 +81,7 @@ class InfoSpace extends Component{
                         <Menu
                             onClick={this.handleClick}
                             defaultSelectedKeys={[this.state.SelectedKeys]}
-                            SelectedKeys={[this.state.SelectedKeys]}
+                            selectedKeys={[this.state.SelectedKeys]}
                             defaultOpenKeys={this.state.OpenKeys}
                             mode="inline"
                         >
