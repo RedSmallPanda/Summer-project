@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu} from 'antd'
+import ShopCart from '../InfoItem/ShopCart'
 import BasicInfo from '../InfoItem/BasicInfo'
 import Password from '../InfoItem/Password'
 import Address from "../InfoItem/Address";
@@ -39,16 +40,20 @@ class InfoSpace extends Component{
         let password = <Password/>;
         let historyOrder=<HistoryOrder/>;
         let coupon=<Coupon/>;
+        let shopCart = <ShopCart/>;
 
         let infoContent = null;
         switch (this.state.SelectedKeys){
             case '1':
-                infoContent = order;
+                infoContent = shopCart;
                 break;
             case '2':
-                infoContent = historyOrder;
+                infoContent = order;
                 break;
             case '3':
+                infoContent = historyOrder;
+                break;
+            case '4':
                 infoContent = coupon;
                 break;
             case '5':
@@ -84,11 +89,10 @@ class InfoSpace extends Component{
                             mode="inline"
                         >
                             <SubMenu key="sub1" title={<span>订单管理</span>}>
-                                <Menu.Item key='1'>当前订单</Menu.Item>
-                                <Menu.Item key='2'>历史订单</Menu.Item>
-                            </SubMenu>
-                            <SubMenu key="sub4" title={<span>优惠券</span>}>
-                                <Menu.Item key='3'>我的优惠券</Menu.Item>
+                                <Menu.Item key='1'>购物车</Menu.Item>
+                                <Menu.Item key='2'>当前订单</Menu.Item>
+                                <Menu.Item key='3'>历史订单</Menu.Item>
+                                <Menu.Item key='4'>我的优惠券</Menu.Item>
                             </SubMenu>
                             <SubMenu key="sub2" title={<span>动态管理</span>}>
                                 <Menu.Item key="5">我的收藏</Menu.Item>

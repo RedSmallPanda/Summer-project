@@ -61,7 +61,7 @@ class Order extends Component {
             title: '票品信息',
             dataIndex: 'detailInfo',
             render: (text, record) => (<div>
-                <p><a>{record.detailInfo.name}</a></p>
+                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
                 <p>{record.detailInfo.date}</p>
             </div>)
         }, {
@@ -104,6 +104,11 @@ class Order extends Component {
     handleComment = () =>{
         browserHistory.push('/commentPage')
     };
+
+    handleDetail = () =>{
+        browserHistory.push('/detail')
+    };
+
 
     render(){
         // const { loading, selectedRowKeys } = this.state;
