@@ -5,11 +5,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Shows;
 import com.sjtu.jpw.Repository.ShowsRepository;
+import com.sjtu.jpw.Service.demoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -48,5 +50,25 @@ public class ShowsController {
         }
         Thread.currentThread().sleep(500);
     }
+/*
 
+    demo- how to use service
+
+    @Resource(name="demoService")
+    private demoService demoService;
+    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
+    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+       Integer demo=demoService.userValidation("asd","123");
+
+
+        System.out.println(demo);
+        out.print(demo);
+        if(out!=null) {
+            out.flush();
+        }
+    }
+    */
 }
