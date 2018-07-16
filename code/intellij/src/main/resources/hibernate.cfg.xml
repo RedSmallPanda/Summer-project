@@ -28,6 +28,7 @@
       <mapping class="com.sjtu.jpw.Domain.User"/>
       <mapping resource="com/sjtu/jpw/Domain/UserCoupon.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.UserCoupon"/>
+
       <!-- <property name="connection.username"/> -->
     <!-- <property name="connection.password"/> -->
 

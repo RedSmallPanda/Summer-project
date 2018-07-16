@@ -15,7 +15,9 @@ import java.util.List;
 @Qualifier("userRepository")
 public interface UserRepository extends CrudRepository<User,Integer> {
     public User save(User u);
+    public User findByUserId(int userid);
     public List<User> findAllByUsername(String username);
+
 
     @Modifying
     @Query("update User user set user.password=:password where user.userId=:userId")

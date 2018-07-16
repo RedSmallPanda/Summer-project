@@ -70,4 +70,28 @@ public class Orders {
 
         return Objects.hash(orderId, number, state, time);
     }
+
+    private Integer ticketId;
+
+    @Basic
+    @Column(name = "ticket_id", nullable = true)
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    private Integer userId;
+
+    @Basic
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
 }

@@ -50,7 +50,7 @@ public class UserRepositoryController {
     @RequestMapping("findUserbyNickname")
     @ResponseBody
     public void findUserbyNickname(String name) {
-        User user= userRepository.findAllByNickname(name);
-        System.out.println(user.getNickname());
+       // User user= userRepository.findAllByNickname(name);
+   //     System.out.println(user.getNickname());
     }
 }

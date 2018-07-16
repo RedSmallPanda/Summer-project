@@ -15,7 +15,7 @@ import java.util.List;
     public interface TicketRepository extends CrudRepository<Ticket,Integer> {
         public Ticket save(Ticket ticket);
     //    @Query("select * from Ticket ticket where ticket.")
-    //    public List<Ticket> findAllByShow_id(int shoid);
+        public List<Ticket> findAllByShowId(int showid);
 
 
         //   @Modifying
