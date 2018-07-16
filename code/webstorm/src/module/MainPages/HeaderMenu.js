@@ -153,14 +153,14 @@ class HeaderMenu extends Component {
                     isLogin: true,
                     isAdmin:true,
                 });
-                window.location.reload(true);
+                window.location.reload();
                 return;
             }
             this.setState({
                 visible: false,
                 isLogin: true,
             });
-            window.location.reload(true);
+            window.location.reload();
         });
     };
 
