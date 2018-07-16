@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { List,  Icon,  Rate, } from 'antd';
-import {hashHistory} from "react-router";
+import {browserHistory} from "react-router";
 
 const comments = [];
 for (let i = 0; i < 10; i++) {
@@ -54,7 +54,7 @@ class Comment extends Component {
     detail(e){
         e.preventDefault();
         alert(e.target.innerHTML);
-        hashHistory.push("/detail");
+        browserHistory.push("/detail");
     }
     render(){
         return (

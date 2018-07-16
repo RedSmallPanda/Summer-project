@@ -75,7 +75,7 @@ class Order extends Component {
                 title: '票品信息',
                 dataIndex: 'detailInfo',
                 render: (text, record) => (<div>
-                    <p><a>{record.detailInfo.name}</a></p>
+                    <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
                     <p>{record.detailInfo.date}</p>
                 </div>)
             },{
@@ -120,7 +120,9 @@ class Order extends Component {
         browserHistory.push('/refundPage')
     };
 
-
+    handleDetail = () =>{
+        browserHistory.push('/detail')
+    };
 
     render(){
         // const { selectedRowKeys } = this.state;

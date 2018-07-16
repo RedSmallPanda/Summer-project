@@ -13,6 +13,8 @@ public class Comment {
     private String content;
     private Integer rate;
     private String thread;
+    private Integer userId;
+    private Integer ticketId;
 
     @Id
     @Column(name = "comment_id", nullable = false)
@@ -82,8 +84,6 @@ public class Comment {
         return Objects.hash(commentId, parentId, content, rate, thread);
     }
 
-    private Integer userId;
-
     @Basic
     @Column(name = "user_id", nullable = true)
     public Integer getUserId() {
@@ -93,8 +93,6 @@ public class Comment {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-
-    private Integer ticketId;
 
     @Basic
     @Column(name = "ticket_id", nullable = true)

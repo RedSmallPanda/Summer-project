@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { List, Icon, Rate, Avatar, Button} from 'antd';
-import { hashHistory } from 'react-router';
+import { browserHistory } from 'react-router';
 
 const comments = [];
 for (let i = 0; i < 100; i++) {
@@ -37,7 +37,9 @@ class TicketComment extends Component {
     }
     detailComment(e){
         e.preventDefault();
-        hashHistory.push({pathname: '/commentPage'});
+        browserHistory.push({
+            pathname: '/commentPage'
+        });
     }
     cancelLike(e) {
         e.preventDefault();

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
-import { hashHistory } from "react-router";
+import { browserHistory } from 'react-router'
 import axios from 'axios';
 const menu = (
     <Menu>
@@ -54,11 +54,20 @@ class ResultList extends Component {
             loading: true,
             data: []
         };
-        // POST to get data and filter
+        this.getResult(this.props);
+
+        this.cancelHeart = this.cancelHeart.bind(this);
+        this.judgeDate = this.judgeDate.bind(this);
+        this.detail = this.detail.bind(this);
+        this.getResult = this.getResult.bind(this);
+    }
+
+    // POST to get data and filter
+    getResult(prop){
         axios.get("http://localhost:8080/shows",{
             params: {
                 type: "default",
-                search: "",
+                search: prop.filter.search,
             }
         })
             .then(function (response) {
@@ -69,14 +78,15 @@ class ResultList extends Component {
                 console.log(error);
             });
 
-        this.state={
+        this.setState({
             loading: false,
             data: listData,
-        };
-        this.cancelHeart = this.cancelHeart.bind(this);
-        this.judgeDate = this.judgeDate.bind(this);
-        this.detail = this.detail.bind(this);
+        })
     }
+    componentWillReceiveProps(nextProps) {
+        this.getResult(nextProps);
+    }
+
     //todo: do cancel in database
     cancelHeart(e) {
         e.preventDefault();
@@ -105,10 +115,23 @@ class ResultList extends Component {
 
     detail(e){
         e.preventDefault();
-        hashHistory.push("/detail");
+        // alert(e.target.parentNode.parentNode.parentNode.parentNode
+        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+        browserHistory.push({
+            pathname:"/detail",
+        });
+    }
+    comment(e){
+        e.preventDefault();
+        // alert(e.target.parentNode.parentNode.parentNode.parentNode
+        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+        browserHistory.push({
+            pathname:"/detail",
+        });
     }
 
     render(){
+        // alert("ResultList: "+this.props.filter.search);
         return (
             <div>
                 <List
@@ -129,7 +152,7 @@ class ResultList extends Component {
                             key={item.title}
                             actions={[
                                 <IconText type={item.heart ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
-                                <IconText type="message" text={item.comments}/>,
+                                <IconText type="message" text={item.comments} onClick={this.comment}/>,
                                 <Dropdown overlay={menu} placement="bottomRight">
                                     <Icon type="share-alt" />
                                 </Dropdown>,
@@ -173,8 +196,8 @@ ResultList.defaultProps = {
         city: "all",
         type: "all",
         time: "all",
+        search: "",
     },
     type: "default",
-    search: "",
 };
 export default ResultList;

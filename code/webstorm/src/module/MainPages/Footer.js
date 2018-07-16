@@ -9,9 +9,9 @@ class Footer extends Component{
                 <br/><br/>
                 聚票网
                 <Divider type="vertical" />
-                <a href="#/us">关于我们</a>
+                <a>关于我们</a>
                 <Divider type="vertical" />
-                <a href="#/help">帮助</a>
+                <a>帮助</a>
             </div>
         )
     }

@@ -17,7 +17,7 @@ public class UserRepositoryController {
 
     @RequestMapping("saveUser")
     @ResponseBody
-    public void saveUser() {
+    public String saveUser() {
         User u = new User();
         u.setUserId(5);
         u.setUsername("李小狼");
@@ -30,6 +30,7 @@ public class UserRepositoryController {
         u.setEmail("1111@qq.com");
         u.setPhone("18817716520");
         userRepository.save(u);
+        return "asdsa";
     }
 
     /**

@@ -6,7 +6,7 @@ import 'moment/locale/zh-cn';
 import Ticknumpick from "./TickNumpick";
 import DatePick from './DatePick'
 import CommentEditor from "./CommentEditor";
-import TicketComment from "../MainPages/TicketComment";
+import TicketComment from "./TicketComment";
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
@@ -27,6 +27,9 @@ class GoodDetailPage extends Component{
         totalprice:40,
     };
 
+    componentWillMount(){
+        window.scrollTo(0,0);
+    }
 
     scrollToAnchor = (anchorName) => {
         if (anchorName) {
@@ -90,7 +93,7 @@ class GoodDetailPage extends Component{
                     <div className="box3">
                  <Row align="top" >
                     <Col span={18} id="post&buy">
-                        <div className="postheader">某某某某噢摸摸摸摸摸摸票</div>
+                        <div className="postheader"><span>The Mouse Trap:捕鼠器</span></div>
                         <Row>
                             <Col span={8} >
                                 <div className="postblock">
@@ -205,7 +208,7 @@ class GoodDetailPage extends Component{
                                 <a onClick={()=>this.scrollToAnchor("block2")} className="tab">评论</a>
                             </Col>
                             <Col span={4}>
-                                <a href="#block3" className="tab">温馨提示</a>
+                                <a href="" className="tab">温馨提示</a>
                             </Col>
                         </Row>
                             </div>

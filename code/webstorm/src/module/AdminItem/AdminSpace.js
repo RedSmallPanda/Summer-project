@@ -1,27 +1,23 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu } from 'antd'
-import TicketManage from '../AdminItem/TicketManage'
-import SalesData from '../AdminItem/SalesData'
-import UserManage from '../AdminItem/UserManage'
-import RefundAudit from '../AdminItem/RefundAudit'
+import TicketManage from './TicketManage'
+import SalesData from './SalesData'
+import UserManage from './UserManage'
+import RefundAudit from './RefundAudit'
 
 class AdminSpace extends Component{
 
     state = {
-        SelectedKeys:localStorage.getItem('key'),
+        SelectedKeys:'1',
         OpenKeys:['sub1','sub2','sub3']
     };
 
-    /*componentWillMount() {
-        this.setState({
-            SelectedKeys: localStorage.getItem('key')
-        })
-    };*/
+    componentWillMount() {
+        this.setState(this.props.location.state);
+    };
 
     componentWillReceiveProps(nextProps) {
-        this.setState({
-            SelectedKeys:localStorage.getItem('key')
-        })
+        this.setState(nextProps.location.state);
     }
 
     handleClick = (e) =>{
@@ -60,7 +56,7 @@ class AdminSpace extends Component{
         let menu = <Menu
             onClick={this.handleClick}
             defaultSelectedKeys={[key]}
-            //SelectedKeys={[this.state.SelectedKeys]}
+            selectedKeys={[this.state.SelectedKeys]}
             mode="inline"
         >
             <Menu.Item key="1">用户管理</Menu.Item>

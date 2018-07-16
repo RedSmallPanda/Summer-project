@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {Row, Col, Form, Rate, Button, Card, Icon} from 'antd';
+import {Row, Col, Form, Rate, Button, Card, Icon, message} from 'antd';
+import { browserHistory } from 'react-router'
 
 const FormItem = Form.Item;
 
@@ -15,6 +16,14 @@ class DemoCommentPage extends Component {
     state={
         data:data
     }
+
+    onClose = () =>{
+        browserHistory.goBack();
+    };
+
+    handleSuccess = () =>{
+        message.success("发表成功",2,this.onClose)
+    };
 
     handleSubmit = (e) => {
         e.preventDefault();
@@ -69,7 +78,7 @@ class DemoCommentPage extends Component {
                             <FormItem
                                 wrapperCol={{ span: 4, offset: 2 }}
                             >
-                                <Button type="primary" htmlType="submit">提交</Button>
+                                <Button type="primary" htmlType="submit" onClick={this.handleSuccess}>提交</Button>
                             </FormItem>
                         </Form>
                     </Col>
@@ -85,7 +94,7 @@ class DemoCommentPage extends Component {
                                     <div>
                                         <Icon type="environment" />{" "+this.state.data.location}<br/>
                                         <Icon type="calendar" />{" "+this.state.data.time}<br/>
-                                        <Rate allowHalf defaultValue={this.state.data.rate} />
+                                        <Rate allowHalf disabled defaultValue={this.state.data.rate} />
                                     </div>}
                             />
                         </Card>
@@ -100,6 +109,9 @@ class DemoCommentPage extends Component {
 const RealCommentPage = Form.create()(DemoCommentPage);
 
 class CommentPage extends Component {
+    componentWillMount(){
+        window.scrollTo(0,0);
+    }
     render(){
         return (
             <RealCommentPage />

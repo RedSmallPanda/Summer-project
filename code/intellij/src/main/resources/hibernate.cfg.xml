@@ -6,27 +6,16 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306/jpw</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-      <mapping resource="com/sjtu/jpw/Domain/Admin.hbm.xml"/>
-      <mapping class="com.sjtu.jpw.Domain.Admin"/>
-      <mapping resource="com/sjtu/jpw/Domain/Collection.hbm.xml"/>
-      <mapping class="com.sjtu.jpw.Domain.Collection"/>
-      <mapping resource="com/sjtu/jpw/Domain/Comment.hbm.xml"/>
+       <mapping class="com.sjtu.jpw.Domain.Admin"/>
+       <mapping class="com.sjtu.jpw.Domain.Collection"/>
       <mapping class="com.sjtu.jpw.Domain.Comment"/>
-      <mapping resource="com/sjtu/jpw/Domain/Coupon.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.Coupon"/>
-      <mapping resource="com/sjtu/jpw/Domain/Orders.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.Orders"/>
-      <mapping resource="com/sjtu/jpw/Domain/Refund.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.Refund"/>
-      <mapping resource="com/sjtu/jpw/Domain/ShopCart.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.ShopCart"/>
-      <mapping resource="com/sjtu/jpw/Domain/Shows.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.Shows"/>
-      <mapping resource="com/sjtu/jpw/Domain/Ticket.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.Ticket"/>
-      <mapping resource="com/sjtu/jpw/Domain/User.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.User"/>
-      <mapping resource="com/sjtu/jpw/Domain/UserCoupon.hbm.xml"/>
       <mapping class="com.sjtu.jpw.Domain.UserCoupon"/>
 
       <!-- <property name="connection.username"/> -->

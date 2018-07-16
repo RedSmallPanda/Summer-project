@@ -13,6 +13,8 @@ public class Orders {
     private Integer number;
     private String state;
     private Timestamp time;
+    private Integer ticketId;
+    private Integer userId;
 
     @Id
     @Column(name = "order_id", nullable = false)
@@ -71,8 +73,6 @@ public class Orders {
         return Objects.hash(orderId, number, state, time);
     }
 
-    private Integer ticketId;
-
     @Basic
     @Column(name = "ticket_id", nullable = true)
     public Integer getTicketId() {
@@ -82,8 +82,6 @@ public class Orders {
     public void setTicketId(Integer ticketId) {
         this.ticketId = ticketId;
     }
-
-    private Integer userId;
 
     @Basic
     @Column(name = "user_id", nullable = true)

@@ -9,7 +9,10 @@ class HomePage extends Component{
 
     handleDirectory = (e) =>{
         browserHistory.push({
-            pathname:'/dir/'+e.key
+            pathname:'/dir',
+            state:{
+                type: e.key
+            }
         });
     };
 
