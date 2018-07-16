@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import { Router, Route, browserHistory } from 'react-router'
 import HomePage from './module/MainPages/HomePage'
-import InfoSpace from './module/MainPages/InfoSpace'
+import InfoSpace from './module/InfoItem/InfoSpace'
 import Directory from './module/MainPages/Directory'
-import AdminSpace from './module/MainPages/AdminSpace'
-import BuyStep from './module/MainPages/BuyStep'
-import CommentPage from './module/MainPages/CommentPage'
+import AdminSpace from './module/AdminItem/AdminSpace'
+import BuyStep from './module/Gooditem/BuyStep'
+import CommentPage from './module/Gooditem/CommentPage'
 import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
 import Us from "./module/MainPages/Us";
 import Help from "./module/MainPages/Help";
-import RefundPage from "./module/MainPages/RefundPage";
+import RefundPage from "./module/InfoItem/RefundPage";
 import Register from "./module/MainPages/Register";
 
 class MyRouter extends Component{

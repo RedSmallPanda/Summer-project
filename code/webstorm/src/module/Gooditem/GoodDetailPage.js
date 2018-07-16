@@ -6,7 +6,7 @@ import 'moment/locale/zh-cn';
 import Ticknumpick from "./TickNumpick";
 import DatePick from './DatePick'
 import CommentEditor from "./CommentEditor";
-import TicketComment from "../MainPages/TicketComment";
+import TicketComment from "./TicketComment";
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
