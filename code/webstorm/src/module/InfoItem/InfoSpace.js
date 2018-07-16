@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu} from 'antd'
-import ShopCart from '../InfoItem/ShopCart'
-import BasicInfo from '../InfoItem/BasicInfo'
-import Password from '../InfoItem/Password'
-import Address from "../InfoItem/Address";
-import Collection from "../InfoItem/Collection";
-import Comment from "../InfoItem/Comment";
-import Order from '../InfoItem/Order'
-import HistoryOrder from '../InfoItem/HistoryOrder'
-import Coupon from '../InfoItem/Coupon'
+import ShopCart from './ShopCart'
+import BasicInfo from './BasicInfo'
+import Password from './Password'
+import Address from "./Address";
+import Collection from "./Collection";
+import Comment from "./Comment";
+import Order from './Order'
+import HistoryOrder from './HistoryOrder'
+import Coupon from './Coupon'
 
 const SubMenu = Menu.SubMenu;
 
