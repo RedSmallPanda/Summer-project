@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { List, Icon, Rate, Avatar, Button} from 'antd';
+import { List, Icon, Rate, Avatar, Button, Collapse, Divider, Row, Col} from 'antd';
 import { browserHistory } from 'react-router';
 
+const Panel = Collapse.Panel;
 const comments = [];
 for (let i = 0; i < 100; i++) {
     comments.push({
@@ -9,8 +10,7 @@ for (let i = 0; i < 100; i++) {
         image: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",//ticket image
         username: `jpw user ${i}`,//ticket name
         time: "2018/07/02",
-        content: 'commentssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss' +
-        'ssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssssss',
+        content: 'commentssssssssssssssssssssssssssssssssssssssssss',
         like: false,
         likes: i + 1,
         comments: i,
@@ -18,7 +18,22 @@ for (let i = 0; i < 100; i++) {
     });
 }
 
-let IconText = ({ type, text, onClick}) => (
+const reply = [
+    {
+        title: 'Ant Design Title 1',
+    },
+    {
+        title: 'Ant Design Title 2',
+    },
+    {
+        title: 'Ant Design Title 3',
+    },
+    {
+        title: 'Ant Design Title 4',
+    },
+];
+
+let IconText = ({ type, text, onClick }) => (
     <span>
     <Icon type={type} style={{ marginRight: 8 }} onClick={onClick}/>
         {text}
@@ -31,6 +46,9 @@ class TicketComment extends Component {
         if (true);//POST to get data
         this.state = {
             data: comments,
+            reply:reply,
+            display:false,
+            replyKey:-1,
         };
         this.cancelLike = this.cancelLike.bind(this);
         this.detailComment = this.detailComment.bind(this);
@@ -72,9 +90,10 @@ class TicketComment extends Component {
                         },
                         pageSize: 4,
                     }}
-
                     renderItem={item => (
+                    <div>
                         <List.Item
+                            style={{border:'0px'}}
                             key={item.username}
                             actions={[
                                 <IconText type={item.like ? "like" : "like-o"} text={item.likes}
@@ -94,8 +113,32 @@ class TicketComment extends Component {
                                     </div>
                                 }
                             />
-                            {"content"}
                         </List.Item>
+                        <Collapse bordered={false}>
+                            <Panel header="查看回复" key="1" onC>
+                                <Row>
+                                    <Col span={1}/>
+                                    <Col span={22}>
+                                        <div>
+                                            <List
+                                                itemLayout="horizontal"
+                                                dataSource={this.state.reply}
+                                                renderItem={item => (
+                                                    <List.Item>
+                                                        <List.Item.Meta
+                                                            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
+                                                            title={<a>{item.title}</a>}
+                                                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                                                        />
+                                                    </List.Item>
+                                                )}
+                                            />
+                                        </div>
+                                    </Col>
+                                </Row>
+                            </Panel>
+                        </Collapse>
+                    </div>
                     )}
                 />
                 <Button onClick={this.detailComment}>发表我的评论</Button>
