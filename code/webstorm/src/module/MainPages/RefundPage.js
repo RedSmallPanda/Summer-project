@@ -87,7 +87,7 @@ class DemoRefundPage extends Component {
                                     <div>
                                         <Icon type="environment" />{" "+this.state.data.location}<br/>
                                         <Icon type="calendar" />{" "+this.state.data.time}<br/>
-                                        <Rate allowHalf defaultValue={this.state.data.rate} />
+                                        <Rate allowHalf disabled defaultValue={this.state.data.rate} />
                                     </div>}
                             />
                         </Card>
