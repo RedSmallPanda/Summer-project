@@ -13,6 +13,8 @@ public class Orders {
     private Integer number;
     private String state;
     private Timestamp time;
+    private Integer ticketId;
+    private Integer userId;
 
     @Id
     @Column(name = "order_id", nullable = false)
@@ -69,5 +71,25 @@ public class Orders {
     public int hashCode() {
 
         return Objects.hash(orderId, number, state, time);
+    }
+
+    @Basic
+    @Column(name = "ticket_id", nullable = true)
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
+    }
+
+    @Basic
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

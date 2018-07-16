@@ -15,6 +15,7 @@ public class Ticket {
     private String seat;
     private Integer amount;
     private Integer stock;
+    private Integer showId;
 
     @Id
     @Column(name = "ticket_id", nullable = false)
@@ -93,5 +94,15 @@ public class Ticket {
     public int hashCode() {
 
         return Objects.hash(ticketId, time, price, seat, amount, stock);
+    }
+
+    @Basic
+    @Column(name = "show_id", nullable = true)
+    public Integer getShowId() {
+        return showId;
+    }
+
+    public void setShowId(Integer showId) {
+        this.showId = showId;
     }
 }
