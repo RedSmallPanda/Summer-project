@@ -72,7 +72,8 @@ class ResultList extends Component {
         })
             .then(function (response) {
                 console.log(response);
-                alert(response.data);
+                console.log(typeof(response.data));
+                alert(JSON.stringify(response.data[0]));
             })
             .catch(function (error) {
                 console.log(error);
