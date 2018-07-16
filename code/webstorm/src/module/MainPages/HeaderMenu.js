@@ -3,7 +3,6 @@ import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
 import { browserHistory} from 'react-router'
 import Login from './Login'
 import Register from './Register'
-import axios from 'axios';
 import "../../css/App.css"
 
 
