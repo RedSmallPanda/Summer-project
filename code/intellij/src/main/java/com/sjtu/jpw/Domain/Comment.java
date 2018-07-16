@@ -13,6 +13,8 @@ public class Comment {
     private String content;
     private Integer rate;
     private String thread;
+    private Integer userId;
+    private Integer ticketId;
 
     @Id
     @Column(name = "comment_id", nullable = false)
@@ -80,5 +82,25 @@ public class Comment {
     public int hashCode() {
 
         return Objects.hash(commentId, parentId, content, rate, thread);
+    }
+
+    @Basic
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "ticket_id", nullable = true)
+    public Integer getTicketId() {
+        return ticketId;
+    }
+
+    public void setTicketId(Integer ticketId) {
+        this.ticketId = ticketId;
     }
 }
