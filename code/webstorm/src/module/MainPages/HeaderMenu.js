@@ -13,7 +13,7 @@ class HeaderMenu extends Component {
 
     state = {
         isLogin:false,
-        isAdmin:document.cookie.split(";")[0].split("=")[1]==='admin',
+        isAdmin:false,
         visible:false,
         regVisible:false,
         type:'',
@@ -21,13 +21,35 @@ class HeaderMenu extends Component {
         search: '',
     };
 
+    // componentWillMount(){
+    //     let key = document.cookie.split(";")[0].split("=")[0];
+    //     let username = document.cookie.split(";")[0].split("=")[1];
+    //     if (username&&key==="username") {
+    //         this.setState({
+    //             isLogin:true
+    //         })
+    //     }
+    // }
+
     componentWillMount(){
-        let key = document.cookie.split(";")[0].split("=")[0];
-        let username = document.cookie.split(";")[0].split("=")[1];
-        if (username&&key==="username") {
-            this.setState({
-                isLogin:true
-            })
+        let strCookie = document.cookie;
+        let arrCookie = strCookie.split(";");
+        let username;
+        for(let i = 0; i < arrCookie.length; i++){
+            let arr = arrCookie[i].split("=");
+            if("username" === arr[0] && arr[1]){
+                if(arr[1] === "admin") {
+                    this.setState({
+                        isLogin: true,
+                        isAdmin: true
+                    });
+                }
+                else {
+                    this.setState({
+                        isLogin: true
+                    })
+                }
+            }
         }
     }
 
