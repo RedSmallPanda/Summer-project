@@ -78,10 +78,10 @@ class ResultList extends Component {
                 console.log(error);
             });
 
-        this.state={
+        this.setState({
             loading: false,
             data: listData,
-        };
+        })
     }
     componentWillReceiveProps(nextProps) {
         this.getResult(nextProps);
