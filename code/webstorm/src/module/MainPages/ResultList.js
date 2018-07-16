@@ -51,8 +51,7 @@ class ResultList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: true,
-            data: []
+            data: listData
         };
         this.getResult(this.props);
 
