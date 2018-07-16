@@ -19,7 +19,9 @@ public class ShowsController {
         System.out.println("get ticket");
         Thread.currentThread().sleep(500);
         return "Request sent by ResultList.  " +
+                "\ncity: " + request.getParameter("city") +
                 "\ntype: " + request.getParameter("type") +
+                "\ntime: " + request.getParameter("time") +
                 "\nsearch by: " + request.getParameter("search") +
                 "\nrespond after 0.5s" +
                 "\nHello";
