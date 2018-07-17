@@ -15,6 +15,13 @@ public class Orders {
     private Timestamp time;
     private Integer ticketId;
     private Integer userId;
+    private Integer price;
+    private String province;
+    private String city;
+    private String block;
+    private String addrdetail;
+    private String phone;
+    private String name;
 
     @Id
     @Column(name = "order_id", nullable = false)
@@ -91,5 +98,75 @@ public class Orders {
 
     public void setUserId(Integer userId) {
         this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "price", nullable = true)
+    public Integer getPrice() {
+        return price;
+    }
+
+    public void setPrice(Integer price) {
+        this.price = price;
+    }
+
+    @Basic
+    @Column(name = "province", nullable = true, length = -1)
+    public String getProvince() {
+        return province;
+    }
+
+    public void setProvince(String province) {
+        this.province = province;
+    }
+
+    @Basic
+    @Column(name = "city", nullable = true, length = -1)
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    @Basic
+    @Column(name = "block", nullable = true, length = -1)
+    public String getBlock() {
+        return block;
+    }
+
+    public void setBlock(String block) {
+        this.block = block;
+    }
+
+    @Basic
+    @Column(name = "addrdetail", nullable = true, length = -1)
+    public String getAddrdetail() {
+        return addrdetail;
+    }
+
+    public void setAddrdetail(String addrdetail) {
+        this.addrdetail = addrdetail;
+    }
+
+    @Basic
+    @Column(name = "phone", nullable = true, length = -1)
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    @Basic
+    @Column(name = "name", nullable = true, length = -1)
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }

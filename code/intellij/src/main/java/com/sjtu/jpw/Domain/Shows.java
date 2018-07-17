@@ -4,6 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,8 @@ public class Shows {
     private String type;
     private String address;
     private Integer rate;
+    private Timestamp starttime;
+    private Timestamp endtime;
 
     @Id
     @Column(name = "show_id", nullable = false)
@@ -104,5 +107,25 @@ public class Shows {
     public int hashCode() {
 
         return Objects.hash(showId, title, info, city, type, address, rate);
+    }
+
+    @Basic
+    @Column(name = "starttime", nullable = true)
+    public Timestamp getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Timestamp starttime) {
+        this.starttime = starttime;
+    }
+
+    @Basic
+    @Column(name = "endtime", nullable = true)
+    public Timestamp getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Timestamp endtime) {
+        this.endtime = endtime;
     }
 }
