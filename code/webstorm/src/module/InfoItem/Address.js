@@ -210,9 +210,9 @@ class Address extends Component {
                             </span>
                         ) : (
                             <span>
-                                <a onClick={()=>this.edit(record.key)}>编辑</a>
+                                <Icon type="edit" style={{cursor:"pointer"}} onClick={()=>this.edit(record.key)}/>
                                 <Divider type="vertical" />
-                                <a onClick={()=>this.handleDelete(record.key)}>删除</a>
+                                <Icon type="delete" style={{cursor:"pointer"}} onClick={()=>this.handleDelete(record.key)}/>
                             </span>
                         )}
                     </div>
@@ -312,12 +312,22 @@ class Address extends Component {
     };
 
     handleDelete = (key) =>{
-        const newData = [...this.state.data];
-        const index = newData.findIndex(item => key === item.key);
-        newData.splice(index,1);
-        this.setState({
-            data:newData
-        })
+        let self = this;
+        Modal.confirm({
+            title: '是否删除?',
+            content: '',
+            onOk() {
+                const newData = [...self.state.data];
+                const index = newData.findIndex(item => key === item.key);
+                newData.splice(index,1);
+                self.setState({
+                    data:newData
+                })
+            },
+            onCancel() {
+
+            },
+        });
     };
 
 
