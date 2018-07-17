@@ -34,7 +34,6 @@ class HeaderMenu extends Component {
     componentWillMount(){
         let strCookie = document.cookie;
         let arrCookie = strCookie.split(";");
-        let username;
         for(let i = 0; i < arrCookie.length; i++){
             let arr = arrCookie[i].split("=");
             if("username" === arr[0] && arr[1]){

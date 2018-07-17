@@ -1,30 +1,73 @@
 package com.sjtu.jpw.Controller;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.sjtu.jpw.Domain.Shows;
+import com.sjtu.jpw.Repository.ShowsRepository;
+import com.sjtu.jpw.Service.demoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gson.Gson;
+
 @RestController
 public class ShowsController {
+    @Autowired
+    private ShowsRepository showRepository;
 
-    @RequestMapping("/shows")
-    public String Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException{
-        List<Object> listData=new ArrayList<>();
+    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
+    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
 
-        System.out.println("get ticket");
+        List<Shows> listData=new ArrayList<>();
+        listData = showRepository.findAllShows();
+        JsonArray allShows=new JsonArray();
+        for(int i=0;i<listData.size();i++){
+            Shows temp=listData.get(i);
+            Gson showGson=new Gson();
+            String showJson = showGson.toJson(temp);
+            JsonObject showObject = new JsonParser().parse(showJson).getAsJsonObject();
+            allShows.add(showObject);
+        }
+
+        System.out.println(allShows);
+        out.print(allShows);
+        if(out!=null) {
+            out.flush();
+        }
         Thread.currentThread().sleep(500);
-        return "Request sent by ResultList.  " +
-                "\ncity: " + request.getParameter("city") +
-                "\ntype: " + request.getParameter("type") +
-                "\ntime: " + request.getParameter("time") +
-                "\nsearch by: " + request.getParameter("search") +
-                "\nrespond after 0.5s" +
-                "\nHello";
     }
+/*
 
+    demo- how to use service
+
+    @Resource(name="demoService")
+    private demoService demoService;
+    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
+    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+       Integer demo=demoService.userValidation("asd","123");
+
+
+        System.out.println(demo);
+        out.print(demo);
+        if(out!=null) {
+            out.flush();
+        }
+    }
+    */
 }

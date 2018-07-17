@@ -32,8 +32,8 @@ class ResultList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: false,
-            data: listData
+            loading:true,
+            data: []
         };
 
         this.cancelHeart = this.cancelHeart.bind(this);
@@ -54,7 +54,7 @@ class ResultList extends Component {
         })
             .then(function (response) {
                 console.log(response);
-                alert(response.data);
+                alert(JSON.stringify(response.data[0]));
                 self.setState({
                     loading: false,
                     data: listData,
