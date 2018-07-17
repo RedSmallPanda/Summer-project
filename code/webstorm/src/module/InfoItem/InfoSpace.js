@@ -92,9 +92,10 @@ class InfoSpace extends Component{
                         >
                             <SubMenu key="sub1" title={<span>订单管理</span>}>
                                 <Menu.Item key='1'>购物车</Menu.Item>
+                                <Menu.Item key='4'>优惠券</Menu.Item>
                                 <Menu.Item key='2'>当前订单</Menu.Item>
                                 <Menu.Item key='3'>历史订单</Menu.Item>
-                                <Menu.Item key='4'>我的优惠券</Menu.Item>
+
                             </SubMenu>
                             <SubMenu key="sub2" title={<span>动态管理</span>}>
                                 <Menu.Item key="5">我的收藏</Menu.Item>
