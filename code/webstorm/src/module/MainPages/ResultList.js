@@ -25,7 +25,6 @@ const listData = [];
 for (let i = 0; i < 10; i++) {
     listData.push({
         key: i,
-        href: 'http://ant.design',//detail info
         image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
         title: `jpw ${i}`,//name
         start: "2018/07/02",
@@ -51,10 +50,9 @@ class ResultList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: true,
+            loading:true,
             data: []
         };
-        this.getResult(this.props);
 
         this.cancelHeart = this.cancelHeart.bind(this);
         this.judgeDate = this.judgeDate.bind(this);
@@ -63,28 +61,32 @@ class ResultList extends Component {
     }
 
     // POST to get data and filter
-    getResult(prop){
-        axios.get("http://localhost:8080/shows",{
+    getResult(self, prop) {
+        axios.get("http://localhost:8080/shows", {
             params: {
-                type: "default",
+                city: prop.filter.city,
+                type: prop.filter.type,
+                time: prop.filter.time,
                 search: prop.filter.search,
             }
         })
             .then(function (response) {
                 console.log(response);
-                alert(response.data);
+                alert(JSON.stringify(response.data[0]));
+                self.setState({
+                    loading: false,
+                    data: listData,
+                });
             })
             .catch(function (error) {
                 console.log(error);
             });
-
-        this.setState({
-            loading: false,
-            data: listData,
-        })
+    }
+    componentDidMount(){
+        this.getResult(this, this.props);
     }
     componentWillReceiveProps(nextProps) {
-        this.getResult(nextProps);
+        this.getResult(this, nextProps);
     }
 
     //todo: do cancel in database
