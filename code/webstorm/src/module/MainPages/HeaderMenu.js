@@ -251,7 +251,10 @@ class HeaderMenu extends Component {
                 <Menu mode="horizontal">
                     <Row>
                         <Col span={3} onClick={this.handleHomePage}>
-                            <div align="center"><Icon type="global"/>聚票网</div>
+                            <div align="center">
+                                <Icon type="global" style={{cursor:"pointer"}}/>
+                                <span style={{cursor:"pointer"}}>聚票网</span>
+                            </div>
                         </Col>
                         <Col span={7}>
                             <Menu
@@ -274,7 +277,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={3}/>
                         <Col span={1}>
-                            <Avatar icon="user" onClick={this.handleAvatar}/>
+                            <Avatar icon="user" style={{cursor:"pointer"}} onClick={this.handleAvatar}/>
                         </Col>
                         <Col span={3}>
                             {loginOrInfo}
@@ -288,5 +291,4 @@ class HeaderMenu extends Component {
         )
     }
 }
-
 export default HeaderMenu;
