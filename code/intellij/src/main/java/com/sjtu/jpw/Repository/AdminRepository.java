@@ -1,5 +1,5 @@
 package com.sjtu.jpw.Repository;
-import com.sjtu.jpw.Domain.Shows;
+import com.sjtu.jpw.Domain.Admin;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,12 +9,9 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Repository
-@Table(name="Shows")
-@Qualifier("showsRepository")
-public interface ShowsRepository extends CrudRepository<Shows,Integer> {
-    @Query("select show from Shows show")
-    List<Shows> findAllShows();
-
-    public Shows save(Shows show);
+@Table(name="Admin")
+@Qualifier("adminRepository")
+public interface AdminRepository extends CrudRepository<Admin,Integer> {
+    public Admin save(Admin admin);
 
 }

@@ -1,5 +1,5 @@
 package com.sjtu.jpw.Repository;
-import com.sjtu.jpw.Domain.Shows;
+import com.sjtu.jpw.Domain.Ticket;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -9,12 +9,12 @@ import javax.persistence.Table;
 import java.util.List;
 
 @Repository
-@Table(name="Shows")
-@Qualifier("showsRepository")
-public interface ShowsRepository extends CrudRepository<Shows,Integer> {
-    @Query("select show from Shows show")
-    List<Shows> findAllShows();
+@Table(name="Ticket")
+@Qualifier("ticketRepository")
+public interface TicketRepository extends CrudRepository<Ticket,Integer> {
+    @Query("select ticket from Ticket ticket")
+    List<Ticket> findAllTickets();
 
-    public Shows save(Shows show);
+    public Ticket save(Ticket ticket);
 
 }
