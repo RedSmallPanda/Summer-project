@@ -2,25 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
-const menu = (
-    <Menu>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://wiki.open.qq.com/wiki/website/API列表">
-                <Icon type="qq" /> QQ
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                <Icon type="wechat" /> WeChat
-            </a>
-        </Menu.Item>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-                <Icon type="weibo" /> weibo
-            </a>
-        </Menu.Item>
-    </Menu>
-);
+
 const listData = [];
 for (let i = 0; i < 10; i++) {
     listData.push({
@@ -50,8 +32,8 @@ class ResultList extends Component {
     constructor(props){
         super(props);
         this.state = {
-            loading: true,
-            data: []
+            loading: false,
+            data: listData
         };
 
         this.cancelHeart = this.cancelHeart.bind(this);
@@ -140,7 +122,7 @@ class ResultList extends Component {
                     size="large"
                     itemLayout='horizontal'
                     dataSource={this.state.data}
-                    footer={<a href="/"><b>find</b> more</a>}
+                    footer={<a href="/"><b>发现</b> 更多</a>}
                     loading={this.state.loading}
                     pagination={{
                         onChange: (page) => {
@@ -155,8 +137,45 @@ class ResultList extends Component {
                             actions={[
                                 <IconText type={item.heart ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
                                 <IconText type="message" text={item.comments} onClick={this.comment}/>,
-                                <Dropdown overlay={menu} placement="bottomRight">
-                                    <Icon type="share-alt" />
+                                <Dropdown
+                                    overlay={(
+                                        <Menu>
+                                            <Menu.Item>
+                                                <a target="_blank" rel="noopener noreferrer"
+                                                   href={
+                                                       "http://connect.qq.com/widget/shareqq/index.html?"
+                                                       + "url=http://www.baidu.com" //detail page
+                                                       + "&title=(ticket)" //show title
+                                                       + "&pics=https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"
+                                                       + "&summary=测试qq分享summary"
+                                                       + "&desc=qq分享简述"
+                                                   }>
+                                                    <Icon type="qq"/> QQ
+                                                </a>
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                <a target="_blank" rel="noopener noreferrer"
+                                                   href="http://www.baidu.com/">
+                                                    <Icon type="wechat"/> WeChat
+                                                </a>
+                                            </Menu.Item>
+                                            <Menu.Item>
+                                                <a target="_blank" rel="noopener noreferrer"
+                                                   href={
+                                                       "http://service.weibo.com/share/share.php?"
+                                                       + "url=http://www.baidu.com" //detail page
+                                                       + "&title=(ticket)" //show title
+                                                       + "&pics=https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"
+                                                       + "&summary=测试weibo分享summary"
+                                                       + "&desc=weibo分享简述"
+                                                   }>
+                                                    <Icon type="weibo"/> weibo
+                                                </a>
+                                            </Menu.Item>
+                                        </Menu>
+                                    )}
+                                    placement="bottomRight">
+                                    <Icon type="share-alt"/>
                                 </Dropdown>,
                             ]}
                         >
@@ -169,7 +188,7 @@ class ResultList extends Component {
                                         {item.description}<br/><br/>
                                         <Icon type="calendar"/>{" " + item.start + "-" + item.end}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.grade} /><br/>
+                                        <Rate disabled allowHalf defaultValue={item.grade}/><br/>
                                     </p>
                                 }
                             />
