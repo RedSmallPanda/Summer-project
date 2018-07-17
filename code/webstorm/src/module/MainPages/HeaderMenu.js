@@ -10,28 +10,17 @@ const SubMenu = Menu.SubMenu;
 const Search = Input.Search;
 
 class HeaderMenu extends Component {
-
     state = {
         isLogin:false,
         isAdmin:false,
         visible:false,
         regVisible:false,
         type:'',
-        current: "home",
+        current: window.location.pathname,
         search: '',
     };
-
-    // componentWillMount(){
-    //     let key = document.cookie.split(";")[0].split("=")[0];
-    //     let username = document.cookie.split(";")[0].split("=")[1];
-    //     if (username&&key==="username") {
-    //         this.setState({
-    //             isLogin:true
-    //         })
-    //     }
-    // }
-
     componentWillMount(){
+
         let strCookie = document.cookie;
         let arrCookie = strCookie.split(";");
         for(let i = 0; i < arrCookie.length; i++){
@@ -53,7 +42,6 @@ class HeaderMenu extends Component {
     }
 
     handleSearch = (value) => {
-        // localStorage.setItem('search',value);
         browserHistory.push({
             pathname:'/dir',
             state: {
@@ -61,7 +49,7 @@ class HeaderMenu extends Component {
             },
         });
         this.setState({
-            current: "dir"
+            current: window.location.pathname,
         });
     };
     handleLogout = () =>{
@@ -76,12 +64,11 @@ class HeaderMenu extends Component {
     handleHomePage = () =>{
         browserHistory.push('/home');
         this.setState({
-            current: "home",
+            current: window.location.pathname,
         });
     };
 
     handleInfoSpace = (e) =>{
-        // localStorage.setItem('key',e.key);
         browserHistory.push({
             pathname:'/info',
             state:{
@@ -89,7 +76,7 @@ class HeaderMenu extends Component {
             }
         });
         this.setState({
-            current: ""
+            current: window.location.pathname,
         });
     };
 
@@ -101,25 +88,25 @@ class HeaderMenu extends Component {
             }
         });
         this.setState({
-            current: ""
+            current: window.location.pathname,
         });
     };
 
     handleDirectory = () =>{
         browserHistory.push('/dir');
         this.setState({
-            current: "dir"
+            current: window.location.pathname,
         });
     };
 
     handleAvatar = () =>{
         if(this.state.isLogin){
             localStorage.setItem('key',9);
+            this.setState({
+                current: window.location.pathname,
+            });
             browserHistory.push({
                 pathname:'/info'
-            });
-            this.setState({
-                current: ""
             });
         }
         else{
@@ -183,7 +170,7 @@ class HeaderMenu extends Component {
             }
 
             console.log('Received values of form username: '+form.getFieldValue("username") );
-            console.log('password: '+form.getFieldValue("password"))
+            console.log('password: '+form.getFieldValue("password"));
             form.resetFields();
             this.setState({ regVisible: false });
         });
@@ -232,7 +219,7 @@ class HeaderMenu extends Component {
         else{
             loginOrInfo = loginButton;
         }
-
+        let self = this;
         let renderHeader =
             <div>
                 <Login
@@ -259,11 +246,11 @@ class HeaderMenu extends Component {
                             <Menu
                                 mode="horizontal"
                                 style={{border: 0}}
-                                selectedKeys={[this.state.current]}
-                                defaultSelectedKeys="home"
+                                selectedKeys={[self.state.current]}
+                                defaultSelectedKeys="/home"
                             >
-                                <Menu.Item key="home" onClick={this.handleHomePage}>首页</Menu.Item>
-                                <Menu.Item key="dir" onClick={this.handleDirectory}>全部分类</Menu.Item>
+                                <Menu.Item key="/home" onClick={this.handleHomePage}>首页</Menu.Item>
+                                <Menu.Item key="/dir" onClick={this.handleDirectory}>全部分类</Menu.Item>
                             </Menu>
                         </Col>
                         <Col span={7}>
