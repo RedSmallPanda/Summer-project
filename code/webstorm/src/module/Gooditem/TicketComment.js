@@ -1,37 +1,100 @@
 import React, { Component } from 'react';
-import { List, Icon, Rate, Avatar, Button, Collapse, Divider, Row, Col} from 'antd';
+import { List, Icon, Rate, Avatar, Button, Collapse, Row, Col} from 'antd';
 import { browserHistory } from 'react-router';
 
 const Panel = Collapse.Panel;
-const comments = [];
-for (let i = 0; i < 100; i++) {
-    comments.push({
-        key: i,
-        image: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",//ticket image
-        username: `jpw user ${i}`,//ticket name
-        time: "2018/07/02",
-        content: 'commentssssssssssssssssssssssssssssssssssssssssss',
-        like: false,
-        likes: i + 1,
-        comments: i,
-        grade: i % 5,
-    });
-}
 
-const reply = [
-    {
-        title: 'Ant Design Title 1',
-    },
-    {
-        title: 'Ant Design Title 2',
-    },
-    {
-        title: 'Ant Design Title 3',
-    },
-    {
-        title: 'Ant Design Title 4',
-    },
-];
+// for (let i = 0; i < 100; i++) {
+//     comments.push({
+//         key: i,
+//         image: "https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png",//ticket image
+//         username: `jpw user ${i}`,//ticket name
+//         time: "2018/07/02",
+//         content: 'commentssssssssssssssssssssssssssssssssssssssssss',
+//         like: false,
+//         likes: i + 1,
+//         comments: i,
+//         grade: i % 5,
+//         parentId: -1,
+//     });
+// }
+
+const data = [{
+    key:1,
+    username:`user1`,
+    time: "2018/07/17 9:40",
+    content:"This is the 1st comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[{
+        key: 6,
+        username: `user6`,
+        time: "2018/07/17 14:42",
+        content: "This is the 6th comment",
+        like: false,
+        likes: 1,
+    },{
+        key: 8,
+        username: `user8`,
+        time: "2018/07/17 14:50",
+        content: "This is the 8th comment",
+        like: false,
+        likes: 1,
+    }]
+},{
+    key:2,
+    username:`user2`,
+    time: "2018/07/17 10:20",
+    content:"This is the 2nd comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[{
+        key:7,
+        username:`user7`,
+        time: "2018/07/17 11:42",
+        content:"This is the 7th comment",
+        like:false,
+        likes:1,
+    }]
+},{
+    key:3,
+    username:`user3`,
+    time: "2018/07/17 11:42",
+    content:"This is the 3rd comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[],
+},{
+    key:4,
+    username:`user4`,
+    time: "2018/07/17 14:42",
+    content:"This is the 4th comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[],
+},{
+    key:5,
+    username:`user5`,
+    time: "2018/07/17 18:42",
+    content:"This is the 5th comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[],
+},{
+    key:9,
+    username:`user7`,
+    time: "2018/07/17 20:42",
+    content:"This is the 7th comment",
+    like:false,
+    likes:1,
+    grade:5,
+    reply:[],
+}];
 
 let IconText = ({ type, text, onClick }) => (
     <span>
@@ -45,14 +108,14 @@ class TicketComment extends Component {
         super(props);
         if (true);//POST to get data
         this.state = {
-            data: comments,
-            reply:reply,
+            comment: data,
             display:false,
             replyKey:-1,
         };
         this.cancelLike = this.cancelLike.bind(this);
         this.detailComment = this.detailComment.bind(this);
     }
+
     detailComment(e){
         e.preventDefault();
         browserHistory.push({
@@ -63,7 +126,7 @@ class TicketComment extends Component {
         e.preventDefault();
         let username = e.target.parentNode.parentNode.parentNode.parentNode
             .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML;
-        comments.forEach(function (item) {
+        data.forEach(function (item) {
             if(item.username===username){
                 if (true){//after modify database successfully
                     item.like = !item.like;
@@ -72,7 +135,7 @@ class TicketComment extends Component {
             }
         });
         this.setState({
-            data: comments,
+            comment: data,
         });
     }
 
@@ -81,8 +144,9 @@ class TicketComment extends Component {
             <div>
                 <br/>
                 <List
+
                     itemLayout='horizontal'
-                    dataSource={this.state.data}
+                    dataSource={this.state.comment}
                     loading={false}
                     pagination={{
                         onChange: (page) => {
@@ -90,54 +154,68 @@ class TicketComment extends Component {
                         },
                         pageSize: 4,
                     }}
+                    locale="暂无评论"
                     renderItem={item => (
                     <div>
                         <List.Item
+                            id={item.key}
                             style={{border:'0px'}}
                             key={item.username}
                             actions={[
-                                <IconText type={item.like ? "like" : "like-o"} text={item.likes}
-                                          onClick={this.cancelLike}/>,
-                                <IconText type="message" text={item.comments}/>
+                                <IconText type={item.like ? "like" : "like-o"} text={item.likes}/>,
+                                <IconText type="message" text={item.reply.length}/>
                             ]}
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<Avatar size='large' src={item.image}/>}
-                                title={item.username}
+                                avatar={<Avatar size='large' icon="user"/>}
+                                title={<span>{item.username}</span>}
                                 description={
                                     <div>
                                         <Rate disabled defaultValue={item.grade}/><br/>
                                         {item.content}<br/><br/>
-                                        {item.time}
                                     </div>
                                 }
                             />
+                            {item.time}
                         </List.Item>
-                        <Collapse bordered={false}>
-                            <Panel header="查看回复" key="1" onC>
-                                <Row>
-                                    <Col span={1}/>
-                                    <Col span={22}>
-                                        <div>
+                        {item.reply.length > 0 ? (
+                            <Collapse bordered={false}>
+                                <Panel header="查看回复" key="1">
+                                    <Row>
+                                        <Col span={1}/>
+                                        <Col span={22}>
                                             <List
                                                 itemLayout="horizontal"
-                                                dataSource={this.state.reply}
+                                                dataSource={item.reply}
                                                 renderItem={item => (
-                                                    <List.Item>
-                                                        <List.Item.Meta
-                                                            avatar={<Avatar src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png" />}
-                                                            title={<a>{item.title}</a>}
-                                                            description="Ant Design, a design language for background applications, is refined by Ant UED Team"
-                                                        />
-                                                    </List.Item>
+                                                    <div>
+                                                        <List.Item
+                                                            id={item.key}
+                                                            actions={[
+                                                                <Icon type="like-o"/>,
+                                                                <Icon type="message"/>
+                                                            ]}
+                                                        >
+                                                            <List.Item.Meta
+                                                                avatar={<Avatar icon="user" />}
+                                                                title={<span>{item.username}</span>}
+                                                                description={item.content}
+                                                            />
+                                                            {item.time}
+                                                        </List.Item>
+                                                    </div>
+
                                                 )}
                                             />
-                                        </div>
-                                    </Col>
-                                </Row>
-                            </Panel>
-                        </Collapse>
+                                        </Col>
+                                    </Row>
+                                </Panel>
+                            </Collapse>
+                        ):(
+                            <div></div>
+                        )}
+
                     </div>
                     )}
                 />
