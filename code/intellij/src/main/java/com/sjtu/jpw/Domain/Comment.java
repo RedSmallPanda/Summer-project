@@ -4,6 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity
@@ -15,6 +16,7 @@ public class Comment {
     private String thread;
     private Integer userId;
     private Integer ticketId;
+    private Timestamp time;
 
     @Id
     @Column(name = "comment_id", nullable = false)
@@ -102,5 +104,15 @@ public class Comment {
 
     public void setTicketId(Integer ticketId) {
         this.ticketId = ticketId;
+    }
+
+    @Basic
+    @Column(name = "time", nullable = true)
+    public Timestamp getTime() {
+        return time;
+    }
+
+    public void setTime(Timestamp time) {
+        this.time = time;
     }
 }

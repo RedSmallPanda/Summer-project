@@ -42,7 +42,6 @@ public class ShowsController {
             allShows.add(showObject);
         }
 
-
         System.out.println(allShows);
         out.print(allShows);
         if(out!=null) {
