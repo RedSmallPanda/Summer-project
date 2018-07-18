@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message} from "antd";
 import {browserHistory} from "react-router";
+import axios from 'axios';
 
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
@@ -29,100 +30,112 @@ const replyBar = <div>
     </Row>
 </div>;
 
-const data = [{
-    key:1,
-    username:`user1`,
-    time: "2018/07/17 9:40",
-    content:"This is the 1st comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[{
-        key: 6,
-        username: `user6`,
-        time: "2018/07/17 14:42",
-        content: "This is the 6th comment",
-        like: false,
-        likes: 1,
-        smallBar:replyBar,
-        showSmallBar:false,
-    },{
-        key: 8,
-        username: `user8`,
-        time: "2018/07/17 14:50",
-        content: "This is the 8th comment",
-        like: false,
-        likes: 1,
-        smallBar:replyBar,
-        showSmallBar:false,
-    }],
-    replyBar:replyBar,
-    showReplyBar:false,
+// const data = [{
+//     key:1,
+//     username:`user1`,
+//     time: "2018/07/17 9:40",
+//     content:"This is the 1st comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[{
+//         key: 6,
+//         username: `user6`,
+//         time: "2018/07/17 14:42",
+//         content: "This is the 6th comment",
+//         like: false,
+//         likes: 1,
+//         smallBar:replyBar,
+//         showSmallBar:false,
+//     },{
+//         key: 8,
+//         username: `user8`,
+//         time: "2018/07/17 14:50",
+//         content: "This is the 8th comment",
+//         like: false,
+//         likes: 1,
+//         smallBar:replyBar,
+//         showSmallBar:false,
+//     }],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+//
+// },{
+//     key:2,
+//     username:`user2`,
+//     time: "2018/07/17 10:20",
+//     content:"This is the 2nd comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[{
+//         key:7,
+//         username:`user7`,
+//         time: "2018/07/17 11:42",
+//         content:"This is the 7th comment",
+//         like:false,
+//         likes:1,
+//         smallBar:replyBar,
+//         showSmallBar:false,
+//     }],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+// },{
+//     key:3,
+//     username:`user3`,
+//     time: "2018/07/17 11:42",
+//     content:"This is the 3rd comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+// },{
+//     key:4,
+//     username:`user4`,
+//     time: "2018/07/17 14:42",
+//     content:"This is the 4th comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+// },{
+//     key:5,
+//     username:`user5`,
+//     time: "2018/07/17 18:42",
+//     content:"This is the 5th comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+// },{
+//     key:9,
+//     username:`user7`,
+//     time: "2018/07/17 20:42",
+//     content:"This is the 7th comment",
+//     like:false,
+//     likes:1,
+//     grade:5,
+//     reply:[],
+//     replyBar:replyBar,
+//     showReplyBar:false,
+// }];
 
-},{
-    key:2,
-    username:`user2`,
-    time: "2018/07/17 10:20",
-    content:"This is the 2nd comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[{
-        key:7,
-        username:`user7`,
-        time: "2018/07/17 11:42",
-        content:"This is the 7th comment",
-        like:false,
-        likes:1,
-        smallBar:replyBar,
-        showSmallBar:false,
-    }],
-    replyBar:replyBar,
-    showReplyBar:false,
-},{
-    key:3,
-    username:`user3`,
-    time: "2018/07/17 11:42",
-    content:"This is the 3rd comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[],
-    replyBar:replyBar,
-    showReplyBar:false,
-},{
-    key:4,
-    username:`user4`,
-    time: "2018/07/17 14:42",
-    content:"This is the 4th comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[],
-    replyBar:replyBar,
-    showReplyBar:false,
-},{
-    key:5,
-    username:`user5`,
-    time: "2018/07/17 18:42",
-    content:"This is the 5th comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[],
-    replyBar:replyBar,
-    showReplyBar:false,
-},{
-    key:9,
-    username:`user7`,
-    time: "2018/07/17 20:42",
-    content:"This is the 7th comment",
-    like:false,
-    likes:1,
-    grade:5,
-    reply:[],
-    replyBar:replyBar,
-    showReplyBar:false,
+let data = [{
+    commentId:'',
+    parentId:'',
+    content:'',
+    rate:'',
+    userId:'',
+    ticketId:'',
+    time:'',
+    replyCount:'',
+    reply:[]
 }];
 
 let IconText = ({ type, text, onClick }) => (
@@ -137,13 +150,49 @@ class TicketComment extends Component {
         super(props);
         if (true);//POST to get data
         this.state = {
-            comment: data,
-            display:false,
-            replyKey:-1,
+            comment:[],
         };
         this.cancelLike = this.cancelLike.bind(this);
         this.detailComment = this.detailComment.bind(this);
     }
+
+    getResult(self, prop) {
+        axios.get("http://localhost:8080/comments")
+            .then(function (response) {
+                console.log(response);
+                alert(JSON.stringify(response.data));
+                self.handleData(response.data);
+                self.setState({
+                    loading: false,
+                    comment: data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    componentDidMount(){
+        this.getResult(this, this.props);
+    }
+    componentWillReceiveProps(nextProps) {
+        this.getResult(this, nextProps);
+    }
+
+    handleData = (commentData) =>{
+        for(let i = 0; i < commentData.length; i++){
+           if(commentData[i].replyCount > 0){
+               let reply = commentData[i].reply;
+               for(let j = 0; j < reply.length; j++){
+                   commentData[i].reply[j].smallBar = replyBar;
+                   commentData[i].reply[j].showSmallBar = false;
+               }
+           }
+            commentData[i].replyBar = replyBar;
+            commentData[i].showReplyBar = false;
+        }
+        data = commentData;
+    };
 
     detailComment(e){
         e.preventDefault();
@@ -170,13 +219,13 @@ class TicketComment extends Component {
 
     showReplyBar = (item) =>{
         for(let i = 0; i < data.length; i++){
-            if(data[i].key === item.key){
+            if(data[i].commentId === item.commentId){
                 data[i].showReplyBar = !item.showReplyBar;
             }
-            else
+            else {
                 data[i].showReplyBar = false;
-            let thisReply = data[i].reply;
-            for(let j = 0; j < thisReply.length; j++){
+            }
+            for(let j = 0; j < data[i].replyCount; j++){
                 data[i].reply[j].showSmallBar = false;
             }
         }
@@ -187,10 +236,10 @@ class TicketComment extends Component {
 
     showSmallBar = (item,thing) =>{
         for(let i = 0; i < data.length; i++){
-            if(data[i].key === item.key){
+            if(data[i].commentId === item.commentId){
                 let thisReply = data[i].reply;
-                for(let j = 0; j < thisReply.length; j++){
-                    if(thisReply[j].key === thing.key){
+                for(let j = 0; j < data[i].replyCount; j++){
+                    if(thisReply[j].commentId === thing.commentId){
                         data[i].reply[j].showSmallBar = !thing.showSmallBar;
                     }
                     else
@@ -235,28 +284,27 @@ class TicketComment extends Component {
                     renderItem={item => (
                     <div>
                         <List.Item
-                            id={item.key}
                             style={{border:'0px'}}
-                            key={item.username}
+                            key={item.userId}
                             actions={[
-                                <IconText type={item.like ? "like" : "like-o"} text={item.likes}/>,
-                                <IconText type="message" text={item.reply.length} onClick={() => {this.showReplyBar(item)}}/>
+                                <IconText type="like-o"/>,
+                                <IconText type="message" text={item.replyCount} onClick={() => {this.showReplyBar(item)}}/>
                             ]}
                         >
                             <List.Item.Meta
                                 align='left'
                                 avatar={<Avatar size='large' icon="user"/>}
-                                title={<span>{item.username}</span>}
+                                title={<span>{item.userId}</span>}
                                 description={
                                     <div>
-                                        <Rate disabled defaultValue={item.grade}/><br/>
+                                        <Rate disabled defaultValue={item.rate/2}/><br/>
                                         {item.content}<br/><br/>
                                     </div>
                                 }
                             />
                             {item.time}
                         </List.Item>
-                        {item.reply.length > 0 ? (
+                        {item.replyCount > 0 ? (
                             <Collapse bordered={false}>
                                 <Panel header="查看回复" key="1" style={{border:'0px'}}>
                                     <Row>
@@ -268,7 +316,6 @@ class TicketComment extends Component {
                                                 renderItem={thing => (
                                                     <div>
                                                         <List.Item
-                                                            id={thing.key}
                                                             style={{border:'0px'}}
                                                             actions={[
                                                                 <Icon type="like-o"/>,
@@ -277,7 +324,7 @@ class TicketComment extends Component {
                                                         >
                                                             <List.Item.Meta
                                                                 avatar={<Avatar icon="user" />}
-                                                                title={<span>{thing.username}</span>}
+                                                                title={<span>{thing.userId}</span>}
                                                                 description={thing.content}
                                                             />
                                                             {thing.time}
@@ -285,7 +332,7 @@ class TicketComment extends Component {
                                                         {thing.showSmallBar ? <div>
                                                             <Row>
                                                                 <Col span={1}/>
-                                                                <span>回复&nbsp;{thing.username}:</span>
+                                                                <span>回复&nbsp;{thing.userId}:</span>
                                                             </Row>
                                                             {thing.smallBar}
                                                             <Row>
@@ -309,7 +356,7 @@ class TicketComment extends Component {
                         {item.showReplyBar ? <div>
                             <Row>
                                 <Col span={1}/>
-                                <span>回复&nbsp;{item.username}:</span>
+                                <span>回复&nbsp;{item.userId}:</span>
                             </Row>
                             {item.replyBar}
                             <Row>
