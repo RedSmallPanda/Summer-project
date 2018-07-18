@@ -15,8 +15,11 @@ import java.util.List;
     @Qualifier("ticketRepository")
     public interface TicketRepository extends CrudRepository<Ticket,Integer> {
         public Ticket save(Ticket ticket);
-        @Query("select ticket  from Ticket ticket where ticket.showId=:showId")
-        public List<Ticket> findAllByShowId(@Param("showId") int showid);
+        public Ticket findByShowId(Integer showId);
+
+        @Query("select MIN(ticket.price) from Ticket ticket where ticket.showId=:showId")
+        public Integer minPrice(@Param("showId") Integer showId);
+
 
 
         //   @Modifying

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void UpdateInfo(User updateUser) {
-        userRepository.updateInfo(updateUser.getGender(),updateUser.getBirthday(),updateUser.getNickname(),updateUser.getPhone(),updateUser.getEmail());
+        userRepository.updateInfo(updateUser.getGender(),updateUser.getBirthday(),updateUser.getNickname(),updateUser.getPhone(),updateUser.getEmail(),updateUser.getUserId());
     }
 
     @Override

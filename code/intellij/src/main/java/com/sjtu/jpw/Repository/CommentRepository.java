@@ -5,11 +5,13 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Repository
 @Table(name="Comment")
 @Qualifier("commentRepository")
 public interface CommentRepository extends CrudRepository<Comment,Integer> {
     public Comment save(Comment comment);
+    public Integer countByTicketId(Integer ticketId);
 
 }

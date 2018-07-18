@@ -1,11 +1,15 @@
 package com.sjtu.jpw.Repository;
 import com.sjtu.jpw.Domain.Shows;
+import com.sjtu.jpw.Domain.Ticket;
+import com.sjtu.jpw.Repository.UtilClass.ShowTicket;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import java.sql.Timestamp;
 import java.util.List;
 
 @Repository
@@ -13,7 +17,10 @@ import java.util.List;
 @Qualifier("showsRepository")
 public interface ShowsRepository extends CrudRepository<Shows,Integer> {
     @Query("select show from Shows show")
-    List<Shows> findAllShows();
+    public List<Shows> findAllShows();
+    @Query("select distinct new com.sjtu.jpw.Repository.UtilClass.ShowTicket(t1.showId,t1.title,t1.info,t1.address,t1.rate) from Shows t1 inner join Ticket t2 on t1.showId=t2.showId where t1.city=:city and t1.type=:showtype and  t2.time between :starttime and :endtime ")
+    public List<ShowTicket> findAllshowandticket(@Param("city")String city, @Param("showtype")String type, @Param("starttime")Timestamp startTime,@Param("endtime")Timestamp endTime);
+
 
     public Shows save(Shows show);
 

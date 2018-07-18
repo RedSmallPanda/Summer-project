@@ -6,6 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.sql.Date;
 
 import javax.persistence.Table;
@@ -20,8 +22,9 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     public  User findByUserId(Integer id);
     public List<User> findAllByUsername(String username);
 
+    @Transactional        //dai ding
     @Modifying
-    @Query("update User user set user.gender=:gender,user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone,user.email=:email")
-    public void updateInfo(@Param("gender")String gender,@Param("birthday")Date birthday, @Param("nickname")String nickname,@Param("phone")String phone,@Param("email")String email);
+    @Query(value="update User user set user.gender=:gender,user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone,user.email=:email where user.userId=:userId")
+    public void updateInfo(@Param("gender")String gender,@Param("birthday")Date birthday, @Param("nickname")String nickname,@Param("phone")String phone,@Param("email")String email,@Param("userId")Integer userId);
 
 }

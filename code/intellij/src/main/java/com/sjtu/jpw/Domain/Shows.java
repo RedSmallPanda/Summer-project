@@ -4,7 +4,7 @@ import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.sql.Timestamp;
+import java.sql.Date;
 import java.util.Objects;
 
 @Entity
@@ -16,8 +16,8 @@ public class Shows {
     private String type;
     private String address;
     private Integer rate;
-    private Timestamp starttime;
-    private Timestamp endtime;
+    private Date starttime;
+    private Date endtime;
 
     @Id
     @Column(name = "show_id", nullable = false)
@@ -89,6 +89,26 @@ public class Shows {
         this.rate = rate;
     }
 
+    @Basic
+    @Column(name = "starttime", nullable = true)
+    public Date getStarttime() {
+        return starttime;
+    }
+
+    public void setStarttime(Date starttime) {
+        this.starttime = starttime;
+    }
+
+    @Basic
+    @Column(name = "endtime", nullable = true)
+    public Date getEndtime() {
+        return endtime;
+    }
+
+    public void setEndtime(Date endtime) {
+        this.endtime = endtime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -100,32 +120,14 @@ public class Shows {
                 Objects.equals(city, shows.city) &&
                 Objects.equals(type, shows.type) &&
                 Objects.equals(address, shows.address) &&
-                Objects.equals(rate, shows.rate);
+                Objects.equals(rate, shows.rate) &&
+                Objects.equals(starttime, shows.starttime) &&
+                Objects.equals(endtime, shows.endtime);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(showId, title, info, city, type, address, rate);
-    }
-
-    @Basic
-    @Column(name = "starttime", nullable = true)
-    public Timestamp getStarttime() {
-        return starttime;
-    }
-
-    public void setStarttime(Timestamp starttime) {
-        this.starttime = starttime;
-    }
-
-    @Basic
-    @Column(name = "endtime", nullable = true)
-    public Timestamp getEndtime() {
-        return endtime;
-    }
-
-    public void setEndtime(Timestamp endtime) {
-        this.endtime = endtime;
+        return Objects.hash(showId, title, info, city, type, address, rate, starttime, endtime);
     }
 }
