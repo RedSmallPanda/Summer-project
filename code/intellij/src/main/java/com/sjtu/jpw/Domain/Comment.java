@@ -10,12 +10,12 @@ import java.util.Objects;
 @Entity
 public class Comment {
     private int commentId;
+    private Integer userId;
+    private Integer showId;
     private Integer parentId;
     private String content;
     private Integer rate;
     private String thread;
-    private Integer userId;
-    private Integer ticketId;
     private Timestamp time;
 
     @Id
@@ -26,6 +26,26 @@ public class Comment {
 
     public void setCommentId(int commentId) {
         this.commentId = commentId;
+    }
+
+    @Basic
+    @Column(name = "user_id", nullable = true)
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    @Basic
+    @Column(name = "show_id", nullable = true)
+    public Integer getShowId() {
+        return showId;
+    }
+
+    public void setShowId(Integer showId) {
+        this.showId = showId;
     }
 
     @Basic
@@ -68,44 +88,6 @@ public class Comment {
         this.thread = thread;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Comment comment = (Comment) o;
-        return commentId == comment.commentId &&
-                Objects.equals(parentId, comment.parentId) &&
-                Objects.equals(content, comment.content) &&
-                Objects.equals(rate, comment.rate) &&
-                Objects.equals(thread, comment.thread);
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(commentId, parentId, content, rate, thread);
-    }
-
-    @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "ticket_id", nullable = true)
-    public Integer getTicketId() {
-        return ticketId;
-    }
-
-    public void setTicketId(Integer ticketId) {
-        this.ticketId = ticketId;
-    }
-
     @Basic
     @Column(name = "time", nullable = true)
     public Timestamp getTime() {
@@ -114,5 +96,26 @@ public class Comment {
 
     public void setTime(Timestamp time) {
         this.time = time;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Comment comment = (Comment) o;
+        return commentId == comment.commentId &&
+                Objects.equals(userId, comment.userId) &&
+                Objects.equals(showId, comment.showId) &&
+                Objects.equals(parentId, comment.parentId) &&
+                Objects.equals(content, comment.content) &&
+                Objects.equals(rate, comment.rate) &&
+                Objects.equals(thread, comment.thread) &&
+                Objects.equals(time, comment.time);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(commentId, userId, showId, parentId, content, rate, thread, time);
     }
 }

@@ -12,6 +12,5 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Qualifier("commentRepository")
 public interface CommentRepository extends CrudRepository<Comment,Integer> {
     public Comment save(Comment comment);
-    public Integer countByTicketId(Integer ticketId);
-
+    public Integer countByShowId(Integer showId);
 }
