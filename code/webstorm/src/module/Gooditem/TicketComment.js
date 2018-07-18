@@ -14,7 +14,7 @@ const Panel = Collapse.Panel;
 //         like: false,
 //         likes: i + 1,
 //         comments: i,
-//         grade: i % 5,
+//         rate: i % 5,
 //         parentId: -1,
 //     });
 // }
@@ -26,7 +26,7 @@ const data = [{
     content:"This is the 1st comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[{
         key: 6,
         username: `user6`,
@@ -49,7 +49,7 @@ const data = [{
     content:"This is the 2nd comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[{
         key:7,
         username:`user7`,
@@ -65,7 +65,7 @@ const data = [{
     content:"This is the 3rd comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[],
 },{
     key:4,
@@ -74,7 +74,7 @@ const data = [{
     content:"This is the 4th comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[],
 },{
     key:5,
@@ -83,7 +83,7 @@ const data = [{
     content:"This is the 5th comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[],
 },{
     key:9,
@@ -92,7 +92,7 @@ const data = [{
     content:"This is the 7th comment",
     like:false,
     likes:1,
-    grade:5,
+    rate:5,
     reply:[],
 }];
 
@@ -172,7 +172,7 @@ class TicketComment extends Component {
                                 title={<span>{item.username}</span>}
                                 description={
                                     <div>
-                                        <Rate disabled defaultValue={item.grade}/><br/>
+                                        <Rate disabled defaultValue={item.rate}/><br/>
                                         {item.content}<br/><br/>
                                     </div>
                                 }

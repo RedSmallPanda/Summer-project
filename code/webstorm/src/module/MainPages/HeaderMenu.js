@@ -238,15 +238,15 @@ class HeaderMenu extends Component {
                     <Row>
                         <Col span={3} onClick={this.handleHomePage}>
                             <div align="center">
-                                <Icon type="global" style={{cursor:"pointer"}}/>
-                                <span style={{cursor:"pointer"}}>聚票网</span>
+                                <Icon type="global" style={{cursor: "pointer"}}/>
+                                <span style={{cursor: "pointer"}}>聚票网</span>
                             </div>
                         </Col>
                         <Col span={7}>
                             <Menu
                                 mode="horizontal"
                                 style={{border: 0}}
-                                selectedKeys={[self.state.current]}
+                                selectedKeys={[self.state.current === "/" ? "/home" : self.state.current]}
                                 defaultSelectedKeys="/home"
                             >
                                 <Menu.Item key="/home" onClick={this.handleHomePage}>首页</Menu.Item>
@@ -263,7 +263,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={3}/>
                         <Col span={1}>
-                            <Avatar icon="user" style={{cursor:"pointer"}} onClick={this.handleAvatar}/>
+                            <Avatar icon="user" style={{cursor: "pointer"}} onClick={this.handleAvatar}/>
                         </Col>
                         <Col span={3}>
                             {loginOrInfo}
@@ -271,6 +271,19 @@ class HeaderMenu extends Component {
                     </Row>
                 </Menu>
                 <BackTop/>
+                <BackTop visibilityHeight={-1} style={{
+                    bottom: 50,
+                    right: 50,
+                    height: 40,
+                    width: 40,
+                    fontSize: 25,
+                    textAlign: "center",
+                    color: "#ffffff",
+                    backgroundColor: "#8f8f8f",
+                    borderRadius: 5,
+                }}>
+                    <Icon type="shopping-cart" key={3} onClick={this.handleInfoSpace}/>
+                </BackTop>
             </div>;
         return (
             renderHeader

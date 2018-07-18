@@ -14,7 +14,7 @@ for (let i = 0; i < 10; i++) {
         like: false,
         likes: i + 1,
         comments: i,
-        grade: i % 5,
+        rate: i % 5,
     });
 }
 
@@ -90,7 +90,7 @@ class Comment extends Component {
                                 title={<a onClick={this.detail}>{item.title}</a>}
                                 description={
                                     <p>
-                                        <Rate allowHalf defaultValue={item.grade}/><br/>
+                                        <Rate allowHalf defaultValue={item.rate}/><br/>
                                         {item.content}<br/><br/>
                                         {item.time}
                                     </p>
