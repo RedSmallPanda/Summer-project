@@ -11,7 +11,7 @@ const Login = Form.create()(
             //   const form = this.formRef.props.form;
             //value's type need to transform
             if(String(value).length>10){callback("username >10 ");}
-            else {callback("username<10 ")}
+            else {callback("username<10 ");}
             callback()
         };
         render() {

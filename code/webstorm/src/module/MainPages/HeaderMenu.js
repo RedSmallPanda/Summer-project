@@ -79,6 +79,17 @@ class HeaderMenu extends Component {
             current: window.location.pathname,
         });
     };
+    handleShoppingCart = () =>{
+        browserHistory.push({
+            pathname:'/info',
+            state:{
+                SelectedKeys: '1'
+            }
+        });
+        this.setState({
+            current: window.location.pathname,
+        });
+    };
 
     handleAdminSpace = (e) =>{
         browserHistory.push({
@@ -270,9 +281,12 @@ class HeaderMenu extends Component {
                         </Col>
                     </Row>
                 </Menu>
-                <BackTop/>
-                <BackTop visibilityHeight={-1} style={{
+                <BackTop style={{
                     bottom: 50,
+                    right: 50,
+                }}/>
+                <BackTop visibilityHeight={-1} style={{
+                    bottom: 100,
                     right: 50,
                     height: 40,
                     width: 40,
@@ -282,7 +296,7 @@ class HeaderMenu extends Component {
                     backgroundColor: "#8f8f8f",
                     borderRadius: 5,
                 }}>
-                    <Icon type="shopping-cart" key={3} onClick={this.handleInfoSpace}/>
+                    <Icon type="shopping-cart" onClick={this.handleShoppingCart}/>
                 </BackTop>
             </div>;
         return (
