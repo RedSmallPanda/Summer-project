@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
+import axios from 'axios';
 
 const data = [{
     key: '1',
@@ -59,8 +60,8 @@ class Order extends Component {
         super(props);
         this.state = {
             selectedRowKeys: [], // Check here to configure the default column
-            loading: false,
-            data:data,
+            loading: true,
+            data: [],
         };
         this.columns = [{
             title: '缩略图',
@@ -94,10 +95,27 @@ class Order extends Component {
                 key: 'action',
                 render: () => (
                     <span>
-      <a onClick={this.handleRefund}>退款</a>
-    </span>
+                        <a onClick={this.handleRefund}>退款</a>
+                    </span>
                 ),
             }];
+    }
+    componentDidMount(){
+        axios.get("/getCurrentOrder",{
+            params:{
+                userId: 1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                this.setState({
+                    loading: false,
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     // start = () => {
