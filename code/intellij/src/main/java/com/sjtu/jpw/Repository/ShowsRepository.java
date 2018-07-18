@@ -16,5 +16,6 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
     List<Shows> findAllShows();
 
     public Shows save(Shows show);
+    Shows findFirstByShowId(int showId);
 
 }

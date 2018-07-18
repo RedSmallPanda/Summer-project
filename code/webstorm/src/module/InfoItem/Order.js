@@ -60,8 +60,8 @@ class Order extends Component {
         super(props);
         this.state = {
             selectedRowKeys: [], // Check here to configure the default column
-            loading: true,
-            data: [],
+            loading: false,
+            data:[],
         };
         this.columns = [{
             title: '缩略图',
@@ -76,15 +76,15 @@ class Order extends Component {
                 title: '票品信息',
                 dataIndex: 'detailInfo',
                 render: (text, record) => (<div>
-                    <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
-                    <p>{record.detailInfo.date}</p>
+                    <p><a onClick={this.handleDetail}>{record.detailInfo.showName}</a></p>
+                    <p>{record.detailInfo.showDate}</p>
                 </div>)
             },{
                 title: '单价',
                 dataIndex: 'price',
             }, {
                 title: '数量',
-                dataIndex: 'amount',
+                dataIndex: 'number',
                 //render: (text, record) => (<InputNumber min={1} max={10} defaultValue={record.amount} onChange={amountOnChange} />),
             },{
                 title: '金额',
@@ -95,27 +95,10 @@ class Order extends Component {
                 key: 'action',
                 render: () => (
                     <span>
-                        <a onClick={this.handleRefund}>退款</a>
-                    </span>
+      <a onClick={this.handleRefund}>退款</a>
+    </span>
                 ),
             }];
-    }
-    componentDidMount(){
-        axios.get("/getCurrentOrder",{
-            params:{
-                userId: 1,
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                this.setState({
-                    loading: false,
-                    data: response.data,
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     }
 
     // start = () => {
@@ -134,6 +117,25 @@ class Order extends Component {
     //     this.setState({ selectedRowKeys });
     // }
 
+    componentDidMount(){
+        let self = this;
+        axios.get("/getCurrentOrder",{
+            params:{
+                userId: 1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    loading: false,
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     handleRefund = () =>{
         browserHistory.push('/refundPage')
     };
@@ -151,12 +153,10 @@ class Order extends Component {
         // const hasSelected = selectedRowKeys.length > 0;
         let orderTable=
             <div>
-                <Table columns={this.columns} dataSource={data}
+                <Table columns={this.columns} dataSource={this.state.data}
                        pagination={{
                            pageSize: 10,
-                       }}
-                       size="small"
-                />
+                       }}/>
             </div>;
         return(
             orderTable
