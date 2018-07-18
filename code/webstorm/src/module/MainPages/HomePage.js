@@ -41,13 +41,14 @@ class HomePage extends Component{
             </div>;
 
         const homeRecommend =
-            <div style={{marginTop:10}}>
+            <div style={{marginTop: 10}}>
                 <div>
                     <Row type="flex" justify="space-around">
                         <Col span={4}>
                             <Card
-                                style={{ width: 200 }}
-                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
+                                style={{width: 200}}
+                                cover={<img alt="example"
+                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
                             >
                                 <Meta
                                     title="周杰伦演唱会"
@@ -57,8 +58,9 @@ class HomePage extends Component{
                         </Col>
                         <Col span={4}>
                             <Card
-                                style={{ width: 200 }}
-                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
+                                style={{width: 200}}
+                                cover={<img alt="example"
+                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
                             >
                                 <Meta
                                     title="周杰伦演唱会"
@@ -68,8 +70,9 @@ class HomePage extends Component{
                         </Col>
                         <Col span={4}>
                             <Card
-                                style={{ width: 200 }}
-                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
+                                style={{width: 200}}
+                                cover={<img alt="example"
+                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
                             >
                                 <Meta
                                     title="周杰伦演唱会"
@@ -79,8 +82,9 @@ class HomePage extends Component{
                         </Col>
                         <Col span={4}>
                             <Card
-                                style={{ width: 200 }}
-                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
+                                style={{width: 200}}
+                                cover={<img alt="example"
+                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
                             >
                                 <Meta
                                     title="周杰伦演唱会"
@@ -90,8 +94,9 @@ class HomePage extends Component{
                         </Col>
                         <Col span={4}>
                             <Card
-                                style={{ width: 200 }}
-                                cover={<img alt="example" src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg" />}
+                                style={{width: 200}}
+                                cover={<img alt="example"
+                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
                             >
                                 <Meta
                                     title="周杰伦演唱会"
