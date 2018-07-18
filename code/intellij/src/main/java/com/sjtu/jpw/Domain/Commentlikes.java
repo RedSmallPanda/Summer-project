@@ -8,7 +8,6 @@ import java.util.Objects;
 public class Commentlikes {
     private int userId;
     private int commentId;
-    private Comment commentByCommentId;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -45,13 +44,4 @@ public class Commentlikes {
         return Objects.hash(userId, commentId);
     }
 
-    @ManyToOne
-    @JoinColumn(name = "comment_id", referencedColumnName = "comment_id", nullable = false)
-    public Comment getCommentByCommentId() {
-        return commentByCommentId;
-    }
-
-    public void setCommentByCommentId(Comment commentByCommentId) {
-        this.commentByCommentId = commentByCommentId;
-    }
 }
