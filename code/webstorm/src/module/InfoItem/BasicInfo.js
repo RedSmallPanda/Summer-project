@@ -4,15 +4,16 @@ import {
     Form, Radio, Button, Input, DatePicker,
 } from 'antd';
 import moment from 'moment';
+import axios from "axios/index";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 
-class Demo extends React.Component {
-    state={
-        formData:{
+class Demo extends Component {
+    state = {
+        formData: {
             name:'王小明',
-            sex:'male',
+            gender:'male',
             nickname:'暗影之王',
             email:'12345678@qq.com',
             phone:'12345678901',
@@ -22,9 +23,34 @@ class Demo extends React.Component {
             province:'zhejiang',
             city:'hangzhou',
             district:'xihu'
-
         },
     };
+
+    componentDidMount(){
+        let self = this;
+        let strCookie = document.cookie;
+        let arrCookie = strCookie.split(";");
+        for(let i = 0; i < arrCookie.length; i++){
+            let arr = arrCookie[i].split("=");
+            if("username" === arr[0] && arr[1]){
+                axios.get("http://localhost:8080/userInfo", {
+                    params: {
+                        username: arr[1],
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        self.setState({
+                            loading: false,
+                            formData: response.data,
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        }
+    }
 
     nicknameOnChange = () => {
         let newForm=this.state.formData;
@@ -63,10 +89,10 @@ class Demo extends React.Component {
         });
     };
 
-    sexOnChange = (e) => {
+    genderOnChange = (e) => {
         console.log('radio checked', e.target.value);
         let newForm=this.state.formData;
-        newForm.sex=e.target.value;
+        newForm.gender=e.target.value;
         this.setState({
             formData:newForm,
         });
@@ -87,7 +113,7 @@ class Demo extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 6 },
-            wrapperCol: { span: 7},
+            wrapperCol: { span: 7 },
         };
         return (
             <div>
@@ -113,7 +139,7 @@ class Demo extends React.Component {
                     >
                         {getFieldDecorator('radio-group')(
                             <div>
-                                <RadioGroup onChange={this.sexOnChange} defaultValue={this.state.formData.sex}>
+                                <RadioGroup onChange={this.genderOnChange} defaultValue={this.state.formData.gender}>
                                     <Radio value="male">男</Radio>
                                     <Radio value="female">女</Radio>
                                 </RadioGroup>

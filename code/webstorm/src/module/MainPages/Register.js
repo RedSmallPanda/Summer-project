@@ -12,7 +12,7 @@ const Register = Form.create()(
             if(String(value).length>10){callback("username >10 ");}
             else {callback("username<10 ")}
             callback()
-        }
+        };
         render() {
             const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
