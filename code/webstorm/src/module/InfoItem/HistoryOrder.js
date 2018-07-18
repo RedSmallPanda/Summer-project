@@ -119,7 +119,7 @@ class Order extends Component {
         // const hasSelected = selectedRowKeys.length > 0;
         let orderTable=
             <div>
-                <Table columns={this.columns} dataSource={data} />
+                <Table columns={this.columns} dataSource={data} size="small"/>
             </div>;
         return(
             orderTable

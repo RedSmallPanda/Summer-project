@@ -136,7 +136,9 @@ class Order extends Component {
                 <Table columns={this.columns} dataSource={data}
                        pagination={{
                            pageSize: 10,
-                       }}/>
+                       }}
+                       size="small"
+                />
             </div>;
         return(
             orderTable

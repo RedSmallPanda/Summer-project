@@ -11,7 +11,7 @@ const data={
     location:'梅赛德斯奔驰文化中心',
     rate:4.5,
     img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
-}
+};
 
 class DemoRefundPage extends Component {
     state={

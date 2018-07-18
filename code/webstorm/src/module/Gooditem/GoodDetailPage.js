@@ -75,7 +75,9 @@ class GoodDetailPage extends Component{
         this.setState({pickticknum: value});
     };
 
+    handleShopCart = () =>{
 
+    };
 
     render(){
         let timebutton=[];

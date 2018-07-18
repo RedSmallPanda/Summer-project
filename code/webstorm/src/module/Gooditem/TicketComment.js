@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
-import { List, Icon, Rate, Avatar, Button, Collapse, Row, Col} from 'antd';
-import { browserHistory } from 'react-router';
+import React, {Component} from "react";
+import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message} from "antd";
+import {browserHistory} from "react-router";
 
 const Panel = Collapse.Panel;
+const { TextArea } = Input;
 
 // for (let i = 0; i < 100; i++) {
 //     comments.push({
@@ -19,6 +20,15 @@ const Panel = Collapse.Panel;
 //     });
 // }
 
+const replyBar = <div>
+    <Row>
+        <Col span={1}/>
+        <Col span={22}>
+            <TextArea rows={2}/>
+        </Col>
+    </Row>
+</div>;
+
 const data = [{
     key:1,
     username:`user1`,
@@ -34,6 +44,8 @@ const data = [{
         content: "This is the 6th comment",
         like: false,
         likes: 1,
+        smallBar:replyBar,
+        showSmallBar:false,
     },{
         key: 8,
         username: `user8`,
@@ -41,7 +53,12 @@ const data = [{
         content: "This is the 8th comment",
         like: false,
         likes: 1,
-    }]
+        smallBar:replyBar,
+        showSmallBar:false,
+    }],
+    replyBar:replyBar,
+    showReplyBar:false,
+
 },{
     key:2,
     username:`user2`,
@@ -57,7 +74,11 @@ const data = [{
         content:"This is the 7th comment",
         like:false,
         likes:1,
-    }]
+        smallBar:replyBar,
+        showSmallBar:false,
+    }],
+    replyBar:replyBar,
+    showReplyBar:false,
 },{
     key:3,
     username:`user3`,
@@ -67,6 +88,8 @@ const data = [{
     likes:1,
     grade:5,
     reply:[],
+    replyBar:replyBar,
+    showReplyBar:false,
 },{
     key:4,
     username:`user4`,
@@ -76,6 +99,8 @@ const data = [{
     likes:1,
     grade:5,
     reply:[],
+    replyBar:replyBar,
+    showReplyBar:false,
 },{
     key:5,
     username:`user5`,
@@ -85,6 +110,8 @@ const data = [{
     likes:1,
     grade:5,
     reply:[],
+    replyBar:replyBar,
+    showReplyBar:false,
 },{
     key:9,
     username:`user7`,
@@ -94,6 +121,8 @@ const data = [{
     likes:1,
     grade:5,
     reply:[],
+    replyBar:replyBar,
+    showReplyBar:false,
 }];
 
 let IconText = ({ type, text, onClick }) => (
@@ -137,7 +166,55 @@ class TicketComment extends Component {
         this.setState({
             comment: data,
         });
-    }
+    };
+
+    showReplyBar = (item) =>{
+        for(let i = 0; i < data.length; i++){
+            if(data[i].key === item.key){
+                data[i].showReplyBar = !item.showReplyBar;
+            }
+            else
+                data[i].showReplyBar = false;
+            let thisReply = data[i].reply;
+            for(let j = 0; j < thisReply.length; j++){
+                data[i].reply[j].showSmallBar = false;
+            }
+        }
+        this.setState({
+            comment:data
+        })
+    };
+
+    showSmallBar = (item,thing) =>{
+        for(let i = 0; i < data.length; i++){
+            if(data[i].key === item.key){
+                let thisReply = data[i].reply;
+                for(let j = 0; j < thisReply.length; j++){
+                    if(thisReply[j].key === thing.key){
+                        data[i].reply[j].showSmallBar = !thing.showSmallBar;
+                    }
+                    else
+                        data[i].reply[j].showSmallBar = false;
+                }
+                data[i].showReplyBar = false;
+            }
+            else
+                data[i].showReplyBar = false;
+        }
+        this.setState({
+            comment:data
+        })
+    };
+
+    sendComment = (item) =>{
+        message.success("发表成功",2);
+        this.showReplyBar(item);
+    };
+
+    sendSmallComment = (item,thing) =>{
+        message.success("发表成功",2);
+        this.showSmallBar(item,thing);
+    };
 
     render(){
         return (
@@ -163,7 +240,7 @@ class TicketComment extends Component {
                             key={item.username}
                             actions={[
                                 <IconText type={item.like ? "like" : "like-o"} text={item.likes}/>,
-                                <IconText type="message" text={item.reply.length}/>
+                                <IconText type="message" text={item.reply.length} onClick={() => {this.showReplyBar(item)}}/>
                             ]}
                         >
                             <List.Item.Meta
@@ -181,31 +258,45 @@ class TicketComment extends Component {
                         </List.Item>
                         {item.reply.length > 0 ? (
                             <Collapse bordered={false}>
-                                <Panel header="查看回复" key="1">
+                                <Panel header="查看回复" key="1" style={{border:'0px'}}>
                                     <Row>
                                         <Col span={1}/>
                                         <Col span={22}>
                                             <List
                                                 itemLayout="horizontal"
                                                 dataSource={item.reply}
-                                                renderItem={item => (
+                                                renderItem={thing => (
                                                     <div>
                                                         <List.Item
-                                                            id={item.key}
+                                                            id={thing.key}
+                                                            style={{border:'0px'}}
                                                             actions={[
                                                                 <Icon type="like-o"/>,
-                                                                <Icon type="message"/>
+                                                                <Icon type="message" onClick={() => {this.showSmallBar(item,thing)}}/>
                                                             ]}
                                                         >
                                                             <List.Item.Meta
                                                                 avatar={<Avatar icon="user" />}
-                                                                title={<span>{item.username}</span>}
-                                                                description={item.content}
+                                                                title={<span>{thing.username}</span>}
+                                                                description={thing.content}
                                                             />
-                                                            {item.time}
+                                                            {thing.time}
                                                         </List.Item>
+                                                        {thing.showSmallBar ? <div>
+                                                            <Row>
+                                                                <Col span={1}/>
+                                                                <span>回复&nbsp;{thing.username}:</span>
+                                                            </Row>
+                                                            {thing.smallBar}
+                                                            <Row>
+                                                                <br/>
+                                                                <Col span={20}/>
+                                                                <Col span={2}>
+                                                                    <Button type="primary" onClick={() => {this.sendSmallComment(item,thing)}}>发表回复</Button>
+                                                                </Col>
+                                                            </Row>
+                                                        </div> : (<div/>)}
                                                     </div>
-
                                                 )}
                                             />
                                         </Col>
@@ -213,9 +304,22 @@ class TicketComment extends Component {
                                 </Panel>
                             </Collapse>
                         ):(
-                            <div></div>
+                            <div/>
                         )}
-
+                        {item.showReplyBar ? <div>
+                            <Row>
+                                <Col span={1}/>
+                                <span>回复&nbsp;{item.username}:</span>
+                            </Row>
+                            {item.replyBar}
+                            <Row>
+                                <br/>
+                                <Col span={20}/>
+                                <Col span={2}>
+                                    <Button type="primary" onClick={() => {this.sendComment(item)}}>发表回复</Button>
+                                </Col>
+                            </Row>
+                        </div> : (<div/>)}
                     </div>
                     )}
                 />
