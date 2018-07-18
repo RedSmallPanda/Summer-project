@@ -3,24 +3,24 @@ import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 
-const listData = [];
-for (let i = 0; i < 10; i++) {
-    listData.push({
-        key: i,
-        image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
-        title: `jpw ${i}`,//name
-        start: "2018/07/02",
-        end: `2018/07/${(7 + i) < 10 ? `0${7 + i}` : 7 + i}`,
-        address: "SE 3-101",
-        grade: 4.5,
-        description: 'description',
-        stock: 0,
-        heart: true,
-        comments: i,
-        price: 99.99,
-        city: "sh",
-    });
-}
+let listData = [];
+// for (let i = 0; i < 10; i++) {
+//     listData.push({
+//         key: i,
+//         image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
+//         title: `jpw ${i}`,//name
+//         starttime: "2018/07/02",
+//         endtime: `2018/07/${(7 + i) < 10 ? `0${7 + i}` : 7 + i}`,
+//         address: "SE 3-101",
+//         rate: 4.5,
+//         info: 'description',
+//         stock: 0,
+//         heart: true,
+//         comments: i,
+//         price: 99.99,
+//         city: "sh",
+//     });
+// }
 
 let IconText = ({ type, text, onClick}) => (
     <span>
@@ -54,7 +54,8 @@ class ResultList extends Component {
         })
             .then(function (response) {
                 console.log(response);
-                alert(JSON.stringify(response.data[0]));
+                // alert(JSON.stringify(response.data[0]));
+                listData = response.data;
                 self.setState({
                     loading: false,
                     data: listData,
@@ -88,13 +89,13 @@ class ResultList extends Component {
 
     //judge out-of-date
     //todo: judge by exact time
-    judgeDate(end){
+    judgeDate(endTime){
         let date = new Date();
         let year = date.getFullYear();
         let month = date.getMonth()+1;
         let day = date.getDate();
-        let currentDate = year + "/" + (month < 10 ? "0" : "") + month + "/" + (day < 10 ? "0" : "") + day;
-        return currentDate < end;
+        let currentDateTime = year + "-" + (month < 10 ? "0" : "") + month + "-" + (day < 10 ? "0" : "") + day;
+        return currentDateTime < endTime;
     }
 
     detail(e){
@@ -145,10 +146,10 @@ class ResultList extends Component {
                                                    href={
                                                        "http://connect.qq.com/widget/shareqq/index.html?"
                                                        + "url=http://www.baidu.com" //detail page
-                                                       + "&title=(ticket)" //show title
+                                                       + "&title=" + item.title//show title
                                                        + "&pics=https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"
-                                                       + "&summary=测试qq分享summary"
-                                                       + "&desc=qq分享简述"
+                                                       + "&summary=" + item.info
+                                                       + "&desc=快上聚票网看看"
                                                    }>
                                                     <Icon type="qq"/> QQ
                                                 </a>
@@ -185,21 +186,21 @@ class ResultList extends Component {
                                 title={<a onClick={this.detail}>{item.title}</a>}
                                 description={
                                     <p>
-                                        {item.description}<br/><br/>
-                                        <Icon type="calendar"/>{" " + item.start + "-" + item.end}<br/>
+                                        {item.info}<br/><br/>
+                                        <Icon type="calendar"/>{" " + item.starttime + "-" + item.endtime}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.grade}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate}/><br/>
                                     </p>
                                 }
                             />
                             {
                                 <div>
                                     <h3><b>{"￥" + item.price}</b>{" 起"}</h3>
-                                    <Button type={this.judgeDate(item.end) && item.stock ? "primary" : "dashed"}
+                                    <Button type={this.judgeDate(item.endtime) && item.stock ? "primary" : "dashed"}
                                             size="large"
                                             onClick={this.detail}
                                     >{
-                                        this.judgeDate(item.end) ? (item.stock ? "购买" : "售罄") : "过期"
+                                        this.judgeDate(item.endtime) ? (item.stock ? "购买" : "售罄") : "过期"
                                     }</Button>
                                 </div>
                             }
