@@ -27,29 +27,29 @@ class ShopCart extends Component {
             key: 'img',
             render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
         }, {
-                title: '票品信息',
-                dataIndex: 'detailInfo',
-                render: (text, record) => (<div>
-                    <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
-                    <p>{record.detailInfo.date}</p>
-                </div>)
-            },{
-                title: '单价',
-                dataIndex: 'price',
-            }, {
-                title: '数量',
-                dataIndex: 'amount',
-            },{
-                title: '金额',
-                dataIndex: 'totalPrice',
-            },
+            title: '票品信息',
+            dataIndex: 'detailInfo',
+            render: (text, record) => (<div>
+                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
+                <p>{record.detailInfo.date}</p>
+            </div>)
+        },{
+            title: '单价',
+            dataIndex: 'price',
+        }, {
+            title: '数量',
+            dataIndex: 'amount',
+        },{
+            title: '金额',
+            dataIndex: 'totalPrice',
+        },
             {
                 title: '操作',
                 key: 'action',
                 render: () => (
                     <span>
-      <a onClick={this.handleBuy}>购买</a>
-    </span>
+                        <a onClick={this.handleBuy}>购买</a>
+                    </span>
                 ),
             }];
     }
@@ -68,7 +68,9 @@ class ShopCart extends Component {
                 <Table columns={this.columns} dataSource={data}
                        pagination={{
                            pageSize: 10,
-                       }}/>
+                       }}
+                       size="small"
+                />
             </div>;
         return(
             orderTable
