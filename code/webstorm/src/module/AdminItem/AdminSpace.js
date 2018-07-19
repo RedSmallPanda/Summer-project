@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu } from 'antd'
+import { Row, Col, Menu, Icon } from 'antd'
 import TicketManage from './TicketManage'
 import SalesData from './SalesData'
 import UserManage from './UserManage'
@@ -59,10 +59,10 @@ class AdminSpace extends Component{
             selectedKeys={[this.state.SelectedKeys]}
             mode="inline"
         >
-            <Menu.Item key="1">用户管理</Menu.Item>
-            <Menu.Item key="2">票品管理</Menu.Item>
-            <Menu.Item key="3">退款审核</Menu.Item>
-            <Menu.Item key="4">销量统计</Menu.Item>
+            <Menu.Item key="1"><Icon type="usergroup-add" />用户管理</Menu.Item>
+            <Menu.Item key="2"><Icon type="book" />票品管理</Menu.Item>
+            <Menu.Item key="3"><Icon type="exception" />退款审核</Menu.Item>
+            <Menu.Item key="4"><Icon type="area-chart" />销量统计</Menu.Item>
         </Menu>
         //alert
         let adminBar =
