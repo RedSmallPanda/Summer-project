@@ -2,20 +2,15 @@ package com.sjtu.jpw.Service.ServiceImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.sjtu.jpw.Domain.Collection;
-import com.sjtu.jpw.Domain.Shows;
-import com.sjtu.jpw.Domain.Ticket;
 import com.sjtu.jpw.Repository.CollectionRepository;
 import com.sjtu.jpw.Repository.CommentRepository;
 import com.sjtu.jpw.Repository.ShowsRepository;
 import com.sjtu.jpw.Repository.TicketRepository;
-import com.sjtu.jpw.Repository.UtilClass.ShowTicket;
+import com.sjtu.jpw.Domain.AssistDomain.ShowTicket;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -29,6 +24,7 @@ public class TicketServiceImpl implements TicketService {
     private CommentRepository commentRepository;
     @Autowired
     private CollectionRepository collectionRepository;
+
 
 
     @Override
@@ -55,11 +51,26 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public JsonArray UserCollection(Integer userId) {
+
+        List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowsCollection(userId));
+
+        for(int i=0;i<itemList.size();i++){
+            ShowTicket temp=itemList.get(i);
+            Integer showId=temp.getShowId();
+            Integer commentNum=commentRepository.countByShowId(showId);
+            Integer minPrice=ticketRepository.minPrice(showId);
+            temp.setCommentNum(commentNum);
+            temp.setMinPrice(minPrice);
+            temp.setIsLike(1);
+            System.out.println(temp.toString());
+        }
         return null;
     }
 
     @Override
     public JsonArray CartTickets(Integer userId) {
+
+
         return null;
     }
 }

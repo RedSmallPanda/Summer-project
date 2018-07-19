@@ -1,4 +1,4 @@
-package com.sjtu.jpw.Repository.UtilClass;
+package com.sjtu.jpw.Domain.AssistDomain;
 
 public class ShowTicket {
     private Integer showId;

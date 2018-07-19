@@ -29,7 +29,7 @@ import com.google.gson.Gson;
 @RestController
 public class ShowsController {
     @Autowired
-    private ShowsRepository showRepository;
+    /*private ShowsRepository showRepository;
 
     @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
     public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
@@ -53,7 +53,7 @@ public class ShowsController {
             out.flush();
         }
         Thread.currentThread().sleep(500);
-    }
+    }*/
 /*
 
     demo- how to use service
@@ -105,7 +105,7 @@ public class ShowsController {
     }*/
 
 
-/*    private TicketService ticketService;
+    private TicketService ticketService;
     @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
     public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -116,14 +116,15 @@ public class ShowsController {
         Timestamp temp1=Timestamp.valueOf(timestr1);
         Timestamp temp2=Timestamp.valueOf(timestr2);
 
-         System.out.println(ticketService.AllTickets("jh","jhjhj",temp1,temp2,1));
+         System.out.println("alltickets: "+ticketService.AllTickets("jh","jhjhj",temp1,temp2,1));
 
+        ticketService.UserCollection(1);
 
     //    System.out.println(demo);
         out.print("asda");
         if(out!=null) {
             out.flush();
         }
-    }*/
+    }
 
 }
