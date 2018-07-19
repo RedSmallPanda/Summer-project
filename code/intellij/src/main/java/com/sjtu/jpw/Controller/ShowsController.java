@@ -105,18 +105,18 @@ public class ShowsController {
     }*/
 
 
-   /* private TicketService ticketService;
+/*    private TicketService ticketService;
     @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
     public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         String timestr1="2018-07-18 00:00:00";
-        String timestr2="2018-07-19 23:00:00";
+        String timestr2="2018-07-30 23:00:00";
         Timestamp temp1=Timestamp.valueOf(timestr1);
         Timestamp temp2=Timestamp.valueOf(timestr2);
 
-         ticketService.AllTickets("jh","jhjhj",temp1,temp2);
+         System.out.println(ticketService.AllTickets("jh","jhjhj",temp1,temp2,1));
 
 
     //    System.out.println(demo);

@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 public interface TicketService {
    // impl zhong shi xian  static JsonObject ComposeItem(Integer showId);
-    JsonArray AllTickets(String city, String type, Timestamp startTime,Timestamp endTime);
+    String AllTickets(String city, String type, Timestamp startTime,Timestamp endTime,Integer userId);
     JsonArray UserCollection(Integer userId);
     JsonArray CartTickets(Integer userId);
 
