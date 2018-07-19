@@ -2,6 +2,7 @@ import React from 'react';
 import {Button, Modal, Form, Input,Icon,Row, Col} from 'antd'
 import VCode from "./VCode"
 import "../../css/App.css"
+import "../../css/Login.css"
 
 
 const FormItem = Form.Item;
@@ -62,6 +63,7 @@ const Login = Form.create()(
             const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
             return (
+                <div className="loginModal">
                 <Modal
                     visible={visible}
                     title={null}
@@ -70,6 +72,7 @@ const Login = Form.create()(
                     maskClosable={false}
                     destroyOnClose={true}
                     width="400px"
+
                 >
                     <div className="padding">
                         <p className="letters">请登录</p>
@@ -132,11 +135,23 @@ const Login = Form.create()(
                                     </Row>
                                 </p>)}
                             </FormItem>
-                            <Button type="primary" onClick={onLogin}> 登录 </Button>
-                            <FormItem/>
+                            <Row>
+                                <Col span={6}>
+                                    <Button type="primary" onClick={onLogin} size="large"> 登录 </Button>
+                                </Col>
+                                <Col span={6}>
+                                    <Row style={{height:'18px'}}/>
+                                    <span style={{marginBottom:"0px",cursor: "pointer"}} >忘记密码？</span>
+                                </Col>
+                                <Col span={7}/>
+                                <Col span={5}>
+                                    <Button type="normal" onClick={this.props.loginToRegister} size="large"> 注册 </Button>
+                                </Col>
+                            </Row>
                         </Form>
                     </div>
                 </Modal>
+                </div>
             );
         }
     }

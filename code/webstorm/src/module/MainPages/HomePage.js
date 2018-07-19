@@ -31,8 +31,8 @@ class HomePage extends Component{
             </div>;
 
         const homeCarousel =
-            <div style={{marginTop:20}}>
-                <Carousel autoplay effect="fade">
+            <div style={{marginTop:20,}}>
+                <Carousel autoplay effect="scrollx" style={{height:'500px'}}>
                     <div><h3>1</h3></div>
                     <div><h3>2</h3></div>
                     <div><h3>3</h3></div>

@@ -24,6 +24,7 @@ const Register = Form.create()(
                     footer={null}
                     maskClosable={false}
                     destroyOnClose={true}
+                    width="400px"
                 >
                     <div className="padding">
                         <p className="letters">注册</p>
@@ -73,7 +74,7 @@ const Register = Form.create()(
                                 })(
                                     <p>
                                         <Input className="input" placeholder="email"
-                                               prefix={<Icon type="api" spin={true}/>}/>
+                                               prefix={<Icon type="mail"/>}/>
                                     </p>
                                 )}
                             </FormItem>
@@ -102,8 +103,7 @@ const Register = Form.create()(
                                     </p>
                                 )}
                             </FormItem>
-                            <Button type="primary" onClick={onLogin}> 注册 </Button>
-                            <FormItem/>
+                            <Button type="primary" onClick={onLogin} size="large"> 注册 </Button>
                         </Form>
                     </div>
                 </Modal>
