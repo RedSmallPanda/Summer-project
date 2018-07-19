@@ -17,7 +17,7 @@ public class OrdersController {
     @Resource(name="ordersService")
     private OrdersService ordersService;
     @RequestMapping(value="/getCurrentOrder",produces="application/json;charset=UTF-8")
-    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+    public void GetCurrentOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         int userId=Integer.parseInt(request.getParameter("userId"));
