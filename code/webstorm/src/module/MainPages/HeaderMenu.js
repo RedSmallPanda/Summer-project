@@ -161,6 +161,13 @@ class HeaderMenu extends Component {
         });
     };
 
+    loginToRegister = () =>{
+        this.setState({
+            visible:false,
+            regVisible:true,
+        })
+    };
+
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     };
@@ -238,6 +245,7 @@ class HeaderMenu extends Component {
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onLogin={this.handleCreate}
+                    loginToRegister={this.loginToRegister}
                 />
                 <Register
                     wrappedComponentRef={this.saveRegFormRef}
@@ -266,7 +274,7 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={7}>
                             <Search
-                                placeholder="搜索   TODO: 分享  购物车  销量  回复  退款申请  找回密码"
+                                placeholder="搜索   TODO:  销量  退款申请  找回密码"
                                 onSearch={value => this.handleSearch(value)}
                                 defaultValue={this.state.search}
                                 enterButton

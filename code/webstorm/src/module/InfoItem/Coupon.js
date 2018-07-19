@@ -1,9 +1,10 @@
 import React, {Component} from "react";
 import {Row, Col} from 'antd';
 import '../../css/Coupon.css';
+import axios from "axios/index";
 
 
-const discountData=[
+const dsctData=[
     {
         name:'聚票优惠券',
         discount:'30',
@@ -66,7 +67,7 @@ class CouponItem extends Component{
                             <Row>
                                 <Col span={1}/>
                                 <Col span={11}>
-                                    <h4 style={{fontFamily:"Hiragino Sans GB", color:'#FFFFFF'}}>{this.props.data.name}</h4>
+                                    <h4 style={{fontFamily:"Hiragino Sans GB", color:'#FFFFFF'}}>{this.props.data.title}</h4>
                                 </Col>
                                 <Col span={11}>
                                     <h2  style={{fontWeight:'900',float:'right'}}>￥{this.props.data.discount}</h2>
@@ -76,8 +77,8 @@ class CouponItem extends Component{
                         </div>
                         <div style={{height:'60px'}}/>
                         <div style={{height:'40px',lineHeight:'20px',fontSize:'20px',fontFamily:'Hiragino Sans GB'}}>
-                            <h6>&emsp;满{this.props.data.price}可用{this.props.data.discount}元优惠券</h6>
-                            <h6>&emsp;{this.props.data.beginDate}-{this.props.data.endDate}</h6>
+                            <h6>&emsp;满{this.props.data.discCond}可用{this.props.data.discount}元优惠券</h6>
+                            <h6>&emsp;{this.props.data.begindate}-{this.props.data.enddate}</h6>
                         </div>
                     </div>
 
@@ -86,9 +87,45 @@ class CouponItem extends Component{
 }
 
 class Coupon extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            data: [],
+        };
+    }
+
+    componentDidMount(){
+        let self = this;
+        axios.get("/getMyCoupon",{
+            params:{
+                userId: 1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     render(){
         let arr=[];
         let i=0;
+        let j=0;
+        let currentData=this.state.data;
+        let discountData=[];
+        for(j;j<currentData.length;j++){
+            let num=parseInt(currentData[j].number);
+            let k=0;
+            for(k;k<num;k++){
+                discountData.push(currentData[j]);
+            }
+        }
         for(i;i<discountData.length-1;i+=2){
             let res=
                 <div>
