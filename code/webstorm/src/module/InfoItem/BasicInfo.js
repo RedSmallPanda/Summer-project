@@ -13,7 +13,7 @@ class Demo extends Component {
     state = {
         formData: {
             name:'王小明',
-            gender:'male',
+            gender:'female',
             nickname:'暗影之王',
             email:'12345678@qq.com',
             phone:'12345678901',
@@ -40,9 +40,10 @@ class Demo extends Component {
                 })
                     .then(function (response) {
                         console.log(response);
+                        let preData=response.data;
                         self.setState({
                             loading: false,
-                            formData: response.data,
+                            formData: preData,
                         });
                     })
                     .catch(function (error) {
@@ -130,7 +131,7 @@ class Demo extends Component {
                         {...formItemLayout}
                         label="名字"
                     >
-                        <span className="ant-form-text">{this.state.formData.name}</span>
+                        <span className="ant-form-text">{this.state.formData.username}</span>
                     </FormItem>
 
                     <FormItem
@@ -150,7 +151,7 @@ class Demo extends Component {
                         <FormItem
                             {...formItemLayout}
                             label="出生日期"
-                            hasFeedback
+                            // hasFeedback
                         >
                             {getFieldDecorator('date-picker')(
                                 <div>
