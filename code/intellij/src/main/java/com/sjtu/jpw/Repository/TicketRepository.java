@@ -17,6 +17,8 @@ import java.util.List;
         public Ticket save(Ticket ticket);
         public Ticket findByShowId(Integer showId);
 
+        public Ticket findFirstByTicketId(Integer ticketId);
+
         @Query("select MIN(ticket.price) from Ticket ticket where ticket.showId=:showId")
         public Integer minPrice(@Param("showId") Integer showId);
 

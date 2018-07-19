@@ -201,7 +201,7 @@ class TicketComment extends Component {
                                 title={<span>{item.userId}</span>}
                                 description={
                                     <div>
-                                        <Rate disabled defaultValue={item.rate/2}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate/2}/><br/>
                                         {item.content}<br/><br/>
                                     </div>
                                 }

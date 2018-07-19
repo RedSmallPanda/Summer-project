@@ -19,7 +19,8 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User,Integer> {
     public User save(User u);
     public List<User> findAllByUsernameAndPassword(String username,String password);
-    public  User findByUserId(Integer id);
+    public User findByUserId(Integer id);
+    public User findByUsername(String username);
     public List<User> findAllByUsername(String username);
 
     @Transactional        //dai ding

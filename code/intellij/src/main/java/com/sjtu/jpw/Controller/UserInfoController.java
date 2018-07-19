@@ -22,7 +22,7 @@ public class UserInfoController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        User me = userRepository.findFirstByUsername(request.getParameter("username"));
+        User me = userRepository.findByUsername(request.getParameter("username"));
         Gson userGson = new Gson();
         String userJson = userGson.toJson(me);
         JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();

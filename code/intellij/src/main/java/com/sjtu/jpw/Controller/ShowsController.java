@@ -48,7 +48,7 @@ public class ShowsController {
         }
 
         System.out.println(allShows);
-        out.print("dsdsdsd");
+        out.print(allShows);
         if(out!=null) {
             out.flush();
         }
