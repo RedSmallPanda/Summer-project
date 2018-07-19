@@ -29,31 +29,48 @@ import com.google.gson.Gson;
 @RestController
 public class ShowsController {
     @Autowired
-    private ShowsRepository showRepository;
+    private TicketService ticketService;
 
-    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
-    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
-        response.setHeader("Content-type","application/json;charset=UTF-8");
+    @RequestMapping(value = "/shows", produces = "application/json;charset=UTF-8")
+    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        List<Shows> listData=new ArrayList<>();
-        listData = showRepository.findAllShows();
-        JsonArray allShows=new JsonArray();
-        for(int i=0;i<listData.size();i++){
-            Shows temp=listData.get(i);
-            Gson showGson=new Gson();
-            String showJson = showGson.toJson(temp);
-            JsonObject showObject = new JsonParser().parse(showJson).getAsJsonObject();
-            allShows.add(showObject);
-        }
+        String timestr1 = "2018-07-18 00:00:00";
+        String timestr2 = "2018-07-30 23:00:00";
+        Timestamp temp1 = Timestamp.valueOf(timestr1);
+        Timestamp temp2 = Timestamp.valueOf(timestr2);
 
-        System.out.println(allShows);
-        out.print(allShows);
-        if(out!=null) {
-            out.flush();
-        }
-        Thread.currentThread().sleep(500);
-    }
+        out.print(ticketService.AllTickets(
+                request.getParameter("city"),
+                request.getParameter("type"),
+                temp1,
+                temp2,
+                1));
+        out.flush();
+//    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
+//    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+//        response.setHeader("Content-type","application/json;charset=UTF-8");
+//        PrintWriter out = response.getWriter();
+//
+//        List<Shows> listData=new ArrayList<>();
+//        listData = showRepository.findAllShows();
+//        JsonArray allShows=new JsonArray();
+//        for(int i=0;i<listData.size();i++){
+//            Shows temp=listData.get(i);
+//            Gson showGson=new Gson();
+//            String showJson = showGson.toJson(temp);
+//            JsonObject showObject = new JsonParser().parse(showJson).getAsJsonObject();
+//            allShows.add(showObject);
+//        }
+//
+//        System.out.println(allShows);
+//        out.print(allShows);
+//        if(out!=null) {
+//            out.flush();
+//        }
+//        Thread.currentThread().sleep(500);
+//    }
 /*
 
     demo- how to use service
@@ -126,4 +143,5 @@ public class ShowsController {
         }
     }*/
 
+    }
 }

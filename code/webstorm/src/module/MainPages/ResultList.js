@@ -6,18 +6,18 @@ import axios from 'axios';
 let listData = [];
 // for (let i = 0; i < 10; i++) {
 //     listData.push({
-//         key: i,
+//         showId: i,
 //         image: 'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',//image
 //         title: `jpw ${i}`,//name
 //         starttime: "2018/07/02",
 //         endtime: `2018/07/${(7 + i) < 10 ? `0${7 + i}` : 7 + i}`,
 //         address: "SE 3-101",
-//         rate: 4.5,
+//         rate: 9,
 //         info: 'description',
 //         stock: 0,
-//         heart: true,
-//         comments: i,
-//         price: 99.99,
+//         isLike: true,
+//         commentNum: i,
+//         minPrice: 99.99,
 //         city: "sh",
 //     });
 // }
@@ -79,7 +79,7 @@ class ResultList extends Component {
             .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML;
         listData.forEach(function (item) {
             if(item.title===title){
-                item.heart = !item.heart;
+                item.isLike = !item.isLike;
             }
         });
         this.setState({
@@ -136,8 +136,8 @@ class ResultList extends Component {
                         <List.Item
                             key={item.title}
                             actions={[
-                                <IconText type={item.heart ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
-                                <IconText type="message" text={item.comments} onClick={this.comment}/>,
+                                <IconText type={item.isLike ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
+                                <IconText type="message" text={item.commentNum} onClick={this.comment}/>,//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111
                                 <Dropdown
                                     overlay={(
                                         <Menu>
@@ -187,20 +187,20 @@ class ResultList extends Component {
                                 description={
                                     <p>
                                         {item.info}<br/><br/>
-                                        <Icon type="calendar"/>{" " + item.starttime + "-" + item.endtime}<br/>
+                                        <Icon type="calendar"/>{" " + item.startTime + "-" + item.endTime}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.rate}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate/2}/><br/>
                                     </p>
                                 }
                             />
                             {
                                 <div>
-                                    <h3><b>{"￥" + item.price}</b>{" 起"}</h3>
-                                    <Button type={this.judgeDate(item.endtime) && item.stock ? "primary" : "dashed"}
+                                    <h3><b>{"￥" + item.minPrice}</b>{" 起"}</h3>
+                                    <Button type={this.judgeDate(item.endTime) && item.stock ? "primary" : "dashed"}
                                             size="large"
                                             onClick={this.detail}
                                     >{
-                                        this.judgeDate(item.endtime) ? (item.stock ? "购买" : "售罄") : "过期"
+                                        this.judgeDate(item.endTime) ? (item.stock ? "购买" : "售罄") : "过期"
                                     }</Button>
                                 </div>
                             }
