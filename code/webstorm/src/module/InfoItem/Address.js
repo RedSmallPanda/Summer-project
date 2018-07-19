@@ -311,21 +311,23 @@ class Address extends Component {
         this.setState({ editingKey: '' });
     };
 
-    handleDelete = (key) =>{
+    handleDelete = (key) => {
         let self = this;
         Modal.confirm({
             title: '是否删除?',
             content: '',
+            okText: "确认",
+            cancelText: "取消",
             onOk() {
                 const newData = [...self.state.data];
                 const index = newData.findIndex(item => key === item.key);
-                newData.splice(index,1);
+                newData.splice(index, 1);
                 self.setState({
-                    data:newData
+                    data: newData
                 })
             },
             onCancel() {
-
+                //do nothing
             },
         });
     };

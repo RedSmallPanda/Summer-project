@@ -285,19 +285,21 @@ class HeaderMenu extends Component {
                     bottom: 50,
                     right: 50,
                 }}/>
-                <BackTop visibilityHeight={-1} style={{
-                    bottom: 100,
-                    right: 50,
-                    height: 40,
-                    width: 40,
-                    fontSize: 25,
-                    textAlign: "center",
-                    color: "#ffffff",
-                    backgroundColor: "#8f8f8f",
-                    borderRadius: 5,
-                }}>
-                    <Icon type="shopping-cart" onClick={this.handleShoppingCart}/>
-                </BackTop>
+                {this.state.isLogin&&!this.state.isAdmin?
+                    <BackTop visibilityHeight={-1} style={{
+                        bottom: 100,
+                        right: 50,
+                        height: 40,
+                        width: 40,
+                        fontSize: 25,
+                        textAlign: "center",
+                        color: "#ffffff",
+                        backgroundColor: "#8f8f8f",
+                        borderRadius: 5,
+                    }}>
+                        <Icon type="shopping-cart" onClick={this.handleShoppingCart}/>
+                    </BackTop>:<div/>
+                }
             </div>;
         return (
             renderHeader

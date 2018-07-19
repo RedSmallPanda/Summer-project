@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu} from 'antd'
+import { Row, Col, Menu, Icon} from 'antd'
 import ShopCart from './ShopCart'
 import BasicInfo from './BasicInfo'
 import Password from './Password'
@@ -90,18 +90,18 @@ class InfoSpace extends Component{
                             defaultOpenKeys={this.state.OpenKeys}
                             mode="inline"
                         >
-                            <SubMenu key="sub1" title={<span>订单管理</span>}>
+                            <SubMenu key="sub1" title={<span><Icon type="shopping-cart" />订单管理</span>}>
                                 <Menu.Item key='1'>购物车</Menu.Item>
                                 <Menu.Item key='4'>优惠券</Menu.Item>
                                 <Menu.Item key='2'>当前订单</Menu.Item>
                                 <Menu.Item key='3'>历史订单</Menu.Item>
 
                             </SubMenu>
-                            <SubMenu key="sub2" title={<span>动态管理</span>}>
+                            <SubMenu key="sub2" title={<span><Icon type="eye-o" />动态管理</span>}>
                                 <Menu.Item key="5">我的收藏</Menu.Item>
                                 <Menu.Item key="6">我的评论</Menu.Item>
                             </SubMenu>
-                            <SubMenu key="sub3" title={<span>账号设置</span>}>
+                            <SubMenu key="sub3" title={<span><Icon type="setting" />账号设置</span>}>
                                 <Menu.Item key="9">基本信息</Menu.Item>
                                 <Menu.Item key="10">修改密码</Menu.Item>
                                 <Menu.Item key="11">收货地址</Menu.Item>
