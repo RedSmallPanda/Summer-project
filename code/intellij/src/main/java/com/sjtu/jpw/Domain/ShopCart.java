@@ -5,6 +5,7 @@ import java.util.Objects;
 
 @Entity
 @IdClass(ShopCartPK.class)
+@Table(name = "shop_cart", schema = "jpw", catalog = "")
 public class ShopCart {
     private int ticketId;
     private int userId;

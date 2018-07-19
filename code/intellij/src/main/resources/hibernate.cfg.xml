@@ -6,7 +6,7 @@
   <session-factory>
     <property name="connection.url">jdbc:mysql://localhost:3306/jpw</property>
     <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-      <mapping class="com.sjtu.jpw.Domain.Admin"/>
+    <mapping class="com.sjtu.jpw.Domain.Admin"/>
        <mapping class="com.sjtu.jpw.Domain.Collection"/>
       <mapping class="com.sjtu.jpw.Domain.Comment"/>
       <mapping class="com.sjtu.jpw.Domain.Coupon"/>
