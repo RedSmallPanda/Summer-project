@@ -55,6 +55,7 @@ public class ShowsController {
                 temp1,
                 temp2,
                 1));
+        ticketService.ticketsDetail(1);
         out.flush();
     }
 }

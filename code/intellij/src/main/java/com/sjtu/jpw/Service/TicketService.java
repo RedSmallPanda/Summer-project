@@ -10,5 +10,6 @@ public interface TicketService {
     String AllTickets(String city, String type, Timestamp startTime,Timestamp endTime,Integer userId);
     JsonArray UserCollection(Integer userId);
     JsonArray CartTickets(Integer userId);
+    String ticketsDetail(Integer showId);
 
 }

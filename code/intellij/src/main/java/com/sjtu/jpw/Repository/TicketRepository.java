@@ -22,6 +22,7 @@ import java.util.List;
         @Query("select MIN(ticket.price) from Ticket ticket where ticket.showId=:showId")
         public Integer minPrice(@Param("showId") Integer showId);
 
+        public List<Ticket> findAllByShowId(Integer showId);
 
 
         //   @Modifying
