@@ -15,6 +15,7 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment,Integer> {
     public Comment save(Comment comment);
     public Integer countByShowId(Integer showId);
-    @Query("select comment from Comment comment")
-    public List<Comment> findAllComment();
+
+
+    public List<Comment> findAllByShowId(Integer showId);
 }

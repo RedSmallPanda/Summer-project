@@ -60,11 +60,14 @@ class TicketComment extends Component {
         this.detailComment = this.detailComment.bind(this);
     }
 
-    getResult(self, prop) {
-        axios.get("http://localhost:8080/comments")
+    getResult(self,props) {
+        axios.get("/comments",{
+            params:{
+                showId:1
+            }
+        })
             .then(function (response) {
                 console.log(response);
-                alert(JSON.stringify(response.data));
                 self.handleData(response.data);
                 self.setState({
                     loading: false,
@@ -78,9 +81,6 @@ class TicketComment extends Component {
 
     componentDidMount(){
         this.getResult(this, this.props);
-    }
-    componentWillReceiveProps(nextProps) {
-        this.getResult(this, nextProps);
     }
 
     handleData = (commentData) =>{

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber } from 'antd';
+import axios from 'axios';
 
 const data = [{
     key:'1',
@@ -232,6 +233,33 @@ class Address extends Component {
         key:data.length
     };
 
+    getResult(self,props) {
+        axios.get("/address",{
+            params:{
+                userId:1
+            }
+        })
+            .then(function (response) {
+                console.log(response.data);
+                self.setState({
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    addAddress = (self,newAddr) =>{
+        axios.post("/addAddress",{
+
+        })
+    };
+
+    componentDidMount(){
+        this.getResult(this, this.props);
+    }
+
     showModal = () => {
         this.setState({ visible: true });
     };
@@ -265,6 +293,8 @@ class Address extends Component {
                 city:newCity,
                 detail:values.description,
             };
+
+            this.addAddress(this,newAddr);
 
             this.setState({
                 visible:false,

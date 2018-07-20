@@ -5,11 +5,15 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import java.util.List;
 
 @Repository
 @Table(name="Sendingaddr")
-@Qualifier("sendingaddrRepository")
-public interface SendingaddrRepository extends CrudRepository<Sendingaddr,Integer> {
+@Qualifier("addressRepository")
+public interface AddressRepository extends CrudRepository<Sendingaddr,Integer> {
     public Sendingaddr save(Sendingaddr sendingaddr);
+
+    public List<Sendingaddr> findAllByUserId(Integer userId);
+
 
 }
