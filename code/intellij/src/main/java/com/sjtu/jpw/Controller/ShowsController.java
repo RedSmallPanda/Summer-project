@@ -40,8 +40,16 @@ public class ShowsController {
         String timestr2 = "2018-07-30 23:00:00";
         Timestamp temp1 = Timestamp.valueOf(timestr1);
         Timestamp temp2 = Timestamp.valueOf(timestr2);
+        System.out.println("city:" +request.getParameter("city"));
+        System.out.println("type: "+request.getParameter("type"));
 
         out.print(ticketService.AllTickets(
+                request.getParameter("city"),
+                request.getParameter("type"),
+                temp1,
+                temp2,
+                1));
+        System.out.println(ticketService.AllTickets(
                 request.getParameter("city"),
                 request.getParameter("type"),
                 temp1,

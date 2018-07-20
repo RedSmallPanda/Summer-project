@@ -1,5 +1,10 @@
 package com.sjtu.jpw.Domain.AssistDomain;
 
+import java.sql.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+
 public class ShowTicket {
     private Integer showId;
     private String title;
@@ -9,8 +14,10 @@ public class ShowTicket {
     private Integer minPrice;
     private Integer commentNum;
     private Integer isLike;
+    private Date startTime;
+    private Date endTime;
 
-    public ShowTicket(Integer showId,String title,String info,String address,Integer rate) {
+    public ShowTicket(Integer showId,String title,String info,String address,Integer rate,Object startTime,Object endTime) {
 
         this.showId=showId;
         this.title=title;
@@ -20,6 +27,9 @@ public class ShowTicket {
         this.minPrice=0;
         this.commentNum=0;
         this.isLike=0;
+
+        this.startTime=Date.valueOf(startTime.toString());
+        this.endTime=Date.valueOf(endTime.toString());
     }
 
     public Integer getShowId() {
@@ -86,6 +96,23 @@ public class ShowTicket {
         this.isLike = isLike;
     }
 
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
+
     @Override
     public String toString() {
         return "ShowTicket{" +
@@ -97,6 +124,8 @@ public class ShowTicket {
                 ", minPrice=" + minPrice +
                 ", commentNum=" + commentNum +
                 ", isLike=" + isLike +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
                 '}';
     }
 }
