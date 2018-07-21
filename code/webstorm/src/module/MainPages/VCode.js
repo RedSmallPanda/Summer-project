@@ -37,8 +37,8 @@ class VCode extends Component{
         const { getRandom } = this;
         const canvas = document.getElementById('bgi');
         let ctx = canvas.getContext('2d');
-        canvas.height = canvas.height
-        // ctx.clearRect(0, 0, canvas.width(), canvas.height())
+        canvas.height = canvas.height;
+        // ctx.clearRect(0, 0, canvas.width(), canvas.height());
         ctx.strokeStyle = `rgb(${this.getRandom(100,10,3).toString()})`;
         for( let i = 0; i< 7; i++ ) {
             ctx.lineTo(getRandom(200,0),getRandom(200,10));

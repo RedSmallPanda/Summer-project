@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
+import moment from 'moment';
 
 let listData = [];
 // for (let i = 0; i < 10; i++) {
@@ -187,9 +188,10 @@ class ResultList extends Component {
                                 description={
                                     <p>
                                         {item.info}<br/><br/>
-                                        <Icon type="calendar"/>{" " + item.startTime + "-" + item.endTime}<br/>
+                                        <Icon type="calendar"/>
+                                        {" " + moment(item.startTime, 'MM月DD, YYYY') + "-" + moment(item.endTime, 'MM月DD, YYYY')}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.rate/2}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate / 2}/><br/>
                                     </p>
                                 }
                             />

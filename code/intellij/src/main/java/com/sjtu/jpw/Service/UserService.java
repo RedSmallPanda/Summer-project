@@ -8,6 +8,6 @@ public interface UserService {
     List<User> Login(String username,String password);
     User UserInfo(Integer userId);
     User Register(User newUser);
-    void UpdateInfo(User updateUser);
+    void updateInfo(User updateUser);
     Integer UsernameDuplicated(String username);
 }
