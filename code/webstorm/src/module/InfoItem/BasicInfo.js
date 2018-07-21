@@ -8,6 +8,7 @@ import axios from "axios/index";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
+const dateFormat = 'YYYY-MM-DD';
 
 class Demo extends Component {
     state = {
@@ -17,7 +18,7 @@ class Demo extends Component {
             nickname:'暗影之王',
             email:'12345678@qq.com',
             phone:'12345678901',
-            birthday:'2000/1/5',
+            birthday:'2000-01-05',
             img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
             '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
             province:'zhejiang',
@@ -104,13 +105,22 @@ class Demo extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', this.state.formData);    //Silly method
+                let params = new URLSearchParams();
+                params.append("form", JSON.stringify(this.state.formData));
+                axios.post("/userInfo",params)
+                    .then(function(response){
+                        console.log(response);
+                        alert(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             }
         });
     };
 
 
     render() {
-        const dateFormat = 'YYYY/MM/DD';
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: { span: 6 },
@@ -155,7 +165,9 @@ class Demo extends Component {
                         >
                             {getFieldDecorator('date-picker')(
                                 <div>
-                                    <DatePicker id="datePicker" allowClear={false} value={moment(this.state.formData.birthday, dateFormat)} format={dateFormat} onChange={this.dateOnChange}/>
+                                    <DatePicker id="datePicker" allowClear={false}
+                                                value={moment(this.state.formData.birthday,dateFormat)}
+                                                format={dateFormat} onChange={this.dateOnChange}/>
                                 </div>
                             )}
                         </FormItem>
