@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown} from 'antd';
 import '../../css/BuyStep.css';
 import axios from "axios/index";
+import { browserHistory} from 'react-router';
 
 const Step=Steps.Step;
 
@@ -15,8 +16,8 @@ const ticketInfo = [{
         name:'周杰伦演唱会',
         date:'2018/1/2'
     },
-    price: '3000',
-    amount: 1,
+    price: '1000',
+    amount: 3,
     totalPrice:'3000'
 }];
 
@@ -131,9 +132,13 @@ class BuyStep extends Component {
         })
             .then(function (response) {
                 console.log(response);
-                self.setState({
-                    coupon: response.data,
-                });
+                if(response.data===false){
+                    alert("很抱歉，库存不足，请重新选购！");
+                    browserHistory.push({
+                        pathname:'/detail',
+                    })
+                }
+
             })
             .catch(function (error) {
                 console.log(error);
