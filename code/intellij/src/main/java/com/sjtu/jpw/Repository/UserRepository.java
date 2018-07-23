@@ -25,7 +25,17 @@ public interface UserRepository extends CrudRepository<User,Integer> {
 
     @Transactional        //dai ding
     @Modifying
-    @Query(value="update User user set user.gender=:gender,user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone,user.email=:email where user.userId=:userId")
-    public void updateInfo(@Param("gender")String gender,@Param("birthday")Date birthday, @Param("nickname")String nickname,@Param("phone")String phone,@Param("email")String email,@Param("userId")Integer userId);
+    @Query(value = "update User user set user.password=:password,user.gender=:gender," +
+            "user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone," +
+            "user.email=:email where user.userId=:userId")
+    public void updateInfo(
+            @Param("password") String password,
+            @Param("gender") String gender,
+            @Param("birthday") Date birthday,
+            @Param("nickname") String nickname,
+            @Param("phone") String phone,
+            @Param("email") String email,
+            @Param("userId") Integer userId
+    );
 
 }

@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateInfo(User updateUser) {
         userRepository.updateInfo(
+                updateUser.getPassword(),
                 updateUser.getGender(),
                 updateUser.getBirthday(),
                 updateUser.getNickname(),

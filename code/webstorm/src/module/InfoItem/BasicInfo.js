@@ -13,17 +13,17 @@ const dateFormat = 'YYYY-MM-DD';
 class Demo extends Component {
     state = {
         formData: {
-            name:'王小明',
-            gender:'female',
-            nickname:'暗影之王',
-            email:'12345678@qq.com',
-            phone:'12345678901',
-            birthday:'2000-01-05',
-            img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
-            '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
-            province:'zhejiang',
-            city:'hangzhou',
-            district:'xihu'
+            // name:'王小明',
+            // gender:'female',
+            // nickname:'暗影之王',
+            // email:'12345678@qq.com',
+            // phone:'12345678901',
+            // birthday:'2000-01-05',
+            // img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
+            // '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
+            // province:'zhejiang',
+            // city:'hangzhou',
+            // district:'xihu'
         },
     };
 
@@ -150,7 +150,7 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('radio-group')(
                             <div>
-                                <RadioGroup onChange={this.genderOnChange} defaultValue={this.state.formData.gender}>
+                                <RadioGroup onChange={this.genderOnChange} value={this.state.formData.gender}>
                                     <Radio value="male">男</Radio>
                                     <Radio value="female">女</Radio>
                                 </RadioGroup>
