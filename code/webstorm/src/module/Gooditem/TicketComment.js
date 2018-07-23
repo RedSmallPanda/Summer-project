@@ -79,9 +79,9 @@ class TicketComment extends Component {
     componentDidMount(){
         this.getResult(this, this.props);
     }
-    componentWillReceiveProps(nextProps) {
+/*    componentWillReceiveProps(nextProps) {
         this.getResult(this, nextProps);
-    }
+    }*/
 
     handleData = (commentData) =>{
         for(let i = 0; i < commentData.length; i++){

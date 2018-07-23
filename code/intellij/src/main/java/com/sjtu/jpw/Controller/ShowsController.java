@@ -49,13 +49,27 @@ public class ShowsController {
                 temp1,
                 temp2,
                 1));
-        System.out.println(ticketService.AllTickets(
+ /*       System.out.println(ticketService.AllTickets(
                 request.getParameter("city"),
                 request.getParameter("type"),
                 temp1,
                 temp2,
                 1));
-        ticketService.ticketsDetail(1);
+        System.out.println(ticketService.ticketsDetail(1));
+        System.out.println(ticketService.UserCollection(1));*/
+        out.flush();
+    }
+    @RequestMapping(value = "/showDetail", produces = "application/json;charset=UTF-8")
+    public void showDtail(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+
+
+        System.out.println("showdetail");
+        out.print(ticketService.ticketsDetail(1));
+        System.out.println(ticketService.ticketsDetail(1));
+        System.out.println(ticketService.UserCollection(1));
         out.flush();
     }
 }

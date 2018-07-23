@@ -7,6 +7,7 @@ import Ticknumpick from "./TickNumpick";
 import DatePick from './DatePick'
 import CommentEditor from "./CommentEditor";
 import TicketComment from "./TicketComment";
+import axios from 'axios';
 import Sider from '../MainPages/Sider';
 moment.locale('zh-cn');
 
@@ -25,21 +26,84 @@ const data={
 class GoodDetailPage extends Component{
 
     state={
+        ticketDetails:{"2018-07-18":{"08:22":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}],"08:23":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}]},
+            "2018-07-19":{"09:22":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}],"09:23":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}]}
+        },
         onsaleinfo:["跳楼大甩卖，清仓大处理，全场一折起","只要998，只要998"],
-        enableddate:["2018-07-06","2018-07-08"],
-        pickeddate:"2018-07-06",
-        times:["9:30","10:20","14:00","16:00","18:00","20:00","21:00"],
-        picktime:"9:30",
-        priceclass:["40","60","80","100","112","130","140","150"],
-        pickprice:"40",
+        enableddate:["2018-07-18","2018-07-19"],
+        pickeddate:"2018-07-18",
+        times:[],
+        picktime:"08:22",
+   //     priceclass:["40","60","80","100","112","130","140","150"],
+        pickprice:{},
         pickticknum:1,
         tickmaxnum:100,
         totalprice:40,
         data:data,
+
+
+    };
+    getResult(self,props) {
+        axios.get("http://localhost:8080/showDetail")
+            .then(function (response) {
+                console.log(response.data);
+                console.log(JSON.stringify(response.data))
+                alert(JSON.stringify(response.data));
+                let temp=[];
+      //          self.setState({ticketDetails:response.data})
+                var data=response.data;
+                for(var i in data){
+                    temp.push(String(i));
+                }
+      //          self.setState({enableddate:temp,pickeddate:temp[0]});
+                let picktime=[];
+                for(var i in data[temp[0]]){
+                    picktime.push(i);
+                }
+       //         self.setState({picktime:picktime[0]})
+                var tempTicket=data[temp[0]][picktime[0]][0];
+                let tempPickPrice={
+                    ticketId: tempTicket.ticketId,
+                    seat: tempTicket.seat,
+                    price:tempTicket.price,
+                    stock: tempTicket.stock,
+                };
+                self.setState({ticketDetails:data,pickprice:tempPickPrice,enableddate:temp,pickeddate:temp[0],picktime:picktime[0]});
+
+
+
+
+
+
+                console.log("enabletimes: "+temp);
+                for(var i in data[temp[1]]){
+                    console.log("time: "+String(i))
+                    console.log(data[temp[1]][i]);
+                    for(var j in data[temp[1]][i]){
+                        console.log(data[temp[1]][i][j].showId)
+                    }
+                }
+
+
+                /*self.handleData(response.data);
+                self.setState({
+                    loading: false,
+                    comment: data,
+                });*/
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
+    componentDidMount(){
+        console.log("showdetail")
+        this.getResult(this,this.props);
+    }
     componentWillMount(){
         window.scrollTo(0,0);
+    //    console.log("willmount")
+     //   this.getResult(this,this.props);
     }
 
     scrollToAnchor = (anchorName) => {
@@ -67,7 +131,7 @@ class GoodDetailPage extends Component{
 
     selectprice=(e)=>{
         console.log("pick price: "+e.target.value);
-        this.setState({pickprice:e.target.value})
+        this.setState({pickprice:e.target.value,tickmaxnum:e.target.value.stock})
     };
 
     setticknum=(value)=> {
@@ -79,19 +143,55 @@ class GoodDetailPage extends Component{
 
     };
 
-    render(){
+    rendertTimes () {
+        let times=[];
+        for(var i in this.state.ticketDetails[this.state.pickeddate]){times.push(i)}
+        return times.map((element) =>
+        {
+           return (<div className="radiobuttonblock"><RadioButton className="radiobutton" value={element}>{element}</RadioButton></div>);
+    })
+    };
+
+    timepick=()=>{
         let timebutton=[];
-        for(let i=0;i<this.state.times.length;i++){
-            let temp=this.state.times[i];
-            timebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={temp}>{temp}</RadioButton></div>)
+        if(this.state.picktime!==""){
+            for(var time in this.state.ticketDetails[this.state.pickeddate]){
+                console.log("refresh pricebutton")
+                // let temp=this.state.times[i];
+                timebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={time}>{time}</RadioButton></div>)
+            }
+        }
+        return timebutton;
+    }
+    render(){
+        console.log(this.state)
+        let timebutton=[];
+        if(this.state.picktime!==""){
+        for(var time in this.state.ticketDetails[this.state.pickeddate]){
+            console.log("refresh pricebutton")
+           // let temp=this.state.times[i];
+            timebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={time}>{time}</RadioButton></div>)
+         }
         }
         let pricebutton=[];
-        for(let i=0;i<this.state.priceclass.length;i++){
-            let temp=this.state.priceclass[i];
-            pricebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton" value={temp}>{temp}</RadioButton></div>)
+        if(this.state.picktime!=="") {
+            console.log("refresh pricebutton")
+            for (var i in this.state.ticketDetails[this.state.pickeddate][this.state.picktime]) {
+                let temp = this.state.ticketDetails[this.state.pickeddate][this.state.picktime][i];
+                let price = {
+                    ticketId: temp.ticketId,
+                    seat: temp.seat,
+                    price: temp.price,
+                    stock: temp.stock,
+                };
+                pricebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton"
+                                                                                value={price}>{temp.seat + '￥' + temp.price}</RadioButton>
+                </div>)
+            }
         }
         let onsaleinfo=[];
         for(let i=0;i<this.state.onsaleinfo.length;i++){
+            console.log("refresh pricebutton")
             let temp=this.state.onsaleinfo[i];
             onsaleinfo.push(<p className="onsale">{temp}</p>)
         }
@@ -167,7 +267,7 @@ class GoodDetailPage extends Component{
                                                                 <Col span={3}><div className="timepickletter">选择时间:</div></Col>
                                                                 <Col span={1}/>
                                                                 <Col>
-                                                                    <RadioGroup  onChange={this.selecttime} defaultValue={this.state.picktime}>
+                                                                    <RadioGroup  onChange={this.selecttime} value={this.state.picktime}>
                                                                         {timebutton}
                                                                     </RadioGroup>
                                                                 </Col>

@@ -53,7 +53,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public JsonArray UserCollection(Integer userId) {
+    public String UserCollection(Integer userId) {
 
         List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowsCollection(userId));
 
@@ -67,7 +67,8 @@ public class TicketServiceImpl implements TicketService {
             temp.setIsLike(1);
             System.out.println(temp.toString());
         }
-        return null;
+         Gson gson=new Gson();
+        return gson.toJson(itemList);
     }
 
     @Override
@@ -112,6 +113,8 @@ public class TicketServiceImpl implements TicketService {
         Gson gson=new Gson();
         System.out.println(gson.toJson(ticketMap));
 
+        return gson.toJson(ticketMap);
+
 
 
 
@@ -121,6 +124,5 @@ public class TicketServiceImpl implements TicketService {
         String date=testformat.format(timestamp);
         System.out.println("test format:"+date);*/
 
-        return null;
     }
 }

@@ -14,8 +14,8 @@ public class ShowTicket {
     private Integer minPrice;
     private Integer commentNum;
     private Integer isLike;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 
     public ShowTicket(Integer showId,String title,String info,String address,Integer rate,Object startTime,Object endTime) {
 
@@ -27,9 +27,10 @@ public class ShowTicket {
         this.minPrice=0;
         this.commentNum=0;
         this.isLike=0;
+        SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 
-        this.startTime=Date.valueOf(startTime.toString());
-        this.endTime=Date.valueOf(endTime.toString());
+        this.startTime=format.format(Date.valueOf(startTime.toString()));
+        this.endTime=format.format(Date.valueOf(endTime.toString()));
     }
 
     public Integer getShowId() {
@@ -97,21 +98,7 @@ public class ShowTicket {
     }
 
 
-    public Date getStartTime() {
-        return startTime;
-    }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
-    }
-
-    public Date getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
-    }
 
     @Override
     public String toString() {
@@ -127,5 +114,21 @@ public class ShowTicket {
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
                 '}';
+    }
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
     }
 }
