@@ -3,47 +3,47 @@ import { Table } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 
-const data = [{
-    key: '1',
-    img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-    detailInfo: {
-        name:'周杰伦演唱会',
-        date:'2018/1/2'
-    },
-    price: '￥1200',
-    amount: 1,
-    totalPrice:'￥1200'
-}, {
-    key: '2',
-    img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-    detailInfo: {
-        name:'张学友演唱会',
-        date:'2017/2/14'
-    },
-    price: '￥2000',
-    amount: 2,
-    totalPrice:'￥4000'
-}, {
-    key: '3',
-    img:'https://img1.tking.cn/assets/img/YnPS4jNY6p.jpg',
-    detailInfo: {
-        name:'CCG门票',
-        date:'2018/4/8'
-    },
-    price: '￥300',
-    amount: 1,
-    totalPrice:'￥300'
-}, {
-    key: '4',
-    img:'https://pimg.dmcdn.cn/perform/project/1521/152193_n.jpg',
-    detailInfo: {
-        name:'迪士尼门票',
-        date:'2018/7/6'
-    },
-    price: '￥688',
-    amount: 1,
-    totalPrice:'￥688'
-}];
+// const data = [{
+//     key: '1',
+//     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+//     detailInfo: {
+//         name:'周杰伦演唱会',
+//         date:'2018/1/2'
+//     },
+//     price: '￥1200',
+//     amount: 1,
+//     totalPrice:'￥1200'
+// }, {
+//     key: '2',
+//     img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
+//     detailInfo: {
+//         name:'张学友演唱会',
+//         date:'2017/2/14'
+//     },
+//     price: '￥2000',
+//     amount: 2,
+//     totalPrice:'￥4000'
+// }, {
+//     key: '3',
+//     img:'https://img1.tking.cn/assets/img/YnPS4jNY6p.jpg',
+//     detailInfo: {
+//         name:'CCG门票',
+//         date:'2018/4/8'
+//     },
+//     price: '￥300',
+//     amount: 1,
+//     totalPrice:'￥300'
+// }, {
+//     key: '4',
+//     img:'https://pimg.dmcdn.cn/perform/project/1521/152193_n.jpg',
+//     detailInfo: {
+//         name:'迪士尼门票',
+//         date:'2018/7/6'
+//     },
+//     price: '￥688',
+//     amount: 1,
+//     totalPrice:'￥688'
+// }];
 
 /*const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {

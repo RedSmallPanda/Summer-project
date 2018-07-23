@@ -4,57 +4,57 @@ import '../../css/Coupon.css';
 import axios from "axios/index";
 
 
-const dsctData=[
-    {
-        name:'聚票优惠券',
-        discount:'30',
-        price:'300',
-        beginDate:'2018/6/1',
-        endDate:'2016/7/1'
-    },
-    {
-        name:'聚票优惠券',
-        discount:'50',
-        price:'500',
-        beginDate:'2018/8/1',
-        endDate:'2016/8/28'
-    },
-    {
-        name:'超级优惠券',
-        discount:'300',
-        price:'399',
-        beginDate:'2018/6/1',
-        endDate:'2016/7/1'
-    },
-    {
-        name:'无敌优惠券',
-        discount:'500',
-        price:'300',
-        beginDate:'2018/6/6',
-        endDate:'2016/7/7'
-    },
-    {
-        name:'聚票优惠券',
-        discount:'30',
-        price:'300',
-        beginDate:'2018/6/1',
-        endDate:'2016/7/1'
-    },
-    {
-        name:'聚票优惠券',
-        discount:'30',
-        price:'300',
-        beginDate:'2018/6/1',
-        endDate:'2016/7/1'
-    },
-    {
-        name:'究极优惠券',
-        discount:'3000',
-        price:'300',
-        beginDate:'2018/6/1',
-        endDate:'2016/7/1'
-    },
-];
+// const dsctData=[
+//     {
+//         name:'聚票优惠券',
+//         discount:'30',
+//         price:'300',
+//         beginDate:'2018/6/1',
+//         endDate:'2016/7/1'
+//     },
+//     {
+//         name:'聚票优惠券',
+//         discount:'50',
+//         price:'500',
+//         beginDate:'2018/8/1',
+//         endDate:'2016/8/28'
+//     },
+//     {
+//         name:'超级优惠券',
+//         discount:'300',
+//         price:'399',
+//         beginDate:'2018/6/1',
+//         endDate:'2016/7/1'
+//     },
+//     {
+//         name:'无敌优惠券',
+//         discount:'500',
+//         price:'300',
+//         beginDate:'2018/6/6',
+//         endDate:'2016/7/7'
+//     },
+//     {
+//         name:'聚票优惠券',
+//         discount:'30',
+//         price:'300',
+//         beginDate:'2018/6/1',
+//         endDate:'2016/7/1'
+//     },
+//     {
+//         name:'聚票优惠券',
+//         discount:'30',
+//         price:'300',
+//         beginDate:'2018/6/1',
+//         endDate:'2016/7/1'
+//     },
+//     {
+//         name:'究极优惠券',
+//         discount:'3000',
+//         price:'300',
+//         beginDate:'2018/6/1',
+//         endDate:'2016/7/1'
+//     },
+// ];
 
 
 class CouponItem extends Component{
@@ -78,7 +78,7 @@ class CouponItem extends Component{
                         <div style={{height:'60px'}}/>
                         <div style={{height:'40px',lineHeight:'20px',fontSize:'20px',fontFamily:'Hiragino Sans GB'}}>
                             <h6>&emsp;满{this.props.data.discCond}可用{this.props.data.discount}元优惠券</h6>
-                            <h6>&emsp;{this.props.data.begindate}-{this.props.data.enddate}</h6>
+                            <h6>&emsp;{this.props.data.begindate}&ensp;~&ensp;{this.props.data.enddate}</h6>
                         </div>
                     </div>
 
@@ -120,7 +120,7 @@ class Coupon extends Component{
         let currentData=this.state.data;
         let discountData=[];
         for(j;j<currentData.length;j++){
-            let num=parseInt(currentData[j].number);
+            let num=parseInt(currentData[j].number,10);
             let k=0;
             for(k;k<num;k++){
                 discountData.push(currentData[j]);

@@ -53,7 +53,7 @@ public class OrdersServiceImpl implements OrdersService {
             Timestamp showTime=tempTicket.getTime();
             tempOrder.setDetailInfo(showTitle,showTime);
             tempOrder.setTicketId(ticketId);
-            tempOrder.setToTalPrice(temp.getPrice(),temp.getNumber());
+            tempOrder.setTotalPrice(temp.getTotalPrice());
             tempOrder.setTime(temp.getTime());
 
             Gson orderGson=new Gson();
@@ -109,7 +109,7 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public boolean createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int addressId, int couponId, Orders order) {
+    public boolean createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int couponId, Orders order) {
         int ticketId=order.getTicketId();
         if(stockDecrease(ticketId,order.getNumber())==false){
             return false;
