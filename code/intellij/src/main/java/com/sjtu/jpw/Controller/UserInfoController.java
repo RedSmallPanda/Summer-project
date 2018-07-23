@@ -56,11 +56,11 @@ public class UserInfoController {
         updateUser.setPhone(userObject.get("phone").getAsString());
         updateUser.setEmail(userObject.get("email").getAsString());
 
-        System.out.println("changed into: " + updateUser);
         userService.updateInfo(updateUser);
 
         Gson userGson = new Gson();
         out.print(userGson.toJson(updateUser));
+        System.out.println("changed into: " + userGson.toJson(updateUser));
         out.flush();
     }
 }
