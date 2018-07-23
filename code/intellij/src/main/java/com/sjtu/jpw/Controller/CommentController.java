@@ -5,11 +5,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
-import com.sjtu.jpw.Repository.CommentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.sjtu.jpw.Service.CommentService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -19,15 +19,16 @@ import java.util.List;
 
 @Controller
 public class CommentController {
-    @Autowired
-    private CommentRepository commentRepository;
 
+    @Resource(name="commentService")
+    private CommentService commentService;
     @RequestMapping(value="/comments",produces="application/json;charset=UTF-8")
     public void GetComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        List<Comment> listData = commentRepository.findAllComment();
+        int showId=Integer.parseInt(request.getParameter("showId"));
+        List<Comment> listData = commentService.getComment(showId);
 
         Iterator<Comment> it = listData.iterator();
 

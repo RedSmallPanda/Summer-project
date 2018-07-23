@@ -1,25 +1,11 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber } from 'antd';
+import axios from 'axios';
+import moment from 'moment'
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
-const data = [{
-    key:'1',
-    name: 'John Brown',
-    phone: 18800000000,
-    city:'上海 闵行',
-    detail:'无',
-}, {
-    key:'2',
-    name: 'Jim Green',
-    phone:18700000000,
-    city:'浙江 杭州 上城区',
-    detail:'无',
-}, {
-    key:'3',
-    name: 'Joe Black',
-    phone:13800000000,
-    city:'上海 闵行',
-    detail:'东川路800号',
-}];
+const data = [];
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -232,6 +218,47 @@ class Address extends Component {
         key:data.length
     };
 
+    getResult(self,props) {
+        axios.get("/address",{
+            params:{
+                userId:1
+            }
+        })
+            .then(function (response) {
+                console.log(response.data);
+                self.setState({
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    addAddress = (self,sendAddr) =>{
+        let params = new URLSearchParams();
+        params.append('userId', 1);
+        params.append('key', sendAddr.key);
+        params.append('name',sendAddr.name);
+        params.append('phone',sendAddr.phone);
+        params.append('province',sendAddr.province);
+        params.append('city',sendAddr.city);
+        params.append('block',sendAddr.block);
+        params.append('detail',sendAddr.detail);
+        axios.post('/addAddress', params);
+    };
+
+    deleteAddress = (self,item) =>{
+        let params = new URLSearchParams();
+        params.append('userId',1);
+        params.append('key',item.key);
+        axios.post('/deleteAddress', params);
+    };
+
+    componentDidMount(){
+        this.getResult(this, this.props);
+    }
+
     showModal = () => {
         this.setState({ visible: true });
     };
@@ -258,18 +285,31 @@ class Address extends Component {
                 newCity = values.district[0] + ' '+values.district[1]+' '+values.district[2]
             }
 
+            let str = moment().format('x');
+
             let newAddr = {
-                key:(this.state.key + 1).toString(),
+                key:str.substr(2,9),
                 name:values.name,
                 phone:values.phone,
                 city:newCity,
                 detail:values.description,
             };
 
+            let sendAddr = {
+                key:newAddr.key,
+                name:values.name,
+                phone:values.phone,
+                province:values.district[0],
+                city:values.district[1],
+                block:values.district.length === 2 ? "" : values.district[2],
+                detail:values.description,
+            };
+
+            this.addAddress(this,sendAddr);
+
             this.setState({
                 visible:false,
                 data:this.state.data.concat([newAddr]),
-                key:this.state.key + 1
             })
 
         });
@@ -300,6 +340,19 @@ class Address extends Component {
                     ...item,
                     ...row,
                 });
+                let newAddr = newData[index].city.split(' ');
+
+                let sendAddr = {
+                    key:newData[index].key,
+                    name:newData[index].name,
+                    phone:newData[index].phone,
+                    province: newAddr[0],
+                    city:newAddr[1],
+                    block:newAddr.length === 2 ? "" : newAddr[2],
+                    detail:newData[index].detail,
+                };
+
+                this.addAddress(this,sendAddr);
                 this.setState({ data: newData, editingKey: '' });
             } else {
                 this.setState({editingKey: '' });
@@ -321,7 +374,10 @@ class Address extends Component {
             onOk() {
                 const newData = [...self.state.data];
                 const index = newData.findIndex(item => key === item.key);
-                newData.splice(index, 1);
+
+                self.deleteAddress(self,newData[index]);
+                newData.splice(index,1);
+
                 self.setState({
                     data: newData
                 })
@@ -366,7 +422,10 @@ class Address extends Component {
                     columns={columns}
                     rowClassName="editable-row"
                     style={{marginTop:16}}
+                    locale={{emptyText: '暂未设置地址'}}
+                    size="middle"
                 />
+                <br/>
                 <Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增收货地址</Button>
                 <AddressForm
                     wrappedComponentRef={this.saveFormRef}
