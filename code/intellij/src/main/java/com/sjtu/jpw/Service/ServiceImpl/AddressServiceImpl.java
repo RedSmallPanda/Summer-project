@@ -39,4 +39,34 @@ public class AddressServiceImpl implements AddressService {
         return addressResult;
     }
 
+    @Override
+    public void addAddress(Integer userId, Integer addrId, String name, String phone,
+                           String province, String city, String block, String detail){
+        Sendingaddr sendingaddr = new Sendingaddr();
+        sendingaddr.setUserId(userId);
+        sendingaddr.setAddrId(addrId);
+        sendingaddr.setName(name);
+        sendingaddr.setPhone(phone);
+        sendingaddr.setProvince(province);
+        sendingaddr.setCity(city);
+        sendingaddr.setBlock(block);
+        sendingaddr.setAddrdetail(detail);
+        addressRepository.save(sendingaddr);
+    }
+
+    @Override
+    public void editAddress(Integer userId, Integer addrId, String name, String phone, String detail){
+        Sendingaddr sendingaddr = new Sendingaddr();
+        sendingaddr.setUserId(userId);
+        sendingaddr.setAddrId(addrId);
+        sendingaddr.setName(name);
+        sendingaddr.setPhone(phone);
+        sendingaddr.setAddrdetail(detail);
+        addressRepository.save(sendingaddr);
+    }
+
+    @Override
+    public void deleteAddress(Integer userId, Integer addrId){
+        addressRepository.deleteAllByUserIdAndAddrId(userId, addrId);
+    }
 }

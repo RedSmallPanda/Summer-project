@@ -5,6 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -15,5 +16,6 @@ public interface AddressRepository extends CrudRepository<Sendingaddr,Integer> {
 
     public List<Sendingaddr> findAllByUserId(Integer userId);
 
-
+    @Transactional
+    public void deleteAllByUserIdAndAddrId(Integer userId, Integer addrId);
 }

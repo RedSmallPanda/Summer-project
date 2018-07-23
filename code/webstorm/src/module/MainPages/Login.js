@@ -122,7 +122,7 @@ const Login = Form.create()(
                                             else {callback()}
                                         }
                                     }],
-                                    validateTrigger:'onChange',
+                                    validateTrigger:'onBlur',
                                 })(<p>
                                     <Row>
                                         <Col span={15}>

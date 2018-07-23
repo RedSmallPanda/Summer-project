@@ -1,6 +1,7 @@
 package com.sjtu.jpw.Controller;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.sjtu.jpw.Service.CouponService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +22,7 @@ public class CouponController {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         int userId=Integer.parseInt(request.getParameter("userId"));
+
         JsonArray myCoupon=couponService.getMyCoupon(userId);
 
         System.out.println(myCoupon);
