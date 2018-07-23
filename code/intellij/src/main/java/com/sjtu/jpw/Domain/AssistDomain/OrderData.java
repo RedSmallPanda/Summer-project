@@ -71,8 +71,8 @@ public class OrderData {
         return totalPrice;
     }
 
-    public void setToTalPrice(Integer price,Integer number) {
-        this.totalPrice = price * number;
+    public void setTotalPrice(Integer totalPrice) {
+        this.totalPrice = totalPrice;
     }
 
     public String getProvince() {

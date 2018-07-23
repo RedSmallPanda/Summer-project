@@ -1,31 +1,23 @@
 import React, { Component } from 'react';
-import { Steps, Row, Col, Icon, Table, Button, Radio, Divider} from 'antd';
+import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown} from 'antd';
 import '../../css/BuyStep.css';
+import axios from "axios/index";
 
 const Step=Steps.Step;
 
 const RadioGroup = Radio.Group;
 
 const ticketInfo = [{
-    key: '1',
+    ticketId:"1",
+    key: '0',
     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
     detailInfo: {
         name:'周杰伦演唱会',
         date:'2018/1/2'
     },
-    price: '￥1200',
+    price: '3000',
     amount: 1,
-    totalPrice:'￥1200'
-}, {
-    key: '2',
-    img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-    detailInfo: {
-        name:'张学友演唱会',
-        date:'2017/2/14'
-    },
-    price: '￥2000',
-    amount: 2,
-    totalPrice:'￥4000'
+    totalPrice:'3000'
 }];
 
 const dataColumns = [{
@@ -70,16 +62,28 @@ const addressColumns = [{
 }];
 
 const address=[{
-    phone: 18800000000,
-    city:'上海 闵行',
+    key:0,
+    name:'小明',
+    phone: '18800000000',
+    province:'上海',
+    city:'上海',
+    block:'闵行区',
     detail:'无',
 }, {
-    phone:18700000000,
-    city:'浙江 杭州 上城区',
+    key:1,
+    name:'小花',
+    phone:'18700000000',
+    province:'浙江',
+    city:'杭州',
+    block:'上城区',
     detail:'无',
 }, {
-    phone:13800000000,
-    city:'上海 闵行',
+    key:2,
+    name:'小白',
+    phone:'13800000000',
+    province:'上海',
+    city:'上海',
+    block:'闵行',
     detail:'东川路800号',
 }];
 
@@ -89,26 +93,172 @@ class BuyStep extends Component {
         firstStep:0,
         secondStep:0,
         orderInfo:ticketInfo,
+        selectedRow:[0],
+        data:ticketInfo,
+        address:address,
+        coupon:[
+            /*{key:"0",id:"12331",discount:"30",discCond:'300',number:"2"},
+            {key:"1",id:"asda7",discount:"50",discCond:'500',number:"3"},
+            {key:"2",id:"dasj86",discount:"10",discCond:'100',number:"1"},*/
+
+        ],
+        selectedCoupon:"请选择优惠券",
+        selectedCouponId:"",
+        originTotalPrice:parseInt(ticketInfo[0].totalPrice,10),
+        totalPrice:parseInt(ticketInfo[0].totalPrice,10),
+        getNoCoupon:0,
+        newCoupon:[{dicCond:"100000",discount:"30"}]
     }
 
     confirmS1 = () => {
         console.log('step changed to: 1');
+        let self = this;
+        axios.get("/createOrder",{
+            params:{
+                userId: 1,
+                totalPrice: this.state.totalPrice,
+                ticketId:this.state.data[0].ticketId,
+                number:this.state.data[0].amount,
+                price:this.state.data[0].price,
+                province:this.state.address[this.state.selectedRow[0]].province,
+                city:this.state.address[this.state.selectedRow[0]].city,
+                block:this.state.address[this.state.selectedRow[0]].block,
+                addrDetail:this.state.address[this.state.selectedRow[0]].detail,
+                phone:this.state.address[this.state.selectedRow[0]].phone,
+                name:this.state.address[this.state.selectedRow[0]].name,
+                couponId:this.state.selectedCouponId,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    coupon: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         this.setState({firstStep:1});
     }
 
     confirmS2 = () => {
         console.log('step changed to: 2');
         this.setState({secondStep:1});
+        let self = this;
+        axios.get("/giveMeCoupon",{
+            params:{
+                userId: 1,
+                price: this.state.totalPrice
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                if(response.data.length===0){
+                    self.setState({getNoCoupon:1});
+                }
+                else{
+                    self.setState({newCoupon:response.data});
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
+    onSelectChange = (selectedRowKeys) => {
+        console.log('selectedRowKeys changed: ', selectedRowKeys);
+        this.setState({ selectedRow:selectedRowKeys });
+    }
+
+    handleMenuClick = (item) => {
+        console.log('click', item.key);
+        console.log("selected id",this.state.coupon[item.key].couponId);
+        this.setState({selectedCoupon:"满"+this.state.coupon[item.key].discCond+"元减"+this.state.coupon[item.key].discount+"元",selectedCouponId:this.state.coupon[item.key].couponId});
+        this.setState({totalPrice:this.state.originTotalPrice-parseInt(this.state.coupon[item.key].discount,10)});
+    }
+
+    calculateOriginTotalPrice = () =>{
+        let tempData=this.state.data;
+        let i=0;
+        let totalPrice=0;
+        for(i;i<tempData.length;i++){
+            //let totPrice=tempData[i].totalPrice.substring(1,totalPrice.length);
+            totalPrice=totalPrice + parseInt(tempData[i].totalPrice,10);
+        }
+        this.setState({totalPrice:"5000"});
+        this.setState({originTotalPrice:totalPrice});
+    }
+
+
+    componentDidMount(){
+        let self = this;
+        axios.get("/getMyCouponByPrice",{
+            params:{
+                userId: 1,
+                price: this.state.totalPrice
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    coupon: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+
+
     render() {
+        let j=0;
+        let originCouponList=this.state.coupon;
+        let allCoupon=[];
+        for(j;j<originCouponList.length;j++){
+            let num=parseInt(originCouponList[j].number,10);
+            let k=0;
+            for(k;k<num;k++){
+                allCoupon.push(originCouponList[j]);
+            }
+        }
+        console.log(allCoupon);
+
+        let Result = allCoupon.map((val, ind)=>{
+            return  <Menu.Item key={val.key}>满{val.discCond}元减{val.discount}元</Menu.Item>
+        });
+
+        let selectedRowKeys = this.state.selectedRow;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange,
+            hideDefaultSelections: true,
+            onSelection: this.onSelection,
+            type:"radio",
+        };
+
+        let menu = (
+            <Menu onClick={this.handleMenuClick}>
+                {Result}
+            </Menu>
+        );
 
         let step0Page=<div>
-            <Table columns ={addressColumns} dataSource={address}/>
+            <Table rowSelection={rowSelection} columns ={addressColumns} dataSource={address} pagination={{pageSize:5,hideOnSinglePage:true}}/>
             <br/>
             <br/>
-            <Table columns ={dataColumns} dataSource={ticketInfo}/>
-            <Button style={{float:"right"}} type="primary" onClick={this.confirmS1}>确认</Button>
+            <br/>
+            <Table columns ={dataColumns} dataSource={ticketInfo} pagination={{pageSize:5,hideOnSinglePage:true}}/>
+            <br/>
+            <div>
+                <Button style={{float:"right",width:"110px"}} type="primary" onClick={this.confirmS1} size="large">确认</Button>
+                <Dropdown overlay={menu}>
+                    <Button size="large">
+                        {this.state.selectedCoupon} <Icon type="down" />
+                    </Button>
+                </Dropdown>
+                <h2 style={{float:"right",fontWeight:"bolder",color:"#1e90ff"}}>总价：￥{this.state.totalPrice}&emsp;</h2>
+            </div>
         </div>;
 
         let step1Page=<div>
@@ -128,10 +278,31 @@ class BuyStep extends Component {
             <Button type="primary" onClick={this.confirmS2}>付款完成</Button>
         </div>
 
-        let step2Page=<div>
+        let step2PageV1=<div>
             <br/>
             <div className="recBorder">
                 &emsp;<Icon type="check" style={{ fontSize: 50, color: '#4cc232'}}/>&ensp;您已完成付款!
+            </div>
+            <br/>
+            <br/>
+            <div className="dashedDiv">
+                <br/>
+                <br/>
+                <h1 style={{textAlign:'center',fontFamily:'Hiragino Sans GB'}}>这次没拿到优惠券，请再接再厉哦！</h1>
+            </div>
+        </div>
+
+        let step2PageV2=<div>
+            <br/>
+            <div className="recBorder">
+                &emsp;<Icon type="check" style={{ fontSize: 50, color: '#4cc232'}}/>&ensp;您已完成付款!
+            </div>
+            <br/>
+            <br/>
+            <div className="dashedDiv">
+                <br/>
+                <br/>
+                <h1 style={{textAlign:'center',fontFamily:'Hiragino Sans GB'}}>恭喜您获得了&ensp;满{this.state.newCoupon[0].discCond}减{this.state.newCoupon[0].discount}元&ensp;优惠券！</h1>
             </div>
         </div>
 
@@ -142,8 +313,11 @@ class BuyStep extends Component {
         else if(this.state.firstStep===1&&this.state.secondStep===0){
             showPage=step1Page;
         }
+        else if(this.state.firstStep===1&&this.state.secondStep===1&&this.state.getNoCoupon===1){
+            showPage=step2PageV1;
+        }
         else{
-            showPage=step2Page;
+            showPage=step2PageV2;
         }
         return (
             <div>

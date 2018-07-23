@@ -9,9 +9,19 @@
 
 .recBorder{
     height: 80px;
-    border:1px solid #1890ff;
+    border:1px solid #bbe1f1;
     border-radius: 15px;
-    background: #edfaff;
+    background: #eefaff;
     line-height: 80px;
     font-size: 25px;
+}
+
+.dashedDiv{
+    border:2px solid #04BDFF;
+    height:200px;
+    background: linear-gradient(#ffffff 50%, rgba(255,255,255,0) 0) 0 0,
+    radial-gradient(circle closest-side, #FFFFFF 53%, rgba(255,255,255,0) 0) 0 0,
+    radial-gradient(circle closest-side, #FFFFFF 50%, rgba(255,255,255,0) 0) 55px 0 #04bdff;
+    background-size:110px 230px;
+    background-repeat:repeat-x;
 }
