@@ -20,9 +20,9 @@ class Footer extends Component{
                 <br/><br/>
                 <t style={{fontSize:30}}>聚票网 </t>
                 <Divider type="vertical" />
-                <a onClick={this.about}>关于我们</a>
+                <a onClick={this.about} style={{color:"#d8fcff"}}>关于我们</a>
                 <Divider type="vertical" />
-                <a onClick={this.help}>帮助</a>
+                <a onClick={this.help} style={{color:"#d8fcff"}}>帮助</a>
             </div>
         )
     }

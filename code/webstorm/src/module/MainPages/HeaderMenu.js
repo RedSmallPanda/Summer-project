@@ -302,7 +302,7 @@ class HeaderMenu extends Component {
                         fontSize: 25,
                         textAlign: "center",
                         color: "#ffffff",
-                        backgroundColor: "#8f8f8f",
+                        background:'rgba(0,0,0,0.5)',
                         borderRadius: 5,
                     }}>
                         <Icon type="shopping-cart" onClick={this.handleShoppingCart}/>
