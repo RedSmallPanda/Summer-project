@@ -12,6 +12,7 @@ import Us from "./module/MainPages/Us";
 import Help from "./module/MainPages/Help";
 import RefundPage from "./module/InfoItem/RefundPage";
 import Register from "./module/MainPages/Register";
+import Error from "./module/MainPages/Error";
 
 class MyRouter extends Component{
     constructor(props){
@@ -62,15 +63,15 @@ class MyRouter extends Component{
             <Router history={browserHistory}>
                 <Route path='/' component={HomePage}/>
                 <Route path='/home' component={HomePage}/>
-                <Route path='/info' component={Us}/>
+                <Route path='/info' component={Error}/>
                 <Route path='/dir(/:type)' component={Directory}/>
-                <Route path="/commentPage" component={Us}/>
+                <Route path="/commentPage" component={Error}/>
                 <Route path="/detail" component={GoodDetailPage}/>
-                <Route path="/admin" component={Us}/>
-                <Route path="/buyStep" component={Us}/>
+                <Route path="/admin" component={Error}/>
+                <Route path="/buyStep" component={Error}/>
                 <Route path="/us" component={Us}/>
                 <Route path="/help" component={Help}/>
-                <Route path="/refundPage" component={Us}/>
+                <Route path="/refundPage" component={Error}/>
                 <Route path="/register" component={Register}/>
             </Router>;
 

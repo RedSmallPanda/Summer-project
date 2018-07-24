@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import {Row, Col, Form, Rate, Button, Card, Icon, message} from 'antd';
 import { browserHistory } from 'react-router'
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import moment from 'moment'
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 const FormItem = Form.Item;
 
@@ -10,12 +15,15 @@ const data={
     location:'梅赛德斯奔驰文化中心',
     rate:4.5,
     img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
-}
+};
 
 class DemoCommentPage extends Component {
     state={
-        data:data
-    }
+        data:data,
+        rate:'',
+        value:''
+    };
+
 
     onClose = () =>{
         browserHistory.goBack();
@@ -25,11 +33,31 @@ class DemoCommentPage extends Component {
         message.success("发表成功",2,this.onClose)
     };
 
+    addComment = () =>{
+        let params = new URLSearchParams();
+        let username = Cookies.get('username');
+        let time = moment().format('YYYY-MM-DD hh:mm:ss');
+
+        params.append('showId',this.state.showId);
+        params.append('username', username);
+        params.append('parentId',-1);
+        params.append('content',this.state.value);
+        params.append('rate',this.state.rate);
+        params.append('time',time);
+        axios.post('/addComment', params);
+    };
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.setState({
+                    rate:values.rate,
+                    value:values.confirm,
+                });
+                this.addComment()
+
             }
         });
     };
@@ -55,7 +83,7 @@ class DemoCommentPage extends Component {
                                 label="评分"
                             >
                                 {getFieldDecorator('rate', {
-                                    initialValue: 3.5,
+                                    initialValue: 5,
                                 })(
                                     <Rate allowHalf/>
                                 )}

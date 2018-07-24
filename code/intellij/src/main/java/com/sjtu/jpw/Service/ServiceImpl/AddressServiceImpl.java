@@ -55,17 +55,6 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void editAddress(Integer userId, Integer addrId, String name, String phone, String detail){
-        Sendingaddr sendingaddr = new Sendingaddr();
-        sendingaddr.setUserId(userId);
-        sendingaddr.setAddrId(addrId);
-        sendingaddr.setName(name);
-        sendingaddr.setPhone(phone);
-        sendingaddr.setAddrdetail(detail);
-        addressRepository.save(sendingaddr);
-    }
-
-    @Override
     public void deleteAddress(Integer userId, Integer addrId){
         addressRepository.deleteAllByUserIdAndAddrId(userId, addrId);
     }

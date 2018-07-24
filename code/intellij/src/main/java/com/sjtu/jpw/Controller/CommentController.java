@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
 import com.sjtu.jpw.Service.CommentService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -84,5 +85,27 @@ public class CommentController {
 
         commentService.addComment(username, showId, parentId, content, rate, time);
         System.out.println("add comment successfully");
+    }
+
+    @RequestMapping(value="/myComment",produces = "application/json;charset=UTF-8")
+    public void GetMyComment(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String username=request.getParameter("username");
+
+        JsonArray myComment = commentService.getMyComment(username);
+        System.out.println(myComment);
+        out.print(myComment);
+        out.flush();
+    }
+
+    @RequestMapping(value="/deleteComment",produces="application/json;charset=UTF-8")
+    public void DeleteAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int commentId= Integer.parseInt(request.getParameter("commentId"));
+        commentService.deleteComment(commentId);
+
+        System.out.println("delete comment successfully");
     }
 }

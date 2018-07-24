@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
@@ -15,7 +16,9 @@ import java.util.List;
 public interface CommentRepository extends CrudRepository<Comment,Integer> {
     public Comment save(Comment comment);
     public Integer countByShowId(Integer showId);
-
-
     public List<Comment> findAllByShowId(Integer showId);
+    public List<Comment> findAllByUsername(String username);
+
+    @Transactional
+    public void deleteAllByCommentId(Integer commentId);
 }

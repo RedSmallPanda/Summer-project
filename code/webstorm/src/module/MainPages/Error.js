@@ -4,7 +4,7 @@ class Us extends Component{
     render(){
         return (
             <div className="us" style={{textAlign: 'center', marginTop: '20px'}}>
-                还你
+                请先登录
             </div>
         );
     }

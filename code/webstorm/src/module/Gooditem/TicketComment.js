@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message} from "antd";
+import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message, Divider} from "antd";
 import {browserHistory} from "react-router";
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -141,7 +141,10 @@ class TicketComment extends Component {
     detailComment =(e) =>{
         e.preventDefault();
         browserHistory.push({
-            pathname: '/commentPage'
+            pathname: '/commentPage',
+            state:{
+                showId:1
+            }
         });
     };
 
@@ -200,13 +203,17 @@ class TicketComment extends Component {
         })
     };
 
+    refresh = () =>{
+        window.location.reload()
+    };
+
     sendComment = (item) =>{
-        message.success("发表成功",2,window.location.reload());
+        message.success("发表成功",2,this.refresh);
         this.showReplyBar(item);
     };
 
     sendSmallComment = (item,thing) =>{
-        message.success("发表成功",2,window.location.reload());
+        message.success("发表成功",2,this.refresh);
         this.showSmallBar(item,thing);
     };
 
@@ -318,6 +325,7 @@ class TicketComment extends Component {
                         ):(
                             <div/>
                         )}
+                        <Divider/>
                     </div>
                     )}
                 />
