@@ -13,8 +13,13 @@ class DatePick extends Component {
         pickeddate:this.props.Dates[0],
     }
 
-    defaultdate=moment(this.state.enableddate[0],"YYYY-MM-DD-dddd")  //set default time picker
+
+  /*  defaultdate=moment(this.state.enableddate[0],"YYYY-MM-DD-dddd")  //set default time picker*/
     timepickerformat="YYYY-MM-DD-dddd";
+
+    componentWillReceiveProps(nextProps) {
+    this.setState({enableddate:nextProps.Dates,pickeddate:nextProps.Dates[0]});
+}
 
     disabledDate=(time)=>{
         let enabledate=this.state.enableddate;
@@ -34,17 +39,22 @@ class DatePick extends Component {
         this.setState({pickeddate:picked});
 
     }
+    renderpicker=()=>{
+        return ( <DatePicker
+            allowClear={false}
+            placeholder={String(moment(this.state.pickeddate).format(this.timepickerformat))}
+            format={this.timepickerformat}
+            size="normal"
+            onChange={this.ontimechange}
+            disabledDate={this.disabledDate}
+        />);
+}
+
 
     render() {
+       // console.log(this.state)
         return (
-            <DatePicker
-                allowClear={false}
-                defaultValue={this.defaultdate}
-                format={this.timepickerformat}
-                size="normal"
-                onChange={this.ontimechange}
-                disabledDate={this.disabledDate}
-            />
+            this.renderpicker()
         );
     }
 }
