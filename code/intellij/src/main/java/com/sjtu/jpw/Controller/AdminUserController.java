@@ -12,11 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Date;
 import java.util.List;
 
 @RestController
-public class AdminController {
+public class AdminUserController {
     @Autowired
     private UserService userService;
 
@@ -26,7 +25,7 @@ public class AdminController {
         PrintWriter out = response.getWriter();
 
         List<User> me = userService.allUsers();
-        Gson userGson = new Gson();
+        Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String userJson = userGson.toJson(me);
         JsonArray userArray = new JsonParser().parse(userJson).getAsJsonArray();
 
@@ -50,6 +49,24 @@ public class AdminController {
 
         System.out.println("newUser registered: " + newUser);
         out.print("Registered.");
+        out.flush();
+    }
+
+    @RequestMapping(value = "/updateUser", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    public void updateUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String userJson = request.getParameter("updateUser");
+        System.out.println("[JPW ADMIN] User update: get JSON from user form: " + userJson);
+
+        Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
+
+        userService.updateInfo(updateUser);
+
+        System.out.println("User updated: " + updateUser);
+        out.print("Updated.");
         out.flush();
     }
 }
