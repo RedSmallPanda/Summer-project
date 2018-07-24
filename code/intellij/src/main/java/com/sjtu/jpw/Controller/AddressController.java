@@ -44,20 +44,6 @@ public class AddressController {
         System.out.println("add address successfully");
     }
 
-    @RequestMapping(value="/editAddress",produces="application/json;charset=UTF-8")
-    public void EditAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Content-type","application/json;charset=UTF-8");
-
-        int userId= Integer.parseInt(request.getParameter("userId"));
-        int addrId = Integer.parseInt(request.getParameter("key"));
-        String name = request.getParameter("name");
-        String phone = request.getParameter("phone");
-        String detail = request.getParameter("detail");
-        addressService.editAddress(userId,addrId,name,phone,detail);
-
-        System.out.println("edit address successfully");
-    }
-
     @RequestMapping(value="/deleteAddress",produces="application/json;charset=UTF-8")
     public void DeleteAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");

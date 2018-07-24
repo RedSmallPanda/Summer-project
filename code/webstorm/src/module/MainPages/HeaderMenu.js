@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
 import { browserHistory} from 'react-router'
+import Cookies from 'js-cookie';
 import Login from './Login'
 import Register from './Register'
 import "../../css/App.css"
@@ -20,25 +21,38 @@ class HeaderMenu extends Component {
         search: '',
     };
     componentWillMount(){
-
-        let strCookie = document.cookie;
-        let arrCookie = strCookie.split(";");
-        for(let i = 0; i < arrCookie.length; i++){
-            let arr = arrCookie[i].split("=");
-            if("username" === arr[0] && arr[1]){
-                if(arr[1] === "admin") {
-                    this.setState({
-                        isLogin: true,
-                        isAdmin: true
-                    });
-                }
-                else {
-                    this.setState({
-                        isLogin: true
-                    })
-                }
+        let username = Cookies.get('username');
+        if(typeof(username) !== "undefined" && username !== ""){
+            if(username === "admin"){
+                this.setState({
+                    isLogin: true,
+                    isAdmin: true
+                });
+            }
+            else{
+                this.setState({
+                    isLogin: true
+                })
             }
         }
+        // let strCookie = document.cookie;
+        // let arrCookie = strCookie.split(";");
+        // for(let i = 0; i < arrCookie.length; i++){
+        //     let arr = arrCookie[i].split("=");
+        //     if("username" === arr[0] && arr[1]){
+        //         if(arr[1] === "admin") {
+        //             this.setState({
+        //                 isLogin: true,
+        //                 isAdmin: true
+        //             });
+        //         }
+        //         else {
+        //             this.setState({
+        //                 isLogin: true
+        //             })
+        //         }
+        //     }
+        // }
     }
 
     handleSearch = (value) => {
@@ -57,7 +71,7 @@ class HeaderMenu extends Component {
             isLogin:false,
             isAdmin:false,
         });
-        document.cookie="username=";
+        Cookies.remove('username');
         this.handleHomePage()
     };
 
@@ -143,7 +157,7 @@ class HeaderMenu extends Component {
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
             form.resetFields();
-            document.cookie="username="+values.username;
+            Cookies.set('username',values.username);
             if(values.username === 'admin'){
                 this.setState({
                     visible: false,
