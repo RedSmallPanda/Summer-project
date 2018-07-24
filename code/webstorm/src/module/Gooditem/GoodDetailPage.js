@@ -26,16 +26,17 @@ const data={
 class GoodDetailPage extends Component{
 
     state={
-        ticketDetails:{"2018-07-18":{"08:22":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}],"08:23":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}]},
+        ticketDetails:{"2018-07-21":{"08:22":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}],"08:23":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}]},
             "2018-07-19":{"09:22":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}],"09:23":[{"ticketId":3,"time":"Jul 20, 2018 8:22:26 AM","price":23,"seat":"sdad","amount":123,"stock":23,"showId":1}]}
         },
         onsaleinfo:["跳楼大甩卖，清仓大处理，全场一折起","只要998，只要998"],
-        enableddate:["2018-07-18","2018-07-19"],
-        pickeddate:"2018-07-18",
+        enableddate:["2018-07-21","2018-07-19"],
+        pickeddate:"2018-07-21",
         times:[],
         picktime:"08:22",
    //     priceclass:["40","60","80","100","112","130","140","150"],
         pickprice:{},
+        pickpriceIdx:0,
         pickticknum:1,
         tickmaxnum:100,
         totalprice:40,
@@ -68,21 +69,21 @@ class GoodDetailPage extends Component{
                     price:tempTicket.price,
                     stock: tempTicket.stock,
                 };
-                self.setState({ticketDetails:data,pickprice:tempPickPrice,enableddate:temp,pickeddate:temp[0],picktime:picktime[0]});
+                self.setState({ticketDetails:data,pickpriceIdx:0,enableddate:temp,pickeddate:temp[0],picktime:picktime[0]});
 
 
 
 
 
 
-                console.log("enabletimes: "+temp);
+               /* console.log("enabletimes: "+temp);
                 for(var i in data[temp[1]]){
                     console.log("time: "+String(i))
                     console.log(data[temp[1]][i]);
                     for(var j in data[temp[1]][i]){
                         console.log(data[temp[1]][i][j].showId)
                     }
-                }
+                }*/
 
 
                 /*self.handleData(response.data);
@@ -96,14 +97,14 @@ class GoodDetailPage extends Component{
             });
     };
 
-    componentDidMount(){
+    /*componentDidMount(){
         console.log("showdetail")
-        this.getResult(this,this.props);
-    }
+       /!* this.getResult(this,this.props);*!/
+    }*/
     componentWillMount(){
         window.scrollTo(0,0);
     //    console.log("willmount")
-     //   this.getResult(this,this.props);
+        this.getResult(this,this.props);
     }
 
     scrollToAnchor = (anchorName) => {
@@ -118,20 +119,35 @@ class GoodDetailPage extends Component{
         }
     };
     onsetpickdate=(value)=>{
-        this.setState({pickeddate:value})
+        let time=[]
+        let price={}
+        for(var i in this.state.ticketDetails[value]){
+            time.push(i);
+            let temp = this.state.ticketDetails[value][i][0];
+             price = {
+                ticketId: temp.ticketId,
+                seat: temp.seat,
+                price: temp.price,
+                stock: temp.stock,
+            };
+            break;
+        }
+        this.setState({pickeddate:value,picktime:time[0],pickpriceIdx:0})
     };
 
 
     selecttime=(e)=>{
         console.log("pick time :"+e.target.value);          //get <Radiobutton value=xxx>'s  value
-        this.setState({picktime:e.target.value})
+        this.setState({picktime:e.target.value,pickpriceIdx:0});
+
     };
 
 
 
     selectprice=(e)=>{
-        console.log("pick price: "+e.target.value);
-        this.setState({pickprice:e.target.value,tickmaxnum:e.target.value.stock})
+        let tickIdx=e.target.value;
+        console.log("pick price: "+this.state.ticketDetails[this.state.pickeddate][this.state.picktime][tickIdx].price);
+        this.setState({pickpriceIdx:e.target.value,tickmaxnum:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][tickIdx].stock})
     };
 
     setticknum=(value)=> {
@@ -151,6 +167,7 @@ class GoodDetailPage extends Component{
            return (<div className="radiobuttonblock"><RadioButton className="radiobutton" value={element}>{element}</RadioButton></div>);
     })
     };
+
 
     timepick=()=>{
         let timebutton=[];
@@ -184,8 +201,8 @@ class GoodDetailPage extends Component{
                     price: temp.price,
                     stock: temp.stock,
                 };
-                pricebutton.push(<div className="radiobuttonblock"><RadioButton className="radiobutton"
-                                                                                value={price}>{temp.seat + '￥' + temp.price}</RadioButton>
+                pricebutton.push(<div className="radiobuttonblock"><RadioButton className="priceradiobutton"
+                                                                                value={parseInt(i,10)}>{temp.seat + '￥' + temp.price}</RadioButton>
                 </div>)
             }
         }
@@ -282,9 +299,11 @@ class GoodDetailPage extends Component{
                                                                 <Col span={3}><div className="timepickletter">选择价格:</div></Col>
                                                                 <Col span={1}/>
                                                                 <Col>
-                                                                    <RadioGroup onChange={this.selectprice} defaultValue={this.state.pickprice}>
+                                                                    <div className="priceclassblock">
+                                                                    <RadioGroup onChange={this.selectprice} value={this.state.pickpriceIdx}>
                                                                         {pricebutton}
                                                                     </RadioGroup>
+                                                                    </div>
                                                                 </Col>
                                                             </Row>
                                                         </div>
@@ -312,7 +331,7 @@ class GoodDetailPage extends Component{
                                                                 <Col span={1}/>
                                                                 <Col span={8}>
                                                                     <div>
-                                                                        <p className="price">{'￥'+parseInt(this.state.pickprice,10)*this.state.pickticknum}</p>
+                                                                        <p className="price">{'￥'+this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].price*this.state.pickticknum}</p>
                                                                     </div>
                                                                 </Col>
                                                                 <Col span={4}>
