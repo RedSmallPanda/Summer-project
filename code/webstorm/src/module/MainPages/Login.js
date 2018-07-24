@@ -80,7 +80,7 @@ const Login = Form.create()(
                             <FormItem label={null}>
                                 {getFieldDecorator('username', {
                                     rules: [
-                                        { required: false, message: '请输入用户名' },
+                                        { required: true, message: '请输入用户名' },
                                         //                       { max:12,message:'用户名长度不超过12', },
                                         {validator:(rule,value,callback)=>{
                                             //   const form = this.formRef.props.form;
@@ -102,7 +102,7 @@ const Login = Form.create()(
                             <FormItem label={null}>
                                 {getFieldDecorator('password',{
                                     rules:[{
-                                        required:false,
+                                        required:true,
                                     }]
                                 })(
                                     <p>

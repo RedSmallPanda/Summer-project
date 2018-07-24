@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Router, Route, browserHistory } from 'react-router'
+import Cookies from 'js-cookie'
 import HomePage from './module/MainPages/HomePage'
 import InfoSpace from './module/InfoItem/InfoSpace'
 import Directory from './module/MainPages/Directory'
@@ -21,16 +22,23 @@ class MyRouter extends Component{
     }
 
     componentWillMount(){
-        let strCookie = document.cookie;
-        let arrCookie = strCookie.split(";");
-        for(let i = 0; i < arrCookie.length; i++){
-            let arr = arrCookie[i].split("=");
-            if("username" === arr[0] && arr[1]) {
-                this.setState({
-                    isLogin: true
-                })
-            }
+
+        let username = Cookies.get('username');
+        if(typeof(username) !== "undefined" && username !== ''){
+            this.setState({
+                isLogin:true
+            })
         }
+        // let strCookie = document.cookie;
+        // let arrCookie = strCookie.split(";");
+        // for(let i = 0; i < arrCookie.length; i++){
+        //     let arr = arrCookie[i].split("=");
+        //     if("username" === arr[0] && arr[1]) {
+        //         this.setState({
+        //             isLogin: true
+        //         })
+        //     }
+        // }
     }
 
     renderRouter = () =>{

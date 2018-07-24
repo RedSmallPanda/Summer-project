@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Timestamp;
 import java.util.Iterator;
 import java.util.List;
 
@@ -68,5 +69,20 @@ public class CommentController {
         out.print(allComment);
         out.flush();
         out.close();
+    }
+
+    @RequestMapping(value="/addComment",produces="application/json;charset=UTF-8")
+    public void AddComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int showId=Integer.parseInt(request.getParameter("showId"),10);
+        String username = request.getParameter("username");
+        int parentId = Integer.parseInt(request.getParameter("parentId"),10);
+        String content = request.getParameter("content");
+        int rate = Integer.parseInt(request.getParameter("rate"),10);
+        Timestamp time = Timestamp.valueOf(request.getParameter("time"));
+
+        commentService.addComment(username, showId, parentId, content, rate, time);
+        System.out.println("add comment successfully");
     }
 }

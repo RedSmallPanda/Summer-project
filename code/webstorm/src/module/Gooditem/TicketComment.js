@@ -2,6 +2,10 @@ import React, {Component} from "react";
 import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message} from "antd";
 import {browserHistory} from "react-router";
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import moment from 'moment'
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 const Panel = Collapse.Panel;
 const { TextArea } = Input;
@@ -21,25 +25,19 @@ const { TextArea } = Input;
 //     });
 // }
 
-const replyBar = <div>
-    <Row>
-        <Col span={1}/>
-        <Col span={22}>
-            <TextArea rows={2}/>
-        </Col>
-    </Row>
-</div>;
+const replyBar = <TextArea rows={2}/>;
 
 let data = [{
-    commentId:'',
-    parentId:'',
-    content:'',
-    rate:'',
-    userId:'',
-    ticketId:'',
-    time:'',
-    replyCount:'',
-    reply:[]
+    commentId:1,
+    parentId:-1,
+    content:"test",
+    rate:10,
+    username:"user1",
+    showId:1,
+    time:'Jul 18, 2018 5:50:10 AM',
+    replyCount:0,
+    reply:[],
+    replyBar:<TextArea rows={2}/>,
 }];
 
 let IconText = ({ type, text, onClick }) => (
@@ -54,13 +52,14 @@ class TicketComment extends Component {
         super(props);
         if (true);//POST to get data
         this.state = {
-            comment:[],
+            comment:data,
+            value:""
         };
         this.cancelLike = this.cancelLike.bind(this);
         this.detailComment = this.detailComment.bind(this);
     }
 
-    getResult(self,props) {
+    getResult(self) {
         axios.get("/comments",{
             params:{
                 showId:1
@@ -79,8 +78,49 @@ class TicketComment extends Component {
             });
     };
 
+
+
+    handleValue = (e) =>{
+        this.setState({
+            value:String(e.target.parentNode.parentNode.firstChild.nextSibling.firstChild.value)
+        });
+        console.log(String(e.target.parentNode.parentNode.firstChild.nextSibling.firstChild.value))
+    };
+
+    addComment = (item) =>{
+        let params = new URLSearchParams();
+        let username = Cookies.get('username');
+        let time = moment().format('YYYY-MM-DD hh:mm:ss');
+        let content = this.state.value;
+
+        params.append('showId',item.showId);
+        params.append('username', username);
+        params.append('parentId',item.commentId);
+        params.append('content',content);
+        params.append('rate',-1);
+        params.append('time',time);
+        axios.post('/addComment', params);
+        this.sendComment(item);
+    };
+
+    addReply = (item, thing) =>{
+        let params = new URLSearchParams();
+        let username = Cookies.get('username');
+        let time = moment().format('YYYY-MM-DD hh:mm:ss');
+        let content = "@" + thing.username+": " + this.state.value;
+
+        params.append('showId',item.showId);
+        params.append('username', username);
+        params.append('parentId',item.commentId);
+        params.append('content',content);
+        params.append('rate',-1);
+        params.append('time',time);
+        axios.post('/addComment', params);
+        this.sendSmallComment(item,thing);
+    };
+
     componentDidMount(){
-        this.getResult(this, this.props);
+        this.getResult(this);
     }
 
     handleData = (commentData) =>{
@@ -98,12 +138,13 @@ class TicketComment extends Component {
         data = commentData;
     };
 
-    detailComment(e){
+    detailComment =(e) =>{
         e.preventDefault();
         browserHistory.push({
             pathname: '/commentPage'
         });
-    }
+    };
+
     cancelLike(e) {
         e.preventDefault();
         let username = e.target.parentNode.parentNode.parentNode.parentNode
@@ -160,12 +201,12 @@ class TicketComment extends Component {
     };
 
     sendComment = (item) =>{
-        message.success("发表成功",2);
+        message.success("发表成功",2,window.location.reload());
         this.showReplyBar(item);
     };
 
     sendSmallComment = (item,thing) =>{
-        message.success("发表成功",2);
+        message.success("发表成功",2,window.location.reload());
         this.showSmallBar(item,thing);
     };
 
@@ -189,7 +230,7 @@ class TicketComment extends Component {
                     <div>
                         <List.Item
                             style={{border:'0px'}}
-                            key={item.userId}
+                            key={item.username}
                             actions={[
                                 <IconText type="like-o"/>,
                                 <IconText type="message" text={item.replyCount} onClick={() => {this.showReplyBar(item)}}/>
@@ -198,7 +239,7 @@ class TicketComment extends Component {
                             <List.Item.Meta
                                 align='left'
                                 avatar={<Avatar size='large' icon="user"/>}
-                                title={<span>{item.userId}</span>}
+                                title={<span>{item.username}</span>}
                                 description={
                                     <div>
                                         <Rate disabled allowHalf defaultValue={item.rate/2}/><br/>
@@ -208,6 +249,23 @@ class TicketComment extends Component {
                             />
                             {item.time}
                         </List.Item>
+                        {item.showReplyBar ? <div>
+                            <Row>
+                                <Col span={1}/>
+                                <span>回复&nbsp;{item.username}:</span>
+                            </Row>
+                            <Row>
+                                <Col span={1}/>
+                                <Col span={19}>
+                                    {item.replyBar}
+                                </Col>
+                                <Col span={1}/>
+                                <Col span={2}>
+                                    <Row style={{height:'18px'}}/>
+                                    <Button type="primary" onMouseUp={() =>{this.addComment(item)}} onMouseDown={this.handleValue}>发表回复</Button>
+                                </Col>
+                            </Row>
+                        </div> : (<div/>)}
                         {item.replyCount > 0 ? (
                             <Collapse bordered={false}>
                                 <Panel header="查看回复" key="1" style={{border:'0px'}}>
@@ -228,7 +286,7 @@ class TicketComment extends Component {
                                                         >
                                                             <List.Item.Meta
                                                                 avatar={<Avatar icon="user" />}
-                                                                title={<span>{thing.userId}</span>}
+                                                                title={<span>{thing.username}</span>}
                                                                 description={thing.content}
                                                             />
                                                             {thing.time}
@@ -236,14 +294,17 @@ class TicketComment extends Component {
                                                         {thing.showSmallBar ? <div>
                                                             <Row>
                                                                 <Col span={1}/>
-                                                                <span>回复&nbsp;{thing.userId}:</span>
+                                                                <span>回复&nbsp;{thing.username}:</span>
                                                             </Row>
-                                                            {thing.smallBar}
                                                             <Row>
-                                                                <br/>
-                                                                <Col span={20}/>
+                                                                <Col span={1}/>
+                                                                <Col span={19}>
+                                                                    {thing.smallBar}
+                                                                </Col>
+                                                                <Col span={1}/>
                                                                 <Col span={2}>
-                                                                    <Button type="primary" onClick={() => {this.sendSmallComment(item,thing)}}>发表回复</Button>
+                                                                    <Row style={{height:'18px'}}/>
+                                                                    <Button type="primary" onMouseUp={() =>{this.addReply(item,thing)}} onMouseDown={this.handleValue}>发表回复</Button>
                                                                 </Col>
                                                             </Row>
                                                         </div> : (<div/>)}
@@ -257,20 +318,6 @@ class TicketComment extends Component {
                         ):(
                             <div/>
                         )}
-                        {item.showReplyBar ? <div>
-                            <Row>
-                                <Col span={1}/>
-                                <span>回复&nbsp;{item.userId}:</span>
-                            </Row>
-                            {item.replyBar}
-                            <Row>
-                                <br/>
-                                <Col span={20}/>
-                                <Col span={2}>
-                                    <Button type="primary" onClick={() => {this.sendComment(item)}}>发表回复</Button>
-                                </Col>
-                            </Row>
-                        </div> : (<div/>)}
                     </div>
                     )}
                 />

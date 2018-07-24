@@ -10,13 +10,12 @@ import java.util.Objects;
 @Entity
 public class Comment {
     private int commentId;
-    private Integer userId;
-    private Integer showId;
+    private String username;
     private Integer parentId;
     private String content;
     private Integer rate;
-    private String thread;
     private Timestamp time;
+    private Integer showId;
 
     @Id
     @Column(name = "comment_id", nullable = false)
@@ -29,23 +28,13 @@ public class Comment {
     }
 
     @Basic
-    @Column(name = "user_id", nullable = true)
-    public Integer getUserId() {
-        return userId;
+    @Column(name = "username", nullable = true, length = -1)
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
-
-    @Basic
-    @Column(name = "show_id", nullable = true)
-    public Integer getShowId() {
-        return showId;
-    }
-
-    public void setShowId(Integer showId) {
-        this.showId = showId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Basic
@@ -79,16 +68,6 @@ public class Comment {
     }
 
     @Basic
-    @Column(name = "thread", nullable = true, length = -1)
-    public String getThread() {
-        return thread;
-    }
-
-    public void setThread(String thread) {
-        this.thread = thread;
-    }
-
-    @Basic
     @Column(name = "time", nullable = true)
     public Timestamp getTime() {
         return time;
@@ -98,24 +77,33 @@ public class Comment {
         this.time = time;
     }
 
+    @Basic
+    @Column(name = "show_id", nullable = true)
+    public Integer getShowId() {
+        return showId;
+    }
+
+    public void setShowId(Integer showId) {
+        this.showId = showId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Comment comment = (Comment) o;
         return commentId == comment.commentId &&
-                Objects.equals(userId, comment.userId) &&
-                Objects.equals(showId, comment.showId) &&
+                Objects.equals(username, comment.username) &&
                 Objects.equals(parentId, comment.parentId) &&
                 Objects.equals(content, comment.content) &&
                 Objects.equals(rate, comment.rate) &&
-                Objects.equals(thread, comment.thread) &&
-                Objects.equals(time, comment.time);
+                Objects.equals(time, comment.time) &&
+                Objects.equals(showId, comment.showId);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(commentId, userId, showId, parentId, content, rate, thread, time);
+        return Objects.hash(commentId, username, parentId, content, rate, time, showId);
     }
 }
