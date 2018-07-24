@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table, Input, InputNumber, Modal, Form, Avatar, Divider, Button, Icon } from 'antd';
-import axios from "axios/index";
+import { Table, Input, InputNumber, Modal, Form, Divider, Button, Icon } from 'antd';
+import axios from "axios";
 
 const confirm = Modal.confirm;
 
@@ -311,7 +311,7 @@ class UserManage extends React.Component {
             axios.post("/addUser", params)
                 .then(function (response) {
                     console.log(response);
-                    alert(response);
+                    alert(response.data);
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -347,6 +347,16 @@ class UserManage extends React.Component {
             const newData = [...this.state.data];
             const index = newData.findIndex(item => userId === item.userId);
             if (index > -1) {
+                let params = new URLSearchParams();
+                params.append("updateUser", JSON.stringify(row));
+                axios.post("/updateUser", params)
+                    .then(function (response) {
+                        console.log(response);
+                        alert(response.data);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
                 const item = newData[index];
                 newData.splice(index, 1, {
                     ...item,
