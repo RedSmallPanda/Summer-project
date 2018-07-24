@@ -17,6 +17,8 @@ class Collection extends Component {
         confirm({
             title: '确认清空 我的收藏 ?',
             content: '已过期/未过期的收藏都将被删除！',
+            okText: '确定',
+            cancelText: '取消',
             onOk() {
                 alert("collection should be deleted.");
             },

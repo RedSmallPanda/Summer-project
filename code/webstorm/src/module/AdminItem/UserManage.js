@@ -1,17 +1,23 @@
 import React from 'react';
 import { Table, Input, InputNumber, Modal, Form, Avatar, Divider, Button, Icon } from 'antd';
+import axios from "axios/index";
+
+const confirm = Modal.confirm;
 
 const data = [];
-for(let i = 0; i < 20; i++){
-    data.push({
-        avatar:<Avatar icon="user" />,
-        username:`Jack${i}`,
-        password:'123456',
-        phone:18812345678,
-        email:'123456@qq.com',
-        key:i.toString(),
-    })
-}
+// for(let i = 0; i < 20; i++){
+//     data.push({
+//         avatar: <Avatar icon="user"/>,
+//         userId: i,
+//         username: `Jack${i}`,
+//         password: '123456',
+//         gender: 'male',
+//         birthday: '2000-01-30',
+//         nickname: 'nick',
+//         phone: 18812345678,
+//         email: '123456@qq.com',
+//     });
+// }
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -80,6 +86,13 @@ const UserForm = Form.create()(
                     onOk={onCreate}
                 >
                     <Form layout="vertical">
+                        <FormItem label="用户id">
+                            {getFieldDecorator('userId', {
+                                rules: [{ required: true, message: '请输入id' }],
+                            })(
+                                <Input type="textarea" placeholder="用户id"/>
+                            )}
+                        </FormItem>
                         <FormItem label="用户名">
                             {getFieldDecorator('username', {
                                 rules: [{ required: true, message: '请输入用户名' }],
@@ -92,6 +105,27 @@ const UserForm = Form.create()(
                                 rules: [{ required: true, message: '请输入密码' }],
                             })(
                                 <Input type="textarea" placeholder="密码"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="性别">
+                            {getFieldDecorator('gender', {
+                                rules: [{ required: false, message: '请输入性别' }],
+                            })(
+                                <Input type="textarea" placeholder="性别"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="生日">
+                            {getFieldDecorator('birthday', {
+                                rules: [{ required: false, message: '请输入生日' }],
+                            })(
+                                <Input type="textarea" placeholder="生日"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="昵称">
+                            {getFieldDecorator('nickname', {
+                                rules: [{ required: false, message: '请输入昵称' }],
+                            })(
+                                <Input type="textarea" placeholder="昵称"/>
                             )}
                         </FormItem>
                         <FormItem label="手机号">
@@ -120,9 +154,9 @@ class UserManage extends React.Component {
         super(props);
         this.state = {
             data,
-            editingKey: '' ,
-            visible:false,
-            key:data.length,
+            loading: true,
+            editingId: '',
+            visible: false,
         };
         this.columns = [{
             title:'头像',
@@ -130,16 +164,44 @@ class UserManage extends React.Component {
             width:'2%',
             key:'avatar',
         },{
+            title: 'id',
+            dataIndex: 'userId',
+            key: 'username',
+            editable:true,
+            width:'7%',
+            align:'center'
+        },{
             title: '用户名',
             dataIndex: 'username',
             key: 'username',
             editable:true,
-            width:'8%',
+            width:'9%',
             align:'center'
         },{
             title:'密码',
             dataIndex:'password',
             key:'password',
+            editable:true,
+            width:'9%',
+            align:'center'
+        },{
+            title:'性别',
+            dataIndex:'gender',
+            key:'gender',
+            editable:true,
+            width:'8%',
+            align:'center'
+        },{
+            title:'生日',
+            dataIndex:'birthday',
+            key:'birthday',
+            editable:true,
+            width:'10%',
+            align:'center'
+        },{
+            title:'昵称',
+            dataIndex:'nickname',
+            key:'nickname',
             editable:true,
             width:'8%',
             align:'center'
@@ -160,7 +222,7 @@ class UserManage extends React.Component {
         }, {
             title:'操作',
             key:'action',
-            width:'10%',
+            width:'8%',
             align:'center',
             render: (text, record) => {
                 const editable = this.isEditing(record);
@@ -172,11 +234,11 @@ class UserManage extends React.Component {
                                     {
                                         form =>(
                                             <span>
-                                            <a onClick={()=>this.save(form,record.key)}>
-                                                保存
-                                            </a>
-                                            <Divider type="vertical" />
-                                            <a onClick={this.cancel}>取消</a>
+                                                <a onClick={()=>this.save(form,record.userId)}>
+                                                    保存
+                                                </a>
+                                                <Divider type="vertical" />
+                                                <a onClick={this.cancel}>取消</a>
                                             </span>
                                         )
                                     }
@@ -184,9 +246,9 @@ class UserManage extends React.Component {
                             </span>
                         ) : (
                             <span>
-                                <a onClick={()=>this.edit(record.key)}>编辑</a>
+                                <a onClick={()=>this.edit(record.userId)}>编辑</a>
                                 <Divider type="vertical" />
-                                <a onClick={()=>this.handleDelete(record.key)}>删除</a>
+                                <a onClick={()=>this.handleDelete(record.userId)}>删除</a>
                                 <Divider type="vertical" />
                                 <a onClick={this.cancel}>禁用</a>
                             </span>
@@ -196,6 +258,22 @@ class UserManage extends React.Component {
 
             }
         }];
+    }
+
+    componentDidMount(){
+        let self = this;
+        axios.get("http://localhost:8080/allUsers")
+            .then(function (response) {
+                console.log(response);
+                let preData=response.data;
+                self.setState({
+                    loading: false,
+                    data: preData,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     showModal = () => {
@@ -217,13 +295,27 @@ class UserManage extends React.Component {
             form.resetFields();
 
             let newUser = {
-                avatar:<Avatar icon="user" />,
-                username:values.username,
-                password:values.password,
-                phone:values.phone,
-                email:values.email,
-                key:(this.state.key + 1).toString()
+                // avatar: <Avatar icon="user"/>,
+                userId: values.userId,
+                username: values.username,
+                password: values.password,
+                gender: values.gender,
+                birthday: values.birthday,
+                nickname: values.nickname,
+                phone: values.phone,
+                email: values.email,
             };
+
+            let params = new URLSearchParams();
+            params.append("newUser", JSON.stringify(newUser));
+            axios.post("/addUser", params)
+                .then(function (response) {
+                    console.log(response);
+                    alert(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
             let newData = this.state.data;
             newData.unshift(newUser);
@@ -231,7 +323,6 @@ class UserManage extends React.Component {
             this.setState({
                 visible:false,
                 data:newData,
-                key:this.state.key + 1
             })
         });
     };
@@ -241,45 +332,57 @@ class UserManage extends React.Component {
     };
 
     isEditing = (record) => {
-        return record.key === this.state.editingKey;
+        return record.userId === this.state.editingId;
     };
 
-    edit(key) {
-        this.setState({ editingKey: key });
+    edit(userId) {
+        this.setState({ editingId: userId });
     }
 
-    save(form, key) {
+    save(form, userId) {
         form.validateFields((error, row) => {
             if (error) {
                 return;
             }
             const newData = [...this.state.data];
-            const index = newData.findIndex(item => key === item.key);
+            const index = newData.findIndex(item => userId === item.userId);
             if (index > -1) {
                 const item = newData[index];
                 newData.splice(index, 1, {
                     ...item,
                     ...row,
                 });
-                this.setState({ data: newData, editingKey: '' });
+                this.setState({ data: newData, editingId: '' });
             } else {
                 newData.push(data);
-                this.setState({ data: newData, editingKey: '' });
+                this.setState({ data: newData, editingId: '' });
             }
         });
     }
 
     cancel = () => {
-        this.setState({ editingKey: '' });
+        this.setState({ editingId: '' });
     };
 
-    handleDelete = (key) =>{
-        const newData = [...this.state.data];
-        const index = newData.findIndex(item => key === item.key);
-        newData.splice(index,1);
-        this.setState({
-            data:newData
-        })
+    handleDelete = (userId) => {
+        let self = this;
+        confirm({
+            title: '确认删除?',
+            content: '此次删除将无法恢复！',
+            okText: '确定',
+            cancelText: '取消',
+            onOk() {
+                const newData = [...self.state.data];
+                const index = newData.findIndex(item => userId === item.userId);
+                newData.splice(index, 1);
+                self.setState({
+                    data: newData,
+                })
+            },
+            onCancel() {
+
+            },
+        });
     };
 
     render() {

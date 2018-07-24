@@ -24,13 +24,10 @@ public class UserInfoController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        User me = userService.UserInfo(1);//TODO: request.getParameter("userID")
-        Gson userGson = new Gson();
+        User me = userService.UserInfo(3);//TODO: request.getParameter("userID")
+        Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String userJson = userGson.toJson(me);
         JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();
-
-        userObject.remove("birthday");
-        userObject.addProperty("birthday", me.getBirthday().toString());
 
         System.out.println(userObject);
         out.print(userObject);
@@ -44,21 +41,12 @@ public class UserInfoController {
 
         String userJson = request.getParameter("form");
         System.out.println("get JSON from user form: " + userJson);
-        JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();
 
-        User updateUser = new User();
-        updateUser.setUserId(userObject.get("userId").getAsInt());
-        updateUser.setUsername(userObject.get("username").getAsString());
-        updateUser.setPassword(userObject.get("password").getAsString());
-        updateUser.setGender(userObject.get("gender").getAsString());
-        updateUser.setBirthday(Date.valueOf(userObject.get("birthday").getAsString()));
-        updateUser.setNickname(userObject.get("nickname").getAsString());
-        updateUser.setPhone(userObject.get("phone").getAsString());
-        updateUser.setEmail(userObject.get("email").getAsString());
+        Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+        User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
         userService.updateInfo(updateUser);
 
-        Gson userGson = new Gson();
         out.print(userGson.toJson(updateUser));
         System.out.println("changed into: " + userGson.toJson(updateUser));
         out.flush();

@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User Register(User newUser) {
+    public User register(User newUser) {
         if(UsernameDuplicated(newUser.getUsername())==0){
             return userRepository.save(newUser);
         }
@@ -49,5 +49,10 @@ public class UserServiceImpl implements UserService {
         List<User> users= userRepository.findAllByUsername(username);
         if(users.size()>0){return 1;}
         else return 0;
+    }
+
+    @Override
+    public List<User> allUsers(){
+        return userRepository.findAll();
     }
 }

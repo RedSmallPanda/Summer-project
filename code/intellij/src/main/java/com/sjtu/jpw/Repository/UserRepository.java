@@ -18,12 +18,19 @@ import java.util.List;
 @Qualifier("userRepository")
 public interface UserRepository extends CrudRepository<User,Integer> {
     public User save(User u);
-    public List<User> findAllByUsernameAndPassword(String username,String password);
+
+    public List<User> findAllByUsernameAndPassword(String username, String password);
+
     public User findByUserId(Integer id);
+
     public User findByUsername(String username);
+
     public List<User> findAllByUsername(String username);
 
-    @Transactional        //dai ding
+    //    @Query(value = "select user from User user")
+    public List<User> findAll();
+
+    @Transactional        //待定
     @Modifying
     @Query(value = "update User user set user.password=:password,user.gender=:gender," +
             "user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone," +
