@@ -1,12 +1,17 @@
 @import '../../node_modules/antd/dist/antd.css';
 
-html, body {
+html{
   margin: 0;
   padding: 0;
   height: 100%;
 }
 
-body{min-width:1100px;}
+body{
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  min-width:1100px;
+}
 
 .App-logo {
   animation: App-logo-spin infinite 20s linear;

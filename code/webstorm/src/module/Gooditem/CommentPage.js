@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import {Row, Col, Form, Rate, Button, Card, Icon, message} from 'antd';
 import { browserHistory } from 'react-router'
+import axios from 'axios';
+import Cookies from 'js-cookie';
+import moment from 'moment'
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 const FormItem = Form.Item;
 
@@ -10,12 +15,18 @@ const data={
     location:'梅赛德斯奔驰文化中心',
     rate:4.5,
     img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
-}
+};
 
 class DemoCommentPage extends Component {
     state={
-        data:data
-    }
+        data:data,
+        rate:'',
+        value:'',
+        showId:this.props.showId,
+        content:this.props.content,
+        purpose:this.props.purpose,
+        commentId:this.props.commentId,
+    };
 
     onClose = () =>{
         browserHistory.goBack();
@@ -25,11 +36,34 @@ class DemoCommentPage extends Component {
         message.success("发表成功",2,this.onClose)
     };
 
+    addComment = (values) =>{
+        let params = new URLSearchParams();
+        let username = Cookies.get('username');
+        let time = moment().format('YYYY-MM-DD hh:mm:ss');
+
+        params.append('purpose',this.state.purpose);
+        params.append('commentId',this.state.commentId);
+        params.append('showId',this.state.showId);
+        params.append('username', username);
+        params.append('parentId',-1);
+        params.append('content',values.confirm);
+        params.append('rate',values.rate * 2);
+        params.append('time',time);
+        console.log("params: "+params);
+        axios.post('/addComment', params);
+    };
+
     handleSubmit = (e) => {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                this.setState({
+                    rate:values.rate,
+                    value:values.confirm,
+                });
+                this.addComment(values)
+
             }
         });
     };
@@ -55,7 +89,7 @@ class DemoCommentPage extends Component {
                                 label="评分"
                             >
                                 {getFieldDecorator('rate', {
-                                    initialValue: 3.5,
+                                    initialValue: 5,
                                 })(
                                     <Rate allowHalf/>
                                 )}
@@ -70,7 +104,7 @@ class DemoCommentPage extends Component {
                                         required: true, message: '请输入评论内容!',
                                     }],
                                 })(
-                                    <textarea style={{width:'500px',height:'400px'}} />
+                                    <textarea style={{width:'500px',height:'400px'}} defaultValue={this.state.content}/>
 
                                 )}
                             </FormItem>
@@ -109,12 +143,23 @@ class DemoCommentPage extends Component {
 const RealCommentPage = Form.create()(DemoCommentPage);
 
 class CommentPage extends Component {
+    state = {
+        showId:'',
+        content:'',
+        purpose:'',
+        commentId:'',
+    };
+
     componentWillMount(){
         window.scrollTo(0,0);
+        this.setState(this.props.location.state);
+
     }
+
     render(){
         return (
-            <RealCommentPage />
+            <RealCommentPage showId={this.state.showId} content={this.state.content}
+            purpose={this.state.purpose} commentId={this.state.commentId}/>
         );
     }
 }

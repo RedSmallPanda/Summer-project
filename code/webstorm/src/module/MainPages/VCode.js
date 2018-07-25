@@ -90,7 +90,7 @@ class VCode extends Component{
                         key={i}
                         className='itemStr'
                         style={{
-                            transform:`rotate(${rotate[i]/1.5}deg)`,
+                            transform:`rotate(${rotate[i]/1.8}deg)`,
                             fontSize: `${fz[i]*1.5}px`,
                             color: `rgb(${color[i].toString()})`
                         }}

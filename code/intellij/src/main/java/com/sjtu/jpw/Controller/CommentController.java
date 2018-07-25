@@ -7,6 +7,7 @@ import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
 import com.sjtu.jpw.Service.CommentService;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.annotation.Resource;
@@ -75,6 +76,7 @@ public class CommentController {
     public void AddComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
 
+        String purpose = request.getParameter("purpose");
         int showId=Integer.parseInt(request.getParameter("showId"),10);
         String username = request.getParameter("username");
         int parentId = Integer.parseInt(request.getParameter("parentId"),10);
@@ -82,7 +84,36 @@ public class CommentController {
         int rate = Integer.parseInt(request.getParameter("rate"),10);
         Timestamp time = Timestamp.valueOf(request.getParameter("time"));
 
-        commentService.addComment(username, showId, parentId, content, rate, time);
+        if(purpose.equals("add")){
+            commentService.addComment(username, showId, parentId, content, rate, time);
+        }
+        else{
+            int commentId = Integer.parseInt(request.getParameter("commentId"),10);
+            commentService.editComment(commentId, username, showId, parentId, content, rate, time);
+        }
+
         System.out.println("add comment successfully");
+    }
+
+    @RequestMapping(value="/myComments",produces = "application/json;charset=UTF-8")
+    public void GetMyComment(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String username=request.getParameter("username");
+
+        JsonArray myComment = commentService.getMyComment(username);
+        System.out.println(myComment);
+        out.print(myComment);
+        out.flush();
+    }
+
+    @RequestMapping(value="/deleteComment",produces="application/json;charset=UTF-8")
+    public void DeleteAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int commentId= Integer.parseInt(request.getParameter("commentId"));
+        commentService.deleteComment(commentId);
+
+        System.out.println("delete comment successfully");
     }
 }

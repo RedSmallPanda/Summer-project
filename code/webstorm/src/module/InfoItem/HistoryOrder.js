@@ -78,10 +78,10 @@ class Order extends Component {
             {
                 title: '操作',
                 key: 'action',
-                render: () => (
+                render: (record) => (
                     <span>
-      <a onClick={this.handleComment}>评价</a>
-    </span>
+                        <a onClick={()=>this.handleComment(record.key)}>评价</a>
+                    </span>
                 ),
             }];
     }
@@ -101,8 +101,14 @@ class Order extends Component {
     //     this.setState({ selectedRowKeys });
     // }
 
-    handleComment = () =>{
-        browserHistory.push('/commentPage')
+    handleComment = (key) =>{
+        browserHistory.push({
+            pathname:'/commentPage',
+            state:{
+                purpose: "add",
+                showId: key
+            }
+        });
     };
 
     handleDetail = () =>{
