@@ -27,6 +27,18 @@ public class AddressController {
         out.flush();
     }
 
+    @RequestMapping(value="/getSplitAddress",produces="application/json;charset=UTF-8")
+    public void GetSplitAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        JsonArray myAddress = addressService.getSplitAddress(userId);
+
+        System.out.println(myAddress);
+        out.print(myAddress);
+        out.flush();
+    }
+
     @RequestMapping(value="/addAddress",produces="application/json;charset=UTF-8")
     public void AddAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");

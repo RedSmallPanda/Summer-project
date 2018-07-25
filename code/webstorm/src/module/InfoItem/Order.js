@@ -156,6 +156,7 @@ class Order extends Component {
                     firstStep:1,
                     secondStep:0,
                     totalPrice:totalPrice,
+                    ticketInfo:[],
                 }
             })
         }
@@ -181,9 +182,7 @@ class Order extends Component {
                     console.log(error);
                 });
 
-            browserHistory.push({
-                pathname:'/info',
-            })
+            window.location.reload();
         }
     };
 

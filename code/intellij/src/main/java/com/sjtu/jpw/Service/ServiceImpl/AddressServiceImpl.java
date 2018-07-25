@@ -21,6 +21,30 @@ public class AddressServiceImpl implements AddressService {
         List<Sendingaddr> listData = addressRepository.findAllByUserId(userId);
         JsonArray addressResult = new JsonArray();
         Iterator<Sendingaddr> it = listData.iterator();
+        while(it.hasNext()) {
+            Sendingaddr sendingaddr = it.next();
+            String province = sendingaddr.getProvince();
+            String city = sendingaddr.getCity();
+            String block = sendingaddr.getBlock();
+            String district = province != null ? (province + " " + city + " " + block)
+                    : (city + " " + block);
+            JsonObject addressObject = new JsonObject();
+            addressObject.addProperty("key", sendingaddr.getAddrId());
+            addressObject.addProperty("name", sendingaddr.getName());
+            addressObject.addProperty("phone", sendingaddr.getPhone());
+            addressObject.addProperty("city", district);
+            addressObject.addProperty("detail", sendingaddr.getAddrdetail());
+            addressResult.add(addressObject);
+        }
+        return addressResult;
+    }
+
+    @Override
+    public JsonArray getSplitAddress(Integer userId){
+        List<Sendingaddr> listData = addressRepository.findAllByUserId(userId);
+        JsonArray addressResult = new JsonArray();
+        Iterator<Sendingaddr> it = listData.iterator();
+        int i=0;
         while(it.hasNext()){
             Sendingaddr sendingaddr = it.next();
             String province = sendingaddr.getProvince();
@@ -29,12 +53,16 @@ public class AddressServiceImpl implements AddressService {
             String district = province != null ? (province + " " + city + " " + block)
                     : (city + " " + block);
             JsonObject addressObject = new JsonObject();
-            addressObject.addProperty("key",sendingaddr.getAddrId());
+            addressObject.addProperty("key",i);
             addressObject.addProperty("name",sendingaddr.getName());
             addressObject.addProperty("phone",sendingaddr.getPhone());
-            addressObject.addProperty("city",district);
+            addressObject.addProperty("province",province);
+            addressObject.addProperty("city",city);
+            addressObject.addProperty("block",block);
             addressObject.addProperty("detail",sendingaddr.getAddrdetail());
+            addressObject.addProperty("district",district);
             addressResult.add(addressObject);
+            i=i+1;
         }
         return addressResult;
     }
