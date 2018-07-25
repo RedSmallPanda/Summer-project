@@ -1,30 +1,32 @@
 import React from 'react';
-import { Table, Input, InputNumber, Modal, Form, Divider, Button, Icon } from 'antd';
+import { Table, Input, InputNumber, Modal, Form, Button, Icon } from 'antd';
 import axios from "axios";
+import '../../css/Admin.css';
 
 const confirm = Modal.confirm;
 
 const data = [];
-// for(let i = 0; i < 20; i++){
-//     data.push({
-//         avatar: <Avatar icon="user"/>,
-//         userId: i,
-//         username: `Jack${i}`,
-//         password: '123456',
-//         gender: 'male',
-//         birthday: '2000-01-30',
-//         nickname: 'nick',
-//         phone: 18812345678,
-//         email: '123456@qq.com',
-//     });
-// }
+for(let i = 0; i < 20; i++){
+    data.push({
+        // avatar: <Avatar icon="user"/>,
+        userId: i*999,
+        username: `Jack ${i}`,
+        password: '123456',
+        gender: 'male',
+        birthday: '2000-01-30',
+        nickname: 'nick',
+        phone: 18812345678,
+        email: '123456@qq.com',
+        state: '0'
+    });
+}
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
 
-const EditableRow = ({ form, index, ...props }) => (
+const EditableRow = ({ form, index, ...props, }) => (
     <EditableContext.Provider value={form}>
-        <tr {...props} />
+        <tr {...props}/>
     </EditableContext.Provider>
 );
 
@@ -142,6 +144,13 @@ const UserForm = Form.create()(
                                 <Input type="textarea" placeholder="邮箱"/>
                             )}
                         </FormItem>
+                        <FormItem label="状态(0为正常状态，1删除，2禁用)">
+                            {getFieldDecorator('state',{
+                                rules:[{ required:true, message:'请输入用户状态'}]
+                            })(
+                                <Input type="textarea" initialValue="0"/>
+                            )}
+                        </FormItem>
                     </Form>
                 </Modal>
             );
@@ -159,85 +168,97 @@ class UserManage extends React.Component {
             visible: false,
         };
         this.columns = [{
-            title:'头像',
-            dataIndex:'avatar',
-            width:'2%',
-            key:'avatar',
-        },{
+            title: '头像',
+            dataIndex: 'avatar',
+            width: 65,//'2%',
+            key: 'avatar',
+            fixed: 'left',
+        }, {
             title: 'id',
             dataIndex: 'userId',
-            key: 'username',
-            editable:true,
-            width:'7%',
-            align:'center'
-        },{
+            key: 'userId',
+            editable: false,
+            width: 60,//'7%',
+            align: 'center',
+            fixed: 'left',
+        }, {
             title: '用户名',
             dataIndex: 'username',
             key: 'username',
-            editable:true,
-            width:'9%',
-            align:'center'
-        },{
-            title:'密码',
-            dataIndex:'password',
-            key:'password',
-            editable:true,
-            width:'9%',
-            align:'center'
-        },{
-            title:'性别',
-            dataIndex:'gender',
-            key:'gender',
-            editable:true,
-            width:'8%',
-            align:'center'
-        },{
-            title:'生日',
-            dataIndex:'birthday',
-            key:'birthday',
-            editable:true,
-            width:'10%',
-            align:'center'
-        },{
-            title:'昵称',
-            dataIndex:'nickname',
-            key:'nickname',
-            editable:true,
-            width:'8%',
-            align:'center'
-        },{
+            editable: false,
+            width: 100,//'9%',
+            align: 'center',
+            fixed: 'left',
+        }, {
+            title: '密码',
+            dataIndex: 'password',
+            key: 'password',
+            editable: true,
+            width: 160,//'9%',
+            align: 'center'
+        }, {
+            title: '昵称',
+            dataIndex: 'nickname',
+            key: 'nickname',
+            editable: true,
+            width: 120,//'8%',
+            align: 'center'
+        }, {
+            title: '性别',
+            dataIndex: 'gender',
+            key: 'gender',
+            editable: true,
+            width: 100,//'8%',
+            align: 'center'
+        }, {
+            title: '生日',
+            dataIndex: 'birthday',
+            key: 'birthday',
+            editable: true,
+            width: 140,//'10%',
+            align: 'center'
+        }, {
             title: '手机号',
             dataIndex: 'phone',
             key: 'phone',
-            editable:true,
-            width:'10%',
-            align:'center'
-        },{
-            title:'邮箱',
-            dataIndex:'email',
-            key:'email',
-            editable:true,
-            width:'10%',
-            align:'center'
+            editable: true,
+            width: 150,//'10%',
+            align: 'center'
         }, {
-            title:'操作',
-            key:'action',
-            width:'8%',
-            align:'center',
+            title: '邮箱',
+            dataIndex: 'email',
+            key: 'email',
+            editable: true,
+            width: 200,//'10%',
+            align: 'center'
+        }, {
+            title: 's',
+            dataIndex: 'state',
+            key: 'state',
+            editable: true,
+            width: 70,//'4%',
+            align: 'center',
+            // fixed: 'right',
+        }, {
+            title: '操作',
+            key: 'action',
+            width: 70,//'6%',
+            align: 'center',
+            // fixed: 'right',
             render: (text, record) => {
                 const editable = this.isEditing(record);
-                return(
+                return (
                     <div>
                         {editable ? (
                             <span>
                                 <EditableContext.Consumer>
                                     {
-                                        form =>(
+                                        (form) => (
                                             <span>
-                                                <a onClick={()=>this.save(form,record.userId)}>
+                                                <a onClick={() => this.save(form, record.userId)}>
                                                     保存
                                                 </a>
-                                                <Divider type="vertical" />
+                                                {/*<Divider type="vertical"/>*/}
                                                 <a onClick={this.cancel}>取消</a>
                                             </span>
                                         )
@@ -246,15 +267,15 @@ class UserManage extends React.Component {
                             </span>
                         ) : (
                             <span>
-                                <a onClick={()=>this.edit(record.userId)}>编辑</a>
-                                <Divider type="vertical" />
-                                <a onClick={()=>this.handleDelete(record.userId)}>删除</a>
-                                <Divider type="vertical" />
-                                <a onClick={this.cancel}>禁用</a>
+                                <a onClick={() => this.edit(record.userId)}>编辑</a>
+                                {/*<Divider type="horizontal"/>*/}<br/>
+                                <a onClick={() => this.handleDelete(record)}>{record.state === '1' ? "恢复" : "删除"}</a>
+                                {/*<Divider type="horizontal"/>*/}<br/>
+                                <a onClick={() => this.handleBan(record)}>{record.state === '2' ? "解禁" : "禁用"}</a>
                             </span>
                         )}
                     </div>
-                )
+                );
 
             }
         }];
@@ -304,6 +325,7 @@ class UserManage extends React.Component {
                 nickname: values.nickname,
                 phone: values.phone,
                 email: values.email,
+                state: values.state,
             };
 
             let params = new URLSearchParams();
@@ -340,7 +362,9 @@ class UserManage extends React.Component {
     }
 
     save(form, userId) {
+        console.log(form);
         form.validateFields((error, row) => {
+            console.log(row);
             if (error) {
                 return;
             }
@@ -357,6 +381,7 @@ class UserManage extends React.Component {
                     .catch(function (error) {
                         console.log(error);
                     });
+
                 const item = newData[index];
                 newData.splice(index, 1, {
                     ...item,
@@ -364,7 +389,7 @@ class UserManage extends React.Component {
                 });
                 this.setState({ data: newData, editingId: '' });
             } else {
-                newData.push(data);
+                newData.push(...data);
                 this.setState({ data: newData, editingId: '' });
             }
         });
@@ -374,20 +399,77 @@ class UserManage extends React.Component {
         this.setState({ editingId: '' });
     };
 
-    handleDelete = (userId) => {
+    handleBan = (record) => {
         let self = this;
         confirm({
-            title: '确认删除?',
-            content: '此次删除将无法恢复！',
+            title: `确认${(record.state === '2') ? `解禁` : `禁用`}?`,
+            content: (record.state === '2') ? `你居然想解禁！` : `你竟然想禁用这个用户！`,
             okText: '确定',
             cancelText: '取消',
             onOk() {
                 const newData = [...self.state.data];
-                const index = newData.findIndex(item => userId === item.userId);
-                newData.splice(index, 1);
-                self.setState({
-                    data: newData,
-                })
+                const index = newData.findIndex(item => record.userId === item.userId);
+                if (index > -1) {
+                    record.state = (record.state === '2') ? '0' : '2';
+                    let params = new URLSearchParams();
+                    params.append("updateUser", JSON.stringify(record));
+                    axios.post("/updateUser", params)
+                        .then(function (response) {
+                            console.log(response);
+                            alert(response.data);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    const item = newData[index];
+                    newData.splice(index, 1, {
+                        ...item,
+                        ...record,
+                    });
+                    self.setState({
+                        data: newData,
+                    })
+                }
+            },
+            onCancel() {
+
+            },
+        });
+    };
+
+    handleDelete = (record) => {
+        let self = this;
+        confirm({
+            title: `确认${(record.state === '1') ? `恢复` : `删除`}?`,
+            content: (record.state === '1') ? `你居然想恢复那次删除！` : `此次删除居然可以恢复！`,
+            okText: '确定',
+            cancelText: '取消',
+            onOk() {
+                const newData = [...self.state.data];
+                const index = newData.findIndex(item => record.userId === item.userId);
+                if (index > -1) {
+                    record.state = (record.state === '1') ? '0' : '1';
+                    let params = new URLSearchParams();
+                    params.append("updateUser", JSON.stringify(record));
+                    axios.post("/updateUser", params)
+                        .then(function (response) {
+                            console.log(response);
+                            alert(response.data);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    const item = newData[index];
+                    newData.splice(index, 1, {
+                        ...item,
+                        ...record,
+                    });
+                    self.setState({
+                        data: newData,
+                    })
+                }
             },
             onCancel() {
 
@@ -427,8 +509,15 @@ class UserManage extends React.Component {
                     components={components}
                     dataSource={this.state.data}
                     columns={columns}
-                    rowClassName="editable-row"
-                    style={{marginTop:16}}
+                    // rowClassName="editable-row"
+                    rowClassName={
+                        function(record){
+                            return "editable-row-" + record.state;
+                        }
+                    }
+                    style={{marginTop: 16}}
+                    scroll={{x: 1000}}
+                    // bordered={true}
                 />
                 <UserForm
                     wrappedComponentRef={this.saveFormRef}

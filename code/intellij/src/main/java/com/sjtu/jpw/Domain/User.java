@@ -5,7 +5,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import java.sql.Date;
-import java.util.Objects;
 
 @Entity
 public class User {
@@ -17,6 +16,7 @@ public class User {
     private String nickname;
     private String phone;
     private String email;
+    private String state;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -98,24 +98,47 @@ public class User {
         this.email = email;
     }
 
+    @Basic
+    @Column(name = "state", nullable = true, length = -1)
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         User user = (User) o;
-        return userId == user.userId &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(password, user.password) &&
-                Objects.equals(gender, user.gender) &&
-                Objects.equals(birthday, user.birthday) &&
-                Objects.equals(nickname, user.nickname) &&
-                Objects.equals(phone, user.phone) &&
-                Objects.equals(email, user.email);
+
+        if (userId != user.userId) return false;
+        if (username != null ? !username.equals(user.username) : user.username != null) return false;
+        if (password != null ? !password.equals(user.password) : user.password != null) return false;
+        if (gender != null ? !gender.equals(user.gender) : user.gender != null) return false;
+        if (birthday != null ? !birthday.equals(user.birthday) : user.birthday != null) return false;
+        if (nickname != null ? !nickname.equals(user.nickname) : user.nickname != null) return false;
+        if (phone != null ? !phone.equals(user.phone) : user.phone != null) return false;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        if (state != null ? !state.equals(user.state) : user.state != null) return false;
+
+        return true;
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(userId, username, password, gender, birthday, nickname, phone, email);
+        int result = userId;
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (gender != null ? gender.hashCode() : 0);
+        result = 31 * result + (birthday != null ? birthday.hashCode() : 0);
+        result = 31 * result + (nickname != null ? nickname.hashCode() : 0);
+        result = 31 * result + (phone != null ? phone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (state != null ? state.hashCode() : 0);
+        return result;
     }
 }
