@@ -21,9 +21,12 @@ class DemoCommentPage extends Component {
     state={
         data:data,
         rate:'',
-        value:''
+        value:'',
+        showId:this.props.showId,
+        content:this.props.content,
+        purpose:this.props.purpose,
+        commentId:this.props.commentId,
     };
-
 
     onClose = () =>{
         browserHistory.goBack();
@@ -33,17 +36,20 @@ class DemoCommentPage extends Component {
         message.success("发表成功",2,this.onClose)
     };
 
-    addComment = () =>{
+    addComment = (values) =>{
         let params = new URLSearchParams();
         let username = Cookies.get('username');
         let time = moment().format('YYYY-MM-DD hh:mm:ss');
 
+        params.append('purpose',this.state.purpose);
+        params.append('commentId',this.state.commentId);
         params.append('showId',this.state.showId);
         params.append('username', username);
         params.append('parentId',-1);
-        params.append('content',this.state.value);
-        params.append('rate',this.state.rate);
+        params.append('content',values.confirm);
+        params.append('rate',values.rate * 2);
         params.append('time',time);
+        console.log("params: "+params);
         axios.post('/addComment', params);
     };
 
@@ -56,7 +62,7 @@ class DemoCommentPage extends Component {
                     rate:values.rate,
                     value:values.confirm,
                 });
-                this.addComment()
+                this.addComment(values)
 
             }
         });
@@ -98,7 +104,7 @@ class DemoCommentPage extends Component {
                                         required: true, message: '请输入评论内容!',
                                     }],
                                 })(
-                                    <textarea style={{width:'500px',height:'400px'}} />
+                                    <textarea style={{width:'500px',height:'400px'}} defaultValue={this.state.content}/>
 
                                 )}
                             </FormItem>
@@ -137,12 +143,23 @@ class DemoCommentPage extends Component {
 const RealCommentPage = Form.create()(DemoCommentPage);
 
 class CommentPage extends Component {
+    state = {
+        showId:'',
+        content:'',
+        purpose:'',
+        commentId:'',
+    };
+
     componentWillMount(){
         window.scrollTo(0,0);
+        this.setState(this.props.location.state);
+
     }
+
     render(){
         return (
-            <RealCommentPage />
+            <RealCommentPage showId={this.state.showId} content={this.state.content}
+            purpose={this.state.purpose} commentId={this.state.commentId}/>
         );
     }
 }

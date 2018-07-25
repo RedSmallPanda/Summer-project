@@ -4,6 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sjtu.jpw.Domain.Comment;
 import com.sjtu.jpw.Repository.CommentRepository;
+import com.sjtu.jpw.Repository.ShowsRepository;
 import com.sjtu.jpw.Service.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,8 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService{
     @Autowired
     private CommentRepository commentRepository;
+    @Autowired
+    private ShowsRepository showsRepository;
 
     @Override
     public List<Comment> getComment(Integer showId){
@@ -35,6 +38,20 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
+    public void editComment(Integer commentId, String username, Integer showId, Integer parentId,
+                            String content, Integer rate, Timestamp time){
+        Comment comment = new Comment();
+        comment.setCommentId(commentId);
+        comment.setUsername(username);
+        comment.setShowId(showId);
+        comment.setParentId(parentId);
+        comment.setContent(content);
+        comment.setRate(rate);
+        comment.setTime(time);
+        commentRepository.save(comment);
+    }
+
+    @Override
     public JsonArray getMyComment(String username){
         List<Comment> listData = commentRepository.findAllByUsername(username);
         JsonArray commentResult = new JsonArray();
@@ -42,7 +59,9 @@ public class CommentServiceImpl implements CommentService{
         while(it.hasNext()){
             Comment comment = it.next();
             JsonObject commentObject = new JsonObject();
-            commentObject.addProperty("commentId",comment.getCommentId());
+            commentObject.addProperty("key",comment.getCommentId());
+            String title = showsRepository.findFirstByShowId(comment.getShowId()).getTitle();
+            commentObject.addProperty("title",title);
             commentObject.addProperty("showId",comment.getShowId());
             commentObject.addProperty("rate",comment.getRate());
             commentObject.addProperty("parentId",comment.getParentId());

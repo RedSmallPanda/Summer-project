@@ -26,7 +26,4 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
     public Shows save(Shows show);
     Shows findFirstByShowId(int showId);
 
-    //@Query("select title from Shows show where show_id =:showId")
-    String findTitleByShowId(Integer showId);
-
 }

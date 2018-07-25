@@ -143,6 +143,7 @@ class TicketComment extends Component {
         browserHistory.push({
             pathname: '/commentPage',
             state:{
+                purpose: "add",
                 showId:1
             }
         });
