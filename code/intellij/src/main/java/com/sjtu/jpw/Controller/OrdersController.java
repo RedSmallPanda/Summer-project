@@ -61,7 +61,11 @@ public class OrdersController {
         String addrDetail=request.getParameter("addrDetail");
         String phone=request.getParameter("phone");
         String name=request.getParameter("name");
-        int couponId=Integer.parseInt(request.getParameter("couponId"));
+        String cpId=request.getParameter("couponId");
+        int couponId=-1;
+        if(!cpId.equals("")){
+            couponId=Integer.parseInt(request.getParameter("couponId"));
+        }
 
         order.setState("0");
         order.setOrderId(2);

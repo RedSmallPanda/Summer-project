@@ -116,7 +116,9 @@ public class OrdersServiceImpl implements OrdersService {
             return false;
         }
         ordersRepository.save(order);
-        useCoupon(userId,couponId);
+        if(couponId!=-1) {
+            useCoupon(userId, couponId);
+        }
         return true;
 
     }

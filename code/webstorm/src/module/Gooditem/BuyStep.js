@@ -8,7 +8,7 @@ const Step=Steps.Step;
 
 const RadioGroup = Radio.Group;
 
-const ticketInfo = [{
+/*const ticketInfo = [{
     ticketId:"1",
     key: '0',
     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
@@ -19,7 +19,7 @@ const ticketInfo = [{
     price: '1000',
     amount: 3,
     totalPrice:'3000'
-}];
+}];*/
 
 const dataColumns = [{
     title: '缩略图',
@@ -54,8 +54,8 @@ const addressColumns = [{
     key: 'phone',
 }, {
     title: '地区',
-    dataIndex: 'city',
-    key: 'city',
+    dataIndex: 'district',
+    key: 'district',
 }, {
     title: '详细地址',
     dataIndex:'detail',
@@ -90,26 +90,43 @@ const address=[{
 
 
 class BuyStep extends Component {
-    state={
-        firstStep:this.props.location.state.firstStep,
-        secondStep:this.props.location.state.secondStep,
-        orderInfo:ticketInfo,
-        selectedRow:[0],
-        data:ticketInfo,
-        address:address,
-        coupon:[
-            /*{key:"0",id:"12331",discount:"30",discCond:'300',number:"2"},
+
+    constructor(props){
+        super(props);
+        this.ticketInfo = [{
+            ticketId:this.props.location.state.ticketInfo.ticketId,
+            key: '0',
+            img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+            detailInfo: {
+                name:this.props.location.state.showName,
+                date:this.props.location.state.ticketInfo.time,
+            },
+            price: this.props.location.state.ticketInfo.price,
+            amount: this.props.location.state.number,
+            totalPrice:this.props.location.state.totalPrice,
+        }];
+
+        this.state={
+            firstStep:this.props.location.state.firstStep,
+            secondStep:this.props.location.state.secondStep,
+            //orderInfo:this.ticketInfo,
+            selectedRow:[0],
+            data:this.ticketInfo,
+            address:address,
+            coupon:[
+                /*{key:"0",id:"12331",discount:"30",discCond:'300',number:"2"},
             {key:"1",id:"asda7",discount:"50",discCond:'500',number:"3"},
             {key:"2",id:"dasj86",discount:"10",discCond:'100',number:"1"},*/
 
-        ],
-        selectedCoupon:"请选择优惠券",
-        selectedCouponId:"",
-        originTotalPrice:parseInt(ticketInfo[0].totalPrice),
-        totalPrice:this.props.location.state.totalPrice,
-        getNoCoupon:0,
-        newCoupon:[{discCond:"100000",discount:"30"}],
-        orderId:this.props.location.state.orderId,
+            ],
+            selectedCoupon:"请选择优惠券",
+            selectedCouponId:"",
+            originTotalPrice:this.props.location.state.totalPrice,
+            totalPrice:this.props.location.state.totalPrice,
+            getNoCoupon:0,
+            newCoupon:[{discCond:"100000",discount:"30"}],
+            orderId:this.props.location.state.orderId,
+        };
     }
 
     confirmS1 = () => {
@@ -218,8 +235,20 @@ class BuyStep extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-    }
 
+        axios.get("/getSplitAddress",{
+            params:{
+                userId: 1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({address:response.data});
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
 
     render() {
@@ -255,11 +284,11 @@ class BuyStep extends Component {
         );
 
         let step0Page=<div>
-            <Table rowSelection={rowSelection} columns ={addressColumns} dataSource={address} pagination={{pageSize:5,hideOnSinglePage:true}}/>
+            <Table rowSelection={rowSelection} columns ={addressColumns} dataSource={this.state.address} pagination={{pageSize:5,hideOnSinglePage:true}}/>
             <br/>
             <br/>
             <br/>
-            <Table columns ={dataColumns} dataSource={ticketInfo} pagination={{pageSize:5,hideOnSinglePage:true}}/>
+            <Table columns ={dataColumns} dataSource={this.ticketInfo} pagination={{pageSize:5,hideOnSinglePage:true}}/>
             <br/>
             <div>
                 <Button style={{float:"right",width:"110px"}} type="primary" onClick={this.confirmS1} size="large">确认</Button>

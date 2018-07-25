@@ -8,6 +8,7 @@ import DatePick from './DatePick'
 import CommentEditor from "./CommentEditor";
 import TicketComment from "./TicketComment";
 import axios from 'axios';
+import { browserHistory} from 'react-router';
 import Sider from '../MainPages/Sider';
 moment.locale('zh-cn');
 
@@ -180,6 +181,22 @@ class GoodDetailPage extends Component{
         }
         return timebutton;
     }
+
+    toBuyStep=()=>{
+        console.log("ready to jump");
+        browserHistory.push({
+            pathname:'/buyStep',
+            state:{
+                firstStep:0,
+                secondStep:0,
+                showName:this.state.data.name,
+                ticketInfo:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx],
+                number:this.state.pickticknum,
+                totalPrice:this.state.pickticknum * this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].price,
+            }
+        })
+        console.log(window.location.pathname);
+    }
     render(){
         console.log(this.state)
         let timebutton=[];
@@ -339,7 +356,7 @@ class GoodDetailPage extends Component{
                                                                 </Col>
                                                                 <Col span={1}/>
                                                                 <Col span={4}>
-                                                                    <Button type="primary" size="large">立即购买</Button>
+                                                                    <Button type="primary" size="large" onClick={this.toBuyStep}>立即购买</Button>
                                                                 </Col>
                                                             </Row>
                                                         </div>
