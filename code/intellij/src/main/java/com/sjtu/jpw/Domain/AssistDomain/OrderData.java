@@ -16,6 +16,7 @@ public class OrderData {
     private String addrdetail;
     private String phone;
     private String name;
+    private String state;
     private Integer totalPrice;
     private DetailInfo detailInfo=new DetailInfo();
 
@@ -121,6 +122,14 @@ public class OrderData {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
     }
 
     public DetailInfo getDetailInfo() {

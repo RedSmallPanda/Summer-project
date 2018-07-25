@@ -91,8 +91,8 @@ const address=[{
 
 class BuyStep extends Component {
     state={
-        firstStep:0,
-        secondStep:0,
+        firstStep:this.props.location.state.firstStep,
+        secondStep:this.props.location.state.secondStep,
         orderInfo:ticketInfo,
         selectedRow:[0],
         data:ticketInfo,
@@ -105,10 +105,11 @@ class BuyStep extends Component {
         ],
         selectedCoupon:"请选择优惠券",
         selectedCouponId:"",
-        originTotalPrice:parseInt(ticketInfo[0].totalPrice,10),
-        totalPrice:parseInt(ticketInfo[0].totalPrice,10),
+        originTotalPrice:parseInt(ticketInfo[0].totalPrice),
+        totalPrice:this.props.location.state.totalPrice,
         getNoCoupon:0,
-        newCoupon:[{dicCond:"100000",discount:"30"}]
+        newCoupon:[{discCond:"100000",discount:"30"}],
+        orderId:this.props.location.state.orderId,
     }
 
     confirmS1 = () => {
@@ -129,14 +130,18 @@ class BuyStep extends Component {
                 name:this.state.address[this.state.selectedRow[0]].name,
                 couponId:this.state.selectedCouponId,
             }
+
         })
             .then(function (response) {
                 console.log(response);
-                if(response.data===false){
+                if(response.data[0]===false){
                     alert("很抱歉，库存不足，请重新选购！");
                     browserHistory.push({
                         pathname:'/detail',
                     })
+                }
+                else{
+                    self.setState({orderId:response.data[1]});
                 }
 
             })
@@ -153,7 +158,8 @@ class BuyStep extends Component {
         axios.get("/giveMeCoupon",{
             params:{
                 userId: 1,
-                price: this.state.totalPrice
+                price: this.state.totalPrice,
+                orderId:this.state.orderId,
             }
         })
             .then(function (response) {

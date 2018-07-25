@@ -3,47 +3,51 @@ import { Table } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 
-// const data = [{
-//     key: '1',
-//     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-//     detailInfo: {
-//         name:'周杰伦演唱会',
-//         date:'2018/1/2'
-//     },
-//     price: '￥1200',
-//     amount: 1,
-//     totalPrice:'￥1200'
-// }, {
-//     key: '2',
-//     img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-//     detailInfo: {
-//         name:'张学友演唱会',
-//         date:'2017/2/14'
-//     },
-//     price: '￥2000',
-//     amount: 2,
-//     totalPrice:'￥4000'
-// }, {
-//     key: '3',
-//     img:'https://img1.tking.cn/assets/img/YnPS4jNY6p.jpg',
-//     detailInfo: {
-//         name:'CCG门票',
-//         date:'2018/4/8'
-//     },
-//     price: '￥300',
-//     amount: 1,
-//     totalPrice:'￥300'
-// }, {
-//     key: '4',
-//     img:'https://pimg.dmcdn.cn/perform/project/1521/152193_n.jpg',
-//     detailInfo: {
-//         name:'迪士尼门票',
-//         date:'2018/7/6'
-//     },
-//     price: '￥688',
-//     amount: 1,
-//     totalPrice:'￥688'
-// }];
+const data = [{
+    key: '1',
+    img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+    detailInfo: {
+        showName:'周杰伦演唱会',
+        showDate:'2018/1/2'
+    },
+    price: '1200',
+    number: 1,
+    totalPrice:'1200',
+    state:'0'
+}, {
+    key: '2',
+    img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
+    detailInfo: {
+        showName:'张学友演唱会',
+        showDate:'2017/2/14'
+    },
+    price: '2000',
+    number: 2,
+    totalPrice:'4000',
+    state:'0'
+}, {
+    key: '3',
+    img:'https://img1.tking.cn/assets/img/YnPS4jNY6p.jpg',
+    detailInfo: {
+        showName:'CCG门票',
+        showDate:'2018/4/8'
+    },
+    price: '300',
+    number: 1,
+    totalPrice:'300',
+    state:'1'
+}, {
+    key: '4',
+    img:'https://pimg.dmcdn.cn/perform/project/1521/152193_n.jpg',
+    detailInfo: {
+        showName:'迪士尼门票',
+        showDate:'2018/7/6'
+    },
+    price: '688',
+    number: 1,
+    totalPrice:'688',
+    state:'2'
+}];
 
 /*const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -55,13 +59,19 @@ import axios from 'axios';
     }),
 };*/
 
+const action=[
+    '去付款',
+    '申请退款',
+    '取消退款'
+];
+
 class Order extends Component {
     constructor(props){
         super(props);
         this.state = {
             selectedRowKeys: [], // Check here to configure the default column
             loading: false,
-            data:[],
+            data:[]
         };
         this.columns = [{
             title: '缩略图',
@@ -93,9 +103,9 @@ class Order extends Component {
             {
                 title: '操作',
                 key: 'action',
-                render: () => (
+                render: (text, record) => (
                     <span>
-      <a onClick={this.handleRefund}>退款</a>
+      <a onClick={()=>this.handleAction(record.state,record.orderId,record.totalPrice)}>{action[parseInt(record.state)]}</a>
     </span>
                 ),
             }];
@@ -136,8 +146,45 @@ class Order extends Component {
             });
     }
 
-    handleRefund = () =>{
-        browserHistory.push('/refundPage')
+    handleAction = (state,orderId,totalPrice) =>{
+        let id=orderId;
+        if(state==='0'){
+            browserHistory.push({
+                pathname:'/buyStep',
+                state:{
+                    orderId:id,
+                    firstStep:1,
+                    secondStep:0,
+                    totalPrice:totalPrice,
+                }
+            })
+        }
+        else if(state==='1'){
+            browserHistory.push({
+                pathname:'/refundPage',
+                state:{
+                    orderId:id,
+                }
+            })
+        }
+        else{
+            axios.get("/changeOrderState",{
+                params:{
+                    orderId:orderId,
+                    state:'1',
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            browserHistory.push({
+                pathname:'/info',
+            })
+        }
     };
 
     handleDetail = () =>{

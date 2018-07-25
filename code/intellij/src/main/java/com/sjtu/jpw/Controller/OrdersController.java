@@ -30,6 +30,19 @@ public class OrdersController {
         out.flush();
     }
 
+    @RequestMapping(value="/changeOrderState",produces="application/json;charset=UTF-8")
+    public void ChangeOrderState(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        String state=request.getParameter("state");
+        ordersService.UpdateOrderState(state,orderId);
+
+        System.out.println(orderId);
+        out.print(orderId);
+        out.flush();
+    }
+
     @RequestMapping(value="/createOrder",produces="application/json;charset=UTF-8")
     public void CreateOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -68,8 +81,12 @@ public class OrdersController {
 
         boolean ifSuccess=ordersService.createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(userId, couponId, order);
 
+        JsonArray idBool=new JsonArray();
+        idBool.add(ifSuccess);
+        idBool.add(2);
+
         System.out.println(order);
-        out.print(String.valueOf(ifSuccess));
+        out.print(String.valueOf(idBool));
         out.flush();
     }
 }

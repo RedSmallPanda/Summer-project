@@ -3,6 +3,7 @@ package com.sjtu.jpw.Controller;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sjtu.jpw.Service.CouponService;
+import com.sjtu.jpw.Service.OrdersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -17,6 +18,10 @@ public class CouponController {
 
     @Resource(name="couponService")
     private CouponService couponService;
+
+    @Resource(name="ordersService")
+    private OrdersService ordersService;
+
     @RequestMapping(value="/getMyCoupon",produces="application/json;charset=UTF-8")
     public void GetCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -35,6 +40,9 @@ public class CouponController {
         PrintWriter out = response.getWriter();
         int userId=Integer.parseInt(request.getParameter("userId"));
         int price=Integer.parseInt(request.getParameter("price"));
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        ordersService.UpdateOrderState("1",orderId);
+
         JsonArray myCoupon=couponService.giveMeCoupon(userId,price);
         System.out.println(myCoupon);
         out.print(myCoupon);
