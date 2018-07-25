@@ -40,6 +40,7 @@ public class UserServiceImpl implements UserService {
                 updateUser.getNickname(),
                 updateUser.getPhone(),
                 updateUser.getEmail(),
+                updateUser.getState(),
                 updateUser.getUserId()
         );
     }

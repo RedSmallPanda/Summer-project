@@ -45,10 +45,14 @@ public class AdminUserController {
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         User newUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
-        userService.register(newUser);
+        if (userService.register(newUser) != null) {
+            System.out.println("[JPW ADMIN] NewUser registered: " + newUser);
+            out.print("Registered.");
+        }else{
+            System.out.println("[JPW ADMIN] Fail to register: " + newUser);
+            out.print("Fail to register.");
+        }
 
-        System.out.println("newUser registered: " + newUser);
-        out.print("Registered.");
         out.flush();
     }
 
@@ -58,15 +62,16 @@ public class AdminUserController {
         PrintWriter out = response.getWriter();
 
         String userJson = request.getParameter("updateUser");
-        System.out.println("[JPW ADMIN] User update: get JSON from user form: " + userJson);
+        System.out.println("[JPW ADMIN  ] User update: get JSON from user form: " + userJson);
 
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
         userService.updateInfo(updateUser);
 
-        System.out.println("User updated: " + updateUser);
-        out.print("Updated.");
+        System.out.println("[JPW ADMIN  ] User update: " + updateUser);
+        System.out.println("[JPW WARNING] User update may fail.");
+        out.print("Refresh to confirm.");
         out.flush();
     }
 }
