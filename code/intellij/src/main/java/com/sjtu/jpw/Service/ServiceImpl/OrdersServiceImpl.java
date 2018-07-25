@@ -29,8 +29,8 @@ public class OrdersServiceImpl implements OrdersService {
     @Autowired
     private UserCouponRepository ucRepository;
 
-    public JsonArray getOrderByState(int userId,String state){
-        List<Orders> neededOrders= ordersRepository.findAllByUserIdAndState(userId,state);
+    public JsonArray getOrderByState(int userId,String state1,String state2){
+        List<Orders> neededOrders= ordersRepository.findByUserIdAndState(userId,state1,state2);
         JsonArray allOrders=new JsonArray();
         for(int i=0;i<neededOrders.size();i++){
             Orders temp=neededOrders.get(i);
@@ -41,6 +41,7 @@ public class OrdersServiceImpl implements OrdersService {
             tempOrder.setCity(temp.getCity());
             tempOrder.setProvince(temp.getProvince());
             tempOrder.setName(temp.getName());
+            tempOrder.setState(temp.getState());
             tempOrder.setNumber(temp.getNumber());
             tempOrder.setOrderId(temp.getOrderId());
             tempOrder.setPhone(temp.getPhone());
@@ -67,13 +68,13 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public JsonArray getCurrentOrder(int userId) {
-        JsonArray currentOrders=getOrderByState(userId,"0");
+        JsonArray currentOrders=getOrderByState(userId,"0","2");
         return currentOrders;
     }
 
     @Override
     public JsonArray getHistoryOrder(int userId) {
-        JsonArray historyOrders=getOrderByState(userId,"1");
+        JsonArray historyOrders=getOrderByState(userId,"3","4");
         return historyOrders;
     }
 

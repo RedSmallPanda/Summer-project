@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import {Row, Col, Form, Rate, Button, Card, Icon, Radio} from 'antd';
+import axios from "axios/index";
+import {browserHistory} from "react-router";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -15,7 +17,8 @@ const data={
 
 class DemoRefundPage extends Component {
     state={
-        data:data
+        data:data,
+        orderId:this.props.orderId,
     };
 
     handleSubmit = (e) => {
@@ -23,6 +26,21 @@ class DemoRefundPage extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                axios.get("/changeOrderState",{
+                    params:{
+                        orderId:this.state.orderId,
+                        state:'2',
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                browserHistory.push({
+                    pathname:'/info',
+                })
             }
         });
     };
@@ -47,11 +65,15 @@ class DemoRefundPage extends Component {
                                 {...formItemLayout}
                                 label="退款理由"
                             >
-                                <RadioGroup>
-                                    <RadioButton value="all">误操作</RadioButton>
-                                    <RadioButton value="money">没钱了</RadioButton>
-                                    <RadioButton value="cd">其他</RadioButton>
-                                </RadioGroup>
+                                {getFieldDecorator('simpleReason', {
+                                    initialValue: 'cd',
+                                })(
+                                    <RadioGroup>
+                                        <RadioButton value="all">误操作</RadioButton>
+                                        <RadioButton value="money">没钱了</RadioButton>
+                                        <RadioButton value="cd">其他</RadioButton>
+                                    </RadioGroup>
+                                )}
                             </FormItem>
 
                             <FormItem
@@ -104,7 +126,7 @@ const RealRefundPage = Form.create()(DemoRefundPage);
 class RefundPage extends Component {
     render(){
         return (
-            <RealRefundPage />
+            <RealRefundPage orderId={this.props.location.state.orderId}/>
         );
     }
 }

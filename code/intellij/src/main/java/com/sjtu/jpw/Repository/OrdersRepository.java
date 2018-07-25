@@ -16,7 +16,9 @@ import java.util.List;
 @Qualifier("ordersRepository")
 public interface OrdersRepository extends CrudRepository<Orders,Integer> {
     public Orders save(Orders orders);
-    public List<Orders> findAllByUserIdAndState(int userId,String state);
+
+    @Query("select order from Orders order where order.userId=:userId and order.state<=:state2 and order.state>=:state1")
+    public List<Orders> findByUserIdAndState(@Param("userId") int userId,@Param("state1") String state1,@Param("state2")String state2);
     public Orders findFirstByOrderId(int orderId);
 
 }
