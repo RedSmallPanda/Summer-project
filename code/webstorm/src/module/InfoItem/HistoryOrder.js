@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
+import axios from "axios/index";
 
 // function amountOnChange(value,e) {
 //     console.log('changed', value);
@@ -41,13 +42,17 @@ const data = [{
 //     }),
 // };
 
+const action=[
+    '评价','评价','已评价'
+];
+
 class Order extends Component {
     constructor(props){
         super(props);
         this.state = {
             selectedRowKeys: [], // Check here to configure the default column
             loading: false,
-            data:data,
+            data:[]
         };
         this.columns = [{
             title: '缩略图',
@@ -61,15 +66,15 @@ class Order extends Component {
             title: '票品信息',
             dataIndex: 'detailInfo',
             render: (text, record) => (<div>
-                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
-                <p>{record.detailInfo.date}</p>
+                <p><a onClick={this.handleDetail}>{record.detailInfo.showName}</a></p>
+                <p>{record.detailInfo.showDate}</p>
             </div>)
         }, {
             title: '单价',
             dataIndex: 'price',
         }, {
             title: '数量',
-            dataIndex: 'amount',
+            dataIndex: 'number',
             //render: (text, record) => (<InputNumber min={1} max={10} defaultValue={record.amount} onChange={amountOnChange} />),
         },{
             title: '金额',
@@ -80,7 +85,7 @@ class Order extends Component {
                 key: 'action',
                 render: (record) => (
                     <span>
-                        <a onClick={()=>this.handleComment(record.key)}>评价</a>
+                        <a onClick={()=>this.handleComment(record.showId,record.orderId,record.state)}>{action[parseInt(record.state)-3]}</a>
                     </span>
                 ),
             }];
@@ -101,14 +106,37 @@ class Order extends Component {
     //     this.setState({ selectedRowKeys });
     // }
 
-    handleComment = (key) =>{
-        browserHistory.push({
-            pathname:'/commentPage',
-            state:{
-                purpose: "add",
-                showId: key
+    componentDidMount(){
+        let self = this;
+        axios.get("/getHistoryOrder",{
+            params:{
+                userId: 1,
             }
-        });
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    loading: false,
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    handleComment = (showId,orderId,state) =>{
+        if(state==='3'||state==='4'){
+            browserHistory.push({
+                pathname:'/commentPage',
+                state:{
+                    purpose: "add",
+                    showId: showId,
+                    orderId:orderId,
+                    isFromOrder:1,
+                }
+            });
+        }
     };
 
     handleDetail = () =>{
@@ -125,7 +153,7 @@ class Order extends Component {
         // const hasSelected = selectedRowKeys.length > 0;
         let orderTable=
             <div>
-                <Table columns={this.columns} dataSource={data} size="small"/>
+                <Table columns={this.columns} dataSource={this.state.data} size="small"/>
             </div>;
         return(
             orderTable

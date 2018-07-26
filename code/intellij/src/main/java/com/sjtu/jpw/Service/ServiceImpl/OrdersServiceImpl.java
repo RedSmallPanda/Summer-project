@@ -60,6 +60,7 @@ public class OrdersServiceImpl implements OrdersService {
             Gson orderGson=new Gson();
             String orderJson = orderGson.toJson(tempOrder);
             JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
+            orderObject.addProperty("showId",showId);
 
             allOrders.add(orderObject);
         }
@@ -74,7 +75,7 @@ public class OrdersServiceImpl implements OrdersService {
 
     @Override
     public JsonArray getHistoryOrder(int userId) {
-        JsonArray historyOrders=getOrderByState(userId,"3","4");
+        JsonArray historyOrders=getOrderByState(userId,"3","5");
         return historyOrders;
     }
 

@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
 import com.sjtu.jpw.Service.CommentService;
+import com.sjtu.jpw.Service.OrdersService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.SocketUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,10 @@ public class CommentController {
 
     @Resource(name="commentService")
     private CommentService commentService;
+
+    @Resource(name="ordersService")
+    private OrdersService ordersService;
+
     @RequestMapping(value="/comments",produces="application/json;charset=UTF-8")
     public void GetComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -78,11 +83,17 @@ public class CommentController {
 
         String purpose = request.getParameter("purpose");
         int showId=Integer.parseInt(request.getParameter("showId"),10);
+        int orderId=Integer.parseInt(request.getParameter("orderId"),10);
+        int isFromOrder=Integer.parseInt(request.getParameter("isFromOrder"),10);
         String username = request.getParameter("username");
         int parentId = Integer.parseInt(request.getParameter("parentId"),10);
         String content = request.getParameter("content");
         int rate = Integer.parseInt(request.getParameter("rate"),10);
         Timestamp time = Timestamp.valueOf(request.getParameter("time"));
+
+        if(isFromOrder==1){
+            ordersService.UpdateOrderState("5",orderId);
+        }
 
         if(purpose.equals("add")){
             commentService.addComment(username, showId, parentId, content, rate, time);

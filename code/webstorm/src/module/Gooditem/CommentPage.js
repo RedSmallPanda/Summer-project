@@ -26,6 +26,8 @@ class DemoCommentPage extends Component {
         content:this.props.content,
         purpose:this.props.purpose,
         commentId:this.props.commentId,
+        orderId:this.props.orderId,
+        isFromOrder:this.props.isFromOrder,
     };
 
     onClose = () =>{
@@ -44,6 +46,8 @@ class DemoCommentPage extends Component {
         params.append('purpose',this.state.purpose);
         params.append('commentId',this.state.commentId);
         params.append('showId',this.state.showId);
+        params.append('orderId',this.state.orderId);
+        params.append('isFromOrder',this.state.isFromOrder);
         params.append('username', username);
         params.append('parentId',-1);
         params.append('content',values.confirm);
@@ -148,6 +152,8 @@ class CommentPage extends Component {
         content:'',
         purpose:'',
         commentId:'',
+        orderId:'',
+        isFromOrder:0,
     };
 
     componentWillMount(){
@@ -159,7 +165,7 @@ class CommentPage extends Component {
     render(){
         return (
             <RealCommentPage showId={this.state.showId} content={this.state.content}
-            purpose={this.state.purpose} commentId={this.state.commentId}/>
+            purpose={this.state.purpose} commentId={this.state.commentId} orderId={this.state.orderId} isFromOrder={this.state.isFromOrder}/>
         );
     }
 }

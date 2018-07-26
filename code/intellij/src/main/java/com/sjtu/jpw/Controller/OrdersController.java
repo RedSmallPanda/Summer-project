@@ -20,13 +20,25 @@ public class OrdersController {
     private OrdersService ordersService;
     @RequestMapping(value="/getCurrentOrder",produces="application/json;charset=UTF-8")
     public void GetCurrentOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
-        response.setHeader("Content-type","application/json;charset=UTF-8");
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId=Integer.parseInt(request.getParameter("userId"));
-        JsonArray currentOrders=ordersService.getCurrentOrder(userId);
+        int userId = Integer.parseInt(request.getParameter("userId"));
+        JsonArray currentOrders = ordersService.getCurrentOrder(userId);
 
         System.out.println(currentOrders);
         out.print(currentOrders);
+        out.flush();
+    }
+
+    @RequestMapping(value="/getHistoryOrder",produces="application/json;charset=UTF-8")
+    public void GetHistoryOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int userId=Integer.parseInt(request.getParameter("userId"));
+        JsonArray historyOrders=ordersService.getHistoryOrder(userId);
+
+        System.out.println(historyOrders);
+        out.print(historyOrders);
         out.flush();
     }
 
