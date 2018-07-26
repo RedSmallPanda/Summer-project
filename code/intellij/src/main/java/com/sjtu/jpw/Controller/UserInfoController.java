@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -23,7 +24,8 @@ public class UserInfoController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        User me = userService.UserInfo(3);//TODO: request.getParameter("userID")
+        HttpSession session=request.getSession();
+        User me = userService.userInfo((int) session.getAttribute("userId"));
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         String userJson = userGson.toJson(me);
         JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();
