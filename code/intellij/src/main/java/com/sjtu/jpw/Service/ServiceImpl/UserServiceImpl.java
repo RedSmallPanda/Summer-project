@@ -14,12 +14,12 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public List<User> Login(String username, String password) {
+    public List<User> login(String username, String password) {
         return userRepository.findAllByUsernameAndPassword(username,password);
     }
 
     @Override
-    public User UserInfo(Integer userId) {
+    public User userInfo(Integer userId) {
         return userRepository.findByUserId(userId);
     }
 

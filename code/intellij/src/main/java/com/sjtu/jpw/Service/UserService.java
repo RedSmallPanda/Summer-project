@@ -5,8 +5,8 @@ import com.sjtu.jpw.Domain.User;
 import java.util.List;
 
 public interface UserService {
-    List<User> Login(String username,String password);
-    User UserInfo(Integer userId);
+    List<User> login(String username,String password);
+    User userInfo(Integer userId);
     User register(User newUser);
     void updateInfo(User updateUser);
     Integer UsernameDuplicated(String username);
