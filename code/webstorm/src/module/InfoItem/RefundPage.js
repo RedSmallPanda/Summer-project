@@ -26,10 +26,11 @@ class DemoRefundPage extends Component {
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
-                axios.get("/changeOrderState",{
+                axios.get("/refundOrder",{
                     params:{
                         orderId:this.state.orderId,
-                        state:'2',
+                        simpleReason:values.simpleReason,
+                        detailReason:values.confirm,
                     }
                 })
                     .then(function (response) {
@@ -66,12 +67,12 @@ class DemoRefundPage extends Component {
                                 label="退款理由"
                             >
                                 {getFieldDecorator('simpleReason', {
-                                    initialValue: 'cd',
+                                    initialValue: '其他',
                                 })(
                                     <RadioGroup>
-                                        <RadioButton value="all">误操作</RadioButton>
-                                        <RadioButton value="money">没钱了</RadioButton>
-                                        <RadioButton value="cd">其他</RadioButton>
+                                        <RadioButton value="误操作">误操作</RadioButton>
+                                        <RadioButton value="没钱了">没钱了</RadioButton>
+                                        <RadioButton value="其他">其他</RadioButton>
                                     </RadioGroup>
                                 )}
                             </FormItem>

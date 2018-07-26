@@ -43,7 +43,7 @@ const data = [{
 // };
 
 const action=[
-    '评价','评价','已评价'
+    '已退款','评价','已评价'
 ];
 
 class Order extends Component {
@@ -85,7 +85,7 @@ class Order extends Component {
                 key: 'action',
                 render: (record) => (
                     <span>
-                        <a onClick={()=>this.handleComment(record.showId,record.orderId,record.state)}>{action[parseInt(record.state)-3]}</a>
+                        <a onClick={()=>this.handleComment(record.showId,record.orderId,record.state)}>{action[parseInt(record.state)-4]}</a>
                     </span>
                 ),
             }];
@@ -126,7 +126,7 @@ class Order extends Component {
     }
 
     handleComment = (showId,orderId,state) =>{
-        if(state==='3'||state==='4'){
+        if(state==='5'){
             browserHistory.push({
                 pathname:'/commentPage',
                 state:{
