@@ -39,7 +39,7 @@ class DemoForm extends React.Component {
         }
     }
 
-    handleSubmit = (e) => {
+    handleSubmit = (e) => {//TODO: login again after password modified.
         e.preventDefault();
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {

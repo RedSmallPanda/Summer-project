@@ -135,7 +135,8 @@ class Demo extends Component {
                         {...formItemLayout}
                         label="头像"
                     >
-                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img} alt="default"/></div>
+                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img}
+                                  alt="default"/></div>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
@@ -158,19 +159,19 @@ class Demo extends Component {
                         )}
                     </FormItem>
 
-                        <FormItem
-                            {...formItemLayout}
-                            label="出生日期"
-                            // hasFeedback
-                        >
-                            {getFieldDecorator('date-picker')(
+                    <FormItem
+                        {...formItemLayout}
+                        label="出生日期"
+                        // hasFeedback
+                    >
+                        {getFieldDecorator('date-picker')(
                                 <div>
                                     <DatePicker id="datePicker" allowClear={false}
-                                                value={moment(this.state.formData.birthday,dateFormat)}
+                                                value={moment(this.state.formData.birthday, dateFormat)}
                                                 format={dateFormat} onChange={this.dateOnChange}/>
                                 </div>
-                            )}
-                        </FormItem>
+                        )}
+                    </FormItem>
 
                     <FormItem
                         {...formItemLayout}
@@ -179,21 +180,28 @@ class Demo extends Component {
                         {getFieldDecorator('nickname', {
                             rules: [
                                 //{
-                                  //  required: true, message: '请输入昵称!',
+                                //  required: true, message: '请输入昵称!',
                                 //},
-                                {max:12,message:'昵称长度不能超过12', },
-                                {validator:(rule,value,callback)=>{
+                                {max: 12, message: '昵称长度不能超过12',},
+                                {
+                                    validator: (rule, value, callback) => {
                                         //   const form = this.formRef.props.form;
                                         //value's type need to transform
-                                        if(String(value).length<1){callback("昵称不能为空");}
-                                        else {callback()}
+                                        if (String(value).length < 1) {
+                                            callback("昵称不能为空");
+                                        }
+                                        else {
+                                            callback()
+                                        }
 
-                                    }},
+                                    }
+                                },
 
                             ],
                         })(
                             <div>
-                                <Input id="inputNickname" value={this.state.formData.nickname} onChange={this.nicknameOnChange}/>
+                                <Input id="inputNickname" value={this.state.formData.nickname}
+                                       onChange={this.nicknameOnChange}/>
                             </div>
                         )}
                     </FormItem>
@@ -206,13 +214,19 @@ class Demo extends Component {
                             rules: [{
                                 type: 'email', message: '不合法的E-mail地址!',
                             },
-                                {validator:(rule,value,callback)=>{
+                                {
+                                    validator: (rule, value, callback) => {
                                         //   const form = this.formRef.props.form;
                                         //value's type need to transform
-                                        if(String(value).length<1){callback("邮箱地址不能为空");}
-                                        else {callback()}
+                                        if (String(value).length < 1) {
+                                            callback("邮箱地址不能为空");
+                                        }
+                                        else {
+                                            callback()
+                                        }
 
-                                    }},
+                                    }
+                                },
                             ],
                         })(
                             <div>
@@ -228,18 +242,24 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('phone', {
                             rules: [
-                                {validator:(rule,value,callback)=>{
+                                {
+                                    validator: (rule, value, callback) => {
                                         //   const form = this.formRef.props.form;
                                         //value's type need to transform
-                                        if(value==null){
-                                            value=this.state.formData.phone;
+                                        if (value == null) {
+                                            value = this.state.formData.phone;
                                         }
                                         console.log(String(value));
-                                        if(String(value).length!==11){callback("手机号格式错误");}
+                                        if (String(value).length !== 11) {
+                                            callback("手机号格式错误");
+                                        }
                                         //else if(String(value).length<11){callback("手机号格式错误");}
-                                        else {callback()}
+                                        else {
+                                            callback()
+                                        }
 
-                                    }},
+                                    }
+                                },
                             ],
                         })(
                             <div>
@@ -249,7 +269,7 @@ class Demo extends Component {
                     </FormItem>
 
                     <FormItem
-                        wrapperCol={{ span: 6, offset: 6 }}
+                        wrapperCol={{span: 6, offset: 6}}
                     >
                         <Button type="primary" htmlType="submit">确认提交</Button>
                     </FormItem>

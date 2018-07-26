@@ -215,6 +215,7 @@ class HeaderMenu extends Component {
     };
 
     handleRegCreate = () => {
+        let self = this;
         const form = this.regFormRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -223,8 +224,34 @@ class HeaderMenu extends Component {
 
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
+            console.log('email: '+form.getFieldValue("email"));
+            console.log('phone: '+form.getFieldValue("phone"));
+
+            let params = new URLSearchParams();
+            params.append("username", JSON.stringify(form.getFieldValue("username")));
+            params.append("password", JSON.stringify(form.getFieldValue("password")));
+            params.append("email", JSON.stringify(form.getFieldValue("email")));
+            params.append("phone", JSON.stringify(form.getFieldValue("phone")));
+            axios.post("/register",params)
+                .then(function(response){
+                    console.log(response.data);
+                    if(response.data===null){//TODO: more detail about reg failure
+                        self.setState({
+                            regVisible: false,
+                        });
+                        alert("注册失败");
+                    } else {
+                        alert("注册成功，请重新登录！");
+                        self.setState({
+                            regVisible: false,
+                        });
+                        window.location.reload();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             form.resetFields();
-            this.setState({ regVisible: false });
         });
     };
 
