@@ -42,6 +42,17 @@ public class OrdersController {
         out.flush();
     }
 
+    @RequestMapping(value="/getRefundOrder",produces="application/json;charset=UTF-8")
+    public void GetRefundOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        JsonArray historyOrders=ordersService.getRefundOrder();
+
+        System.out.println(historyOrders);
+        out.print(historyOrders);
+        out.flush();
+    }
+
     @RequestMapping(value="/changeOrderState",produces="application/json;charset=UTF-8")
     public void ChangeOrderState(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -49,6 +60,55 @@ public class OrdersController {
         int orderId=Integer.parseInt(request.getParameter("orderId"));
         String state=request.getParameter("state");
         ordersService.UpdateOrderState(state,orderId);
+
+        System.out.println(orderId);
+        out.print(orderId);
+        out.flush();
+    }
+
+    @RequestMapping(value="/approveRefund",produces="application/json;charset=UTF-8")
+    public void ApproveRefund(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int orderId = Integer.parseInt(request.getParameter("orderId"));
+        ordersService.approveRefund(orderId);
+        System.out.println(orderId);
+        out.print(orderId);
+        out.flush();
+    }
+
+    @RequestMapping(value="/rejectRefund",produces="application/json;charset=UTF-8")
+    public void RejectRefund(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        ordersService.rejectRefund(orderId);
+        System.out.println(orderId);
+        out.print(orderId);
+        out.flush();
+    }
+
+    @RequestMapping(value="/dontWantToRefund",produces="application/json;charset=UTF-8")
+    public void CancelRefund(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        ordersService.cancelRefund(orderId);
+
+        System.out.println(orderId);
+        out.print(orderId);
+        out.flush();
+    }
+
+    @RequestMapping(value="/refundOrder",produces="application/json;charset=UTF-8")
+    public void RefundOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        String simpleReason=request.getParameter("simpleReason");
+        String detailedReason=request.getParameter("detailReason");
+        String completeReason=simpleReason+" "+detailedReason;
+        ordersService.refund(orderId,completeReason);
 
         System.out.println(orderId);
         out.print(orderId);

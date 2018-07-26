@@ -11,5 +11,6 @@ import javax.persistence.Table;
 @Qualifier("refundRepository")
 public interface RefundRepository extends CrudRepository<Refund,Integer> {
     public Refund save(Refund refund);
+    public Refund findFirstByOrderId(int orderId);
 
 }

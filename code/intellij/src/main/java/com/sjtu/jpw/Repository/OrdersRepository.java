@@ -21,4 +21,6 @@ public interface OrdersRepository extends CrudRepository<Orders,Integer> {
     public List<Orders> findByUserIdAndState(@Param("userId") int userId,@Param("state1") String state1,@Param("state2")String state2);
     public Orders findFirstByOrderId(int orderId);
 
+    public List<Orders> findAllByState(String state);
+
 }

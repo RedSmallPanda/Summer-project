@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import { Table, Divider } from 'antd';
+import axios from "axios/index";
+import {browserHistory} from "react-router";
 
-const columns = [{
+
+/*const columns = [{
     title:'订单编号',
     dataIndex:'orderId',
     key:'orderId',
 },{
     title: '票品名称',
-    dataIndex: 'ticketName',
-    key: 'ticketName',
+    dataIndex: 'showName',
+    key: 'showName',
 },{
     title:'下单时间',
     dataIndex:'time',
@@ -24,14 +27,14 @@ const columns = [{
 }, {
     title:'操作',
     key:'action',
-    render: (text) => (
+    render: (text,record) => (
         <span>
-      <a>批准</a>
+      <a onClick={handleAction1}>{action1[parseInt(record.state)]}</a>
       <Divider type="vertical" />
-      <a>拒绝</a>
+      <a onClick={handleAction2}>{action2[parseInt(record.state)]}</a>
     </span>
     ),
-}];
+}];*/
 
 const data = [];
 for(let i = 1; i < 20; i++){
@@ -49,14 +52,111 @@ for(let i = 1; i < 20; i++){
 
 class RefundAudit extends Component{
 
+    columns = [{
+        title:'订单编号',
+        dataIndex:'orderId',
+        key:'orderId',
+    },{
+        title: '票品名称',
+        dataIndex: 'showName',
+        key: 'showName',
+    },{
+        title:'下单时间',
+        dataIndex:'time',
+        key:'time',
+    }, {
+        title:'退款申请提交时间',
+        dataIndex:'refundTime',
+        key:'refundTime',
+    }, {
+        title:'状态',
+        dataIndex:'state',
+        key:'state',
+    }, {
+        title:'操作',
+        key:'action',
+        render: (text,record) => (
+            <span>
+      <a onClick={()=>this.handleAction1(record.orderId)}>批准</a>
+      <Divider type="vertical" />
+      <a onClick={()=>this.handleAction2(record.orderId)}>拒绝</a>
+    </span>
+        ),
+    }];
+
+    state={
+        data:[]
+    }
+
+    componentDidMount(){
+        let self = this;
+        axios.get("/getRefundOrder",{
+            params:{
+
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    loading: false,
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    handleAction1 = (orderId) =>{
+        axios.get("/approveRefund",{
+            params:{
+                orderId:orderId,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        let newData=this.state.data;
+        let index = newData.findIndex(item => orderId === item.orderId);
+        newData.splice(index, 1);
+        this.setState({
+            data:newData,
+        })
+    };
+
+    handleAction2 = (orderId) =>{
+        axios.get("/rejectRefund",{
+            params:{
+                orderId:orderId,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        let newData=this.state.data;
+        let index = newData.findIndex(item => orderId === item.orderId);
+        newData.splice(index, 1);
+        this.setState({
+            data:newData,
+        })
+    };
+
     render(){
         return(
             <div>
-                <Table columns={columns}
+                <Table columns={this.columns}
                        expandedRowRender={record => <p style={{ margin: 0 }}>
-                           {'数量：'+record.count + '   总价：'+record.amount +'   退款理由：'+record.reason}
+                           {'数量：'+record.number + '   总价：'+record.totalPrice +'   退款理由：'+record.reason}
                            </p>}
-                       dataSource={data}/>
+                       dataSource={this.state.data}/>
             </div>
         )
     }

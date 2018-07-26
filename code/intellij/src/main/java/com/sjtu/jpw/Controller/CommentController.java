@@ -92,7 +92,7 @@ public class CommentController {
         Timestamp time = Timestamp.valueOf(request.getParameter("time"));
 
         if(isFromOrder==1){
-            ordersService.UpdateOrderState("5",orderId);
+            ordersService.UpdateOrderState("6",orderId);
         }
 
         if(purpose.equals("add")){

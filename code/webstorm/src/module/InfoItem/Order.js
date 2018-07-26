@@ -62,7 +62,8 @@ const data = [{
 const action=[
     '去付款',
     '申请退款',
-    '取消退款'
+    '取消退款',
+    '退款失败'
 ];
 
 class Order extends Component {
@@ -168,11 +169,10 @@ class Order extends Component {
                 }
             })
         }
-        else{
-            axios.get("/changeOrderState",{
+        else if(state==='2'){
+            axios.get("/dontWantToRefund",{
                 params:{
                     orderId:orderId,
-                    state:'1',
                 }
             })
                 .then(function (response) {
