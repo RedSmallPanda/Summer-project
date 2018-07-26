@@ -15,6 +15,6 @@ import java.util.List;
 public interface CollectionRepository extends CrudRepository<Collection,Integer> {
     public Collection save(Collection collection);
     @Query("select collection.showId from Collection collection where collection.userId=:userId")
-    public List<Integer> findAllShowsCollection(@Param("userId") Integer userId);
+    public List<Integer>  findAllShowCollectionId(@Param("userId") Integer userId);
 
 }

@@ -1,18 +1,47 @@
 package com.sjtu.jpw.Service.ServiceImpl;
 
+import com.google.gson.Gson;
+import com.sjtu.jpw.Domain.AssistDomain.ShopCartItem;
 import com.sjtu.jpw.Domain.ShopCart;
+import com.sjtu.jpw.Domain.Shows;
+import com.sjtu.jpw.Domain.Ticket;
 import com.sjtu.jpw.Repository.ShopCartRepository;
+import com.sjtu.jpw.Repository.ShowsRepository;
+import com.sjtu.jpw.Repository.TicketRepository;
 import com.sjtu.jpw.Service.ShopCartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
+@Service
 public class ShopCartServiceImpl implements ShopCartService {
     @Autowired
     private ShopCartRepository shopCartRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
+    @Autowired
+    private ShowsRepository showsRepository;
     @Override
     public String getCurrentCart(Integer userId) {
-        return null;
+        List<Integer> collectionTicketIds = shopCartRepository.findAllTicketIdbyuserId(userId);
+        List<ShopCartItem> items = new ArrayList<>();
+        for (Integer Id: collectionTicketIds) {
+            Ticket tempTicket =ticketRepository.findFirstByTicketId(Id);
+            Integer showId=tempTicket.getShowId();
+            Shows tempShow=showsRepository.findFirstByShowId(showId);
+            SimpleDateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd HH:mm");
+            String time=dateformat.format(tempTicket.getTime());
+            ShopCartItem temp= new  ShopCartItem(tempTicket.getTicketId(),showId,tempShow.getTitle(),time,
+                    tempTicket.getSeat(),tempTicket.getPrice(),shopCartRepository.findItemNum(userId,Id));
+            items.add(temp);
+        }
+        Gson gson=new Gson();
+        System.out.println("shop cart json: "+gson.toJson(items));
+
+        return gson.toJson(items);
     }
 
     @Override

@@ -33,7 +33,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public String AllTickets(String city, String type, Timestamp startTime, Timestamp endTime, Integer userId) {
 
-        List<Integer> showsLike=collectionRepository.findAllShowsCollection(userId);
+        List<Integer> showsLike=collectionRepository.findAllShowCollectionId(userId);
         List<ShowTicket> itemList=showsRepository.findAllShowsByParams(city,type,startTime,endTime);
         System.out.println(itemList.size());
         for(int i=0;i<itemList.size();i++){
@@ -55,7 +55,7 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public String UserCollection(Integer userId) {
 
-        List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowsCollection(userId));
+        List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowCollectionId(userId));
 
         for(int i=0;i<itemList.size();i++){
             ShowTicket temp=itemList.get(i);
