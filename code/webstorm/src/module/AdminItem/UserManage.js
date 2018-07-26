@@ -246,6 +246,7 @@ class UserManage extends React.Component {
             align: 'center',
             // fixed: 'right',
             render: (text, record) => {
+                if(record.username==="admin")return <div><Icon type="lock"/></div>;
                 const editable = this.isEditing(record);
                 return (
                     <div>

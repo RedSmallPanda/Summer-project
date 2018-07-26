@@ -60,7 +60,7 @@ const Login = Form.create()(
             callback()
         };
         render() {
-            const { visible, onCancel,  form, onLogin } = this.props;
+            const {visible, onCancel, form, onLogin} = this.props;
             const { getFieldDecorator } = form;
             return (
                 <div className="loginModal">

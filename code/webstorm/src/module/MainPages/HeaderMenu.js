@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import Login from './Login'
 import Register from './Register'
 import "../../css/App.css"
+import axios from "axios";
 
 
 const SubMenu = Menu.SubMenu;
@@ -149,29 +150,48 @@ class HeaderMenu extends Component {
     };
 
     handleCreate = () => {
+        let self = this;
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
                 return;
             }
-            console.log('Received values of form username: '+form.getFieldValue("username") );
+            console.log('Received values of form username: '+form.getFieldValue("username"));
             console.log('password: '+form.getFieldValue("password"));
-            form.resetFields();
-            Cookies.set('username',values.username);
-            if(values.username === 'admin'){
-                this.setState({
-                    visible: false,
-                    isLogin: true,
-                    isAdmin:true,
+
+            let params = new URLSearchParams();
+            params.append("username", JSON.stringify(form.getFieldValue("username")));
+            params.append("password", JSON.stringify(form.getFieldValue("password")));
+            axios.post("/login",params)
+                .then(function(response){
+                    console.log(response.data);
+                    if(response.data===null){
+                        self.setState({
+                            visible: false,
+                        });
+                        alert("登陆失败,请重新登录");
+                    } else {
+                        Cookies.set('username',values.username);
+                        if(values.username === 'admin'){
+                            self.setState({
+                                visible: false,
+                                isLogin: true,
+                                isAdmin: true,
+                            });
+                            window.location.reload();
+                            return;
+                        }
+                        self.setState({
+                            visible: false,
+                            isLogin: true,
+                        });
+                        window.location.reload();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
-                window.location.reload();
-                return;
-            }
-            this.setState({
-                visible: false,
-                isLogin: true,
-            });
-            window.location.reload();
+            form.resetFields();
         });
     };
 
