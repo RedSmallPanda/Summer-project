@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Date;
 import java.util.List;
 
 @RestController
@@ -32,6 +33,7 @@ public class LoginRegisterController {
 
         List<User> me = userService.login(username, password);
 
+        //TODO: login of deleted/banned users
         if (me.size()==0) {
             System.out.println("[JPW USER  F] -" + username + "- login with password -" + password + "-");
             out.print("null");
@@ -65,16 +67,33 @@ public class LoginRegisterController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        String userJson = request.getParameter("form");
-        System.out.println("get JSON from user form: " + userJson);
+        String username = request.getParameter("username");
+        username = username.substring(1, username.length() - 1);
+        String password = request.getParameter("password");
+        password = password.substring(1, password.length() - 1);
+        String email = request.getParameter("email");
+        email = email.substring(1, email.length() - 1);
+        String phone = request.getParameter("phone");
+        phone = phone.substring(1, phone.length() - 1);
 
-        Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
+        User newUser = new User();
+        newUser.setUsername(username);
+        newUser.setPassword(password);
+        newUser.setEmail(email);
+        newUser.setPhone(phone);
+        Date date = new Date(System.currentTimeMillis());
+        newUser.setBirthday(date);
+        newUser.setState("0");
 
-        userService.updateInfo(updateUser);
-
-        out.print(userGson.toJson(updateUser));
-        System.out.println("changed into: " + userGson.toJson(updateUser));
-        out.flush();
+        User registeredUser = userService.register(newUser);
+        if (registeredUser == null) {
+            out.print("null");
+            out.flush();
+        } else {
+            Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            out.print(userGson.toJson(registeredUser));
+            out.flush();
+            System.out.println("[JPW USER   ] New user registered: " + userGson.toJson(registeredUser));
+        }
     }
 }

@@ -13,7 +13,7 @@ const Register = Form.create()(
             else {callback("username<10 ")}
             callback()
         };
-        render() {
+        render() {//TODO: set nickname when register.
             const { visible, onCancel,  form, onLogin } = this.props;
             const { getFieldDecorator } = form;
             return (
