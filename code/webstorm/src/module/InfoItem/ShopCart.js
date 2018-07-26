@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
-
+import axios from 'axios';
 const data = [{
     key: '1',
+    showId:0,
     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
     detailInfo: {
         name:'周杰伦演唱会',
@@ -54,6 +55,40 @@ class ShopCart extends Component {
             }];
     }
 
+    componentDidMount(){
+        let self = this;
+        axios.get("/getCurrentCart",{
+        })
+            .then(function (response) {
+                console.log(response);
+                /*this.setState({
+                    loading: false,
+                    data: response.data,
+                });*/
+                let items=[];
+                let tempres=response.data;
+                for(var i in tempres){
+                    let tempdata=tempres[i];
+                    let temp={
+                        key: tempdata.key,
+                        showId:tempdata.showId,
+                        img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+                        detailInfo: {
+                            name:tempdata.title,
+                            date:tempdata.time
+                        },
+                        price:tempdata.seat+ '￥'+tempdata.price,
+                        amount: tempdata.amount,
+                        totalPrice:'￥'+(tempdata.price*tempdata.amount),
+                    }
+                    items.push(temp);
+                }
+                self.setState({data:items})
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
     handleBuy = () =>{
         browserHistory.push('/buyStep')
     };
@@ -65,7 +100,7 @@ class ShopCart extends Component {
     render(){
         let orderTable=
             <div>
-                <Table columns={this.columns} dataSource={data}
+                <Table columns={this.columns} dataSource={this.state.data}
                        pagination={{
                            pageSize: 10,
                        }}
