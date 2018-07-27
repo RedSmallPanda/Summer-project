@@ -59,8 +59,8 @@ public class ShowsController {
 
         System.out.println("showdetail");
         out.print(ticketService.ticketsDetail(1));
-        System.out.println(ticketService.ticketsDetail(1));
-        System.out.println(ticketService.userCollection(1));
+     //   System.out.println(ticketService.ticketsDetail(1));
+      //  System.out.println(ticketService.userCollection(1));
         out.flush();
     }
 

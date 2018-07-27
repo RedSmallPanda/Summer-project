@@ -95,6 +95,8 @@ class TicketComment extends Component {
 
         params.append('purpose',"add");
         params.append('showId',item.showId);
+        params.append('orderId',-1);
+        params.append('isFromOrder',-1);
         params.append('username', username);
         params.append('parentId',item.commentId);
         params.append('content',content);
@@ -112,6 +114,8 @@ class TicketComment extends Component {
 
         params.append('purpose',"add");
         params.append('showId',item.showId);
+        params.append('orderId',-1);
+        params.append('isFromOrder',-1);
         params.append('username', username);
         params.append('parentId',item.commentId);
         params.append('content',content);
