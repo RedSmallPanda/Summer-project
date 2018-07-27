@@ -13,7 +13,7 @@ public class ShowTicket {
     private Integer rate;
     private Integer minPrice;
     private Integer commentNum;
-    private Integer isLike;
+    private Boolean isLike;
     private String startTime;
     private String endTime;
 
@@ -26,7 +26,7 @@ public class ShowTicket {
         this.rate=rate;
         this.minPrice=0;
         this.commentNum=0;
-        this.isLike=0;
+        this.isLike=false;
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
 
         this.startTime=format.format(Date.valueOf(startTime.toString()));
@@ -89,11 +89,11 @@ public class ShowTicket {
         this.commentNum = commentNum;
     }
 
-    public Integer getIsLike() {
+    public Boolean getIsLike() {
         return isLike;
     }
 
-    public void setIsLike(Integer isLike) {
+    public void setIsLike(Boolean isLike) {
         this.isLike = isLike;
     }
 
