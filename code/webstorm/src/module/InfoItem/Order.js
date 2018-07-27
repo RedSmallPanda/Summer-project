@@ -160,6 +160,7 @@ class Order extends Component {
                     secondStep:0,
                     totalPrice:totalPrice,
                     ticketInfo:[],
+                    isCart:0,
                 }
             })
         }

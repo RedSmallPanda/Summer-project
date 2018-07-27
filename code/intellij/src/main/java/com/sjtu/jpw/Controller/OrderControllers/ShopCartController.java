@@ -20,11 +20,22 @@ public class ShopCartController {
     public void GetCurrentShopCart(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-    //    int userId=Integer.parseInt(request.getParameter("userId"));
-        String  currentCart=shopCartService.getCurrentCart(1);
+        int userId=(int)request.getSession().getAttribute("userId");
+        String  currentCart=shopCartService.getCurrentCart(userId);
 
         //System.out.println(currentCart);
         out.print(currentCart);
+        out.flush();
+    }
+
+    @RequestMapping(value="/deleteCart",produces="application/json;charset=UTF-8")
+    public void DeleteShopCart(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int ticketId=Integer.parseInt(request.getParameter("ticketId"));
+        int userId=(int)request.getSession().getAttribute("userId");
+        shopCartService.deleteCartItem(userId,ticketId);
+        out.print(ticketId);
         out.flush();
     }
 
