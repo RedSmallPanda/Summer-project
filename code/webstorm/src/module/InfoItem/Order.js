@@ -93,6 +93,7 @@ class Order extends Component {
             },{
                 title: '单价',
                 dataIndex: 'price',
+                render: (text, record) => (<span>{'￥ ' + text}</span>)
             }, {
                 title: '数量',
                 dataIndex: 'number',
@@ -100,14 +101,15 @@ class Order extends Component {
             },{
                 title: '金额',
                 dataIndex: 'totalPrice',
+                render: (text, record) => (<span>{'￥ ' + text}</span>)
             },
             {
                 title: '操作',
                 key: 'action',
                 render: (text, record) => (
                     <span>
-      <a onClick={()=>this.handleAction(record.state,record.orderId,record.totalPrice)}>{action[parseInt(record.state)]}</a>
-    </span>
+                        <a onClick={()=>this.handleAction(record.state,record.orderId,record.totalPrice)}>{action[parseInt(record.state)]}</a>
+                    </span>
                 ),
             }];
     }
