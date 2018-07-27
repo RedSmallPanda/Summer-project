@@ -1,30 +1,15 @@
-package com.sjtu.jpw.Controller.TicketDisplayControllers;
+package com.sjtu.jpw.Controller.TicketControllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.sjtu.jpw.Domain.Shows;
-import com.sjtu.jpw.Domain.Ticket;
-import com.sjtu.jpw.Domain.User;
-import com.sjtu.jpw.Repository.ShowsRepository;
 import com.sjtu.jpw.Service.TicketService;
-import com.sjtu.jpw.Service.UserService;
-import com.sjtu.jpw.Service.demoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
-
-import com.google.gson.Gson;
 
 @RestController
 public class ShowsController {
@@ -32,7 +17,7 @@ public class ShowsController {
     private TicketService ticketService;
 
     @RequestMapping(value = "/shows", produces = "application/json;charset=UTF-8")
-    public void getShows(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public void getShows(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -43,12 +28,16 @@ public class ShowsController {
         System.out.println("city:" +request.getParameter("city"));
         System.out.println("type: "+request.getParameter("type"));
 
-        out.print(ticketService.AllTickets(
-                request.getParameter("city"),
-                request.getParameter("type"),
-                temp1,
-                temp2,
-                1));
+        if (request.getParameter("collection").equals("collection")) {
+            out.print(ticketService.userCollection((int) request.getSession().getAttribute("userId")));
+        } else {
+            out.print(ticketService.AllTickets(
+                    request.getParameter("city"),
+                    request.getParameter("type"),
+                    temp1,
+                    temp2,
+                    (int) request.getSession().getAttribute("userId")));
+        }
  /*       System.out.println(ticketService.AllTickets(
                 request.getParameter("city"),
                 request.getParameter("type"),
@@ -60,18 +49,34 @@ public class ShowsController {
         out.flush();
     }
     @RequestMapping(value = "/showDetail", produces = "application/json;charset=UTF-8")
-    public void showDetail(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public void showDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
-
 
         System.out.println("showdetail");
         out.print(ticketService.ticketsDetail(1));
         System.out.println(ticketService.ticketsDetail(1));
-        System.out.println(ticketService.UserCollection(1));
+        System.out.println(ticketService.userCollection(1));
         out.flush();
     }
+
+    @RequestMapping(value = "/collect", produces = "application/json;charset=UTF-8")
+    public void collect(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        boolean isLike = Boolean.valueOf(request.getParameter("isLike"));
+        int showId = Integer.valueOf(request.getParameter("showId"));
+        int userId = (int) request.getSession().getAttribute("userId");
+
+        if (isLike) {
+            ticketService.deleteCollection(userId, showId);
+        } else {
+            ticketService.addCollection(userId, showId);
+        }
+
+    }
+
 }
 //    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
 //    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
