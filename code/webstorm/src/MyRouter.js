@@ -50,7 +50,7 @@ class MyRouter extends Component{
                 <Route path='/info' component={InfoSpace}/>
                 <Route path='/dir(/:type)' component={Directory}/>
                 <Route path="/commentPage" component={CommentPage}/>
-                <Route path="/detail" component={GoodDetailPage}/>
+                <Route path="/detail/:showId" component={GoodDetailPage}/>
                 <Route path="/admin" component={AdminSpace}/>
                 <Route path="/buyStep" component={BuyStep}/>
                 <Route path="/us" component={Us}/>
@@ -66,7 +66,7 @@ class MyRouter extends Component{
                 <Route path='/info' component={Error}/>
                 <Route path='/dir(/:type)' component={Directory}/>
                 <Route path="/commentPage" component={Error}/>
-                <Route path="/detail" component={GoodDetailPage}/>
+                <Route path="/detail/:showId" component={GoodDetailPage}/>
                 <Route path="/admin" component={Error}/>
                 <Route path="/buyStep" component={Error}/>
                 <Route path="/us" component={Us}/>

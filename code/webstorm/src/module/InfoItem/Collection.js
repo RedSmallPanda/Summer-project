@@ -30,8 +30,8 @@ class Collection extends Component {
     render(){
         return (
             <Tabs tabBarExtraContent={<Button onClick={this.clearCollection}>清空</Button>}>
-                <TabPane tab="未过期" key="1"><ResultList/></TabPane>
-                <TabPane tab="已过期" key="2"><ResultList/></TabPane>
+                <TabPane tab="未过期" key="1"><ResultList type="collection"/></TabPane>
+                <TabPane tab="已过期" key="2"><ResultList type="collection"/></TabPane>
             </Tabs>
 
         );
