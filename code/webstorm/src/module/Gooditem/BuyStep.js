@@ -155,7 +155,7 @@ class BuyStep extends Component {
                 if(response.data[0]===false){
                     alert("很抱歉，库存不足，请重新选购！");
                     browserHistory.push({
-                        pathname:'/detail',
+                        pathname:'/home',
                     })
                 }
                 else{
