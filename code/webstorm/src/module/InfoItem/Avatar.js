@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Upload, Icon, message } from 'antd';
+import axios from 'axios';
 
 function getBase64(img, callback) {
     const reader = new FileReader();
@@ -20,9 +21,52 @@ function beforeUpload(file) {
 }
 
 class Avatar extends Component{
-    state = {
-        loading: false,
+    constructor(props){
+        super(props);
+        this.state = {
+            loading: false,
+            base64:'',
+            getImg:'',
+        };
+
+        this.onComplete = this.props.onComplete;
+
+        this.uploaderProps = {
+            name:"avatar",
+            data:{
+                showId:1,
+            },
+            listType:"picture-card",
+            className:"avatar-uploader",
+            showUploadList:false,
+            action:"http://localhost:8080/uploadImg",
+            beforeUpload:(file)=>{
+                console.log(file);
+                let base64File;
+                let self = this;
+                let reader = new FileReader();
+                base64File = reader.readAsDataURL(file);
+                reader.onload = function(e){
+                    file = e.target.result;
+                    self.setState({
+                        base64:file,
+                    });
+                    self.addAvatar();
+                    return file;
+                };
+                this.onComplete();
+            },
+        }
+    }
+
+    addAvatar = () =>{
+        let params = new URLSearchParams();
+        params.append('imgUrl',this.state.base64);
+        params.append('userId',1);
+        axios.post('/addAvatar', params);
     };
+
+
 
     handleChange = (info) => {
         if (info.file.status === 'uploading') {
@@ -47,17 +91,14 @@ class Avatar extends Component{
         );
         const imageUrl = this.state.imageUrl;
         return (
+            <div>
             <Upload
-                name="avatar"
-                listType="picture-card"
-                className="avatar-uploader"
-                showUploadList={false}
-                action=""
-                beforeUpload={beforeUpload}
+                {...this.uploaderProps}
                 onChange={this.handleChange}
             >
                 {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
             </Upload>
+            </div>
         );
     }
 }
