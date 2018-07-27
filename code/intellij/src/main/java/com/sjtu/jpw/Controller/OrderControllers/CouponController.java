@@ -26,7 +26,7 @@ public class CouponController {
     public void GetCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId=Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
 
         JsonArray myCoupon=couponService.getMyCoupon(userId);
         System.out.println(myCoupon);
@@ -38,7 +38,7 @@ public class CouponController {
     public void GiveMeCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId=Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         int price=Integer.parseInt(request.getParameter("price"));
         int orderId=Integer.parseInt(request.getParameter("orderId"));
         ordersService.UpdateOrderState("1",orderId);
@@ -53,7 +53,7 @@ public class CouponController {
     public void GetAvailableCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId=Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         int price=Integer.parseInt(request.getParameter("price"));
         JsonArray myCoupon=couponService.getMyCouponByPrice(userId,price);
 
