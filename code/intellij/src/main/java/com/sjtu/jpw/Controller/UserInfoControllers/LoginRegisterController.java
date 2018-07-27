@@ -1,4 +1,4 @@
-package com.sjtu.jpw.Controller;
+package com.sjtu.jpw.Controller.UserInfoControllers;
 
 import com.google.gson.*;
 import com.sjtu.jpw.Domain.User;

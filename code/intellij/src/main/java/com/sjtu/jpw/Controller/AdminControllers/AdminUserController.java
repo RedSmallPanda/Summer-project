@@ -1,4 +1,4 @@
-package com.sjtu.jpw.Controller;
+package com.sjtu.jpw.Controller.AdminControllers;
 
 import com.google.gson.*;
 import com.sjtu.jpw.Domain.User;

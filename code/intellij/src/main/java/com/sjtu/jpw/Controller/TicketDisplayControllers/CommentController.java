@@ -1,4 +1,4 @@
-package com.sjtu.jpw.Controller;
+package com.sjtu.jpw.Controller.TicketDisplayControllers;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
