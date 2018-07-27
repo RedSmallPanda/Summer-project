@@ -205,6 +205,7 @@ class GoodDetailPage extends Component{
                 ticketInfo:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx],
                 number:this.state.pickticknum,
                 totalPrice:this.state.pickticknum * this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].price,
+                isCart:0,
             }
         })
         console.log(window.location.pathname);

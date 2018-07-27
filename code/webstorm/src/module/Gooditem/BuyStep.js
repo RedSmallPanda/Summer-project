@@ -126,6 +126,7 @@ class BuyStep extends Component {
             getNoCoupon:0,
             newCoupon:[{discCond:"100000",discount:"30"}],
             orderId:this.props.location.state.orderId,
+            isCart:this.props.location.state.isCart,
         };
     }
 
@@ -165,6 +166,21 @@ class BuyStep extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+
+        if(this.state.isCart===1){
+            axios.get("/deleteCart",{
+                params:{
+                    ticketId:this.state.data[0].ticketId,
+                }
+
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
         this.setState({firstStep:1});
     }
 

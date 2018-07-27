@@ -104,6 +104,7 @@ class ShopCart extends Component {
                 ticketInfo:{"ticketId": record.key, "price": record.intPrice,"time":record.detailInfo.date},
                 number:record.amount,
                 totalPrice:record.intPrice*record.amount,
+                isCart:1,
             }
         })
     };
