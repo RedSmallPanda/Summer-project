@@ -66,8 +66,23 @@ class ResultList extends Component {
                 console.log(error);
             });
     }
+
+    getImage(self) {
+        axios.get("/getImage")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     componentDidMount(){
         this.getResult(this, this.props);
+        this.getImage(this);
     }
     componentWillReceiveProps(nextProps) {
         this.getResult(this, nextProps);
@@ -183,7 +198,7 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src={item.image} onClick={this.detail}/>}
+                                avatar={<img width={120} alt="logo" src={this.state.imgUrl} onClick={this.detail}/>}
                                 title={<a onClick={this.detail}>{item.title}</a>}
                                 description={
                                     <p>

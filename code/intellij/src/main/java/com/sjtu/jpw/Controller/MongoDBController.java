@@ -78,17 +78,19 @@ public class MongoDBController {
 
     @RequestMapping(value="/getImage",produces="application/json;charset=UTF-8")
     public void GetImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Content-type","application/json;charset=UTF-8");
+        response.setHeader("Content-type","multipart/form-data;charset=UTF-8");
 
         PrintWriter out = response.getWriter();
 
         DBCollection collection = mongoDBService.getCollection("image");
-        BasicDBObject query = new BasicDBObject();
-        query.put("showId","1");
-        DBObject img = collection.findOne(query);
-        System.out.println(img.get("imgUrl"));
-        out.print(img.get("imgUrl"));
-        out.flush();
+//        BasicDBObject query = new BasicDBObject();
+//        query.put("showId","1");
+        DBObject img = collection.findOne();
+        if(img!=null) {
+            System.out.println(img.get("imgUrl"));
+            out.print(img.get("imgUrl").toString());
+            out.flush();
+        }
 
     }
 }

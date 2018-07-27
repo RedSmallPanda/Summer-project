@@ -93,6 +93,7 @@ class TicketComment extends Component {
         let time = moment().format('YYYY-MM-DD hh:mm:ss');
         let content = this.state.value;
 
+        params.append('purpose',"add");
         params.append('showId',item.showId);
         params.append('username', username);
         params.append('parentId',item.commentId);
@@ -109,6 +110,7 @@ class TicketComment extends Component {
         let time = moment().format('YYYY-MM-DD hh:mm:ss');
         let content = "@" + thing.username+": " + this.state.value;
 
+        params.append('purpose',"add");
         params.append('showId',item.showId);
         params.append('username', username);
         params.append('parentId',item.commentId);
@@ -209,12 +211,12 @@ class TicketComment extends Component {
     };
 
     sendComment = (item) =>{
-        message.success("发表成功",2,this.refresh);
+        message.success("发表成功",1,this.refresh);
         this.showReplyBar(item);
     };
 
     sendSmallComment = (item,thing) =>{
-        message.success("发表成功",2,this.refresh);
+        message.success("发表成功",1,this.refresh);
         this.showSmallBar(item,thing);
     };
 
