@@ -37,7 +37,7 @@ class ResultList extends Component {
             data: []
         };
 
-        this.cancelHeart = this.cancelHeart.bind(this);
+        this.collect = this.collect.bind(this);
         this.judgeDate = this.judgeDate.bind(this);
         this.detail = this.detail.bind(this);
         this.getResult = this.getResult.bind(this);
@@ -51,6 +51,7 @@ class ResultList extends Component {
                 type: prop.filter.type,
                 time: prop.filter.time,
                 search: prop.filter.search,
+                collection: prop.type,
             }
         })
             .then(function (response) {
@@ -66,26 +67,55 @@ class ResultList extends Component {
                 console.log(error);
             });
     }
+
+    getImage(self) {
+        axios.get("/getImage")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     componentDidMount(){
         this.getResult(this, this.props);
+        this.getImage(this);
     }
     componentWillReceiveProps(nextProps) {
         this.getResult(this, nextProps);
     }
 
-    //todo: do cancel in database
-    cancelHeart(e) {
-        e.preventDefault();
-        let title = e.target.parentNode.parentNode.parentNode.parentNode
-            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML;
-        listData.forEach(function (item) {
-            if(item.title===title){
-                item.isLike = !item.isLike;
+    collect(showId,isLike) {
+        let self = this;
+        axios.get("/collect", {
+            params:{
+                showId:showId,
+                isLike: isLike,
             }
-        });
-        this.setState({
-            data: listData,
-        });
+        })
+            .then(function (response) {
+                console.log("change collection" + showId + response);
+                if (response.data === true||response.data === false) {
+                    listData.forEach(function (item) {
+                        if (item.showId === showId) {
+                            item.isLike = !item.isLike;
+                        }
+                    });
+                    self.setState({
+                        data: listData,
+                    });
+                    alert(response.data?"收藏成功！":"已移出收藏");
+                } else {
+                    alert("收藏失败！");
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     }
 
     //judge out-of-date
@@ -99,20 +129,14 @@ class ResultList extends Component {
         return currentDateTime < endTime;
     }
 
-    detail(e){
-        e.preventDefault();
-        // alert(e.target.parentNode.parentNode.parentNode.parentNode
-        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+    detail(showId){
         browserHistory.push({
-            pathname:"/detail",
+            pathname: "/detail/" + showId,
         });
     }
-    comment(e){
-        e.preventDefault();
-        // alert(e.target.parentNode.parentNode.parentNode.parentNode
-        //     .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML);
+    comment(showId){
         browserHistory.push({
-            pathname:"/detail",
+            pathname:"/detail/" + showId,
         });
     }
 
@@ -137,8 +161,10 @@ class ResultList extends Component {
                         <List.Item
                             key={item.title}
                             actions={[
-                                <IconText type={item.isLike ? "heart" : "heart-o"} onClick={this.cancelHeart}/>,
-                                <IconText type="message" text={item.commentNum} onClick={this.comment}/>,//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111
+                                <IconText type={item.isLike ? "heart" : "heart-o"}
+                                          onClick={() => this.collect(item.showId,item.isLike)}/>,
+                                <IconText type="message" text={item.commentNum}
+                                          onClick={() => this.comment(item.showId)}/>,//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111
                                 <Dropdown
                                     overlay={(
                                         <Menu>
@@ -183,8 +209,9 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src={item.image} onClick={this.detail}/>}
-                                title={<a onClick={this.detail}>{item.title}</a>}
+                                avatar={<img width={120} alt="logo" src=src={this.state.imgUrl}
+                                             onClick={() => this.detail(item.showId)}/>}
+                                title={<a onClick={() => this.detail(item.showId)}>{item.title}</a>}
                                 description={
                                     <p>
                                         {item.info}<br/><br/>
@@ -200,7 +227,7 @@ class ResultList extends Component {
                                     <h3><b>{"￥" + item.minPrice}</b>{" 起"}</h3>
                                     <Button type={this.judgeDate(item.endTime) && item.stock ? "primary" : "dashed"}
                                             size="large"
-                                            onClick={this.detail}
+                                            onClick={() => this.detail(item.showId)}
                                     >{
                                         this.judgeDate(item.endTime) ? (item.stock ? "购买" : "售罄") : "过期"
                                     }</Button>

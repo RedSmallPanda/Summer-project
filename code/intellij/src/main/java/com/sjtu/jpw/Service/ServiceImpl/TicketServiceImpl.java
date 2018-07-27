@@ -2,6 +2,7 @@ package com.sjtu.jpw.Service.ServiceImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.sjtu.jpw.Domain.Collection;
 import com.sjtu.jpw.Domain.Ticket;
 import com.sjtu.jpw.Repository.CollectionRepository;
 import com.sjtu.jpw.Repository.CommentRepository;
@@ -53,7 +54,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public String UserCollection(Integer userId) {
+    public String userCollection(Integer userId) {
 
         List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowCollectionId(userId));
 
@@ -67,7 +68,7 @@ public class TicketServiceImpl implements TicketService {
             temp.setIsLike(1);
             System.out.println(temp.toString());
         }
-         Gson gson=new Gson();
+        Gson gson=new Gson();
         return gson.toJson(itemList);
     }
 
@@ -124,5 +125,18 @@ public class TicketServiceImpl implements TicketService {
         String date=testformat.format(timestamp);
         System.out.println("test format:"+date);*/
 
+    }
+
+    @Override
+    public void addCollection(Integer userId,Integer showId){
+        Collection temp=new Collection();
+        temp.setShowId(showId);
+        temp.setUserId(userId);
+        collectionRepository.save(temp);
+    }
+
+    @Override
+    public void deleteCollection(Integer userId,Integer showId){
+        collectionRepository.deleteByShowIdAndUserId(showId,userId);
     }
 }

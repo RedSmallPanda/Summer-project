@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
-    Form, Radio, Button, Input, DatePicker,
+    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon
 } from 'antd';
 import moment from 'moment';
 import axios from "axios/index";
@@ -10,22 +10,63 @@ const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
 const dateFormat = 'YYYY-MM-DD';
 
+function getBase64(img, callback) {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result));
+    reader.readAsDataURL(img);
+}
+
 class Demo extends Component {
-    state = {
-        formData: {
-            // name:'王小明',
-            // gender:'female',
-            // nickname:'暗影之王',
-            // email:'12345678@qq.com',
-            // phone:'12345678901',
-            // birthday:'2000-01-05',
-            // img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
-            // '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
-            // province:'zhejiang',
-            // city:'hangzhou',
-            // district:'xihu'
-        },
-    };
+    constructor(props){
+        super(props);
+
+        this.state = {
+            formData: {
+                // name:'王小明',
+                // gender:'female',
+                // nickname:'暗影之王',
+                // email:'12345678@qq.com',
+                // phone:'12345678901',
+                // birthday:'2000-01-05',
+                // img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
+                // '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
+                // province:'zhejiang',
+                // city:'hangzhou',
+                // district:'xihu'
+            },
+            imrUrl:'',
+            loading: false,
+            base64:'',
+            getImg:'',
+
+        };
+        this.uploaderProps = {
+            name:"avatar",
+            data:{
+                showId:1,
+            },
+            listType:"picture-card",
+            className:"avatar-uploader",
+            showUploadList:false,
+            action:"http://localhost:8080/uploadImg",
+            beforeUpload:(file)=>{
+                console.log(file);
+                let base64File;
+                let self = this;
+                let reader = new FileReader();
+                base64File = reader.readAsDataURL(file);
+                reader.onload = function(e){
+                    file = e.target.result;
+                    self.setState({
+                        base64:file,
+                    });
+                    self.addAvatar();
+                    return file;
+                };
+            },
+        }
+
+    }
 
     componentDidMount(){
         let self = this;
@@ -52,7 +93,32 @@ class Demo extends Component {
                     });
             }
         }
-    }
+        this.getAvatar(this);
+    };
+
+    addAvatar = () =>{
+        let params = new URLSearchParams();
+        params.append('imgUrl',this.state.base64);
+        params.append('userId',1);
+        axios.post('/addAvatar', params);
+        this.getAvatar(this);
+    };
+
+
+
+    handleChange = (info) => {
+        if (info.file.status === 'uploading') {
+            this.setState({ loading: true });
+            return;
+        }
+        if (info.file.status === 'done') {
+            // Get this url from response in real world.
+            getBase64(info.file.originFileObj, imageUrl => this.setState({
+                imageUrl,
+                loading: false,
+            }));
+        }
+    };
 
     nicknameOnChange = () => {
         let newForm=this.state.formData;
@@ -119,6 +185,18 @@ class Demo extends Component {
         });
     };
 
+    getAvatar(self) {
+        axios.get("/getAvatar")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -126,6 +204,25 @@ class Demo extends Component {
             labelCol: { span: 6 },
             wrapperCol: { span: 7 },
         };
+        const uploadButton = (
+            <div>
+                <Icon type={this.state.loading ? 'loading' : 'plus'} />
+                <div className="ant-upload-text">Upload</div>
+            </div>
+        );
+        const imageUrl = this.state.imageUrl;
+        const text = <span>更改头像</span>;
+        const content = <div align="center">
+            <div>
+                <Upload
+                    {...this.uploaderProps}
+                    onChange={this.handleChange}
+                >
+                    {imageUrl ? <img height="200" width="200" src={imageUrl} alt="avatar" /> : uploadButton}
+                </Upload>
+            </div>
+        </div>;
+
         return (
             <div>
                 <br/>
@@ -135,8 +232,9 @@ class Demo extends Component {
                         {...formItemLayout}
                         label="头像"
                     >
-                        <div><img className="infoAvatar" height="100" width="100" src={this.state.formData.img}
-                                  alt="default"/></div>
+                        <Popover placement="rightTop" title={text} content={content}>
+                            <img className="infoAvatar" height="100" width="100" src={this.state.imgUrl} alt="default"/>
+                        </Popover>
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
