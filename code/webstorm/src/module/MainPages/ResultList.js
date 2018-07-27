@@ -189,7 +189,7 @@ class ResultList extends Component {
                                     <p>
                                         {item.info}<br/><br/>
                                         <Icon type="calendar"/>
-                                        {" " + moment(item.startTime, 'MM月DD, YYYY') + "-" + moment(item.endTime, 'MM月DD, YYYY')}<br/>
+                                        {" " + item.startTime + "-" + item.endTime}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
                                         <Rate disabled allowHalf defaultValue={item.rate / 2}/><br/>
                                     </p>
