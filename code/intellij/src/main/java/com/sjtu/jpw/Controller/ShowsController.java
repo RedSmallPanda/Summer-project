@@ -32,7 +32,7 @@ public class ShowsController {
     private TicketService ticketService;
 
     @RequestMapping(value = "/shows", produces = "application/json;charset=UTF-8")
-    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public void getShows(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
@@ -60,7 +60,7 @@ public class ShowsController {
         out.flush();
     }
     @RequestMapping(value = "/showDetail", produces = "application/json;charset=UTF-8")
-    public void showDtail(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
+    public void showDetail(HttpServletRequest request, HttpServletResponse response) throws InterruptedException, IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
