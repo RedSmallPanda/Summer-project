@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Icon, Table, Divider } from 'antd';
-import Avatar from "./Avatar";
+import UploadImage from './UploadImage';
 
 const FormItem = Form.Item;
 
@@ -69,7 +69,7 @@ const TicketForm = Form.create()(
                     <Form layout="vertical">
                         <FormItem label="缩略图">
                             {getFieldDecorator('image')(
-                                <Avatar/>
+                                <UploadImage/>
                             )}
                         </FormItem>
                         <FormItem label="票品名称">
