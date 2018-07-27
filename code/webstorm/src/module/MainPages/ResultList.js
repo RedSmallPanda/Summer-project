@@ -209,7 +209,7 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src=src={this.state.imgUrl}
+                                avatar={<img width={120} alt="logo" src={this.state.imgUrl}
                                              onClick={() => this.detail(item.showId)}/>}
                                 title={<a onClick={() => this.detail(item.showId)}>{item.title}</a>}
                                 description={
