@@ -128,7 +128,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void AddCollection(Integer userId,Integer showId){
+    public void addCollection(Integer userId,Integer showId){
         Collection temp=new Collection();
         temp.setShowId(showId);
         temp.setUserId(userId);
@@ -136,7 +136,7 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void DeleteCollection(Integer userId,Integer showId){
+    public void deleteCollection(Integer userId,Integer showId){
         collectionRepository.deleteByShowIdAndUserId(showId,userId);
     }
 }

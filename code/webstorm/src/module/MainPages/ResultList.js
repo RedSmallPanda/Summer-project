@@ -37,7 +37,7 @@ class ResultList extends Component {
             data: []
         };
 
-        this.cancelHeart = this.cancelHeart.bind(this);
+        this.collect = this.collect.bind(this);
         this.judgeDate = this.judgeDate.bind(this);
         this.detail = this.detail.bind(this);
         this.getResult = this.getResult.bind(this);
@@ -75,6 +75,7 @@ class ResultList extends Component {
     }
 
     collect(showId,isLike) {
+        let self = this;
         axios.get("/collect", {
             params:{
                 showId:showId,
@@ -83,16 +84,16 @@ class ResultList extends Component {
         })
             .then(function (response) {
                 console.log("change collection" + showId + response);
-                if (response.data === true) {
+                if (response.data === true||response.data === false) {
                     listData.forEach(function (item) {
                         if (item.showId === showId) {
                             item.isLike = !item.isLike;
                         }
                     });
-                    this.setState({
+                    self.setState({
                         data: listData,
                     });
-                    alert("收藏成功！");
+                    alert(response.data?"收藏成功！":"已移出收藏");
                 } else {
                     alert("收藏失败！");
                 }

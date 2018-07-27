@@ -27,16 +27,20 @@ public class ShowsController {
         Timestamp temp2 = Timestamp.valueOf(timestr2);
         System.out.println("city:" +request.getParameter("city"));
         System.out.println("type: "+request.getParameter("type"));
+        int userId = (int) request.getSession().getAttribute("userId");
 
         if (request.getParameter("collection").equals("collection")) {
-            out.print(ticketService.userCollection((int) request.getSession().getAttribute("userId")));
+            out.print(ticketService.userCollection(userId));
         } else {
-            out.print(ticketService.AllTickets(
-                    request.getParameter("city"),
-                    request.getParameter("type"),
-                    temp1,
-                    temp2,
-                    (int) request.getSession().getAttribute("userId")));
+            out.print(
+                    ticketService.AllTickets(
+                            request.getParameter("city"),
+                            request.getParameter("type"),
+                            temp1,
+                            temp2,
+                            userId
+                    )
+            );
         }
  /*       System.out.println(ticketService.AllTickets(
                 request.getParameter("city"),
@@ -65,16 +69,20 @@ public class ShowsController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        boolean isLike = Boolean.valueOf(request.getParameter("isLike"));
+        boolean isLike = request.getParameter("isLike").equals("1");
+        System.out.println("-----isLike: " + isLike);
         int showId = Integer.valueOf(request.getParameter("showId"));
         int userId = (int) request.getSession().getAttribute("userId");
 
         if (isLike) {
             ticketService.deleteCollection(userId, showId);
+            System.out.println("[JPW USER   ] -" + userId + "- delete collection of show -" + showId + "-.");
+            out.print(true);
         } else {
             ticketService.addCollection(userId, showId);
+            System.out.println("[JPW USER   ] -" + userId + "- add collection of show -" + showId + "-.");
+            out.print(false);
         }
-
     }
 
 }

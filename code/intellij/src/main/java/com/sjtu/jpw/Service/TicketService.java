@@ -11,7 +11,7 @@ public interface TicketService {
     String userCollection(Integer userId);
     JsonArray CartTickets(Integer userId);
     String ticketsDetail(Integer showId);
-    void AddCollection(Integer userId,Integer showId);
-    void DeleteCollection(Integer userId,Integer showId);
+    void addCollection(Integer userId,Integer showId);
+    void deleteCollection(Integer userId,Integer showId);
 
 }
