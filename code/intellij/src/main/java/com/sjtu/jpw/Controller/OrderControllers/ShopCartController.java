@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -34,9 +35,12 @@ public class ShopCartController {
         //    int userId=Integer.parseInt(request.getParameter("userId"));
      //   String  currentCart=shopCartService.getCurrentCart(1);
 
-        int ticketId=Integer.parseInt(request.getParameter("ticketId"));
-        int num=Integer.parseInt(request.getParameter("num"));
-        shopCartService.addCartItem(1,ticketId,num);
+        HttpSession session=request.getSession();
+
+            int ticketId = Integer.parseInt(request.getParameter("ticketId"));
+            int num = Integer.parseInt(request.getParameter("num"));
+            System.out.println("add cart"+ticketId+" num:  "+num);
+            shopCartService.addCartItem((int) session.getAttribute("userId"), ticketId, num);
 
         //System.out.println(currentCart);
       //  out.print(currentCart);

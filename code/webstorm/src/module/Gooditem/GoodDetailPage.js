@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Affix,Radio,Card, Icon,Rate,Button } from 'antd';
+import { Row, Col, Affix,Radio,Card, Icon,Rate,Button,message } from 'antd';
 import moment from 'moment'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'moment/locale/zh-cn';
@@ -155,15 +155,17 @@ class GoodDetailPage extends Component{
         this.setState({pickticknum: value});
     };
 
+
     handleShopCart = () =>{
 
-        axios.get("http://localhost:8080/showDetail",{
+
+        axios.get("http://localhost:8080/addCurrentCart",{
             params:{ticketId:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].ticketId ,
                      num:this.state.pickticknum }
         })
             .then(function (response) {
-                console.log(response.data);
 
+                message.success("加入购物车成功")
             })
             .catch(function (error) {
                 console.log(error);
@@ -362,7 +364,7 @@ class GoodDetailPage extends Component{
                                                                     </div>
                                                                 </Col>
                                                                 <Col span={4}>
-                                                                    <Button type="primary" size="large">加入购物车</Button>
+                                                                    <Button type="primary" size="large" onClick={this.handleShopCart}>加入购物车</Button>
                                                                 </Col>
                                                                 <Col span={1}/>
                                                                 <Col span={4}>
