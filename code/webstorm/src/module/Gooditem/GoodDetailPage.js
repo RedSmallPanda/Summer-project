@@ -50,7 +50,6 @@ class GoodDetailPage extends Component{
             .then(function (response) {
                 console.log(response.data);
                 console.log(JSON.stringify(response.data))
-                alert(JSON.stringify(response.data));
                 let temp=[];
       //          self.setState({ticketDetails:response.data})
                 var data=response.data;
@@ -158,6 +157,17 @@ class GoodDetailPage extends Component{
 
     handleShopCart = () =>{
 
+        axios.get("http://localhost:8080/showDetail",{
+            params:{ticketId:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].ticketId ,
+                     num:this.state.pickticknum }
+        })
+            .then(function (response) {
+                console.log(response.data);
+
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
     };
 
     rendertTimes () {

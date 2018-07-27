@@ -10,6 +10,8 @@ const data = [{
         name:'周杰伦演唱会',
         date:'2018/1/2'
     },
+    seat: "s",
+    intPrice: 123,
     price: '￥1200',
     amount: 1,
     totalPrice:'￥1200'
@@ -47,9 +49,9 @@ class ShopCart extends Component {
             {
                 title: '操作',
                 key: 'action',
-                render: () => (
+                render: (text,record,index) => (
                     <span>
-                        <a onClick={this.handleBuy}>购买</a>
+                        <a onClick={()=>this.handleBuy(record)}>购买</a>
                     </span>
                 ),
             }];
@@ -77,6 +79,8 @@ class ShopCart extends Component {
                             name:tempdata.title,
                             date:tempdata.time
                         },
+                        seat: tempdata.seat,
+                        intPrice: tempdata.price,
                         price:tempdata.seat+ '￥'+tempdata.price,
                         amount: tempdata.amount,
                         totalPrice:'￥'+(tempdata.price*tempdata.amount),
@@ -89,8 +93,19 @@ class ShopCart extends Component {
                 console.log(error);
             });
     }
-    handleBuy = () =>{
-        browserHistory.push('/buyStep')
+    handleBuy = (record) =>{
+      //  console.log(record)
+        browserHistory.push({
+            pathname:'/buyStep',
+            state:{
+                firstStep:0,
+                secondStep:0,
+                showName:record.detailInfo.name,
+                ticketInfo:{"ticketId": record.key, "price": record.intPrice,"time":record.detailInfo.date},
+                number:record.amount,
+                totalPrice:record.intPrice*record.amount,
+            }
+        })
     };
 
     handleDetail = () =>{
