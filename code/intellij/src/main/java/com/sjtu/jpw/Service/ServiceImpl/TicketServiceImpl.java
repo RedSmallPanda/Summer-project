@@ -44,7 +44,7 @@ public class TicketServiceImpl implements TicketService {
             Integer minPrice=ticketRepository.minPrice(showId);
             temp.setCommentNum(commentNum);
             temp.setMinPrice(minPrice);
-            if(showsLike.contains(showId)){temp.setIsLike(1);}
+            if(showsLike.contains(showId)){temp.setIsLike(true);}
             System.out.println(temp.toString());
         }
 
@@ -65,7 +65,7 @@ public class TicketServiceImpl implements TicketService {
             Integer minPrice=ticketRepository.minPrice(showId);
             temp.setCommentNum(commentNum);
             temp.setMinPrice(minPrice);
-            temp.setIsLike(1);
+            temp.setIsLike(true);
             System.out.println(temp.toString());
         }
         Gson gson=new Gson();

@@ -69,7 +69,7 @@ public class ShowsController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        boolean isLike = request.getParameter("isLike").equals("1");
+        boolean isLike = request.getParameter("isLike").equals("true");
         System.out.println("-----isLike: " + isLike);
         int showId = Integer.valueOf(request.getParameter("showId"));
         int userId = (int) request.getSession().getAttribute("userId");
@@ -77,11 +77,11 @@ public class ShowsController {
         if (isLike) {
             ticketService.deleteCollection(userId, showId);
             System.out.println("[JPW USER   ] -" + userId + "- delete collection of show -" + showId + "-.");
-            out.print(true);
+            out.print(false);
         } else {
             ticketService.addCollection(userId, showId);
             System.out.println("[JPW USER   ] -" + userId + "- add collection of show -" + showId + "-.");
-            out.print(false);
+            out.print(true);
         }
     }
 
