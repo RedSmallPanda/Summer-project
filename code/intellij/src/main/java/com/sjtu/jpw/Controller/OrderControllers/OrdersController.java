@@ -22,7 +22,7 @@ public class OrdersController {
     public void GetCurrentOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId = (int)request.getSession().getAttribute("userId");
         JsonArray currentOrders = ordersService.getCurrentOrder(userId);
 
         System.out.println(currentOrders);
@@ -34,7 +34,7 @@ public class OrdersController {
     public void GetHistoryOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId=Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         JsonArray historyOrders=ordersService.getHistoryOrder(userId);
 
         System.out.println(historyOrders);
@@ -122,7 +122,7 @@ public class OrdersController {
         Orders order=new Orders();
         long time = System.currentTimeMillis();
         Timestamp currentTime=new Timestamp(time);
-        int userId=Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         int ticketId=Integer.parseInt(request.getParameter("ticketId"));
         int number=Integer.parseInt(request.getParameter("number"));
         int price=Integer.parseInt(request.getParameter("price"));

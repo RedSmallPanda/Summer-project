@@ -14,6 +14,8 @@ import java.util.List;
 @Qualifier("collectionRepository")
 public interface CollectionRepository extends CrudRepository<Collection,Integer> {
     public Collection save(Collection collection);
+    void deleteByShowIdAndUserId(int showId,int userId);
+
     @Query("select collection.showId from Collection collection where collection.userId=:userId")
     public List<Integer>  findAllShowCollectionId(@Param("userId") Integer userId);
 
