@@ -82,7 +82,6 @@ public class CommentController {
 
         String purpose = request.getParameter("purpose");
         int showId=Integer.parseInt(request.getParameter("showId"),10);
-        int orderId=Integer.parseInt(request.getParameter("orderId"),10);
         int isFromOrder=Integer.parseInt(request.getParameter("isFromOrder"),10);
         String username = request.getParameter("username");
         int parentId = Integer.parseInt(request.getParameter("parentId"),10);
@@ -91,6 +90,7 @@ public class CommentController {
         Timestamp time = Timestamp.valueOf(request.getParameter("time"));
 
         if(isFromOrder==1){
+            int orderId=Integer.parseInt(request.getParameter("orderId"),10);
             ordersService.UpdateOrderState("6",orderId);
         }
 
