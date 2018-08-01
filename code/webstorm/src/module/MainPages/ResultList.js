@@ -3,6 +3,7 @@ import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import moment from 'moment';
+import Cookies from "js-cookie";
 
 let listData = [];
 // for (let i = 0; i < 10; i++) {
@@ -45,7 +46,7 @@ class ResultList extends Component {
 
     // POST to get data and filter
     getResult(self, prop) {
-        axios.get("http://localhost:8080/shows", {
+        axios.get("/shows", {
             params: {
                 city: prop.filter.city,
                 type: prop.filter.type,
@@ -91,31 +92,36 @@ class ResultList extends Component {
 
     collect(showId,isLike) {
         let self = this;
-        axios.get("/collect", {
-            params:{
-                showId:showId,
-                isLike: isLike,
-            }
-        })
-            .then(function (response) {
-                console.log("change collection" + showId + response);
-                if (response.data === true||response.data === false) {
-                    listData.forEach(function (item) {
-                        if (item.showId === showId) {
-                            item.isLike = !item.isLike;
-                        }
-                    });
-                    self.setState({
-                        data: listData,
-                    });
-                    alert(response.data?"收藏成功！":"已移出收藏");
-                } else {
-                    alert("收藏失败！");
+        let username = Cookies.get('username');
+        if (typeof(username) !== "undefined" && username !== "") {
+            axios.get("/collect", {
+                params: {
+                    showId: showId,
+                    isLike: isLike,
                 }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log("change collection" + showId + response);
+                    if (response.data === true || response.data === false) {
+                        listData.forEach(function (item) {
+                            if (item.showId === showId) {
+                                item.isLike = !item.isLike;
+                            }
+                        });
+                        self.setState({
+                            data: listData,
+                        });
+                        alert(response.data ? "收藏成功！" : "已移出收藏");
+                    } else {
+                        alert("收藏失败！");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            alert("请先登录~~~");
+        }
     }
 
     //judge out-of-date
@@ -162,7 +168,7 @@ class ResultList extends Component {
                             key={item.title}
                             actions={[
                                 <IconText type={item.isLike ? "heart" : "heart-o"}
-                                          onClick={() => this.collect(item.showId,item.isLike)}/>,
+                                          onClick={() => this.collect(item.showId, item.isLike)}/>,
                                 <IconText type="message" text={item.commentNum}
                                           onClick={() => this.comment(item.showId)}/>,//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111
                                 <Dropdown
@@ -181,21 +187,22 @@ class ResultList extends Component {
                                                     <Icon type="qq"/> QQ
                                                 </a>
                                             </Menu.Item>
-                                            <Menu.Item>
-                                                <a target="_blank" rel="noopener noreferrer"
-                                                   href="http://www.baidu.com/">
-                                                    <Icon type="wechat"/> WeChat
-                                                </a>
-                                            </Menu.Item>
+                                            {/*<Menu.Item>*/}
+                                                {/*<a target="_blank" rel="noopener noreferrer">*/}
+                                                    {/*<span>*/}
+                                                         {/*<Icon type="wechat"/>WeChat*/}
+                                                    {/*</span>*/}
+                                                {/*</a>*/}
+                                            {/*</Menu.Item>*/}
                                             <Menu.Item>
                                                 <a target="_blank" rel="noopener noreferrer"
                                                    href={
                                                        "http://service.weibo.com/share/share.php?"
                                                        + "url=http://www.baidu.com" //detail page
-                                                       + "&title=(ticket)" //show title
+                                                       + "&title=" + item.title//show title
                                                        + "&pics=https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"
-                                                       + "&summary=测试weibo分享summary"
-                                                       + "&desc=weibo分享简述"
+                                                       + "&summary=" + item.info
+                                                       + "&desc=快上聚票网看看"
                                                    }>
                                                     <Icon type="weibo"/> weibo
                                                 </a>

@@ -25,9 +25,15 @@ public class ShowsController {
         String timestr2 = "2018-07-30 23:00:00";
         Timestamp temp1 = Timestamp.valueOf(timestr1);
         Timestamp temp2 = Timestamp.valueOf(timestr2);
-        System.out.println("city:" +request.getParameter("city"));
-        System.out.println("type: "+request.getParameter("type"));
-        int userId = (int) request.getSession().getAttribute("userId");
+        Object id = request.getSession().getAttribute("userId");
+        int userId = 0;
+        if (id != null) {
+            userId = (int) request.getSession().getAttribute("userId");
+        }
+        System.out.println("[JPW SHOWS  ] "
+                + "city:" + request.getParameter("city")
+                + "||type:" + request.getParameter("type")
+                + "||userId:" + userId);
 
         if (request.getParameter("collection").equals("collection")) {
             out.print(ticketService.userCollection(userId));
