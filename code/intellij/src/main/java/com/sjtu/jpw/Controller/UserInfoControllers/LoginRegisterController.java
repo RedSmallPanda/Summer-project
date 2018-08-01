@@ -38,25 +38,30 @@ public class LoginRegisterController {
             System.out.println("[JPW USER  F] -" + username + "- login with password -" + password + "-");
             out.print("null");
             out.flush();
-        } else {
-            HttpSession session = request.getSession();
-            session.setAttribute("userId",me.get(0).getUserId());
-            session.setAttribute("username",me.get(0).getUsername());
-            System.out.println("[JPW USER   ] -" + username + "- login with password -" + password + "-");
-            if (session.isNew()) {
-                System.out.println("[JPW USER   ] create session (id: " + session.getId()
-                        + ") for user -" + username + "-");
+        } else {//normal or banned
+            if (me.get(0).getState().equals("2")) {//banned
+                System.out.println("[JPW USER  B] BANNED -" + username + "- login with password -" + password + "-");
+                out.print("banned");
             } else {
-                System.out.println("[JPW USER   ] change session (id: " + session.getId()
-                        + ") for user -" + username + "-");
+                HttpSession session = request.getSession();
+                session.setAttribute("userId",me.get(0).getUserId());
+                session.setAttribute("username",me.get(0).getUsername());
+                System.out.println("[JPW USER   ] -" + username + "- login with password -" + password + "-");
+                if (session.isNew()) {
+                    System.out.println("[JPW USER   ] create session (id: " + session.getId()
+                            + ") for user -" + username + "-");
+                } else {
+                    System.out.println("[JPW USER   ] change session (id: " + session.getId()
+                            + ") for user -" + username + "-");
+                }
+
+                Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+                String userJson = userGson.toJson(me.get(0));
+                JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();
+
+                System.out.println(userObject);
+                out.print(userObject);
             }
-
-            Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-            String userJson = userGson.toJson(me.get(0));
-            JsonObject userObject = new JsonParser().parse(userJson).getAsJsonObject();
-
-            System.out.println(userObject);
-            out.print(userObject);
             out.flush();
         }
     }

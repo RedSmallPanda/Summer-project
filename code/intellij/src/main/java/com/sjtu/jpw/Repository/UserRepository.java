@@ -19,6 +19,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User,Integer> {
     public User save(User u);
 
+    //todo: findALL or find one?
     public List<User> findAllByUsernameAndPassword(String username, String password);
 
     public User findByUserId(Integer id);

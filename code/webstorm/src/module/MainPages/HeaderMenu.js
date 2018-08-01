@@ -169,10 +169,15 @@ class HeaderMenu extends Component {
                         self.setState({
                             visible: false,
                         });
-                        alert("登陆失败,请重新登录");
+                        alert("登录失败,请重新登录");
+                    } else if (response.data === "banned") {
+                        self.setState({
+                            visible: false,
+                        });
+                        alert("该账户已被禁用（请联系管理员？？？）");
                     } else {
-                        Cookies.set('username',values.username);
-                        if(values.username === 'admin'){
+                        Cookies.set('username', values.username);
+                        if (values.username === 'admin') {
                             self.setState({
                                 visible: false,
                                 isLogin: true,
