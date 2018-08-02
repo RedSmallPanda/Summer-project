@@ -66,6 +66,9 @@ class ResultList extends Component {
             })
             .catch(function (error) {
                 console.log(error);
+                self.setState({
+                    loading: false,
+                });
             });
     }
 
