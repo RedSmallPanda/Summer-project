@@ -46,12 +46,12 @@ public class LoginRegisterController {
                 HttpSession session = request.getSession();
                 session.setAttribute("userId",me.get(0).getUserId());
                 session.setAttribute("username",me.get(0).getUsername());
-                System.out.println("[JPW USER   ] -" + username + "- login with password -" + password + "-");
+                System.out.println("[JPW USER LI] -" + username + "- login with password -" + password + "-");
                 if (session.isNew()) {
-                    System.out.println("[JPW USER   ] create session (id: " + session.getId()
+                    System.out.println("[JPW USER  S] create session (id: " + session.getId()
                             + ") for user -" + username + "-");
                 } else {
-                    System.out.println("[JPW USER   ] change session (id: " + session.getId()
+                    System.out.println("[JPW USER  S] change session (id: " + session.getId()
                             + ") for user -" + username + "-");
                 }
 
@@ -64,6 +64,19 @@ public class LoginRegisterController {
             }
             out.flush();
         }
+    }
+
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        System.out.println("[JPW USER LO] session -" + request.getSession().getId() + "- invalidated");
+        request.getSession().invalidate();
+
+        out.print("session invalidated.");
+        out.flush();
     }
 
 

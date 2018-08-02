@@ -68,6 +68,13 @@ class HeaderMenu extends Component {
         });
     };
     handleLogout = () =>{
+        axios.get("/logout")
+            .then(function(response){
+                alert(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         this.setState({
             isLogin:false,
             isAdmin:false,
