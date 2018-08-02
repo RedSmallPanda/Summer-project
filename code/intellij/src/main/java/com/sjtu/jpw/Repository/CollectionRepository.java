@@ -22,6 +22,11 @@ public interface CollectionRepository extends CrudRepository<Collection,Integer>
     @Query("delete from Collection collection where collection.userId=:userId and collection.showId=:showId")
     void deleteByShowIdAndUserId(@Param("showId")int showId, @Param("userId")int userId);
 
+    @Transactional
+    @Modifying
+    @Query("delete from Collection collection where collection.userId=:userId")
+    void deleteByUserId(@Param("userId")int userId);
+
     @Query("select collection.showId from Collection collection where collection.userId=:userId")
     public List<Integer>  findAllShowCollectionId(@Param("userId") Integer userId);
 

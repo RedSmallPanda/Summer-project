@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import ResultList from "../MainPages/ResultList";
 import { Tabs, Modal, Button } from 'antd';
+import axios from "axios";
 
 const TabPane = Tabs.TabPane;
 const confirm = Modal.confirm;
@@ -20,13 +21,20 @@ class Collection extends Component {
             okText: '确定',
             cancelText: '取消',
             onOk() {
-                alert("collection should be deleted.");
+                axios.get("/clearCollection")
+                    .then(function(response){
+                        console.log(response);
+                        window.location.reload();
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
             },
             onCancel() {
-                alert("nothing happened.");
+
             },
         });
-    }
+    };
     render(){
         return (
             <Tabs tabBarExtraContent={<Button onClick={this.clearCollection}>清空</Button>}>

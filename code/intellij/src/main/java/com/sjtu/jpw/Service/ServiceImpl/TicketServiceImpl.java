@@ -139,4 +139,9 @@ public class TicketServiceImpl implements TicketService {
     public void deleteCollection(Integer userId,Integer showId){
         collectionRepository.deleteByShowIdAndUserId(showId,userId);
     }
+
+    @Override
+    public void deleteAllCollection(Integer userId){
+        collectionRepository.deleteByUserId(userId);
+    }
 }
