@@ -52,7 +52,22 @@ const Register = Form.create()(
                                 )}
                             </FormItem>
                             <FormItem label={null}>
-                                {getFieldDecorator('password',{rules:[{required:true,}]})(<p><Input className="input" placeholder="Enter your password" prefix={<Icon type="lock" />}  type="password" /></p>)}
+                                {getFieldDecorator('password',{rules:[{required:true,}]})
+                                (<p>
+                                    <Input className="input"
+                                           placeholder="Enter your password"
+                                           prefix={<Icon type="lock" />}
+                                           type="password" />
+                                </p>)}
+                            </FormItem>
+                            <FormItem label={null}>
+                                {getFieldDecorator('nickname',{rules:[{required:true,}]})
+                                (<p>
+                                    <Input className="input"
+                                           placeholder="Enter your nickname"
+                                           prefix={<Icon type="idcard" />}
+                                           type="nickname" />
+                                </p>)}
                             </FormItem>
                             <FormItem label={null}>
                                 {getFieldDecorator('email', {

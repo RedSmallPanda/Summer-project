@@ -76,6 +76,8 @@ public class LoginRegisterController {
         username = username.substring(1, username.length() - 1);
         String password = request.getParameter("password");
         password = password.substring(1, password.length() - 1);
+        String nickname = request.getParameter("nickname");
+        nickname = nickname.substring(1, nickname.length() - 1);
         String email = request.getParameter("email");
         email = email.substring(1, email.length() - 1);
         String phone = request.getParameter("phone");
@@ -84,6 +86,7 @@ public class LoginRegisterController {
         User newUser = new User();
         newUser.setUsername(username);
         newUser.setPassword(password);
+        newUser.setNickname(nickname);
         newUser.setEmail(email);
         newUser.setPhone(phone);
         Date date = new Date(System.currentTimeMillis());
@@ -98,7 +101,7 @@ public class LoginRegisterController {
             Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             out.print(userGson.toJson(registeredUser));
             out.flush();
-            System.out.println("[JPW USER   ] New user registered: " + userGson.toJson(registeredUser));
+            System.out.println("[JPW USER  R] New user registered: " + userGson.toJson(registeredUser));
         }
     }
 }

@@ -229,12 +229,14 @@ class HeaderMenu extends Component {
 
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
+            console.log('nickname: '+form.getFieldValue("nickname"));
             console.log('email: '+form.getFieldValue("email"));
             console.log('phone: '+form.getFieldValue("phone"));
 
             let params = new URLSearchParams();
             params.append("username", JSON.stringify(form.getFieldValue("username")));
             params.append("password", JSON.stringify(form.getFieldValue("password")));
+            params.append("nickname", JSON.stringify(form.getFieldValue("nickname")));
             params.append("email", JSON.stringify(form.getFieldValue("email")));
             params.append("phone", JSON.stringify(form.getFieldValue("phone")));
             axios.post("/register",params)

@@ -18,3 +18,23 @@ public class DemoController {
         return "/index.html";
     }
 }
+
+/*
+    demo- how to use service
+
+    @Resource(name="demoService")
+    private demoService demoService;
+    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
+    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+       Integer demo=demoService.userValidation("asd","123");
+
+        System.out.println(demo);
+        out.print(demo);
+        if(out!=null) {
+            out.flush();
+        }
+    }
+    */
