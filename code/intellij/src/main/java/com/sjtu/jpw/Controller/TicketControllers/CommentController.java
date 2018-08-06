@@ -85,6 +85,7 @@ public class CommentController {
         int isFromOrder=Integer.parseInt(request.getParameter("isFromOrder"),10);
         String username = request.getParameter("username");
         int parentId = Integer.parseInt(request.getParameter("parentId"),10);
+        String target = request.getParameter("target");
         String content = request.getParameter("content");
         int rate = Integer.parseInt(request.getParameter("rate"),10);
         Timestamp time = Timestamp.valueOf(request.getParameter("time"));
@@ -95,11 +96,11 @@ public class CommentController {
         }
 
         if(purpose.equals("add")){
-            commentService.addComment(username, showId, parentId, content, rate, time);
+            commentService.addComment(username, showId, parentId, target, content, rate, time);
         }
         else{
             int commentId = Integer.parseInt(request.getParameter("commentId"),10);
-            commentService.editComment(commentId, username, showId, parentId, content, rate, time);
+            commentService.editComment(commentId, username, showId, parentId, target, content, rate, time);
         }
 
         System.out.println("add comment successfully");
@@ -112,6 +113,18 @@ public class CommentController {
         String username=request.getParameter("username");
 
         JsonArray myComment = commentService.getMyComment(username);
+        System.out.println(myComment);
+        out.print(myComment);
+        out.flush();
+    }
+
+    @RequestMapping(value="/myReply",produces = "application/json;charset=UTF-8")
+    public void GetMyReply(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        String username=request.getParameter("username");
+
+        JsonArray myComment = commentService.getMyReply(username);
         System.out.println(myComment);
         out.print(myComment);
         out.flush();

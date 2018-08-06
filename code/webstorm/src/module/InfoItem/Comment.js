@@ -56,22 +56,27 @@ class Comment extends Component {
             });
     };
 
+    getReply(self) {
+        axios.get("/myReply",{
+            params:{
+                username:Cookies.get('username')
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.handleReply(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     componentDidMount(){
         this.getResult(this);
+        this.getReply(this);
     }
 
     handleData = (commentData) =>{
-        // for(let i = 0; i < commentData.length; i++){
-        //     if(commentData[i].replyCount > 0){
-        //         let reply = commentData[i].reply;
-        //         for(let j = 0; j < reply.length; j++){
-        //             commentData[i].reply[j].smallBar = replyBar;
-        //             commentData[i].reply[j].showSmallBar = false;
-        //         }
-        //     }
-        //     commentData[i].replyBar = replyBar;
-        //     commentData[i].showReplyBar = false;
-        // }
         let tempReply = [];
         let tempComment = [];
         for(let i = 0; i < commentData.length; i++){
@@ -87,9 +92,12 @@ class Comment extends Component {
             comment: tempComment,
             reply: tempReply,
         });
+    };
 
-        console.log("reply: " + this.state.reply);
-        console.log("comment: " + this.state.comment);
+    handleReply = (replyData) =>{
+        this.setState({
+            replyToMe: replyData
+        })
     };
 
     handleEdit = (item) =>{
@@ -152,7 +160,6 @@ class Comment extends Component {
     }
     detail = (e) =>{
         e.preventDefault();
-        alert(e.target.innerHTML);
         browserHistory.push("/detail");
     };
 
@@ -160,7 +167,7 @@ class Comment extends Component {
         return (
             <div>
                 <Tabs>
-                    <TabPane tab="评论" key="1">
+                    <TabPane tab="我的评论" key="1">
                         <List
                             size="large"
                             itemLayout='horizontal'
@@ -176,12 +183,9 @@ class Comment extends Component {
 
                             renderItem={item => (
                                 <List.Item
-                                    key={item.title}
+                                    key={item.key}
                                     actions={[
-                                        <Icon type="edit" onClick={()=>this.handleEdit(item)}/>,
                                         <Icon type="delete" onClick={()=>this.handleDelete(item)}/>,
-                                        <IconText type={item.like ? "like" : "like-o"} text={item.likes} onClick={this.cancelLike}/>,
-                                        <IconText type="message" text={item.comments}/>,
                                     ]}
 
                                 >
@@ -202,7 +206,7 @@ class Comment extends Component {
                             )}
                         />
                     </TabPane>
-                    <TabPane tab="回复" key="2">
+                    <TabPane tab="我的回复" key="2">
                         <List
                             size="large"
                             itemLayout='horizontal'
@@ -218,22 +222,59 @@ class Comment extends Component {
 
                             renderItem={item => (
                                 <List.Item
-                                    key={item.title}
+                                    key={item.key}
                                     actions={[
                                         <Icon type="edit" />,
                                         <Icon type="delete" />,
-                                        <IconText type={item.like ? "like" : "like-o"} text={item.likes} onClick={this.cancelLike}/>,
-                                        <IconText type="message" text={item.comments}/>,
                                     ]}
 
                                 >
                                     <List.Item.Meta
                                         align='left'
                                         avatar={<img width={80} alt="logo" src={item.image}/>}
-                                        title={<a onClick={this.detail}>{item.title}</a>}
+                                        title={<span>回复:&nbsp;{item.target}</span>}
                                         description={
                                             <p>
                                                 {item.content}<br/><br/>
+                                                <a style={{color:"#777777"}} onClick={this.detail}>{item.title}</a><br/>
+                                                {item.time}
+                                            </p>
+                                        }
+                                    />
+                                </List.Item>
+                            )}
+                        />
+                    </TabPane>
+                    <TabPane tab="我收到的回复" key="3">
+                        <List
+                            size="large"
+                            itemLayout='horizontal'
+                            dataSource={this.state.replyToMe}
+                            footer={<a href="/"><b>find</b> more</a>}
+                            loading={false}
+                            pagination={{
+                                onChange: (page) => {
+                                    console.log(page);
+                                },
+                                pageSize: 4,
+                            }}
+
+                            renderItem={item => (
+                                <List.Item
+                                    key={item.key}
+                                    actions={[
+                                        <Icon type="delete" />,
+                                    ]}
+
+                                >
+                                    <List.Item.Meta
+                                        align='left'
+                                        avatar={<img width={80} alt="logo" src={item.image}/>}
+                                        title={<span>用户:&nbsp;{item.username}</span>}
+                                        description={
+                                            <p>
+                                                {item.content}<br/><br/>
+                                                <a style={{color:"#777777"}} onClick={this.detail}>{item.title}</a><br/>
                                                 {item.time}
                                             </p>
                                         }
