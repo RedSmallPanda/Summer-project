@@ -191,11 +191,11 @@ class ResultList extends Component {
                                                 </a>
                                             </Menu.Item>
                                             {/*<Menu.Item>*/}
-                                                {/*<a target="_blank" rel="noopener noreferrer">*/}
-                                                    {/*<span>*/}
-                                                         {/*<Icon type="wechat"/>WeChat*/}
-                                                    {/*</span>*/}
-                                                {/*</a>*/}
+                                            {/*<a target="_blank" rel="noopener noreferrer">*/}
+                                            {/*<span>*/}
+                                            {/*<Icon type="wechat"/>WeChat*/}
+                                            {/*</span>*/}
+                                            {/*</a>*/}
                                             {/*</Menu.Item>*/}
                                             <Menu.Item>
                                                 <a target="_blank" rel="noopener noreferrer"
@@ -235,12 +235,25 @@ class ResultList extends Component {
                             {
                                 <div>
                                     <h3><b>{"￥" + item.minPrice}</b>{" 起"}</h3>
-                                    <Button type={this.judgeDate(item.endTime) && item.stock ? "primary" : "dashed"}
-                                            size="large"
-                                            onClick={() => this.detail(item.showId)}
-                                    >{
-                                        this.judgeDate(item.endTime) ? (item.stock ? "购买" : "售罄") : "过期"
-                                    }</Button>
+                                    {this.judgeDate(item.endTime) ?
+                                        (
+                                            item.stock ?
+                                                <Button type="primary"
+                                                        size="large"
+                                                        onClick={() => this.detail(item.showId)}
+                                                >购买</Button>
+                                                :
+                                                <Button type="dashed"
+                                                        size="large"
+                                                        disabled
+                                                >售罄</Button>
+                                        )
+                                        :
+                                        <Button type="dashed"
+                                                size="large"
+                                                disabled
+                                        >过期</Button>
+                                    }
                                 </div>
                             }
                         </List.Item>
