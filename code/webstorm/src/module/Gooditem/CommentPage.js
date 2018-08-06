@@ -26,8 +26,8 @@ class DemoCommentPage extends Component {
         content:this.props.content,
         purpose:this.props.purpose,
         commentId:this.props.commentId,
-        orderId:this.props.orderId,
-        isFromOrder:this.props.isFromOrder,
+        orderId:this.props.orderId ? this.props.orderId : -1,
+        isFromOrder:this.props.isFromOrder ? this.props.isFromOrder : -1,
     };
 
     onClose = () =>{
