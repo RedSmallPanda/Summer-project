@@ -12,10 +12,11 @@ public class Comment {
     private int commentId;
     private String username;
     private Integer parentId;
-    private String content;
+    private String target;
     private Integer rate;
     private Timestamp time;
     private Integer showId;
+    private String content;
 
     @Id
     @Column(name = "comment_id", nullable = false)
@@ -48,13 +49,13 @@ public class Comment {
     }
 
     @Basic
-    @Column(name = "content", nullable = true, length = -1)
-    public String getContent() {
-        return content;
+    @Column(name = "target", nullable = true, length = -1)
+    public String getTarget() {
+        return target;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setTarget(String target) {
+        this.target = target;
     }
 
     @Basic
@@ -87,6 +88,16 @@ public class Comment {
         this.showId = showId;
     }
 
+    @Basic
+    @Column(name = "content", nullable = true, length = -1)
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -95,15 +106,16 @@ public class Comment {
         return commentId == comment.commentId &&
                 Objects.equals(username, comment.username) &&
                 Objects.equals(parentId, comment.parentId) &&
-                Objects.equals(content, comment.content) &&
+                Objects.equals(target, comment.target) &&
                 Objects.equals(rate, comment.rate) &&
                 Objects.equals(time, comment.time) &&
-                Objects.equals(showId, comment.showId);
+                Objects.equals(showId, comment.showId) &&
+                Objects.equals(content, comment.content);
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(commentId, username, parentId, content, rate, time, showId);
+        return Objects.hash(commentId, username, parentId, target, rate, time, showId, content);
     }
 }

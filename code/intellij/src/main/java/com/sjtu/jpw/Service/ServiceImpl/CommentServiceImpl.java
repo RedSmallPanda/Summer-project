@@ -25,12 +25,13 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void addComment(String username, Integer showId, Integer parentId,
+    public void addComment(String username, Integer showId, Integer parentId, String target,
                     String content, Integer rate, Timestamp time){
         Comment comment = new Comment();
         comment.setUsername(username);
         comment.setShowId(showId);
         comment.setParentId(parentId);
+        comment.setTarget(target);
         comment.setContent(content);
         comment.setRate(rate);
         comment.setTime(time);
@@ -38,13 +39,14 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void editComment(Integer commentId, String username, Integer showId, Integer parentId,
+    public void editComment(Integer commentId, String username, Integer showId, Integer parentId,String target,
                             String content, Integer rate, Timestamp time){
         Comment comment = new Comment();
         comment.setCommentId(commentId);
         comment.setUsername(username);
         comment.setShowId(showId);
         comment.setParentId(parentId);
+        comment.setTarget(target);
         comment.setContent(content);
         comment.setRate(rate);
         comment.setTime(time);
@@ -65,6 +67,27 @@ public class CommentServiceImpl implements CommentService{
             commentObject.addProperty("showId",comment.getShowId());
             commentObject.addProperty("rate",comment.getRate());
             commentObject.addProperty("parentId",comment.getParentId());
+            commentObject.addProperty("target",comment.getTarget());
+            commentObject.addProperty("username",comment.getUsername());
+            commentObject.addProperty("content",comment.getContent());
+            commentObject.addProperty("time",comment.getTime().toString());
+            commentResult.add(commentObject);
+        }
+        return commentResult;
+    }
+
+    @Override
+    public JsonArray getMyReply(String target){
+        List<Comment> listData = commentRepository.findAllByTarget(target);
+        JsonArray commentResult = new JsonArray();
+        Iterator<Comment> it = listData.iterator();
+        while(it.hasNext()){
+            Comment comment = it.next();
+            JsonObject commentObject = new JsonObject();
+            commentObject.addProperty("key",comment.getCommentId());
+            String title = showsRepository.findFirstByShowId(comment.getShowId()).getTitle();
+            commentObject.addProperty("title",title);
+            commentObject.addProperty("username",comment.getUsername());
             commentObject.addProperty("content",comment.getContent());
             commentObject.addProperty("time",comment.getTime().toString());
             commentResult.add(commentObject);

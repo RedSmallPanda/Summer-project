@@ -50,6 +50,7 @@ class DemoCommentPage extends Component {
         params.append('isFromOrder',this.state.isFromOrder);
         params.append('username', username);
         params.append('parentId',-1);
+        params.append('target',"null");
         params.append('content',values.confirm);
         params.append('rate',values.rate * 2);
         params.append('time',time);

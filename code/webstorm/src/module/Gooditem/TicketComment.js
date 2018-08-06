@@ -99,6 +99,7 @@ class TicketComment extends Component {
         params.append('isFromOrder',-1);
         params.append('username', username);
         params.append('parentId',item.commentId);
+        params.append('target',item.username);
         params.append('content',content);
         params.append('rate',-1);
         params.append('time',time);
@@ -118,6 +119,7 @@ class TicketComment extends Component {
         params.append('isFromOrder',-1);
         params.append('username', username);
         params.append('parentId',item.commentId);
+        params.append('target',thing.username);
         params.append('content',content);
         params.append('rate',-1);
         params.append('time',time);
