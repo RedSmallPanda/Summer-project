@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.sql.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 @RestController
@@ -76,11 +75,12 @@ public class ShowsController {
                     + "||search by:" + request.getParameter("search")
                     + "||userId:" + userId);
             out.print(
-                    ticketService.AllTickets(
+                    ticketService.allTickets(
                             request.getParameter("city"),
                             request.getParameter("type"),
                             temp1,
                             temp2,
+                            request.getParameter("search"),
                             userId
                     )
             );
