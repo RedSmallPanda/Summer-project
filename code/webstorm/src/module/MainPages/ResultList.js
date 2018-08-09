@@ -221,7 +221,13 @@ class ResultList extends Component {
                                 align='left'
                                 avatar={<img width={120} alt="logo" src={this.state.imgUrl}
                                              onClick={() => this.detail(item.showId)}/>}
-                                title={<a onClick={() => this.detail(item.showId)}>{item.title}</a>}
+                                title={
+                                    <a onClick={() => this.detail(item.showId)}
+                                       dangerouslySetInnerHTML={{
+                                           __html: item.title.replace(this.props.filter.search,
+                                               `<span style=\"color: red;\" >${this.props.filter.search}</span>`)
+                                       }}/>
+                                }
                                 description={
                                     <p>
                                         {item.info}<br/><br/>
