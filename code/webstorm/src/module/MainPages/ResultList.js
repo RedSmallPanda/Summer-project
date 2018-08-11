@@ -5,6 +5,7 @@ import axios from 'axios';
 import moment from 'moment';
 import Cookies from "js-cookie";
 
+const dateFormat = "YYYY-MM-DD";
 let listData = [];
 // for (let i = 0; i < 10; i++) {
 //     listData.push({
@@ -30,6 +31,7 @@ let IconText = ({ type, text, onClick}) => (
         {text}
   </span>
 );
+
 class ResultList extends Component {
     constructor(props){
         super(props);
@@ -51,6 +53,8 @@ class ResultList extends Component {
                 city: prop.filter.city,
                 type: prop.filter.type,
                 time: prop.filter.time,
+                starttime: moment(prop.filter.starttime).format(dateFormat),
+                endtime: moment(prop.filter.endtime).format(dateFormat),
                 search: prop.filter.search,
                 collection: prop.type,
             }

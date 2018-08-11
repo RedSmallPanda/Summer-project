@@ -1,27 +1,37 @@
 import React, { Component } from 'react';
-import { Row, Col, Radio } from 'antd'
+import {Row, Col, Radio, DatePicker, Icon} from 'antd';
 import '../../css/App.css'
 import '../../css/Directory.css'
 import ResultList from "./ResultList";
+import moment from 'moment';
+import 'moment/locale/zh-cn';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
+const {RangePicker} = DatePicker;
+const dateFormat = "YYYY-MM-DD";
 
+let TimeRange = ({startTime, endTime, onClick}) => (
+    <RangePicker
+        value={[startTime, endTime]}
+        format={dateFormat}
+    />
+);
 
 class Directory extends Component {
-    state = {
-        city:"all",
-        type:"all",
-        time:"all",
-        search: '',// localStorage.getItem('search'),
-    };
+    constructor(props){
+        super(props);
+        this.state = {
+            city:"all",
+            type:"all",
+            time:"all",
+            starttime: null,
+            endtime: null,
+            search: '',
+        };
+        this.selectDate = this.selectDate.bind(this);
+    }
 
-    // componentWillReceiveProps(nextProps) {
-    //     this.setState({
-    //         search:localStorage.getItem('search')
-    //     });
-    //     localStorage.setItem('search','')
-    // }
     componentWillMount() {
         this.setState(this.props.location.state);
     };
@@ -43,11 +53,53 @@ class Directory extends Component {
     };
 
     handleTime = (e) =>{
+        let start = moment().format(dateFormat);
+        let end = moment().format(dateFormat);
+        switch (e.target.value) {
+            case "today":
+                start = moment().format(dateFormat);
+                end = moment().format(dateFormat);
+                break;
+            case "tomorrow":
+                start = moment().add(1,"days").format(dateFormat);
+                end = moment().add(1,"days").format(dateFormat);
+                break;
+            case "week":
+                let weekOfDay = moment().format('E');//计算今天是这周第几天
+                start = moment().subtract(weekOfDay - 1, 'days').format(dateFormat);//周一日期
+                end = moment().add(7 - weekOfDay, 'days').format(dateFormat);//周日日期
+                break;
+            case "month":
+                start = moment().format("YYYY-MM") + '-01';
+                end = moment(start).add(1, 'month').subtract(1, 'days').format(dateFormat);
+                break;
+            case "all":
+            case "other":
+                start = null;
+                end = null;
+                this.setState({
+                    time: e.target.value,
+                    starttime: null,
+                    endtime: null,
+                });
+                return;
+            default:
+                console.log("error in time filter switch.");
+        }
         this.setState({
-            time:e.target.value
-        })
+            time: e.target.value,
+            starttime: moment(start, dateFormat),
+            endtime: moment(end, dateFormat),
+        });
     };
 
+    selectDate = (value) => {
+        this.setState({
+            time: value.length ? "other" : "all",
+            starttime: value.length ? moment(value[0], dateFormat) : null,
+            endtime: value.length ? moment(value[1], dateFormat) : null,
+        });
+    };
 
     render() {
         return (
@@ -56,8 +108,8 @@ class Directory extends Component {
                     <Col span={4}/>
                     <Col span={16}>
                         <div className="selectArea">
-                            <div className='selectBar' style={{ marginTop: 16}}>
-                                <RadioGroup defaultValue={this.state.city} onChange={this.handleCity}>
+                            <div className='selectBar' style={{marginTop: 16}}>
+                                <RadioGroup value={this.state.city} onChange={this.handleCity}>
                                     <span>选择城市：</span>
                                     <RadioButton className='radio-button' value="all">全部</RadioButton>
                                     <RadioButton className='radio-button' value="hz">杭州</RadioButton>
@@ -67,8 +119,8 @@ class Directory extends Component {
                                 </RadioGroup>
                             </div>
                             <br/>
-                            <div className='selectBar' style={{ marginTop: 16}}>
-                                <RadioGroup defaultValue={this.state.type} onChange={this.handleType}>
+                            <div className='selectBar' style={{marginTop: 16}}>
+                                <RadioGroup value={this.state.type} onChange={this.handleType}>
                                     <span>选择分类：</span>
                                     <RadioButton value="all">全部</RadioButton>
                                     <RadioButton value="concert">演唱会</RadioButton>
@@ -81,15 +133,26 @@ class Directory extends Component {
                                 </RadioGroup>
                             </div>
                             <br/>
-                            <div className='selectBar' style={{ marginTop: 16}}>
-                                <RadioGroup defaultValue={this.state.time} onChange={this.handleTime}>
-                                    <span>选择时间：</span>
-                                    <RadioButton value="all">全部</RadioButton>
-                                    <RadioButton value="today">今天</RadioButton>
-                                    <RadioButton value="tomorrow">明天</RadioButton>
-                                    <RadioButton value="week">本周</RadioButton>
-                                    <RadioButton value="month">本月</RadioButton>
-                                </RadioGroup>
+                            <div className='selectBar' style={{marginTop: 16}}>
+                                <div>
+                                    <RadioGroup value={this.state.time} onChange={this.handleTime}>
+                                        <span>选择时间：</span>
+                                        <RadioButton value="all">全部</RadioButton>
+                                        <RadioButton value="today">今天</RadioButton>
+                                        <RadioButton value="tomorrow">明天</RadioButton>
+                                        <RadioButton value="week">本周</RadioButton>
+                                        <RadioButton value="month">本月</RadioButton>
+                                        <RadioButton value="other" disabled>其他</RadioButton>
+                                    </RadioGroup>
+                                </div>
+                                <br/>
+                                <div style={{marginLeft: 70}}>
+                                    <RangePicker
+                                        value={[this.state.starttime, this.state.endtime]}
+                                        format={dateFormat}
+                                        onChange={this.selectDate}
+                                    />
+                                </div>
                             </div>
                         </div>
                         <ResultList filter={this.state}/>
