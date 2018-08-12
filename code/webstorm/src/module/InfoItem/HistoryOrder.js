@@ -9,28 +9,28 @@ import axios from "axios/index";
 //
 //     }
 // }
-
-const data = [{
-    key: '1',
-    img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-    detailInfo: {
-        name:'周杰伦演唱会',
-        date:'2018/1/2'
-    },
-    price: '￥1200',
-    amount: 1,
-    totalPrice:'￥1200'
-}, {
-    key: '2',
-    img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-    detailInfo: {
-        name:'张学友演唱会',
-        date:'2017/2/14'
-    },
-    price: '￥2000',
-    amount: 2,
-    totalPrice:'￥4000'
-}];
+//
+// const data = [{
+//     key: '1',
+//     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+//     detailInfo: {
+//         name:'周杰伦演唱会',
+//         date:'2018/1/2'
+//     },
+//     price: '￥1200',
+//     amount: 1,
+//     totalPrice:'￥1200'
+// }, {
+//     key: '2',
+//     img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
+//     detailInfo: {
+//         name:'张学友演唱会',
+//         date:'2017/2/14'
+//     },
+//     price: '￥2000',
+//     amount: 2,
+//     totalPrice:'￥4000'
+// }];
 
 // const rowSelection = {
 //     onChange: (selectedRowKeys, selectedRows) => {
@@ -85,7 +85,7 @@ class Order extends Component {
                 key: 'action',
                 render: (record) => (
                     <span>
-                        <a onClick={()=>this.handleComment(record.showId,record.orderId,record.state)}>{action[parseInt(record.state)-4]}</a>
+                        <a onClick={()=>this.handleComment(record.showId,record.orderId,record.state)}>{action[parseInt(record.state,10)-4]}</a>
                     </span>
                 ),
             }];

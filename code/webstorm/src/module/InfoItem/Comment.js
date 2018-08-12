@@ -7,7 +7,7 @@ import Cookies from "js-cookie"
 const TabPane = Tabs.TabPane;
 
 let data = [];
-let reply = [];
+// let reply = [];
 // for (let i = 0; i < 10; i++) {
 //     data.push({
 //         key: i,
@@ -23,21 +23,12 @@ let reply = [];
 //     });
 // }
 
-let IconText = ({ type, text, onClick}) => (
-    <span>
-    <Icon type={type} style={{ marginRight: 8 }} onClick={onClick}/>
-        {text}
-  </span>
-);
-
 class Comment extends Component {
     constructor(props){
         super(props);
-        if (true);//POST to get data
         this.state = {
             comment: data,
         };
-        this.cancelLike = this.cancelLike.bind(this);
         this.detail = this.detail.bind(this);
     }
 
@@ -142,22 +133,6 @@ class Comment extends Component {
         });
     };
 
-    cancelLike(e) {
-        e.preventDefault();
-        let title = e.target.parentNode.parentNode.parentNode.parentNode
-            .firstChild.firstChild.nextSibling.firstChild.firstChild.innerHTML;
-        data.forEach(function (item) {
-            if(item.title===title){
-                if (true){//after modify database successfully
-                    item.like = !item.like;
-                    item.likes += (item.like ? 1 : -1);
-                }
-            }
-        });
-        this.setState({
-            comment: data,
-        });
-    }
     detail = (e) =>{
         e.preventDefault();
         browserHistory.push("/detail");

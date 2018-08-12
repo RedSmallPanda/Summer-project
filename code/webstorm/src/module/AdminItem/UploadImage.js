@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Icon, message } from 'antd';
+import { Upload, Icon, /*message*/ } from 'antd';
 import axios from 'axios';
 
 function getBase64(img, callback) {
@@ -8,17 +8,17 @@ function getBase64(img, callback) {
     reader.readAsDataURL(img);
 }
 
-function beforeUpload(file) {
-    const isJPG = file.type === 'image/jpeg';
-    if (!isJPG) {
-        message.error('You can only upload JPG file!');
-    }
-    const isLt2M = file.size / 1024 / 1024 < 2;
-    if (!isLt2M) {
-        message.error('Image must smaller than 2MB!');
-    }
-    return isJPG && isLt2M;
-}
+// function beforeUpload(file) {
+//     const isJPG = file.type === 'image/jpeg';
+//     if (!isJPG) {
+//         message.error('You can only upload JPG file!');
+//     }
+//     const isLt2M = file.size / 1024 / 1024 < 2;
+//     if (!isLt2M) {
+//         message.error('Image must smaller than 2MB!');
+//     }
+//     return isJPG && isLt2M;
+// }
 
 class Avatar extends Component{
     constructor(props){
@@ -40,10 +40,10 @@ class Avatar extends Component{
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
                 console.log(file);
-                let base64File;
+                // let base64File;
                 let self = this;
                 let reader = new FileReader();
-                base64File = reader.readAsDataURL(file);
+                // base64File = reader.readAsDataURL(file);
                 reader.onload = function(e){
                     file = e.target.result;
                     self.setState({
