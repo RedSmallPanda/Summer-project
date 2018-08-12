@@ -32,13 +32,14 @@ public class MongoDBController {
 
         DBCollection collection = mongoDBService.getCollection("avatar");
         String imgUrl = request.getParameter("imgUrl");
-        String userId = request.getParameter("userId");
+        String username = request.getParameter("username");
         DBObject dbObject = new BasicDBObject();
         BasicDBObject query = new BasicDBObject();
+        query.put("username",username);
         if(collection.findOne(query)!=null){
             collection.remove(query);
         }
-        dbObject.put("userId",userId);
+        dbObject.put("username",username);
         dbObject.put("imgUrl",imgUrl);
         collection.insert(dbObject);
     }
@@ -50,8 +51,9 @@ public class MongoDBController {
         PrintWriter out = response.getWriter();
 
         DBCollection collection = mongoDBService.getCollection("avatar");
+        String username = request.getParameter("username");
         BasicDBObject query = new BasicDBObject();
-        query.put("userId","1");
+        query.put("username",username);
         DBObject img = collection.findOne(query);
         System.out.println(img);
         if(img != null){

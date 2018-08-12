@@ -1,10 +1,47 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table, Divider } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table, Divider,Tabs } from 'antd';
 import UploadImage from './UploadImage';
 
 const FormItem = Form.Item;
+const TabPane = Tabs.TabPane;
 
 const columns = [{
+    title: '缩略图',
+    key: 'image',
+    render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
+},{
+    title: '票品名称',
+    dataIndex: 'ticketName',
+    key: 'ticketName',
+},{
+    title:'价格',
+    dataIndex:'price',
+    key:'price',
+},{
+    title: '库存',
+    dataIndex: 'count',
+    key: 'count',
+},{
+    title: '开始时间',
+    dataIndex: 'time',
+    key: 'time',
+},{
+    title: '地点',
+    dataIndex: 'address',
+    key: 'address',
+},{
+    title:'操作',
+    key:'action',
+    render: (text) => (
+        <span>
+      <a>编辑</a>
+      <Divider type="vertical" />
+      <a>下架</a>
+    </span>
+    ),
+}];
+
+const showColumns = [{
     title: '缩略图',
     key: 'image',
     render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
@@ -170,8 +207,21 @@ class TicketManage extends Component{
     render(){
         return(
             <div>
-                <Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增票品</Button>
-                <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>
+                {/*<Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增演出</Button>*/}
+                <Tabs tabBarExtraContent={
+                    <div>
+                        <Button onClick={this.showModal} style={{marginRight:10}}><Icon type="plus"/>新增演出</Button>
+                        <Button onClick={this.showModal}><Icon type="plus"/>新增票品</Button>
+                    </div>
+                    }
+                >
+                    <TabPane tab="演出" key="1">
+                        <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>
+                    </TabPane>
+                    <TabPane tab="票品" key="2">
+                        <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>
+                    </TabPane>
+                </Tabs>
                 <TicketForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
