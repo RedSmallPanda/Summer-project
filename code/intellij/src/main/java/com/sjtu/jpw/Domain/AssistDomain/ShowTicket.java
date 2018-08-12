@@ -16,8 +16,10 @@ public class ShowTicket {
     private Boolean isLike;
     private String startTime;
     private String endTime;
+    private Integer stock;
 
-    public ShowTicket(Integer showId,String title,String info,String address,Integer rate,Object startTime,Object endTime) {
+    public ShowTicket(Integer showId,String title,String info,String address,Integer rate,
+                      Object startTime,Object endTime,Integer stock) {
 
         this.showId=showId;
         this.title=title;
@@ -28,9 +30,9 @@ public class ShowTicket {
         this.commentNum=0;
         this.isLike=false;
         SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd");
-
         this.startTime=format.format(Date.valueOf(startTime.toString()));
         this.endTime=format.format(Date.valueOf(endTime.toString()));
+        this.stock=stock;
     }
 
     public Integer getShowId() {
@@ -97,7 +99,13 @@ public class ShowTicket {
         this.isLike = isLike;
     }
 
+    public Integer getStock() {
+        return stock;
+    }
 
+    public void setStock(Integer stock) {
+        this.stock = stock;
+    }
 
 
     @Override
@@ -113,6 +121,7 @@ public class ShowTicket {
                 ", isLike=" + isLike +
                 ", startTime=" + startTime +
                 ", endTime=" + endTime +
+                ", stock=" + stock +
                 '}';
     }
 

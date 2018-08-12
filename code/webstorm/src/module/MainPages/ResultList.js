@@ -238,7 +238,9 @@ class ResultList extends Component {
                                         <Icon type="calendar"/>
                                         {" " + item.startTime + "-" + item.endTime}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.rate / 2}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate / 2}/>
+                                        {item.commentNum ? "" : "暂无评分"}
+                                        <br/>
                                     </p>
                                 }
                             />

@@ -3,6 +3,7 @@ import com.sjtu.jpw.Domain.Comment;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
@@ -22,4 +23,9 @@ public interface CommentRepository extends CrudRepository<Comment,Integer> {
 
     @Transactional
     public void deleteAllByCommentId(Integer commentId);
+
+    @Query("select avg(comment.rate) from Comment comment " +
+            "where comment.showId=:showId and comment.parentId=-1")
+    public Integer getRateByShowId(@Param("showId")Integer showId);
+
 }

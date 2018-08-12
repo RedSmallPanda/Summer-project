@@ -70,19 +70,14 @@ class Directory extends Component {
             case "other":
                 start = null;
                 end = null;
-                this.setState({
-                    time: e.target.value,
-                    starttime: null,
-                    endtime: null,
-                });
-                return;
+                break;
             default:
                 console.log("error in time filter switch.");
         }
         this.setState({
             time: e.target.value,
-            starttime: moment(start, dateFormat),
-            endtime: moment(end, dateFormat),
+            starttime: start !== null ? moment(start, dateFormat) : null,
+            endtime: end !== null ? moment(end, dateFormat) : null,
         });
     };
 
