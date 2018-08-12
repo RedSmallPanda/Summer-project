@@ -19,7 +19,7 @@ public class AddressController {
     public void GetAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         JsonArray myAddress = addressService.getAddress(userId);
 
         System.out.println(myAddress);
@@ -31,7 +31,7 @@ public class AddressController {
     public void GetSplitAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        int userId = Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         JsonArray myAddress = addressService.getSplitAddress(userId);
 
         System.out.println(myAddress);
@@ -43,7 +43,7 @@ public class AddressController {
     public void AddAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/x-www-form-urlencoded;charset=UTF-8");
 
-        int userId= Integer.parseInt(request.getParameter("userId"),10);
+        int userId=(int)request.getSession().getAttribute("userId");
         int addrId = Integer.parseInt(request.getParameter("key"),10);
         String name = request.getParameter("name");
         String phone = request.getParameter("phone");
@@ -60,7 +60,7 @@ public class AddressController {
     public void DeleteAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
 
-        int userId= Integer.parseInt(request.getParameter("userId"));
+        int userId=(int)request.getSession().getAttribute("userId");
         int addrId = Integer.parseInt(request.getParameter("key"));
         addressService.deleteAddress(userId, addrId);
 
