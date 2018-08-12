@@ -20,7 +20,7 @@ public interface CouponRepository extends CrudRepository<Coupon,Integer> {
     @Query("select new com.sjtu.jpw.Domain.AssistDomain.MyCoupon(coupon.couponId,coupon.title,coupon.discount,coupon.discCond,coupon.begindate,coupon.enddate,uc.number) from Coupon coupon join UserCoupon uc on coupon.couponId = uc.couponId where uc.userId=:userId and coupon.enddate>=:date")
     public List<MyCoupon> findMyCoupon(@Param("userId")int userId, @Param("date")Date date);
 
-    @Query("select new com.sjtu.jpw.Domain.AssistDomain.MyCoupon(coupon.couponId,coupon.title,coupon.discount,coupon.discCond,coupon.begindate,coupon.enddate,uc.number) from Coupon coupon join UserCoupon uc on coupon.couponId = uc.couponId where uc.userId=:userId and coupon.enddate>=:date and coupon.discCond<=:price")
+    @Query("select new com.sjtu.jpw.Domain.AssistDomain.MyCoupon(coupon.couponId,coupon.title,coupon.discount,coupon.discCond,coupon.begindate,coupon.enddate,uc.number) from Coupon coupon join UserCoupon uc on coupon.couponId = uc.couponId where uc.userId=:userId and coupon.enddate>=:date and coupon.begindate<=:date and coupon.discCond<=:price")
     public List<MyCoupon> findAvailableCoupon(@Param("userId")int userId, @Param("date")Date date, @Param("price")int price);
 
     @Query("select coupon from Coupon coupon where coupon.enddate>=:date and coupon.discCond<=:price and coupon.discCond>= all (select tempCoupon.discCond from Coupon tempCoupon where tempCoupon.enddate>=:date and tempCoupon.discCond<=:price)")

@@ -112,7 +112,7 @@ class BuyStep extends Component {
             //orderInfo:this.ticketInfo,
             selectedRow:[0],
             data:this.ticketInfo,
-            address:address,
+            address:[],
             coupon:[
                 /*{key:"0",id:"12331",discount:"30",discCond:'300',number:"2"},
             {key:"1",id:"asda7",discount:"50",discCond:'500',number:"3"},
@@ -238,7 +238,6 @@ class BuyStep extends Component {
         let self = this;
         axios.get("/getMyCouponByPrice",{
             params:{
-                userId: 1,
                 price: this.state.totalPrice
             }
         })
@@ -254,11 +253,17 @@ class BuyStep extends Component {
 
         axios.get("/getSplitAddress",{
             params:{
-                userId: 1,
+
             }
         })
             .then(function (response) {
                 console.log(response);
+                if(response.data.length===0){
+                    alert("请先添加收货地址");
+                    browserHistory.push({
+                        pathname:'/info',
+                    })
+                }
                 self.setState({address:response.data});
             })
             .catch(function (error) {
