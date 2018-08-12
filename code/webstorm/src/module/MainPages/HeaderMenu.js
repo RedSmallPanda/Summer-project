@@ -134,18 +134,19 @@ class HeaderMenu extends Component {
 
     handleAvatar = () =>{
         if(this.state.isLogin){
-            localStorage.setItem('key',9);
             this.setState({
                 current: window.location.pathname,
             });
             browserHistory.push({
-                pathname:'/info'
+                pathname:'/info',
+                state:{
+                    SelectedKeys: '9'
+                }
             });
         }
         else{
             this.showModal()
         }
-
     };
 
     showModal = () => {

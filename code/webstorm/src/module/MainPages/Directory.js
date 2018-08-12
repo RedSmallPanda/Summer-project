@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Radio, DatePicker, Icon} from 'antd';
+import {Row, Col, Radio, DatePicker} from 'antd';
 import '../../css/App.css'
 import '../../css/Directory.css'
 import ResultList from "./ResultList";
@@ -10,13 +10,6 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const {RangePicker} = DatePicker;
 const dateFormat = "YYYY-MM-DD";
-
-let TimeRange = ({startTime, endTime, onClick}) => (
-    <RangePicker
-        value={[startTime, endTime]}
-        format={dateFormat}
-    />
-);
 
 class Directory extends Component {
     constructor(props){

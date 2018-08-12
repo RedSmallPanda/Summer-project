@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Divider } from 'antd';
 import axios from "axios/index";
-import {browserHistory} from "react-router";
-
 
 /*const columns = [{
     title:'订单编号',

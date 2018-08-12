@@ -229,7 +229,7 @@ class ResultList extends Component {
                                     <a onClick={() => this.detail(item.showId)}
                                        dangerouslySetInnerHTML={{
                                            __html: item.title.replace(this.props.filter.search,
-                                               `<span style=\"color: red;\" >${this.props.filter.search}</span>`)
+                                               `<span style="color: red;" >${this.props.filter.search}</span>`)
                                        }}/>
                                 }
                                 description={

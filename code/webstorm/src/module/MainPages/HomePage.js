@@ -33,10 +33,10 @@ class HomePage extends Component{
         const homeCarousel =
             <div style={{marginTop:20,}}>
                 <Carousel autoplay effect="scrollx" style={{height:'500px'}}>
-                    <div><img src="https://img.alicdn.com/tfs/TB1je1eC_tYBeNjy1XdXXXXyVXa-1200-320.jpg"/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB1FxK5GkCWBuNjy0FaXXXUlXXa-1200-320.jpg"/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB1D5HZEf1TBuNjy0FjXXajyXXa-1200-320.jpg"/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB15yuhFqmWBuNjy1XaXXXCbXXa-1200-320.png"/></div>
+                    <div><img src="https://img.alicdn.com/tfs/TB1je1eC_tYBeNjy1XdXXXXyVXa-1200-320.jpg" alt=""/></div>
+                    <div><img src="https://img.alicdn.com/tfs/TB1FxK5GkCWBuNjy0FaXXXUlXXa-1200-320.jpg" alt=""/></div>
+                    <div><img src="https://img.alicdn.com/tfs/TB1D5HZEf1TBuNjy0FjXXajyXXa-1200-320.jpg" alt=""/></div>
+                    <div><img src="https://img.alicdn.com/tfs/TB15yuhFqmWBuNjy1XaXXXCbXXa-1200-320.png" alt=""/></div>
                 </Carousel>
             </div>;
 
