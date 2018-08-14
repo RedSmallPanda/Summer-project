@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Date;
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 public class LoginRegisterController {
@@ -33,19 +34,21 @@ public class LoginRegisterController {
 
         List<User> me = userService.login(username, password);
 
-        //TODO: login of deleted/banned users
-        if (me.size()==0) {
+        if (me.size() == 0) {
             System.out.println("[JPW USER  F] -" + username + "- login with password -" + password + "-");
             out.print("null");
             out.flush();
-        } else {//normal or banned
-            if (me.get(0).getState().equals("2")) {//banned
+        } else {//normal , banned or unactivated
+            if (me.get(0).getState().equals("2")) { //banned
                 System.out.println("[JPW USER  B] BANNED -" + username + "- login with password -" + password + "-");
                 out.print("banned");
+            } else if (me.get(0).getState().equals("3")) { //unactivated
+                System.out.println("[JPW USER UA] UNACTIVATED -" + username + "- login with password -" + password + "-");
+                out.print("unactivated");
             } else {
                 HttpSession session = request.getSession();
-                session.setAttribute("userId",me.get(0).getUserId());
-                session.setAttribute("username",me.get(0).getUsername());
+                session.setAttribute("userId", me.get(0).getUserId());
+                session.setAttribute("username", me.get(0).getUsername());
                 System.out.println("[JPW USER LI] -" + username + "- login with password -" + password + "-");
                 if (session.isNew()) {
                     System.out.println("[JPW USER  S] create session (id: " + session.getId()
@@ -85,6 +88,44 @@ public class LoginRegisterController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
+        User newUser = getNewUser(request);
+
+        User registeredUser = userService.register(newUser);
+        if (registeredUser == null) {
+            out.print("null");
+            out.flush();
+        } else {
+            new Thread(
+                    new MailUtil(
+                            registeredUser.getEmail(),
+                            registeredUser.getActivate()
+                    )
+            ).start();
+
+            Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
+            out.print(userGson.toJson(registeredUser));
+            out.flush();
+            System.out.println("[JPW USER  R] New user registered: " + userGson.toJson(registeredUser));
+        }
+    }
+
+
+    @RequestMapping(value = "/activate", method = RequestMethod.GET)
+    public void activate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String activate = request.getParameter("activate");
+
+        Boolean isActivated = userService.activate(activate);
+
+        System.out.println(isActivated ? "激活成功！" : "激活失败！");
+        out.print(isActivated);
+        out.flush();
+    }
+
+
+    private User getNewUser(HttpServletRequest request) {
         String username = request.getParameter("username");
         username = username.substring(1, username.length() - 1);
         String password = request.getParameter("password");
@@ -97,24 +138,19 @@ public class LoginRegisterController {
         phone = phone.substring(1, phone.length() - 1);
 
         User newUser = new User();
+        Date date = new Date(System.currentTimeMillis());
         newUser.setUsername(username);
         newUser.setPassword(password);
         newUser.setNickname(nickname);
         newUser.setEmail(email);
         newUser.setPhone(phone);
-        Date date = new Date(System.currentTimeMillis());
         newUser.setBirthday(date);
-        newUser.setState("0");
-
-        User registeredUser = userService.register(newUser);
-        if (registeredUser == null) {
-            out.print("null");
-            out.flush();
-        } else {
-            Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-            out.print(userGson.toJson(registeredUser));
-            out.flush();
-            System.out.println("[JPW USER  R] New user registered: " + userGson.toJson(registeredUser));
+        if (request.getSession().getAttribute("userId") == null) {//user register
+            newUser.setState("3");
+            newUser.setActivate(UUID.randomUUID().toString());//随机uuid激活码
+        } else if (request.getSession().getAttribute("userId").equals("0")) {//admin add
+            newUser.setState("0");
         }
+        return newUser;
     }
 }

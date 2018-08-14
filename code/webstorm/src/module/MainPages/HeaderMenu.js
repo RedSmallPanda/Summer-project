@@ -183,6 +183,11 @@ class HeaderMenu extends Component {
                             visible: false,
                         });
                         alert("该账户已被禁用（请联系管理员？？？）");
+                    } else if (response.data === "unactivated") {
+                        self.setState({
+                            visible: false,
+                        });
+                        alert("账户尚未激活，请先查看注册邮箱进行激活。");
                     } else {
                         Cookies.set('username', values.username);
                         if (values.username === 'admin') {
@@ -256,7 +261,7 @@ class HeaderMenu extends Component {
                         });
                         alert("注册失败");
                     } else {
-                        alert("注册成功，请重新登录！");
+                        alert("验证邮件已发到邮箱，请前往激活！");
                         self.setState({
                             regVisible: false,
                         });

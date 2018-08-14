@@ -63,4 +63,13 @@ public class UserServiceImpl implements UserService {
     public List<User> allUsers(){
         return userRepository.findAll();
     }
+
+    @Override
+    public Boolean activate(String activate){
+        Integer activated = userRepository.activate(activate);
+        if (activated > 1) {
+            System.out.println("activate multiple accounts.");
+        }
+        return activated > 0;
+    }
 }
