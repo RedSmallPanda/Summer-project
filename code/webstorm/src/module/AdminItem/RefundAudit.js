@@ -34,19 +34,19 @@ import axios from "axios/index";
     ),
 }];*/
 
-const data = [];
-for(let i = 1; i < 20; i++){
-    data.push({
-        orderId:`${i}`,
-        ticketName:`title${i}`,
-        count:`${i}`,
-        amount:`${i * i}`,
-        time:'2018/07/06 16:37',
-        refundTime:'2018/07/07 8:56',
-        state:'未处理',
-        reason:'太贵了不想去看了'
-    })
-}
+// const data = [];
+// for(let i = 1; i < 20; i++){
+//     data.push({
+//         orderId:`${i}`,
+//         ticketName:`title${i}`,
+//         count:`${i}`,
+//         amount:`${i * i}`,
+//         time:'2018/07/06 16:37',
+//         refundTime:'2018/07/07 8:56',
+//         state:'未处理',
+//         reason:'太贵了不想去看了'
+//     })
+// }
 
 class RefundAudit extends Component{
 
@@ -84,7 +84,7 @@ class RefundAudit extends Component{
 
     state={
         data:[]
-    }
+    };
 
     componentDidMount(){
         let self = this;

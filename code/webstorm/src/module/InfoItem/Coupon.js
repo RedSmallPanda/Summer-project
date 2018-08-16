@@ -97,11 +97,7 @@ class Coupon extends Component{
 
     componentDidMount(){
         let self = this;
-        axios.get("/getMyCoupon",{
-            params:{
-                userId: 1,
-            }
-        })
+        axios.get("/getMyCoupon")
             .then(function (response) {
                 console.log(response);
                 self.setState({

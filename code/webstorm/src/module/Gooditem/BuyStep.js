@@ -25,11 +25,7 @@ const dataColumns = [{
     title: '缩略图',
     key: 'img',
     render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
-},/*{
-    title: '票品信息',
-    dataIndex: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-},*/{
+},{
     title: '票品信息',
     dataIndex: 'detailInfo',
     render: (text, record) => (<div>
@@ -62,31 +58,31 @@ const addressColumns = [{
     key: 'detail',
 }];
 
-const address=[{
-    key:0,
-    name:'小明',
-    phone: '18800000000',
-    province:'上海',
-    city:'上海',
-    block:'闵行区',
-    detail:'无',
-}, {
-    key:1,
-    name:'小花',
-    phone:'18700000000',
-    province:'浙江',
-    city:'杭州',
-    block:'上城区',
-    detail:'无',
-}, {
-    key:2,
-    name:'小白',
-    phone:'13800000000',
-    province:'上海',
-    city:'上海',
-    block:'闵行',
-    detail:'东川路800号',
-}];
+// const address=[{
+//     key:0,
+//     name:'小明',
+//     phone: '18800000000',
+//     province:'上海',
+//     city:'上海',
+//     block:'闵行区',
+//     detail:'无',
+// }, {
+//     key:1,
+//     name:'小花',
+//     phone:'18700000000',
+//     province:'浙江',
+//     city:'杭州',
+//     block:'上城区',
+//     detail:'无',
+// }, {
+//     key:2,
+//     name:'小白',
+//     phone:'13800000000',
+//     province:'上海',
+//     city:'上海',
+//     block:'闵行',
+//     detail:'东川路800号',
+// }];
 
 
 class BuyStep extends Component {
@@ -135,7 +131,7 @@ class BuyStep extends Component {
         let self = this;
         axios.get("/createOrder",{
             params:{
-                userId: 1,
+                // userId: 1,
                 totalPrice: this.state.totalPrice,
                 ticketId:this.state.data[0].ticketId,
                 number:this.state.data[0].amount,
@@ -159,6 +155,7 @@ class BuyStep extends Component {
                     })
                 }
                 else{
+                    alert("orderId:" + response.data[1]);
                     self.setState({orderId:response.data[1]});
                 }
 

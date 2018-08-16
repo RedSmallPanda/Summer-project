@@ -132,11 +132,7 @@ class Order extends Component {
 
     componentDidMount(){
         let self = this;
-        axios.get("/getCurrentOrder",{
-            params:{
-                userId: 1,
-            }
-        })
+        axios.get("/getCurrentOrder")
             .then(function (response) {
                 console.log(response);
                 self.setState({
