@@ -95,12 +95,14 @@ public class LoginRegisterController {
             out.print("null");
             out.flush();
         } else {
-            new Thread(
-                    new MailUtil(
-                            registeredUser.getEmail(),
-                            registeredUser.getActivate()
-                    )
-            ).start();
+            if (request.getSession().getAttribute("userId")==null){
+                new Thread(
+                        new MailUtil(
+                                registeredUser.getEmail(),
+                                registeredUser.getActivate()
+                        )
+                ).start();
+            }
 
             Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
             out.print(userGson.toJson(registeredUser));
@@ -148,7 +150,7 @@ public class LoginRegisterController {
         if (request.getSession().getAttribute("userId") == null) {//user register
             newUser.setState("3");
             newUser.setActivate(UUID.randomUUID().toString());//随机uuid激活码
-        } else if (request.getSession().getAttribute("userId").equals("0")) {//admin add
+        } else if (request.getSession().getAttribute("userId").equals("1")) {//admin add
             newUser.setState("0");
         }
         return newUser;
