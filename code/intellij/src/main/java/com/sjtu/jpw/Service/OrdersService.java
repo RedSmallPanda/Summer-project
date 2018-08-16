@@ -13,7 +13,7 @@ public interface OrdersService {
     void approveRefund(int orderId);
     void rejectRefund(int orderId);
     void cancelRefund(int orderId);
-    boolean createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int couponId, Orders order);
+    Orders createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int couponId, Orders order);
     boolean stockDecrease(int ticketId,int number);
     void useCoupon(int userId,int couponId);
     void UpdateOrderState(String state,int orderId);

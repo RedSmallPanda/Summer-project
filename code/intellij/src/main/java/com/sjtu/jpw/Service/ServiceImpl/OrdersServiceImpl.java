@@ -179,16 +179,16 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
-    public boolean createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int couponId, Orders order) {
+    public Orders createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(int userId, int couponId, Orders order) {
         int ticketId=order.getTicketId();
-        if(stockDecrease(ticketId,order.getNumber())==false){
-            return false;
+        if(!stockDecrease(ticketId,order.getNumber())){//stockDecrease()==false
+            return null;
         }
-        ordersRepository.save(order);
+        Orders saved = ordersRepository.save(order);
         if(couponId!=-1) {
             useCoupon(userId, couponId);
         }
-        return true;
+        return saved;
 
     }
 }
