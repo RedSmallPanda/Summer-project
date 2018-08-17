@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Modal, Form, Input, Icon, Table, Divider,Tabs } from 'antd';
 import UploadImage from './UploadImage';
+import axios from 'axios';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
@@ -11,24 +12,36 @@ const columns = [{
     render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
 },{
     title: '票品名称',
-    dataIndex: 'ticketName',
-    key: 'ticketName',
+    dataIndex: 'title',
+    key: 'title',
 },{
-    title:'价格',
-    dataIndex:'price',
-    key:'price',
+    title:'简介',
+    dataIndex:'info',
+    key:'info',
 },{
-    title: '库存',
-    dataIndex: 'count',
-    key: 'count',
+    title: '城市',
+    dataIndex: 'city',
+    key: 'city',
 },{
-    title: '开始时间',
-    dataIndex: 'time',
-    key: 'time',
+    title: '类型',
+    dataIndex: 'type',
+    key: 'type',
 },{
-    title: '地点',
+    title: '地址',
     dataIndex: 'address',
     key: 'address',
+},{
+    title: '评分',
+    dataIndex: 'rate',
+    key: 'rate',
+},{
+    title: '开始日期',
+    dataIndex: 'startDate',
+    key: 'startDate',
+},{
+    title: '结束日期',
+    dataIndex: 'endDate',
+    key: 'endDate',
 },{
     title:'操作',
     key:'action',
@@ -47,8 +60,8 @@ const showColumns = [{
     render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
 },{
     title: '票品名称',
-    dataIndex: 'ticketName',
-    key: 'ticketName',
+    dataIndex: 'title',
+    key: 'title',
 },{
     title:'价格',
     dataIndex:'price',
@@ -81,11 +94,14 @@ const data = [];
 for(let i = 1; i < 20; i++){
     data.push({
         image:"https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg",
-        ticketName:`title${i}`,
-        price:`${i}`,
-        count:`${i^2}`,
+        title:`title${i}`,
+        info:"show01",
+        city:"上海",
+        type:"演唱会",
         address:'菁菁堂',
-        time:'2018/07/06',
+        rate:"9",
+        startDate:"2018/07/03",
+        endDate:'2018/07/06',
     })
 }
 
@@ -94,6 +110,7 @@ const TicketForm = Form.create()(
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
             const { getFieldDecorator } = form;
+            const self= this;
             return (
                 <Modal
                     visible={visible}
@@ -109,32 +126,32 @@ const TicketForm = Form.create()(
                                 <UploadImage/>
                             )}
                         </FormItem>
-                        <FormItem label="票品名称">
-                            {getFieldDecorator('ticketName', {
-                                rules: [{ required: true, message: '请填写票品名称' }],
+                        <FormItem label="演出名称">
+                            {getFieldDecorator('title', {
+                                rules: [{ required: true, message: '请填写演出名称' }],
                             })(
-                                <Input type="textarea" placeholder="票品名称"/>
+                                <Input type="textarea" placeholder="演出名称"/>
                             )}
                         </FormItem>
-                        <FormItem label="价格">
-                            {getFieldDecorator('price', {
-                                rules: [{ required: true, message: '请填写价格' }],
+                        <FormItem label="简介">
+                            {getFieldDecorator('info', {
+                                rules: [{ required: true, message: '请填写简介' }],
                             })(
-                                <Input type="textarea" placeholder="价格" />
+                                <Input type="textarea" placeholder="简介" />
                             )}
                         </FormItem>
-                        <FormItem label="库存">
-                            {getFieldDecorator('count', {
-                                rules: [{ required: true, message: '请填写库存' }],
+                        <FormItem label="城市">
+                            {getFieldDecorator('city', {
+                                rules: [{ required: true, message: '请选择城市' }],
                             })(
-                                <Input type="textarea" placeholder="库存"/>
+                                <Input type="textarea" placeholder="城市"/>
                             )}
                         </FormItem>
-                        <FormItem label="开始时间">
-                            {getFieldDecorator('time',{
-                                rules:[{ required:true, message:'请选择开始时间'}]
+                        <FormItem label="类型">
+                            {getFieldDecorator('type',{
+                                rules:[{ required:true, message:'请选择类型'}]
                             })(
-                                <Input type="textarea" placeholder="开始时间"/>
+                                <Input type="textarea" placeholder="类型"/>
                             )}
                         </FormItem>
                         <FormItem label="地址">
@@ -142,6 +159,20 @@ const TicketForm = Form.create()(
                                 rules:[{ required:true, message:'请填写地址'}]
                             })(
                                 <Input type="textarea" placeholder="地址"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="开始日期">
+                            {getFieldDecorator('startDate',{
+                                rules:[{ required:true, message:'请选择开始日期'}]
+                            })(
+                                <Input type="textarea" placeholder="开始日期"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="结束日期">
+                            {getFieldDecorator('endDate',{
+                                rules:[{ required:true, message:'请选择结束日期'}]
+                            })(
+                                <Input type="textarea" placeholder="结束日期"/>
                             )}
                         </FormItem>
                     </Form>
@@ -159,7 +190,8 @@ class TicketManage extends Component{
             city:'',
             detail:''
         }],
-        data : data
+        data : data,
+        cacheImage:'',
     };
 
     showModal = () => {
@@ -170,8 +202,24 @@ class TicketManage extends Component{
         this.setState({ visible: false });
     };
 
+    sendData = (params) =>{
+        axios.post('/addShow', params)
+            .then(function (response) {
+                console.log(response.data);
+                alert("1"+response.data);
+                this.setState({
+                    cacheImage:response.data
+                });
+                alert("2"+this.state.cacheImage);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     handleCreate = () => {
         const form = this.formRef.props.form;
+        let self = this;
         form.validateFields((err, values) => {
             if (err) {
                 return;
@@ -180,13 +228,26 @@ class TicketManage extends Component{
             console.log('Received values of form: ', values);
             form.resetFields();
 
+            let params = new URLSearchParams();
+            params.append('title',values.title);
+            params.append('info',values.info);
+            params.append('city',values.city);
+            params.append('type',values.type);
+            params.append('address',values.address);
+            params.append('startDate',values.startDate);
+            params.append('endDate',values.endDate);
+            this.sendData(params);
+            alert("3"+this.state.cacheImage);
             let newTicket = {
-                image:"",
-                ticketName:values.ticketName,
-                price:values.price,
-                count:values.count,
+                image:this.state.cacheImage,
+                title:values.title,
+                info:values.info,
+                city:values.city,
+                type:values.type,
                 address:values.address,
-                time:values.time,
+                rate:0,
+                startDate:values.startDate,
+                endDate:values.endDate,
             };
 
             let newData = this.state.data;
@@ -198,6 +259,10 @@ class TicketManage extends Component{
             })
 
         });
+    };
+
+    handleImage = () =>{
+
     };
 
     saveFormRef = (formRef) => {

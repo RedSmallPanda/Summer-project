@@ -20,7 +20,7 @@ function beforeUpload(file) {
     return isJPG && isLt2M;
 }
 
-class Avatar extends Component{
+class UploadImage extends Component{
     constructor(props){
         super(props);
         this.state = {
@@ -49,18 +49,17 @@ class Avatar extends Component{
                     self.setState({
                         base64:file,
                     });
-                    self.addAvatar();
+                    self.addCache();
                     return file;
                 };
             },
         }
     }
 
-    addAvatar = () =>{
+    addCache = () =>{
         let params = new URLSearchParams();
         params.append('imgUrl',this.state.base64);
-        params.append('showId',1);
-        axios.post('/addImage', params);
+        axios.post('/imageCache', params);
     };
 
 
@@ -93,11 +92,11 @@ class Avatar extends Component{
                     {...this.uploaderProps}
                     onChange={this.handleChange}
                 >
-                    {imageUrl ? <img src={imageUrl} alt="avatar" /> : uploadButton}
+                    {imageUrl ? <img src={imageUrl} alt="avatar" style={{height:'120px'}}/> : uploadButton}
                 </Upload>
             </div>
         );
     }
 }
 
-export default Avatar;
+export default UploadImage;

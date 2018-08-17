@@ -68,7 +68,7 @@ public class MongoDBController {
     public void AddImg(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
 
-        DBCollection collection = mongoDBService.getCollection("image");
+        DBCollection collection = mongoDBService.getCollection("show");
         String imgUrl = request.getParameter("imgUrl");
         String showId = request.getParameter("showId");
         DBObject dbObject = new BasicDBObject();
@@ -84,7 +84,7 @@ public class MongoDBController {
 
         PrintWriter out = response.getWriter();
 
-        DBCollection collection = mongoDBService.getCollection("image");
+        DBCollection collection = mongoDBService.getCollection("show");
 //        BasicDBObject query = new BasicDBObject();
 //        query.put("showId","1");
         DBObject img = collection.findOne();
@@ -94,5 +94,18 @@ public class MongoDBController {
             out.flush();
         }
 
+    }
+
+    @RequestMapping(value="/imageCache",produces="application/json;charset=UTF-8")
+    public void ImageCache(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","multipart/form-data;charset=UTF-8");
+
+        PrintWriter out = response.getWriter();
+
+        DBCollection collection = mongoDBService.getCollection("cache");
+        String imgUrl = request.getParameter("imgUrl");
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("imgUrl",imgUrl);
+        collection.insert(dbObject);
     }
 }

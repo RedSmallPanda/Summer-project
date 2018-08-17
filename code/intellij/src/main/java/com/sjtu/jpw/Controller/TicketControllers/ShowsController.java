@@ -1,10 +1,16 @@
 package com.sjtu.jpw.Controller.TicketControllers;
 
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
+import com.sjtu.jpw.Service.MongoDBService;
+import com.sjtu.jpw.Service.ShowService;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -15,6 +21,11 @@ import java.sql.Timestamp;
 public class ShowsController {
     @Autowired
     private TicketService ticketService;
+    @Autowired
+    private ShowService showService;
+
+    @Resource(name="mongoDBService")
+    private MongoDBService mongoDBService;
 
     @RequestMapping(value = "/shows", produces = "application/json;charset=UTF-8")
     public void getShows(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -74,4 +85,32 @@ public class ShowsController {
         out.flush();
     }
 
+    @RequestMapping(value="/addShow",produces="application/json;charset=UTF-8")
+    public void AddShow(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String title = request.getParameter("title");
+        String info = request.getParameter("info");
+        String city = request.getParameter("city");
+        String type = request.getParameter("type");
+        String address = request.getParameter("address");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
+        showService.addShow(title,info,city,type,address,startDate,endDate);
+        DBCollection collection = mongoDBService.getCollection("cache");
+        DBObject img = collection.findOne();
+        System.out.println(img.get("imgUrl"));
+        out.print(img.get("imgUrl").toString());
+        out.flush();
+
+        collection = mongoDBService.getCollection("image");
+        DBObject dbObject = new BasicDBObject();
+        dbObject.put("imgUrl",img.get("imgUrl").toString());
+        dbObject.put("title",title);
+        collection.insert(dbObject);
+
+        System.out.println("send and get image successfully");
+    }
 }
