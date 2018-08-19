@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button, Modal, Form, Input,Icon,} from 'antd'
+import {Button, Modal, Form, Input,Icon,Row,Col} from 'antd'
 import "../../css/App.css"
 
 
@@ -120,7 +120,15 @@ const Register = Form.create()(
                                     </p>
                                 )}
                             </FormItem>
-                            <Button type="primary" onClick={onLogin} size="large"> 注册 </Button>
+                            <Row>
+                                <Col span={6}>
+                                    <Button type="primary" onClick={onLogin} size="large"> 注册 </Button>
+                                </Col>
+                                <Col span={13}/>
+                                <Col span={5}>
+                                    <Button type="normal" onClick={this.props.RegisterToLogin} size="large"> 登录 </Button>
+                                </Col>
+                            </Row>
                         </Form>
                     </div>
                 </Modal>

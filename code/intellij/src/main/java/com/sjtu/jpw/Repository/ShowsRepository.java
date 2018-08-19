@@ -35,5 +35,4 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
 
     public Shows save(Shows show);
     Shows findFirstByShowId(int showId);
-
 }

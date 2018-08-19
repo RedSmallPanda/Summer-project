@@ -220,6 +220,13 @@ class HeaderMenu extends Component {
         })
     };
 
+    RegisterToLogin = () =>{
+        this.setState({
+            visible:true,
+            regVisible:false,
+        })
+    };
+
     saveFormRef = (formRef) => {
         this.formRef = formRef;
     };
@@ -333,6 +340,7 @@ class HeaderMenu extends Component {
                     visible={this.state.regVisible}
                     onCancel={this.handleRegCancel}
                     onLogin={this.handleRegCreate}
+                    RegisterToLogin={this.RegisterToLogin}
                 />
                 <Menu mode="horizontal">
                     <Row>

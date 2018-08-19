@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import moment from 'moment';
 import axios from "axios/index";
+import Cookies from "js-cookie";
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -99,7 +100,7 @@ class Demo extends Component {
     addAvatar = () =>{
         let params = new URLSearchParams();
         params.append('imgUrl',this.state.base64);
-        params.append('userId',1);
+        params.append('username',Cookies.get('username'));
         axios.post('/addAvatar', params);
     };
 
@@ -185,7 +186,11 @@ class Demo extends Component {
     };
 
     getAvatar(self) {
-        axios.get("/getAvatar")
+        axios.get("/getAvatar",{
+            params:{
+                username:Cookies.get('username')
+            }
+        })
             .then(function (response) {
                 console.log(response);
                 self.setState({
