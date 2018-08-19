@@ -69,8 +69,10 @@ public class ShowsController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        System.out.println("showdetail");
-        out.print(ticketService.ticketsDetail(1));
+        Integer showId=Integer.parseInt(request.getParameter("showId"));
+
+        System.out.println(showId);
+        out.print(ticketService.ticketsDetail(showId));
         out.flush();
     }
 
