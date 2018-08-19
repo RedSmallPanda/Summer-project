@@ -33,7 +33,7 @@ class ShopCart extends Component {
             title: '票品信息',
             dataIndex: 'detailInfo',
             render: (text, record) => (<div>
-                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
+                <p><a onClick={()=>this.handleDetail(record)}>{record.detailInfo.name}</a></p>
                 <p>{record.detailInfo.date}</p>
             </div>)
         },{
@@ -108,8 +108,9 @@ class ShopCart extends Component {
         })
     };
 
-    handleDetail = () =>{
-        browserHistory.push('/detail')
+    handleDetail = (record) =>{
+        let showId=record.showId;
+        browserHistory.push('/detail/'+String(showId))
     };
 
     render(){
