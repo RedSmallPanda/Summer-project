@@ -7,7 +7,12 @@ class Us extends Component{
             <div className="us" style={{textAlign: 'center', marginTop: '20px'}}>
                 还你<br/>
                 那我就用来做地图了
-                <ShowLocation/>
+                <ShowLocation style={{
+                    width: 600,
+                    height: 400,
+                    marginTop: 30,
+                    marginLeft: '25%'
+                }}/>
             </div>
         );
     }
