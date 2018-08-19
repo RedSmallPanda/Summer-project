@@ -54,11 +54,7 @@ const columns = [{
     ),
 }];
 
-const showColumns = [{
-    title: '缩略图',
-    key: 'image',
-    render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
-},{
+const ticketColumns = [{
     title: '票品名称',
     dataIndex: 'title',
     key: 'title',
@@ -67,25 +63,27 @@ const showColumns = [{
     dataIndex:'price',
     key:'price',
 },{
-    title: '库存',
-    dataIndex: 'count',
-    key: 'count',
-},{
-    title: '开始时间',
+    title: '时间',
     dataIndex: 'time',
     key: 'time',
 },{
-    title: '地点',
-    dataIndex: 'address',
-    key: 'address',
+    title: '座位信息',
+    dataIndex: 'seat',
+    key: 'seat',
+},{
+    title: '座位总数',
+    dataIndex: 'amount',
+    key: 'amount',
+},{
+    title: '库存',
+    dataIndex: 'stock',
+    key: 'stock',
 },{
     title:'操作',
     key:'action',
     render: (text) => (
         <span>
-      <a>编辑</a>
-      <Divider type="vertical" />
-      <a>下架</a>
+      <a>删除</a>
     </span>
     ),
 }];
@@ -105,16 +103,15 @@ for(let i = 1; i < 20; i++){
     })
 }
 
-const TicketForm = Form.create()(
+const ShowForm = Form.create()(
     class extends React.Component {
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
             const { getFieldDecorator } = form;
-            const self= this;
             return (
                 <Modal
                     visible={visible}
-                    title="新增票品"
+                    title="新增演出"
                     okText="确定"
                     cancelText="取消"
                     onCancel={onCancel}
@@ -182,10 +179,68 @@ const TicketForm = Form.create()(
     }
 );
 
+const TicketForm = Form.create()(
+    class extends React.Component {
+        render() {
+            const { visible, onCancel, onCreate, form } = this.props;
+            const { getFieldDecorator } = form;
+            return (
+                <Modal
+                    visible={visible}
+                    title="新增票品"
+                    okText="确定"
+                    cancelText="取消"
+                    onCancel={onCancel}
+                    onOk={onCreate}
+                >
+                    <Form layout="vertical">
+                        <FormItem label="演出名称">
+                            {getFieldDecorator('title', {
+                                rules: [{ required: true, message: '请选择演出' }],
+                            })(
+                                <Input type="textarea" placeholder="演出名称"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="价格">
+                            {getFieldDecorator('price', {
+                                rules: [{ required: true, message: '请填写价格' }],
+                            })(
+                                <Input type="textarea" placeholder="价格" />
+                            )}
+                        </FormItem>
+                        <FormItem label="时间">
+                            {getFieldDecorator('time', {
+                                rules: [{ required: true, message: '请选择时间' }],
+                            })(
+                                <Input type="textarea" placeholder="城市"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="座位信息">
+                            {getFieldDecorator('seat',{
+                                rules:[{ required:true, message:'请填写座位信息'}]
+                            })(
+                                <Input type="textarea" placeholder="座位信息"/>
+                            )}
+                        </FormItem>
+                        <FormItem label="座位总数">
+                            {getFieldDecorator('amount',{
+                                rules:[{ required:true, message:'请填写座位总数'}]
+                            })(
+                                <Input type="textarea" placeholder="座位总数"/>
+                            )}
+                        </FormItem>
+                    </Form>
+                </Modal>
+            );
+        }
+    }
+);
+
 class TicketManage extends Component{
 
     state = {
         visible: false,
+        ticketVisible: false,
         address:[{
             city:'',
             detail:''
@@ -224,6 +279,7 @@ class TicketManage extends Component{
 
     componentDidMount(){
         this.getShows(this);
+        this.getTickets(this);
     }
 
     showModal = () => {
@@ -256,6 +312,65 @@ class TicketManage extends Component{
             axios.post('/addShow', params)
                 .then(function (response) {
                     console.log(response.data);
+                    let newShow = {
+                        image:response.data,
+                        title:values.title,
+                        info:values.info,
+                        city:values.city,
+                        type:values.type,
+                        address:values.address,
+                        rate:0,
+                        startDate:values.startDate,
+                        endDate:values.endDate,
+                    };
+
+                    let newData = self.state.data;
+                    newData.unshift(newShow);
+
+                    self.setState({
+                        visible:false,
+                        data:newData
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        });
+    };
+
+    saveFormRef = (formRef) => {
+        this.formRef = formRef;
+    };
+
+    showTicketModal = () => {
+        this.setState({ ticketVisible: true });
+    };
+
+    handleTicketCancel = () => {
+        this.setState({ ticketVisible: false });
+    };
+
+    handleTicketCreate = () => {
+        const form = this.TicketformRef.props.form;
+        let self = this;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            form.resetFields();
+
+            let params = new URLSearchParams();
+            params.append('title',values.title);
+            params.append('price',values.price);
+            params.append('time',values.time);
+            params.append('seat',values.seat);
+            params.append('amount',values.amount);
+            axios.post('/addTicket', params)
+                .then(function (response) {
+                    console.log(response.data);
                     let newTicket = {
                         image:response.data,
                         title:values.title,
@@ -283,8 +398,8 @@ class TicketManage extends Component{
         });
     };
 
-    saveFormRef = (formRef) => {
-        this.formRef = formRef;
+    saveTicketFormRef = (formRef) => {
+        this.TicketformRef = formRef;
     };
 
     render(){
@@ -294,7 +409,7 @@ class TicketManage extends Component{
                 <Tabs tabBarExtraContent={
                     <div>
                         <Button onClick={this.showModal} style={{marginRight:10}}><Icon type="plus"/>新增演出</Button>
-                        <Button onClick={this.showModal}><Icon type="plus"/>新增票品</Button>
+                        <Button onClick={this.showTicketModal}><Icon type="plus"/>新增票品</Button>
                     </div>
                     }
                 >
@@ -302,14 +417,20 @@ class TicketManage extends Component{
                         <Table columns={columns} dataSource={this.state.show} style={{marginTop:16}}/>
                     </TabPane>
                     <TabPane tab="票品" key="2">
-                        <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>
+                        <Table columns={columns} dataSource={this.state.ticket} style={{marginTop:16}}/>
                     </TabPane>
                 </Tabs>
-                <TicketForm
+                <ShowForm
                     wrappedComponentRef={this.saveFormRef}
                     visible={this.state.visible}
                     onCancel={this.handleCancel}
                     onCreate={this.handleCreate}
+                />
+                <TicketForm
+                    wrappedComponentRef={this.saveTicketFormRef}
+                    visible={this.state.ticketVisible}
+                    onCancel={this.handleTicketCancel}
+                    onCreate={this.handleTicketCreate}
                 />
             </div>
         )
