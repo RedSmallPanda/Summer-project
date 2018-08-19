@@ -56,12 +56,11 @@ public class ShowsController {
     public void showDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Integer showId=Integer.parseInt(request.getParameter("showId"));
 
         System.out.println("showdetail");
-        out.print(ticketService.ticketsDetail(showId));
- //       System.out.println(ticketService.ticketsDetail(showId));
-//        System.out.println(ticketService.userCollection(showId));
+        out.print(ticketService.ticketsDetail(1));
+        System.out.println(ticketService.ticketsDetail(1));
+        System.out.println(ticketService.userCollection(1));
         out.flush();
     }
 

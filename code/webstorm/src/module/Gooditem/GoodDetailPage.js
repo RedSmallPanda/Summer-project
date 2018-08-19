@@ -46,8 +46,7 @@ class GoodDetailPage extends Component{
 
     };
     getResult(self,props) {
-        console.log("get show id"+ self.props.params.showId)
-        axios.get("http://localhost:8080/showDetail",{params:{showId: self.props.params.showId}})
+        axios.get("http://localhost:8080/showDetail")
             .then(function (response) {
                 console.log(response.data);
                 console.log(JSON.stringify(response.data))
