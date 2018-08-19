@@ -119,6 +119,7 @@ public class OrdersController {
     public void CreateOrder(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
+
         Orders order=new Orders();
         long time = System.currentTimeMillis();
         Timestamp currentTime=new Timestamp(time);
@@ -140,7 +141,7 @@ public class OrdersController {
         }
 
         order.setState("0");
-        order.setOrderId(2);
+//        order.setOrderId(2);
         order.setUserId(userId);
         order.setTicketId(ticketId);
         order.setNumber(number);
@@ -155,11 +156,12 @@ public class OrdersController {
         order.setName(name);
 
 
-        boolean ifSuccess=ordersService.createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(userId, couponId, order);
+        Orders savedOrder = ordersService.createOrderAndUseCouponAndDecreaseStockAndDeleteShopCart(userId, couponId, order);
+        boolean ifSuccess = (savedOrder != null);
 
         JsonArray idBool=new JsonArray();
         idBool.add(ifSuccess);
-        idBool.add(2);
+        idBool.add(ifSuccess ? savedOrder.getOrderId() : -1);
 
         System.out.println(order);
         out.print(String.valueOf(idBool));

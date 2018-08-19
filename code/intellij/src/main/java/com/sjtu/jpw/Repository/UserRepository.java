@@ -19,6 +19,7 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User,Integer> {
     public User save(User u);
 
+    //todo: findALL or find one?
     public List<User> findAllByUsernameAndPassword(String username, String password);
 
     public User findByUserId(Integer id);
@@ -44,6 +45,14 @@ public interface UserRepository extends CrudRepository<User,Integer> {
             @Param("email") String email,
             @Param("state") String state,
             @Param("userId") Integer userId
+    );
+
+    @Transactional
+    @Modifying
+    @Query("update User user set user.state='0' " +
+            "where user.activate=:activate and user.state='3'")
+    public Integer activate(
+            @Param("activate") String activate
     );
 
 }

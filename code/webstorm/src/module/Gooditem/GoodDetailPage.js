@@ -54,28 +54,24 @@ class GoodDetailPage extends Component{
                 let temp=[];
       //          self.setState({ticketDetails:response.data})
                 var data=response.data;
-                for(var i in data){
+                let i;
+                for(i in data){
                     temp.push(String(i));
                 }
       //          self.setState({enableddate:temp,pickeddate:temp[0]});
                 let picktime=[];
-                for(var i in data[temp[0]]){
+                for(i in data[temp[0]]){
                     picktime.push(i);
                 }
        //         self.setState({picktime:picktime[0]})
-                var tempTicket=data[temp[0]][picktime[0]][0];
-                let tempPickPrice={
-                    ticketId: tempTicket.ticketId,
-                    seat: tempTicket.seat,
-                    price:tempTicket.price,
-                    stock: tempTicket.stock,
-                };
+       //          var tempTicket=data[temp[0]][picktime[0]][0];
+                // let tempPickPrice={
+                //     ticketId: tempTicket.ticketId,
+                //     seat: tempTicket.seat,
+                //     price:tempTicket.price,
+                //     stock: tempTicket.stock,
+                // };
                 self.setState({ticketDetails:data,pickpriceIdx:0,enableddate:temp,pickeddate:temp[0],picktime:picktime[0]});
-
-
-
-
-
 
                /* console.log("enabletimes: "+temp);
                 for(var i in data[temp[1]]){
@@ -85,7 +81,6 @@ class GoodDetailPage extends Component{
                         console.log(data[temp[1]][i][j].showId)
                     }
                 }*/
-
 
                 /*self.handleData(response.data);
                 self.setState({
@@ -121,16 +116,16 @@ class GoodDetailPage extends Component{
     };
     onsetpickdate=(value)=>{
         let time=[]
-        let price={}
+        // let price={}
         for(var i in this.state.ticketDetails[value]){
             time.push(i);
-            let temp = this.state.ticketDetails[value][i][0];
-             price = {
-                ticketId: temp.ticketId,
-                seat: temp.seat,
-                price: temp.price,
-                stock: temp.stock,
-            };
+            // let temp = this.state.ticketDetails[value][i][0];
+            //  price = {
+            //     ticketId: temp.ticketId,
+            //     seat: temp.seat,
+            //     price: temp.price,
+            //     stock: temp.stock,
+            // };
             break;
         }
         this.setState({pickeddate:value,picktime:time[0],pickpriceIdx:0})
@@ -206,6 +201,7 @@ class GoodDetailPage extends Component{
                 ticketInfo:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx],
                 number:this.state.pickticknum,
                 totalPrice:this.state.pickticknum * this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].price,
+                isCart:0,
             }
         })
         console.log(window.location.pathname);
@@ -225,12 +221,12 @@ class GoodDetailPage extends Component{
             console.log("refresh pricebutton")
             for (var i in this.state.ticketDetails[this.state.pickeddate][this.state.picktime]) {
                 let temp = this.state.ticketDetails[this.state.pickeddate][this.state.picktime][i];
-                let price = {
-                    ticketId: temp.ticketId,
-                    seat: temp.seat,
-                    price: temp.price,
-                    stock: temp.stock,
-                };
+                // let price = {
+                //     ticketId: temp.ticketId,
+                //     seat: temp.seat,
+                //     price: temp.price,
+                //     stock: temp.stock,
+                // };
                 pricebutton.push(<div className="radiobuttonblock"><RadioButton className="priceradiobutton"
                                                                                 value={parseInt(i,10)}>{temp.seat + '￥' + temp.price}</RadioButton>
                 </div>)

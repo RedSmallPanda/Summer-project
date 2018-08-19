@@ -68,6 +68,13 @@ class HeaderMenu extends Component {
         });
     };
     handleLogout = () =>{
+        axios.get("/logout")
+            .then(function(response){
+                alert(response.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         this.setState({
             isLogin:false,
             isAdmin:false,
@@ -127,18 +134,19 @@ class HeaderMenu extends Component {
 
     handleAvatar = () =>{
         if(this.state.isLogin){
-            localStorage.setItem('key',9);
             this.setState({
                 current: window.location.pathname,
             });
             browserHistory.push({
-                pathname:'/info'
+                pathname:'/info',
+                state:{
+                    SelectedKeys: '9'
+                }
             });
         }
         else{
             this.showModal()
         }
-
     };
 
     showModal = () => {
@@ -169,10 +177,20 @@ class HeaderMenu extends Component {
                         self.setState({
                             visible: false,
                         });
-                        alert("登陆失败,请重新登录");
+                        alert("登录失败,请重新登录");
+                    } else if (response.data === "banned") {
+                        self.setState({
+                            visible: false,
+                        });
+                        alert("该账户已被禁用（请联系管理员？？？）");
+                    } else if (response.data === "unactivated") {
+                        self.setState({
+                            visible: false,
+                        });
+                        alert("账户尚未激活，请先查看注册邮箱进行激活。");
                     } else {
-                        Cookies.set('username',values.username);
-                        if(values.username === 'admin'){
+                        Cookies.set('username', values.username);
+                        if (values.username === 'admin') {
                             self.setState({
                                 visible: false,
                                 isLogin: true,
@@ -224,12 +242,14 @@ class HeaderMenu extends Component {
 
             console.log('Received values of form username: '+form.getFieldValue("username") );
             console.log('password: '+form.getFieldValue("password"));
+            console.log('nickname: '+form.getFieldValue("nickname"));
             console.log('email: '+form.getFieldValue("email"));
             console.log('phone: '+form.getFieldValue("phone"));
 
             let params = new URLSearchParams();
             params.append("username", JSON.stringify(form.getFieldValue("username")));
             params.append("password", JSON.stringify(form.getFieldValue("password")));
+            params.append("nickname", JSON.stringify(form.getFieldValue("nickname")));
             params.append("email", JSON.stringify(form.getFieldValue("email")));
             params.append("phone", JSON.stringify(form.getFieldValue("phone")));
             axios.post("/register",params)
@@ -241,7 +261,7 @@ class HeaderMenu extends Component {
                         });
                         alert("注册失败");
                     } else {
-                        alert("注册成功，请重新登录！");
+                        alert("验证邮件已发到邮箱，请前往激活！");
                         self.setState({
                             regVisible: false,
                         });

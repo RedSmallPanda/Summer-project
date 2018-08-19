@@ -17,6 +17,7 @@ public class User {
     private String phone;
     private String email;
     private String state;
+    private String activate;
 
     @Id
     @Column(name = "user_id", nullable = false)
@@ -99,7 +100,7 @@ public class User {
     }
 
     @Basic
-    @Column(name = "state", nullable = true, length = -1)
+    @Column(name = "state", nullable = false, length = -1)
     public String getState() {
         return state;
     }
@@ -140,5 +141,15 @@ public class User {
         result = 31 * result + (email != null ? email.hashCode() : 0);
         result = 31 * result + (state != null ? state.hashCode() : 0);
         return result;
+    }
+
+    @Basic
+    @Column(name = "activate", nullable = true, length = -1)
+    public String getActivate() {
+        return activate;
+    }
+
+    public void setActivate(String activate) {
+        this.activate = activate;
     }
 }

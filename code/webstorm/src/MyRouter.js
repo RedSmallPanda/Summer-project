@@ -13,6 +13,7 @@ import Help from "./module/MainPages/Help";
 import RefundPage from "./module/InfoItem/RefundPage";
 import Register from "./module/MainPages/Register";
 import Error from "./module/MainPages/Error";
+import Activate from "./module/MainPages/Activate";
 
 class MyRouter extends Component{
     constructor(props){
@@ -57,6 +58,7 @@ class MyRouter extends Component{
                 <Route path="/help" component={Help}/>
                 <Route path="/refundPage" component={RefundPage}/>
                 <Route path="/register" component={Register}/>
+                <Route path="/activate" component={Activate}/>
             </Router>;
 
         const unLoginRouter =
@@ -66,13 +68,14 @@ class MyRouter extends Component{
                 <Route path='/info' component={Error}/>
                 <Route path='/dir(/:type)' component={Directory}/>
                 <Route path="/commentPage" component={Error}/>
-                <Route path="/detail/:showId" component={GoodDetailPage}/>
+                <Route path="/detail(/:showId)" component={GoodDetailPage}/>
                 <Route path="/admin" component={Error}/>
                 <Route path="/buyStep" component={Error}/>
                 <Route path="/us" component={Us}/>
                 <Route path="/help" component={Help}/>
                 <Route path="/refundPage" component={Error}/>
                 <Route path="/register" component={Register}/>
+                <Route path="/activate" component={Activate}/>
             </Router>;
 
         if(this.state.isLogin){

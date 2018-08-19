@@ -11,4 +11,5 @@ public interface UserService {
     void updateInfo(User updateUser);
     Integer UsernameDuplicated(String username);
     List<User> allUsers();
+    Boolean activate(String activate);
 }

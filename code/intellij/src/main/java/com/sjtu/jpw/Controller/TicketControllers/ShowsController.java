@@ -21,140 +21,57 @@ public class ShowsController {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
-        String timestr1 = "2018-07-18 00:00:00";
-        String timestr2 = "2018-07-30 23:00:00";
-        Timestamp temp1 = Timestamp.valueOf(timestr1);
-        Timestamp temp2 = Timestamp.valueOf(timestr2);
-        System.out.println("city:" +request.getParameter("city"));
-        System.out.println("type: "+request.getParameter("type"));
-        int userId = (int) request.getSession().getAttribute("userId");
+        //get userId to display whether collected
+        Object id = request.getSession().getAttribute("userId");
+        int userId = 0;
+        if (id != null) {
+            userId = (int) id;
+        }
 
-        if (request.getParameter("collection").equals("collection")) {
+        //print result list
+        if (request.getParameter("collection").equals("collection")) {//my collection
             out.print(ticketService.userCollection(userId));
-        } else {
+        } else {//all directory
+            Timestamp temp1;
+            Timestamp temp2;
+            if (request.getParameter("time").equals("all")) {
+                temp1 = Timestamp.valueOf("0001-01-01 00:00:00");
+                temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
+            } else {
+                temp1 = Timestamp.valueOf(request.getParameter("starttime") + " 00:00:00");
+                temp2 = Timestamp.valueOf(request.getParameter("endtime") + " 23:59:59");
+            }
+
+            System.out.println("[JPW SHOWS  ] "
+                    + "city:" + request.getParameter("city")
+                    + "||type:" + request.getParameter("type")
+                    + "||time:" + request.getParameter("time")
+                    + "(" + temp1.toString() + "--" + temp2.toString() + ")"
+                    + "||search by:" + request.getParameter("search")
+                    + "||userId:" + userId);
             out.print(
-                    ticketService.AllTickets(
+                    ticketService.allTickets(
                             request.getParameter("city"),
                             request.getParameter("type"),
                             temp1,
                             temp2,
+                            request.getParameter("search"),
                             userId
                     )
             );
         }
- /*       System.out.println(ticketService.AllTickets(
-                request.getParameter("city"),
-                request.getParameter("type"),
-                temp1,
-                temp2,
-                1));
-        System.out.println(ticketService.ticketsDetail(1));
-        System.out.println(ticketService.UserCollection(1));*/
+
         out.flush();
     }
+
     @RequestMapping(value = "/showDetail", produces = "application/json;charset=UTF-8")
     public void showDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-        Integer showId=Integer.parseInt(request.getParameter("showId"));
 
         System.out.println("showdetail");
-        out.print(ticketService.ticketsDetail(showId));
- //       System.out.println(ticketService.ticketsDetail(showId));
-//        System.out.println(ticketService.userCollection(showId));
+        out.print(ticketService.ticketsDetail(1));
         out.flush();
     }
 
-    @RequestMapping(value = "/collect", produces = "application/json;charset=UTF-8")
-    public void collect(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.setHeader("Content-type", "application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-        boolean isLike = request.getParameter("isLike").equals("1");
-        System.out.println("-----isLike: " + isLike);
-        int showId = Integer.valueOf(request.getParameter("showId"));
-        int userId = (int) request.getSession().getAttribute("userId");
-
-        if (isLike) {
-            ticketService.deleteCollection(userId, showId);
-            System.out.println("[JPW USER   ] -" + userId + "- delete collection of show -" + showId + "-.");
-            out.print(true);
-        } else {
-            ticketService.addCollection(userId, showId);
-            System.out.println("[JPW USER   ] -" + userId + "- add collection of show -" + showId + "-.");
-            out.print(false);
-        }
-    }
-
 }
-//    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
-//    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
-//        response.setHeader("Content-type","application/json;charset=UTF-8");
-//        PrintWriter out = response.getWriter();
-//
-//        List<Shows> listData=new ArrayList<>();
-//        listData = showRepository.findAllShows();
-//        JsonArray allShows=new JsonArray();
-//        for(int i=0;i<listData.size();i++){
-//            Shows temp=listData.get(i);
-//            Gson showGson=new Gson();
-//            String showJson = showGson.toJson(temp);
-//            JsonObject showObject = new JsonParser().parse(showJson).getAsJsonObject();
-//            allShows.add(showObject);
-//        }
-//
-//        System.out.println(allShows);
-//        out.print(allShows);
-//        if(out!=null) {
-//            out.flush();
-//        }
-//        Thread.currentThread().sleep(500);
-//    }
-/*
-
-    demo- how to use service
-
-    @Resource(name="demoService")
-    private demoService demoService;
-    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
-    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
-        response.setHeader("Content-type","application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-       Integer demo=demoService.userValidation("asd","123");
-
-        System.out.println(demo);
-        out.print(demo);
-        if(out!=null) {
-            out.flush();
-        }
-    }
-    */
-
-    /*private UserService userService;
-    @RequestMapping(value="/shows",produces="application/json;charset=UTF-8")
-    public void Hello(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
-        response.setHeader("Content-type", "application/json;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-
-        User u = new User();
-        u.setUserId(1);
-        u.setUsername("李小狼");
-        u.setPassword("123456");
-        u.setGender("男");
-        u.setNickname("阿贾克斯");
-        long time = System.currentTimeMillis();
-        java.sql.Date date = new java.sql.Date(time);
-        u.setBirthday(date);
-        u.setEmail("1111@qq.com");
-        u.setPhone("18817716520");
-
-        userService.UpdateInfo(u);
-
-        List<User> temp=userService.Login("","");
-
-        out.print("asdasd");
-        if (out != null) {
-            out.flush();
-        }
-    }*/

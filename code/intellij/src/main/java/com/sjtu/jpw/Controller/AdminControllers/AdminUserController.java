@@ -45,10 +45,11 @@ public class AdminUserController {
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         User newUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
-        if (userService.register(newUser) != null) {
+        User toReg = userService.register(newUser);
+        if (toReg != null) {
             System.out.println("[JPW ADMIN] NewUser registered: " + newUser);
-            out.print("Registered.");
-        }else{
+            out.print("New user " + userGson.toJson(toReg) + " registered.");
+        } else {
             System.out.println("[JPW ADMIN] Fail to register: " + newUser);
             out.print("Fail to register.");
         }

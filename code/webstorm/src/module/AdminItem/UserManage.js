@@ -88,13 +88,13 @@ const UserForm = Form.create()(
                     onOk={onCreate}
                 >
                     <Form layout="vertical">
-                        <FormItem label="用户id">
-                            {getFieldDecorator('userId', {
-                                rules: [{ required: true, message: '请输入id' }],
-                            })(
-                                <Input type="textarea" placeholder="用户id"/>
-                            )}
-                        </FormItem>
+                        {/*<FormItem label="用户id">*/}
+                            {/*{getFieldDecorator('userId', {*/}
+                                {/*rules: [{ required: true, message: '请输入id' }],*/}
+                            {/*})(*/}
+                                {/*<Input type="textarea" placeholder="用户id"/>*/}
+                            {/*)}*/}
+                        {/*</FormItem>*/}
                         <FormItem label="用户名">
                             {getFieldDecorator('username', {
                                 rules: [{ required: true, message: '请输入用户名' }],
@@ -318,7 +318,7 @@ class UserManage extends React.Component {
 
             let newUser = {
                 // avatar: <Avatar icon="user"/>,
-                userId: values.userId,
+                // userId: values.userId,
                 username: values.username,
                 password: values.password,
                 gender: values.gender,

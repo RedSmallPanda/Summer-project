@@ -51,10 +51,10 @@ class Demo extends Component {
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
                 console.log(file);
-                let base64File;
+                // let base64File;
                 let self = this;
                 let reader = new FileReader();
-                base64File = reader.readAsDataURL(file);
+                // base64File = reader.readAsDataURL(file);
                 reader.onload = function(e){
                     file = e.target.result;
                     self.setState({
@@ -101,7 +101,6 @@ class Demo extends Component {
         params.append('imgUrl',this.state.base64);
         params.append('userId',1);
         axios.post('/addAvatar', params);
-        this.getAvatar(this);
     };
 
 
@@ -210,7 +209,6 @@ class Demo extends Component {
                 <div className="ant-upload-text">Upload</div>
             </div>
         );
-        const imageUrl = this.state.imageUrl;
         const text = <span>更改头像</span>;
         const content = <div align="center">
             <div>
@@ -218,7 +216,7 @@ class Demo extends Component {
                     {...this.uploaderProps}
                     onChange={this.handleChange}
                 >
-                    {imageUrl ? <img height="200" width="200" src={imageUrl} alt="avatar" /> : uploadButton}
+                    {uploadButton}
                 </Upload>
             </div>
         </div>;
@@ -233,7 +231,7 @@ class Demo extends Component {
                         label="头像"
                     >
                         <Popover placement="rightTop" title={text} content={content}>
-                            <img className="infoAvatar" height="100" width="100" src={this.state.imgUrl} alt="default"/>
+                            <img className="infoAvatar" height="100" width="100" src={this.state.base64 ? this.state.base64 : this.state.imgUrl} alt="default"/>
                         </Popover>
                     </FormItem>
                     <FormItem

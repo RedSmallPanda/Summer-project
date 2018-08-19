@@ -25,11 +25,7 @@ const dataColumns = [{
     title: '缩略图',
     key: 'img',
     render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
-},/*{
-    title: '票品信息',
-    dataIndex: 'name',
-    render: text => <a href="javascript:;">{text}</a>,
-},*/{
+},{
     title: '票品信息',
     dataIndex: 'detailInfo',
     render: (text, record) => (<div>
@@ -62,31 +58,31 @@ const addressColumns = [{
     key: 'detail',
 }];
 
-const address=[{
-    key:0,
-    name:'小明',
-    phone: '18800000000',
-    province:'上海',
-    city:'上海',
-    block:'闵行区',
-    detail:'无',
-}, {
-    key:1,
-    name:'小花',
-    phone:'18700000000',
-    province:'浙江',
-    city:'杭州',
-    block:'上城区',
-    detail:'无',
-}, {
-    key:2,
-    name:'小白',
-    phone:'13800000000',
-    province:'上海',
-    city:'上海',
-    block:'闵行',
-    detail:'东川路800号',
-}];
+// const address=[{
+//     key:0,
+//     name:'小明',
+//     phone: '18800000000',
+//     province:'上海',
+//     city:'上海',
+//     block:'闵行区',
+//     detail:'无',
+// }, {
+//     key:1,
+//     name:'小花',
+//     phone:'18700000000',
+//     province:'浙江',
+//     city:'杭州',
+//     block:'上城区',
+//     detail:'无',
+// }, {
+//     key:2,
+//     name:'小白',
+//     phone:'13800000000',
+//     province:'上海',
+//     city:'上海',
+//     block:'闵行',
+//     detail:'东川路800号',
+// }];
 
 
 class BuyStep extends Component {
@@ -112,7 +108,7 @@ class BuyStep extends Component {
             //orderInfo:this.ticketInfo,
             selectedRow:[0],
             data:this.ticketInfo,
-            address:address,
+            address:[],
             coupon:[
                 /*{key:"0",id:"12331",discount:"30",discCond:'300',number:"2"},
             {key:"1",id:"asda7",discount:"50",discCond:'500',number:"3"},
@@ -126,6 +122,7 @@ class BuyStep extends Component {
             getNoCoupon:0,
             newCoupon:[{discCond:"100000",discount:"30"}],
             orderId:this.props.location.state.orderId,
+            isCart:this.props.location.state.isCart,
         };
     }
 
@@ -134,7 +131,7 @@ class BuyStep extends Component {
         let self = this;
         axios.get("/createOrder",{
             params:{
-                userId: 1,
+                // userId: 1,
                 totalPrice: this.state.totalPrice,
                 ticketId:this.state.data[0].ticketId,
                 number:this.state.data[0].amount,
@@ -154,10 +151,11 @@ class BuyStep extends Component {
                 if(response.data[0]===false){
                     alert("很抱歉，库存不足，请重新选购！");
                     browserHistory.push({
-                        pathname:'/detail',
+                        pathname:'/home',
                     })
                 }
                 else{
+                    alert("orderId:" + response.data[1]);
                     self.setState({orderId:response.data[1]});
                 }
 
@@ -165,6 +163,21 @@ class BuyStep extends Component {
             .catch(function (error) {
                 console.log(error);
             });
+
+        if(this.state.isCart===1){
+            axios.get("/deleteCart",{
+                params:{
+                    ticketId:this.state.data[0].ticketId,
+                }
+
+            })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
         this.setState({firstStep:1});
     }
 
@@ -222,7 +235,6 @@ class BuyStep extends Component {
         let self = this;
         axios.get("/getMyCouponByPrice",{
             params:{
-                userId: 1,
                 price: this.state.totalPrice
             }
         })
@@ -238,11 +250,17 @@ class BuyStep extends Component {
 
         axios.get("/getSplitAddress",{
             params:{
-                userId: 1,
+
             }
         })
             .then(function (response) {
                 console.log(response);
+                if(response.data.length===0){
+                    alert("请先添加收货地址");
+                    browserHistory.push({
+                        pathname:'/info',
+                    })
+                }
                 self.setState({address:response.data});
             })
             .catch(function (error) {

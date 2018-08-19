@@ -3,7 +3,9 @@ import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import moment from 'moment';
+import Cookies from "js-cookie";
 
+const dateFormat = "YYYY-MM-DD";
 let listData = [];
 // for (let i = 0; i < 10; i++) {
 //     listData.push({
@@ -29,6 +31,7 @@ let IconText = ({ type, text, onClick}) => (
         {text}
   </span>
 );
+
 class ResultList extends Component {
     constructor(props){
         super(props);
@@ -45,11 +48,13 @@ class ResultList extends Component {
 
     // POST to get data and filter
     getResult(self, prop) {
-        axios.get("http://localhost:8080/shows", {
+        axios.get("/shows", {
             params: {
                 city: prop.filter.city,
                 type: prop.filter.type,
                 time: prop.filter.time,
+                starttime: moment(prop.filter.starttime).format(dateFormat),
+                endtime: moment(prop.filter.endtime).format(dateFormat),
                 search: prop.filter.search,
                 collection: prop.type,
             }
@@ -65,6 +70,9 @@ class ResultList extends Component {
             })
             .catch(function (error) {
                 console.log(error);
+                self.setState({
+                    loading: false,
+                });
             });
     }
 
@@ -91,31 +99,36 @@ class ResultList extends Component {
 
     collect(showId,isLike) {
         let self = this;
-        axios.get("/collect", {
-            params:{
-                showId:showId,
-                isLike: isLike,
-            }
-        })
-            .then(function (response) {
-                console.log("change collection" + showId + response);
-                if (response.data === true||response.data === false) {
-                    listData.forEach(function (item) {
-                        if (item.showId === showId) {
-                            item.isLike = !item.isLike;
-                        }
-                    });
-                    self.setState({
-                        data: listData,
-                    });
-                    alert(response.data?"收藏成功！":"已移出收藏");
-                } else {
-                    alert("收藏失败！");
+        let username = Cookies.get('username');
+        if (typeof(username) !== "undefined" && username !== "") {
+            axios.get("/collect", {
+                params: {
+                    showId: showId,
+                    isLike: isLike,
                 }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log("change collection" + showId + response);
+                    if (response.data === true || response.data === false) {
+                        listData.forEach(function (item) {
+                            if (item.showId === showId) {
+                                item.isLike = !item.isLike;
+                            }
+                        });
+                        self.setState({
+                            data: listData,
+                        });
+                        alert(response.data ? "收藏成功！" : "已移出收藏");
+                    } else {
+                        alert("收藏失败！");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        } else {
+            alert("请先登录~~~");
+        }
     }
 
     //judge out-of-date
@@ -131,12 +144,12 @@ class ResultList extends Component {
 
     detail(showId){
         browserHistory.push({
-            pathname: "/detail/" + showId,
+            pathname: "/detail"///" + showId,
         });
     }
     comment(showId){
         browserHistory.push({
-            pathname:"/detail/" + showId,
+            pathname:"/detail"///" + showId,
         });
     }
 
@@ -162,7 +175,7 @@ class ResultList extends Component {
                             key={item.title}
                             actions={[
                                 <IconText type={item.isLike ? "heart" : "heart-o"}
-                                          onClick={() => this.collect(item.showId,item.isLike)}/>,
+                                          onClick={() => this.collect(item.showId, item.isLike)}/>,
                                 <IconText type="message" text={item.commentNum}
                                           onClick={() => this.comment(item.showId)}/>,//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1111
                                 <Dropdown
@@ -181,21 +194,22 @@ class ResultList extends Component {
                                                     <Icon type="qq"/> QQ
                                                 </a>
                                             </Menu.Item>
-                                            <Menu.Item>
-                                                <a target="_blank" rel="noopener noreferrer"
-                                                   href="http://www.baidu.com/">
-                                                    <Icon type="wechat"/> WeChat
-                                                </a>
-                                            </Menu.Item>
+                                            {/*<Menu.Item>*/}
+                                            {/*<a target="_blank" rel="noopener noreferrer">*/}
+                                            {/*<span>*/}
+                                            {/*<Icon type="wechat"/>WeChat*/}
+                                            {/*</span>*/}
+                                            {/*</a>*/}
+                                            {/*</Menu.Item>*/}
                                             <Menu.Item>
                                                 <a target="_blank" rel="noopener noreferrer"
                                                    href={
                                                        "http://service.weibo.com/share/share.php?"
                                                        + "url=http://www.baidu.com" //detail page
-                                                       + "&title=(ticket)" //show title
+                                                       + "&title=" + item.title//show title
                                                        + "&pics=https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"
-                                                       + "&summary=测试weibo分享summary"
-                                                       + "&desc=weibo分享简述"
+                                                       + "&summary=" + item.info
+                                                       + "&desc=快上聚票网看看"
                                                    }>
                                                     <Icon type="weibo"/> weibo
                                                 </a>
@@ -211,26 +225,47 @@ class ResultList extends Component {
                                 align='left'
                                 avatar={<img width={120} alt="logo" src={this.state.imgUrl}
                                              onClick={() => this.detail(item.showId)}/>}
-                                title={<a onClick={() => this.detail(item.showId)}>{item.title}</a>}
+                                title={
+                                    <a onClick={() => this.detail(item.showId)}
+                                       dangerouslySetInnerHTML={{
+                                           __html: item.title.replace(this.props.filter.search,
+                                               `<span style="color: red;" >${this.props.filter.search}</span>`)
+                                       }}/>
+                                }
                                 description={
                                     <p>
                                         {item.info}<br/><br/>
                                         <Icon type="calendar"/>
                                         {" " + item.startTime + "-" + item.endTime}<br/>
                                         <Icon type="environment"/>{" " + item.address}<br/>
-                                        <Rate disabled allowHalf defaultValue={item.rate / 2}/><br/>
+                                        <Rate disabled allowHalf defaultValue={item.rate / 2}/>
+                                        {item.commentNum ? "" : "暂无评分"}
+                                        <br/>
                                     </p>
                                 }
                             />
                             {
                                 <div>
                                     <h3><b>{"￥" + item.minPrice}</b>{" 起"}</h3>
-                                    <Button type={this.judgeDate(item.endTime) && item.stock ? "primary" : "dashed"}
-                                            size="large"
-                                            onClick={() => this.detail(item.showId)}
-                                    >{
-                                        this.judgeDate(item.endTime) ? (item.stock ? "购买" : "售罄") : "过期"
-                                    }</Button>
+                                    {this.judgeDate(item.endTime) ?
+                                        (
+                                            item.stock ?
+                                                <Button type="primary"
+                                                        size="large"
+                                                        onClick={() => this.detail(item.showId)}
+                                                >购买</Button>
+                                                :
+                                                <Button type="dashed"
+                                                        size="large"
+                                                        disabled
+                                                >售罄</Button>
+                                        )
+                                        :
+                                        <Button type="dashed"
+                                                size="large"
+                                                disabled
+                                        >过期</Button>
+                                    }
                                 </div>
                             }
                         </List.Item>

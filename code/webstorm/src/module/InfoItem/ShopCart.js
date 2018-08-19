@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import {Divider, Modal, Table} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
-const data = [{
-    key: '1',
-    showId:0,
-    img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-    detailInfo: {
-        name:'周杰伦演唱会',
-        date:'2018/1/2'
-    },
-    seat: "s",
-    intPrice: 123,
-    price: '￥1200',
-    amount: 1,
-    totalPrice:'￥1200'
-}, ];
+const data = [
+    // {
+    //     key: '1',
+    //     showId:0,
+    //     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+    //     detailInfo: {
+    //         name:'周杰伦演唱会',
+    //         date:'2018/1/2'
+    //     },
+    //     seat: "s",
+    //     intPrice: 123,
+    //     price: '￥1200',
+    //     amount: 1,
+    //     totalPrice:'￥1200'
+    // },
+];
+const confirm = Modal.confirm;
 
 class ShopCart extends Component {
     constructor(props){
@@ -33,7 +36,7 @@ class ShopCart extends Component {
             title: '票品信息',
             dataIndex: 'detailInfo',
             render: (text, record) => (<div>
-                <p><a onClick={()=>this.handleDetail(record)}>{record.detailInfo.name}</a></p>
+                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
                 <p>{record.detailInfo.date}</p>
             </div>)
         },{
@@ -52,6 +55,8 @@ class ShopCart extends Component {
                 render: (text,record,index) => (
                     <span>
                         <a onClick={()=>this.handleBuy(record)}>购买</a>
+                        <Divider type="vertical" />
+                        <a onClick={()=>this.handleDelete(record,index)}>删除</a>
                     </span>
                 ),
             }];
@@ -59,8 +64,7 @@ class ShopCart extends Component {
 
     componentDidMount(){
         let self = this;
-        axios.get("/getCurrentCart",{
-        })
+        axios.get("/getCurrentCart")
             .then(function (response) {
                 console.log(response);
                 /*this.setState({
@@ -84,7 +88,7 @@ class ShopCart extends Component {
                         price:tempdata.seat+ '￥'+tempdata.price,
                         amount: tempdata.amount,
                         totalPrice:'￥'+(tempdata.price*tempdata.amount),
-                    }
+                    };
                     items.push(temp);
                 }
                 self.setState({data:items})
@@ -94,7 +98,7 @@ class ShopCart extends Component {
             });
     }
     handleBuy = (record) =>{
-      //  console.log(record)
+        //  console.log(record)
         browserHistory.push({
             pathname:'/buyStep',
             state:{
@@ -104,13 +108,44 @@ class ShopCart extends Component {
                 ticketInfo:{"ticketId": record.key, "price": record.intPrice,"time":record.detailInfo.date},
                 number:record.amount,
                 totalPrice:record.intPrice*record.amount,
+                isCart:1,
             }
         })
     };
 
-    handleDetail = (record) =>{
-        let showId=record.showId;
-        browserHistory.push('/detail/'+String(showId))
+    handleDelete = (record,index) =>{
+        let self = this;
+        confirm({
+            title: "确认删除?",
+            content: `此次删除不能恢复！`,
+            okText: '确定',
+            cancelText: '取消',
+            onOk() {
+                axios.get("/deleteCart",{
+                    params:{
+                        ticketId: record.key
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        let newData = [...self.state.data];
+                        newData.splice(index, 1);
+                        self.setState({
+                            data: newData,
+                        });
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            },
+            onCancel() {
+
+            },
+        });
+    };
+
+    handleDetail = () =>{
+        browserHistory.push('/detail')
     };
 
     render(){

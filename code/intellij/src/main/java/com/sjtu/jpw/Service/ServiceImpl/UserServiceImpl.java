@@ -15,7 +15,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> login(String username, String password) {
-        return userRepository.findAllByUsernameAndPassword(username,password);
+        List<User> toLogin = userRepository.findAllByUsernameAndPassword(username, password);
+        //deal with deleted users
+        if (toLogin.size() != 0) {
+            if (toLogin.get(0).getState().equals("1")) {
+                toLogin.clear();
+            }
+        }
+        return toLogin;
     }
 
     @Override
@@ -55,5 +62,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> allUsers(){
         return userRepository.findAll();
+    }
+
+    @Override
+    public Boolean activate(String activate){
+        Integer activated = userRepository.activate(activate);
+        if (activated > 1) {
+            System.out.println("activate multiple accounts.");
+        }
+        return activated > 0;
     }
 }
