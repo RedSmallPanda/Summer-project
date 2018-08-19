@@ -88,20 +88,20 @@ const ticketColumns = [{
     ),
 }];
 
-const data = [];
-for(let i = 1; i < 20; i++){
-    data.push({
-        image:"https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg",
-        title:`title${i}`,
-        info:"show01",
-        city:"上海",
-        type:"演唱会",
-        address:'菁菁堂',
-        rate:"9",
-        startDate:"2018/07/03",
-        endDate:'2018/07/06',
-    })
-}
+// const data = [];
+// for(let i = 1; i < 20; i++){
+//     data.push({
+//         image:"https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg",
+//         title:`title${i}`,
+//         info:"show01",
+//         city:"上海",
+//         type:"演唱会",
+//         address:'菁菁堂',
+//         rate:"9",
+//         startDate:"2018/07/03",
+//         endDate:'2018/07/06',
+//     })
+// }
 
 const ShowForm = Form.create()(
     class extends React.Component {
@@ -241,11 +241,6 @@ class TicketManage extends Component{
     state = {
         visible: false,
         ticketVisible: false,
-        address:[{
-            city:'',
-            detail:''
-        }],
-        data : data,
         cacheImage:'',
         show: '',
         ticket:'',
@@ -311,7 +306,6 @@ class TicketManage extends Component{
             params.append('endDate',values.endDate);
             axios.post('/addShow', params)
                 .then(function (response) {
-                    console.log(response.data);
                     let newShow = {
                         image:response.data,
                         title:values.title,
@@ -324,12 +318,12 @@ class TicketManage extends Component{
                         endDate:values.endDate,
                     };
 
-                    let newData = self.state.data;
+                    let newData = self.state.show;
                     newData.unshift(newShow);
 
                     self.setState({
                         visible:false,
-                        data:newData
+                        show:newData
                     })
                 })
                 .catch(function (error) {
@@ -372,23 +366,20 @@ class TicketManage extends Component{
                 .then(function (response) {
                     console.log(response.data);
                     let newTicket = {
-                        image:response.data,
                         title:values.title,
-                        info:values.info,
-                        city:values.city,
-                        type:values.type,
-                        address:values.address,
-                        rate:0,
-                        startDate:values.startDate,
-                        endDate:values.endDate,
+                        price:values.price,
+                        time:values.time,
+                        seat:values.seat,
+                        amount:values.amount,
+                        stock:values.amount,
                     };
 
-                    let newData = self.state.data;
+                    let newData = self.state.ticket;
                     newData.unshift(newTicket);
 
                     self.setState({
                         visible:false,
-                        data:newData
+                        ticket:newData
                     })
                 })
                 .catch(function (error) {

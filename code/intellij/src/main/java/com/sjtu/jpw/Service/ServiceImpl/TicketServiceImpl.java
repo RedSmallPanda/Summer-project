@@ -2,7 +2,9 @@ package com.sjtu.jpw.Service.ServiceImpl;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 import com.sjtu.jpw.Domain.Collection;
+import com.sjtu.jpw.Domain.Shows;
 import com.sjtu.jpw.Domain.Ticket;
 import com.sjtu.jpw.Repository.CollectionRepository;
 import com.sjtu.jpw.Repository.CommentRepository;
@@ -150,5 +152,30 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public void deleteAllCollection(Integer userId){
         collectionRepository.deleteByUserId(userId);
+    }
+
+    @Override
+    public void addTicket(String title, Integer price, String time, String seat, Integer amount){
+
+    }
+
+    @Override
+    public JsonArray getTickets(){
+        List<Ticket> tickets = ticketRepository.findAllTickets();
+        JsonArray ticketsData = new JsonArray();
+        Iterator<Ticket> it = tickets.iterator();
+        while(it.hasNext()){
+            Ticket ticket = it.next();
+            JsonObject ticketObject = new JsonObject();
+            String title = showsRepository.findFirstByShowId(ticket.getShowId()).getTitle();
+            ticketObject.addProperty("title",title);
+            ticketObject.addProperty("price",ticket.getPrice());
+            ticketObject.addProperty("time",ticket.getTime().toString());
+            ticketObject.addProperty("seat",ticket.getSeat());
+            ticketObject.addProperty("amount",ticket.getAmount());
+            ticketObject.addProperty("stock",ticket.getStock());
+            ticketsData.add(ticketObject);
+        }
+        return ticketsData;
     }
 }

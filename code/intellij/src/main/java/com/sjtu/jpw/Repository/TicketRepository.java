@@ -14,6 +14,7 @@ import java.util.List;
     @Table(name="Ticket")
     @Qualifier("ticketRepository")
     public interface TicketRepository extends CrudRepository<Ticket,Integer> {
+
         public Ticket save(Ticket ticket);
         public Ticket findByShowId(Integer showId);
 
@@ -24,6 +25,9 @@ import java.util.List;
 
         @Query("select sum(ticket.stock) from Ticket ticket where ticket.showId=:showId")
         public Integer getStock(@Param("showId") Integer showId);
+
+        @Query("select show from Shows show")
+        public List<Ticket> findAllTickets();
 
         public List<Ticket> findAllByShowId(Integer showId);
 
