@@ -192,7 +192,39 @@ class TicketManage extends Component{
         }],
         data : data,
         cacheImage:'',
+        show: '',
+        ticket:'',
     };
+
+    getShows(self) {
+        axios.get("/getShows")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    show:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
+    getTickets(self){
+        axios.get("/getTickets")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    ticket:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    componentDidMount(){
+        this.getShows(this);
+    }
 
     showModal = () => {
         this.setState({ visible: true });
@@ -200,21 +232,6 @@ class TicketManage extends Component{
 
     handleCancel = () => {
         this.setState({ visible: false });
-    };
-
-    sendData = (params) =>{
-        axios.post('/addShow', params)
-            .then(function (response) {
-                console.log(response.data);
-                alert("1"+response.data);
-                this.setState({
-                    cacheImage:response.data
-                });
-                alert("2"+this.state.cacheImage);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
     };
 
     handleCreate = () => {
@@ -236,33 +253,34 @@ class TicketManage extends Component{
             params.append('address',values.address);
             params.append('startDate',values.startDate);
             params.append('endDate',values.endDate);
-            this.sendData(params);
-            alert("3"+this.state.cacheImage);
-            let newTicket = {
-                image:this.state.cacheImage,
-                title:values.title,
-                info:values.info,
-                city:values.city,
-                type:values.type,
-                address:values.address,
-                rate:0,
-                startDate:values.startDate,
-                endDate:values.endDate,
-            };
+            axios.post('/addShow', params)
+                .then(function (response) {
+                    console.log(response.data);
+                    let newTicket = {
+                        image:response.data,
+                        title:values.title,
+                        info:values.info,
+                        city:values.city,
+                        type:values.type,
+                        address:values.address,
+                        rate:0,
+                        startDate:values.startDate,
+                        endDate:values.endDate,
+                    };
 
-            let newData = this.state.data;
-            newData.unshift(newTicket);
+                    let newData = self.state.data;
+                    newData.unshift(newTicket);
 
-            this.setState({
-                visible:false,
-                data:newData
-            })
+                    self.setState({
+                        visible:false,
+                        data:newData
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
 
         });
-    };
-
-    handleImage = () =>{
-
     };
 
     saveFormRef = (formRef) => {
@@ -281,7 +299,7 @@ class TicketManage extends Component{
                     }
                 >
                     <TabPane tab="演出" key="1">
-                        <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>
+                        <Table columns={columns} dataSource={this.state.show} style={{marginTop:16}}/>
                     </TabPane>
                     <TabPane tab="票品" key="2">
                         <Table columns={columns} dataSource={this.state.data} style={{marginTop:16}}/>

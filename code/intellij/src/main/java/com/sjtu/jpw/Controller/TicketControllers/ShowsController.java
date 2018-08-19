@@ -1,5 +1,6 @@
 package com.sjtu.jpw.Controller.TicketControllers;
 
+import com.google.gson.JsonArray;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
@@ -112,5 +113,16 @@ public class ShowsController {
         collection.insert(dbObject);
 
         System.out.println("send and get image successfully");
+    }
+
+    @RequestMapping(value="/getShows",produces = "application/json;charset=UTF-8")
+    public void GetMyComment(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        JsonArray allShows = showService.getShows();
+        System.out.println(allShows);
+        out.print(allShows);
+        out.flush();
     }
 }

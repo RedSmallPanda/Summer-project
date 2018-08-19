@@ -100,10 +100,12 @@ public class MongoDBController {
     public void ImageCache(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","multipart/form-data;charset=UTF-8");
 
-        PrintWriter out = response.getWriter();
-
         DBCollection collection = mongoDBService.getCollection("cache");
         String imgUrl = request.getParameter("imgUrl");
+        DBObject img = collection.findOne();
+        if(img != null){
+            collection.remove(img);
+        }
         DBObject dbObject = new BasicDBObject();
         dbObject.put("imgUrl",imgUrl);
         collection.insert(dbObject);
