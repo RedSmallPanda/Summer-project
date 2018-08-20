@@ -10,6 +10,7 @@ import TicketComment from "./TicketComment";
 import axios from 'axios';
 import { browserHistory} from 'react-router';
 import Sider from '../MainPages/Sider';
+import ShowLocation from "./ShowLocation";
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
@@ -17,9 +18,9 @@ const RadioGroup = Radio.Group;
 const {Meta} = Card;
 
 const data={
-    name:'森林音乐会',
-    time:'2018/6/8 19:30',
-    location:'梅赛德斯奔驰文化中心',
+    name:'森林音乐会--',
+    time:'2018/6/8 19:30--',
+    location:'梅赛德斯奔驰文化中心--',
     rate:4.5,
     img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
 };
@@ -375,7 +376,11 @@ class GoodDetailPage extends Component{
                                         </Row>
                                     </Col>
                                     <Col span={6} id="side" className="test">
-                                        213
+                                        <ShowLocation style={{
+                                            width: "100%",
+                                            height: 250,
+                                            marginTop: 30,
+                                        }}/>
                                     </Col>
                                 </Row>
                             </div>

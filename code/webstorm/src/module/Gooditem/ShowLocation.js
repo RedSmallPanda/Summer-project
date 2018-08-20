@@ -74,8 +74,8 @@ class ShowLocation extends Component {
         let marker = new BMap.Marker(point);  // 创建标注
         map.addOverlay(marker);              // 将标注添加到地图中
         let opts = {
-            width: 200,     // 信息窗口宽度
-            height: 100,     // 信息窗口高度
+            width: 50,     // 信息窗口宽度
+            height: 30,     // 信息窗口高度
             title: "西11", // 信息窗口标题
             enableMessage: true,//设置允许信息窗发送短息
             message: "看什么看"
