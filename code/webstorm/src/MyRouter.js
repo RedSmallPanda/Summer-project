@@ -11,7 +11,6 @@ import GoodDetailPage from "./module/Gooditem/GoodDetailPage";
 import Us from "./module/MainPages/Us";
 import Help from "./module/MainPages/Help";
 import RefundPage from "./module/InfoItem/RefundPage";
-import Register from "./module/MainPages/Register";
 import Error from "./module/MainPages/Error";
 import Activate from "./module/MainPages/Activate";
 import ResetPassword from "./module/MainPages/ResetPassword";

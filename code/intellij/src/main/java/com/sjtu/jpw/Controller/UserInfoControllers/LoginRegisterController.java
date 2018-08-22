@@ -99,7 +99,8 @@ public class LoginRegisterController {
                 new Thread(
                         new MailUtil(
                                 registeredUser.getEmail(),
-                                registeredUser.getActivate()
+                                registeredUser.getActivate(),
+                                "register"
                         )
                 ).start();
             }

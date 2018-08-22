@@ -36,7 +36,7 @@ public interface UserRepository extends CrudRepository<User,Integer> {
     @Query(value = "update User user set user.password=:password,user.gender=:gender," +
             "user.birthday=:birthday,user.nickname=:nickname,user.phone=:phone," +
             "user.email=:email, user.state=:state where user.userId=:userId")
-    public void updateInfo(
+    public Integer updateInfo(
             @Param("password") String password,
             @Param("gender") String gender,
             @Param("birthday") Date birthday,

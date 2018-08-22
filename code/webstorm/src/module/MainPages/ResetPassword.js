@@ -1,127 +1,283 @@
 import React, { Component } from 'react';
-import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown} from 'antd';
-import '../../css/BuyStep.css';
-import axios from "axios/index";
-import { browserHistory} from 'react-router';
+import {
+    Form, Input, Steps, Row, Col, Icon, Button
+} from 'antd';
+import axios from "axios";
 
 const Step=Steps.Step;
+const FormItem = Form.Item;
+const Search = Input.Search;
+
+class ResetStep0Form extends Component {
+    sendAuth = () => {
+        this.props.form.validateFields(
+            ['username','email'],
+            (err, values) => {
+                if(err) return;
+                axios.get("/createResetAuth", {
+                    params: {
+                        username: values.username,
+                        email: values.email,
+                    }
+                })
+                    .then(function (response) {
+                        console.log(response);
+                        if (response.data === true) {
+                            console.log('To reset password: ', values);
+                            alert(values.username +
+                                "\n验证码已经发出，请前往查看\n"
+                                + values.email);
+                        } else if (response.data === false) {
+                            alert("邮箱输入有误");
+                        } else {
+                            alert(response.data);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        alert("unexpected error(including 404)");
+                    });
+            });
+    };
+    render() {
+        const { form } = this.props;
+        const { getFieldDecorator } = form;
+        const formItemLayout = {
+            labelCol: {
+                xs: { span: 24 },
+                sm: { span: 8 },
+            },
+            wrapperCol: {
+                xs: { span: 24 },
+                sm: { span: 8 },
+            },
+        };
+        return (
+            <Form>
+                <FormItem
+                    {...formItemLayout}
+                    label="输入账号"
+                >
+                    {getFieldDecorator('username', {
+                        rules: [{
+                            required: true, message: 'Please input your username!',
+                        }],
+                    })(
+                        <Input/>
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
+                    label="输入注册邮箱"
+                >
+                    {getFieldDecorator('email', {
+                        rules: [{
+                            type: 'email', message: 'The input is not valid E-mail!',
+                        }, {
+                            required: true, message: 'Please input your email!',
+                        }],
+                    })(
+                        <Search enterButton="Send"
+                                onSearch={this.sendAuth}/>
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
+                    label="输入验证码"
+                >
+                    {getFieldDecorator('auth', {
+                        rules: [{
+                            required: true, message: 'Please input your 验证码!',
+                        }],
+                    })(
+                        <Input/>
+                    )}
+                </FormItem>
+            </Form>
+        );
+    }
+}
+const Step0Form = Form.create()(ResetStep0Form);
+
+class ResetStep1Form extends Component {
+    state = {
+        confirmDirty: false,
+    };
+    handleConfirmBlur = (e) => {
+        const value = e.target.value;
+        this.setState({
+            confirmDirty: this.state.confirmDirty || !!value
+        });
+    };
+    compareToFirstPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && value !== form.getFieldValue('password')) {
+            callback('Two passwords that you enter is inconsistent!');
+        } else {
+            callback();
+        }
+    };
+
+    validateToNextPassword = (rule, value, callback) => {
+        const form = this.props.form;
+        if (value && this.state.confirmDirty) {
+            form.validateFields(['confirm'], {force: true});
+        }
+        callback();
+    };
+
+    render() {
+        const {getFieldDecorator} = this.props.form;
+        const formItemLayout = {
+            labelCol: {
+                xs: {span: 24},
+                sm: {span: 8},
+            },
+            wrapperCol: {
+                xs: {span: 24},
+                sm: {span: 8},
+            },
+        };
+        return (
+            <Form>
+                <FormItem
+                    {...formItemLayout}
+                    label="输入新密码"
+                >
+                    {getFieldDecorator('password', {
+                        rules: [{
+                            required: true, message: 'Please input your password!',
+                        }, {
+                            validator: this.validateToNextPassword,
+                        }],
+                    })(
+                        <Input type="password"/>
+                    )}
+                </FormItem>
+                <FormItem
+                    {...formItemLayout}
+                    label="确认密码"
+                >
+                    {getFieldDecorator('confirm', {
+                        rules: [{
+                            required: true, message: 'Please confirm your password!',
+                        }, {
+                            validator: this.compareToFirstPassword,
+                        }],
+                    })(
+                        <Input type="password" onBlur={this.handleConfirmBlur}/>
+                    )}
+                </FormItem>
+            </Form>
+        );
+    }
+}
+const Step1Form = Form.create()(ResetStep1Form);
 
 class ResetPassword extends Component {
-
-    constructor(props){
-        super(props);
-        this.state={
-            firstStep:0,
-            secondStep:0,
-        };
-    }
+    state = {
+        firstStep: 0,
+        secondStep: 0,
+    };
 
     confirmS1 = () => {
-        console.log('step changed to: 1');
         let self = this;
-        axios.get("/createOrder", {
-            params: {}
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        if (this.state.isCart === 1) {
-            axios.get("/deleteCart", {
-                params: {}
+        this.accountFormRef.props.form.validateFields((err, values) => {
+            if (err) return;
+            axios.get("/resetAuth", {
+                params: {
+                    username: values.username,
+                    email: values.email,
+                    auth: values.auth
+                }
             })
                 .then(function (response) {
                     console.log(response);
+                    if (response.data === true) {
+                        console.log('Reset password with auth: ', values);
+                        self.setState({firstStep: 1});
+                    } else if (response.data === false) {
+                        alert("请检查填写信息和验证码是否有误");
+                    } else {
+                        alert(response.data);
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-        }
-        this.setState({firstStep: 1});
+        });
     };
 
     confirmS2 = () => {
-        console.log('step changed to: 2');
-        this.setState({secondStep: 1});
         let self = this;
-        axios.get("/giveMeCoupon", {
-            params: {}
-        })
-            .then(function (response) {
-                console.log(response);
-                if (response.data.length === 0) {
-                    self.setState({getNoCoupon: 1});
-                }
-                else {
-                    self.setState({newCoupon: response.data});
+        this.passwordFormRef.props.form.validateFields((err, values) => {
+            if (err) return;
+            axios.get("/reset", {
+                params: {
+                    password: values.password
                 }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    if (response.data === true) {
+                        self.setState({secondStep: 1});
+                    }else if (response.data === false) {
+                        alert("修改失败");
+                    } else {
+                        alert(response.data);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        });
     };
 
-    componentDidMount() {
-        let self = this;
-        axios.get("/getMyCouponByPrice", {
-            params: {
+    saveAccountFormRef = (formRef) => {
+        this.accountFormRef = formRef;
+    };
 
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }
+    savePasswordFormRef = (formRef) => {
+        this.passwordFormRef = formRef;
+    };
+
 
     render() {
-        let step0Page=
-            <div>
-                输入账号<br/>
-                输入注册邮箱<br/>
-                输入验证码<br/>
-                <Button style={{float:"right",width:"110px"}} type="primary" onClick={this.confirmS1} size="large">确认</Button>
-            </div>;
+        let step0Page = <div>
+            <Step0Form wrappedComponentRef={this.saveAccountFormRef}/>
+            <Button style={{float: "right", width: "110px"}}
+                    onClick={this.confirmS1}
+                    type="primary"
+                    size="large">确认</Button>
+        </div>;
 
-        let step1Page =
-            <div>
-                输入新密码<br/>
-                确认密码<br/>
-                <Button type="primary" onClick={this.confirmS2}>付款完成</Button>
-            </div>;
+        let step1Page = <div>
+            <Step1Form wrappedComponentRef={this.savePasswordFormRef}/>
+            <Button style={{float: "right", width: "110px"}}
+                    onClick={this.confirmS2}
+                    type="primary"
+                    size="large">确认</Button>
+        </div>;
 
-        let step2Page =
-            <div>
-                <br/>
-                <div className="recBorder">
-                    &emsp;<Icon type="check" style={{fontSize: 50, color: '#4cc232'}}/>&ensp;您已完成付款!
-                </div>
-                <br/>
-                <br/>
-                <div className="dashedDiv">
-                    <br/>
-                    <br/>
-                    <h1 style={{textAlign: 'center', fontFamily: 'Hiragino Sans GB'}}>这次没拿到优惠券，请再接再厉哦！</h1>
-                </div>
-            </div>;
+        let step2Page = <div>
+            <br/>
+            <div className="recBorder">
+                &emsp;<Icon type="check" style={{fontSize: 50, color: '#4cc232'}}/>&ensp;密码重置成功!
+            </div>
+        </div>;
 
 
-        let resetPage=null;
-        if(this.state.firstStep===0&&this.state.secondStep===0){
-            resetPage=step0Page;
+        let resetPage = null;
+        if (this.state.firstStep === 0 && this.state.secondStep === 0) {
+            resetPage = step0Page;
         }
-        else if(this.state.firstStep===1&&this.state.secondStep===0){
-            resetPage=step1Page;
+        else if (this.state.firstStep === 1 && this.state.secondStep === 0) {
+            resetPage = step1Page;
         }
-        else if(this.state.firstStep===1&&this.state.secondStep===1&&this.state.getNoCoupon===1){
-            resetPage=step2Page;
+        else if (this.state.firstStep === 1 && this.state.secondStep === 1) {
+            resetPage = step2Page;
         }
-        else{
+        else {
             console.log("reset password step error");
         }
         return (
@@ -131,10 +287,10 @@ class ResetPassword extends Component {
                 <Row>
                     <Col span={4}/>
                     <Col span={16}>
-                        <Steps current={this.state.firstStep+this.state.secondStep} align="left">
-                            <Step title="验证账号" />
-                            <Step title="重置密码" />
-                            <Step title="修改成功" />
+                        <Steps current={this.state.firstStep + this.state.secondStep} align="left">
+                            <Step title="验证账号"/>
+                            <Step title="重置密码"/>
+                            <Step title="修改成功"/>
                         </Steps>
                         <br/>
                         <br/>

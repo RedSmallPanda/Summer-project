@@ -8,8 +8,9 @@ public interface UserService {
     List<User> login(String username,String password);
     User userInfo(Integer userId);
     User register(User newUser);
-    void updateInfo(User updateUser);
-    Integer UsernameDuplicated(String username);
+    Boolean updateInfo(User updateUser);
+    Integer usernameDuplicated(String username);
     List<User> allUsers();
     Boolean activate(String activate);
+    User usernameMatchEmail(String username, String email);
 }

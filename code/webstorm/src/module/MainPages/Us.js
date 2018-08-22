@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import ShowLocation from "../Gooditem/ShowLocation";
 
 class Us extends Component{
     render(){

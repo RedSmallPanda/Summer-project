@@ -32,28 +32,29 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User register(User newUser) {
-        if(UsernameDuplicated(newUser.getUsername())==0){
+        if(usernameDuplicated(newUser.getUsername())==0){
             return userRepository.save(newUser);
         }
         else return null;
     }
 
     @Override
-    public void updateInfo(User updateUser) {
-        userRepository.updateInfo(
-                updateUser.getPassword(),
-                updateUser.getGender(),
-                updateUser.getBirthday(),
-                updateUser.getNickname(),
-                updateUser.getPhone(),
-                updateUser.getEmail(),
-                updateUser.getState(),
-                updateUser.getUserId()
-        );
+    public Boolean updateInfo(User updateUser) {
+        return (
+                userRepository.updateInfo(
+                        updateUser.getPassword(),
+                        updateUser.getGender(),
+                        updateUser.getBirthday(),
+                        updateUser.getNickname(),
+                        updateUser.getPhone(),
+                        updateUser.getEmail(),
+                        updateUser.getState(),
+                        updateUser.getUserId()
+                ) != 0);
     }
 
     @Override
-    public Integer UsernameDuplicated(String username) {
+    public Integer usernameDuplicated(String username) {
         List<User> users= userRepository.findAllByUsername(username);
         if(users.size()>0){return 1;}
         else return 0;
@@ -71,5 +72,15 @@ public class UserServiceImpl implements UserService {
             System.out.println("activate multiple accounts.");
         }
         return activated > 0;
+    }
+
+    @Override
+    public User usernameMatchEmail(String username, String email){
+        User toReset = userRepository.findByUsername(username);
+        if (toReset.getEmail().equals(email)) {
+            return toReset;
+        } else {
+            return null;
+        }
     }
 }

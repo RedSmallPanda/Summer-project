@@ -141,7 +141,9 @@ const Login = Form.create()(
                                 </Col>
                                 <Col span={6}>
                                     <Row style={{height:'18px'}}/>
-                                    <span style={{marginBottom:"0px",cursor: "pointer"}} >忘记密码？</span>
+                                    <span style={{marginBottom:"0px",cursor: "pointer"}}>
+                                        <a href="/resetPassword">忘记密码？</a>
+                                    </span>
                                 </Col>
                                 <Col span={7}/>
                                 <Col span={5}>
