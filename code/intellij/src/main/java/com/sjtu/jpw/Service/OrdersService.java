@@ -17,4 +17,5 @@ public interface OrdersService {
     boolean stockDecrease(int ticketId,int number);
     void useCoupon(int userId,int couponId);
     void UpdateOrderState(String state,int orderId);
+    JsonArray getSalesData(String choice,String timeString,String kind);
 }
