@@ -26,7 +26,7 @@ import java.util.List;
         @Query("select sum(ticket.stock) from Ticket ticket where ticket.showId=:showId")
         public Integer getStock(@Param("showId") Integer showId);
 
-        @Query("select show from Shows show")
+        @Query("select ticket from Ticket ticket")
         public List<Ticket> findAllTickets();
 
         public List<Ticket> findAllByShowId(Integer showId);

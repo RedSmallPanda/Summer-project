@@ -408,7 +408,7 @@ class TicketManage extends Component{
                         <Table columns={columns} dataSource={this.state.show} style={{marginTop:16}}/>
                     </TabPane>
                     <TabPane tab="票品" key="2">
-                        <Table columns={columns} dataSource={this.state.ticket} style={{marginTop:16}}/>
+                        <Table columns={ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}}/>
                     </TabPane>
                 </Tabs>
                 <ShowForm

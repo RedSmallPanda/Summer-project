@@ -23,17 +23,6 @@ class Demo extends Component {
 
         this.state = {
             formData: {
-                // name:'王小明',
-                // gender:'female',
-                // nickname:'暗影之王',
-                // email:'12345678@qq.com',
-                // phone:'12345678901',
-                // birthday:'2000-01-05',
-                // img:'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1530851539076&di=1806b53542a9b07d0dd12974618dd4b6&imgtype=0' +
-                // '&src=http%3A%2F%2Fwww.cnr.cn%2Fjingji%2Fcjsjy%2Fjctp%2F20161013%2FW020161013523561662545.jpg',
-                // province:'zhejiang',
-                // city:'hangzhou',
-                // district:'xihu'
             },
             imrUrl:'',
             loading: false,
@@ -41,21 +30,19 @@ class Demo extends Component {
             getImg:'',
 
         };
+
+        let self = this;
+
         this.uploaderProps = {
             name:"avatar",
-            data:{
-                showId:1,
-            },
             listType:"picture-card",
             className:"avatar-uploader",
             showUploadList:false,
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
                 console.log(file);
-                // let base64File;
-                let self = this;
                 let reader = new FileReader();
-                // base64File = reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
                 reader.onload = function(e){
                     file = e.target.result;
                     self.setState({
