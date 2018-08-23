@@ -60,7 +60,7 @@ const Login = Form.create()(
             callback()
         };
         render() {
-            const {visible, onCancel, form, onLogin} = this.props;
+            const {visible, onCancel, form, onLogin, onReset} = this.props;
             const { getFieldDecorator } = form;
             return (
                 <div className="loginModal">
@@ -142,7 +142,7 @@ const Login = Form.create()(
                                 <Col span={6}>
                                     <Row style={{height:'18px'}}/>
                                     <span style={{marginBottom:"0px",cursor: "pointer"}}>
-                                        <a href="/resetPassword">忘记密码？</a>
+                                        <a onClick={onReset}>忘记密码？</a>
                                     </span>
                                 </Col>
                                 <Col span={7}/>
