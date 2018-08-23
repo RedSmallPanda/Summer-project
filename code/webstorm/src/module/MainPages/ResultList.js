@@ -144,12 +144,12 @@ class ResultList extends Component {
 
     detail(showId){
         browserHistory.push({
-            pathname: "/detail"///" + showId,
+            pathname: "/detail/" + showId,
         });
     }
     comment(showId){
         browserHistory.push({
-            pathname:"/detail"///" + showId,
+            pathname:"/detail/" + showId,
         });
     }
 
