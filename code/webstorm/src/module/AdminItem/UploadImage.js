@@ -31,19 +31,15 @@ class UploadImage extends Component{
 
         this.uploaderProps = {
             name:"avatar",
-            data:{
-                showId:1,
-            },
             listType:"picture-card",
             className:"avatar-uploader",
             showUploadList:false,
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
                 console.log(file);
-                // let base64File;
                 let self = this;
                 let reader = new FileReader();
-                // base64File = reader.readAsDataURL(file);
+                reader.readAsDataURL(file);
                 reader.onload = function(e){
                     file = e.target.result;
                     self.setState({

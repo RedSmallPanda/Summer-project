@@ -118,13 +118,37 @@ public class ShowsController {
     }
 
     @RequestMapping(value="/getShows",produces = "application/json;charset=UTF-8")
-    public void GetMyComment(HttpServletRequest request, HttpServletResponse response) throws IOException{
+    public void GetShows(HttpServletRequest request, HttpServletResponse response) throws IOException{
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
 
         JsonArray allShows = showService.getShows();
         System.out.println(allShows);
         out.print(allShows);
+        out.flush();
+    }
+
+    @RequestMapping(value="/addTicket",produces="application/json;charset=UTF-8")
+    public void AddTicket(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        String title = request.getParameter("title");
+        int price = Integer.parseInt(request.getParameter("price"),10);
+        String time = request.getParameter("time");
+        String seat = request.getParameter("seat");
+        int amount = Integer.parseInt(request.getParameter("amount"),10);
+
+        ticketService.addTicket(title,price,time,seat,amount);
+        System.out.println("add ticket successfully");
+    }
+
+    @RequestMapping(value="/getTickets",produces = "application/json;charset=UTF-8")
+    public void GetTickets(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        JsonArray allTickets = ticketService.getTickets();
+        System.out.println(allTickets);
+        out.print(allTickets);
         out.flush();
     }
 }
