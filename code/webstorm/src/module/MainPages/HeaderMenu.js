@@ -157,6 +157,13 @@ class HeaderMenu extends Component {
         this.setState({ visible: false });
     };
 
+    handleReset = () => {
+        this.setState({
+            visible: false,
+        });
+        browserHistory.push("/resetPassword");
+    };
+
     handleCreate = () => {
         let self = this;
         const form = this.formRef.props.form;
@@ -334,6 +341,7 @@ class HeaderMenu extends Component {
                     onCancel={this.handleCancel}
                     onLogin={this.handleCreate}
                     loginToRegister={this.loginToRegister}
+                    onReset={this.handleReset}
                 />
                 <Register
                     wrappedComponentRef={this.saveRegFormRef}
