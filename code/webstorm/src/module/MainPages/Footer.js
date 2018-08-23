@@ -19,13 +19,13 @@ class Footer extends Component {
     componentDidMount() {
         window.addEventListener('resize', this.relocation);
         window.addEventListener('load', this.relocation);
-        document.addEventListener('click', this.relocation);
+        // document.addEventListener('click', this.relocation);
     }
 
     componentWillUnmount() {
         window.removeEventListener('resize', this.relocation);
         window.removeEventListener('load', this.relocation);
-        document.removeEventListener('click', this.relocation);
+        // document.removeEventListener('click', this.relocation);
         // document.getElementById("router").removeEventListener('hashchange', this.relocation);
     }
 
@@ -34,7 +34,7 @@ class Footer extends Component {
     }
 
     relocation() {
-        console.log("triggered");
+        // console.log("triggered");
         if (this.documentHeight() < document.body.clientHeight) {
             this.setState({
                 display: true,
