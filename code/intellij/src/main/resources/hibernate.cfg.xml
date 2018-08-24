@@ -18,6 +18,7 @@
         <mapping class="com.sjtu.jpw.Domain.User"/>
         <mapping class="com.sjtu.jpw.Domain.UserCoupon"/>
         <mapping class="com.sjtu.jpw.Domain.Sendingaddr"/>
+        <mapping class="com.sjtu.jpw.Domain.ShowLocation"/>
         <!-- <property name="connection.username"/> -->
         <!-- <property name="connection.password"/> -->
 

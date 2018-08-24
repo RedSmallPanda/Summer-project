@@ -17,12 +17,13 @@ const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const {Meta} = Card;
 
-const data={
-    name:'森林音乐会--',
-    time:'2018/6/8 19:30--',
-    location:'梅赛德斯奔驰文化中心--',
-    rate:4.5,
-    img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
+const data = {
+    name: '森林音乐会--',
+    time: '2018/6/8 19:30--',
+    city: 'sh',
+    location: '梅赛德斯奔驰文化中心--',
+    rate: 4.5,
+    img: 'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
 };
 
 class GoodDetailPage extends Component{
@@ -376,11 +377,14 @@ class GoodDetailPage extends Component{
                                         </Row>
                                     </Col>
                                     <Col span={6} id="side" className="test">
-                                        <ShowLocation style={{
-                                            width: "100%",
-                                            height: 250,
-                                            marginTop: 30,
-                                        }}/>
+                                        <ShowLocation
+                                            city={this.state.data.city}
+                                            location={this.state.data.location}
+                                            style={{
+                                                width: "100%",
+                                                height: 250,
+                                                marginTop: 30,
+                                            }}/>
                                     </Col>
                                 </Row>
                             </div>

@@ -1,10 +1,13 @@
 package com.sjtu.jpw.Controller.TicketControllers;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
+import com.sjtu.jpw.Domain.ShowLocation;
 import com.sjtu.jpw.Service.MongoDBService;
+import com.sjtu.jpw.Service.ShowLocationService;
 import com.sjtu.jpw.Service.ShowService;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.List;
 
 @RestController
 public class ShowsController {
@@ -24,6 +28,8 @@ public class ShowsController {
     private TicketService ticketService;
     @Autowired
     private ShowService showService;
+    @Autowired
+    private ShowLocationService showLocationService;
 
     @Resource(name="mongoDBService")
     private MongoDBService mongoDBService;
@@ -149,6 +155,21 @@ public class ShowsController {
         JsonArray allTickets = ticketService.getTickets();
         System.out.println(allTickets);
         out.print(allTickets);
+        out.flush();
+    }
+
+    @RequestMapping(value="/getLocation",produces = "application/json;charset=UTF-8")
+    public void getLocation(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String location = request.getParameter("location");
+
+        List<ShowLocation> locations = showLocationService.getLocation(location);
+
+        Gson gson = new Gson();
+        System.out.println(gson.toJson(locations));
+        out.print(gson.toJson(locations));
         out.flush();
     }
 }

@@ -1,36 +1,68 @@
 import React, {Component} from "react";
+import {Button, Icon} from "antd";
+import axios from "axios";
 
 class ShowLocation extends Component {
-    // constructor(props) {
-    //     super(props);
-    // }
+    constructor(props) {
+        super(props);
+        this.state = {
+            style: this.props.style,
+            city: this.props.city,
+            location: this.props.location,
+            longitude: null,
+            latitude: null,
+            working: true,
+            error: false,
+        };
+        this.getLocation = this.getLocation.bind(this);
+    }
 
     componentWillMount() {
-        this.setState({
-            style: this.props.style
-        });
+        this.getLocation();
     }
 
     render() {
         return (
             <div>
-                <div
-                    id='map'
-                    style={this.state.style}/>
+                <div id='map' style={{
+                    ...this.state.style,
+                    textAlign: "center",
+                }}>{
+                    this.state.working ?
+                        <Icon type="loading" style={{
+                            lineHeight: "250px",
+                            fontSize: 80
+                        }}/>
+                        :
+                        <div>{
+                            this.state.error?
+                                <div>
+                                    <p>error</p>
+                                    <Button htmlType="button"
+                                            onClick={this.getLocation}>
+                                        重新获取
+                                    </Button>
+                                </div>
+                                :
+                                "暂无地图数据"
+                        }</div>
+                }</div>
             </div>
         );
     }
 
-    componentDidMount() {
+    componentDidUpdate() {
+        if (this.state.error||!this.state.working) {
+            return;
+        }
         let BMap = window.BMap;
         let map = new BMap.Map("map"); // 创建Map实例 "map":<div id='map'>...</div>
 
-        let point = new BMap.Point(121.439224, 31.026026);//中心点坐标
+        let point = new BMap.Point(this.state.longitude, this.state.latitude);//中心点坐标
         map.centerAndZoom(point, 17);// 初始化地图,设置中心点坐标和地图级别
-        map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
-
         this.addMarkerAndInfo(BMap, point, map);//添加标注和点击后的信息
 
+        map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
         let mapType = {mapTypes: [window.BMAP_NORMAL_MAP, window.BMAP_HYBRID_MAP]};
         map.addControl(new BMap.MapTypeControl(mapType)); //添加地图类型控件
 
@@ -80,11 +112,46 @@ class ShowLocation extends Component {
             enableMessage: true,//设置允许信息窗发送短息
             message: "看什么看"
         };
-        let infoWindow = new BMap.InfoWindow("X11", opts);  // 创建信息窗口对象
+        let infoWindow = new BMap.InfoWindow(this.state.location, opts);  // 创建信息窗口对象
         marker.addEventListener("click", function () {
             map.openInfoWindow(infoWindow, point); //开启信息窗口
         });
     }
+
+    getLocation() {
+        let self = this;
+        axios.get("/getLocation", {
+            params: {
+                location: self.props.location
+            }
+        })
+            .then(function (response) {
+                console.log(response.data);
+                if (response.data.length === 0) {
+                    self.setState({
+                        error: false,
+                        working: false,
+                    });
+                } else {
+                    self.setState({
+                        error: false,
+                        working: true,
+                        longitude: response.data[0].longitude,
+                        // longitude: 121.439224,
+                        latitude: response.data[0].latitude,
+                        // latitude: 31.026026,
+                    });
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    error: true,
+                    working: false,
+                });
+            });
+    }
+
 }
 
 export default ShowLocation;
