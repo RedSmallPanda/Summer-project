@@ -123,7 +123,6 @@ public class ShowsController {
         PrintWriter out = response.getWriter();
 
         JsonArray allShows = showService.getShows();
-        System.out.println(allShows);
         out.print(allShows);
         out.flush();
     }

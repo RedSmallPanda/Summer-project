@@ -2,12 +2,17 @@ package com.sjtu.jpw.Service.ServiceImpl;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.mongodb.BasicDBObject;
+import com.mongodb.DBCollection;
+import com.mongodb.DBObject;
 import com.sjtu.jpw.Repository.ShowsRepository;
+import com.sjtu.jpw.Service.MongoDBService;
 import com.sjtu.jpw.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
 import com.sjtu.jpw.Domain.Shows;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,6 +20,9 @@ import java.util.List;
 public class ShowServiceImpl implements ShowService {
     @Autowired
     private ShowsRepository showsRepository;
+
+    @Resource(name="mongoDBService")
+    private MongoDBService mongoDBService;
 
     public void addShow(String title, String info, String city, String type, String address,
                         String startDate, String endDate){
@@ -32,12 +40,17 @@ public class ShowServiceImpl implements ShowService {
 
     public JsonArray getShows(){
         List<Shows> shows = showsRepository.findAllShows();
+        DBCollection collection = mongoDBService.getCollection("image");
+        BasicDBObject query = new BasicDBObject();
         JsonArray showsData = new JsonArray();
         Iterator<Shows> it = shows.iterator();
         while(it.hasNext()){
             Shows show = it.next();
             JsonObject showObject = new JsonObject();
             showObject.addProperty("title",show.getTitle());
+            query.put("title",show.getTitle());
+            DBObject img = collection.findOne(query);
+            showObject.addProperty("image",img.get("imgUrl").toString());
             showObject.addProperty("info",show.getInfo());
             showObject.addProperty("city",show.getCity());
             showObject.addProperty("type",show.getType());

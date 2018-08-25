@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table, Divider,Tabs } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table, Divider,Tabs, Cascader, DatePicker } from 'antd';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
+const { RangePicker } = DatePicker;
+const dateFormat = 'YYYY-MM-DD';
 
 const columns = [{
     title: '缩略图',
@@ -88,20 +90,52 @@ const ticketColumns = [{
     ),
 }];
 
-// const data = [];
-// for(let i = 1; i < 20; i++){
-//     data.push({
-//         image:"https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg",
-//         title:`title${i}`,
-//         info:"show01",
-//         city:"上海",
-//         type:"演唱会",
-//         address:'菁菁堂',
-//         rate:"9",
-//         startDate:"2018/07/03",
-//         endDate:'2018/07/06',
-//     })
-// }
+const typeOptions = [{
+    value:'演唱会',
+    label:'音乐会',
+},{
+    value: '音乐会',
+    label: '音乐会',
+}, {
+    value: '曲苑杂坛',
+    label: '曲苑杂坛',
+},{
+    value: '话剧歌剧',
+    label: '话剧歌剧',
+},{
+    value: '体育比赛',
+    label: '体育比赛',
+},{
+    value: '舞蹈芭蕾',
+    label: '舞蹈芭蕾',
+},{
+    value: '动漫游戏',
+    label: '动漫游戏',
+},];
+
+const cityOptions = [{
+    value:'上海',
+    label:'上海',
+},{
+    value:'北京',
+    label:'北京',
+},{
+    value:'杭州',
+    label:'杭州',
+},{
+    value:'成都',
+    label:'成都',
+},{
+    value:'深圳',
+    label:'深圳',
+},{
+    value:'广州',
+    label:'广州',
+},];
+
+function onChange(date, dateString) {
+    console.log(date, dateString);
+}
 
 const ShowForm = Form.create()(
     class extends React.Component {
@@ -141,14 +175,14 @@ const ShowForm = Form.create()(
                             {getFieldDecorator('city', {
                                 rules: [{ required: true, message: '请选择城市' }],
                             })(
-                                <Input type="textarea" placeholder="城市"/>
+                                <Cascader options={cityOptions} placeholder="城市"/>
                             )}
                         </FormItem>
                         <FormItem label="类型">
                             {getFieldDecorator('type',{
                                 rules:[{ required:true, message:'请选择类型'}]
                             })(
-                                <Input type="textarea" placeholder="类型"/>
+                                <Cascader options={typeOptions} placeholder="类型"/>
                             )}
                         </FormItem>
                         <FormItem label="地址">
@@ -162,7 +196,7 @@ const ShowForm = Form.create()(
                             {getFieldDecorator('startDate',{
                                 rules:[{ required:true, message:'请选择开始日期'}]
                             })(
-                                <Input type="textarea" placeholder="开始日期"/>
+                                <RangePicker placeholder="开始日期"/>
                             )}
                         </FormItem>
                         <FormItem label="结束日期">
@@ -212,7 +246,7 @@ const TicketForm = Form.create()(
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择时间' }],
                             })(
-                                <Input type="textarea" placeholder="城市"/>
+                                <Input type="textarea" placeholder="时间"/>
                             )}
                         </FormItem>
                         <FormItem label="座位信息">
@@ -294,6 +328,12 @@ class TicketManage extends Component{
             }
 
             console.log('Received values of form: ', values);
+            const formData = form.getFieldsValue();
+
+            const timeRange = formData['startDate'];
+            console.log(timeRange[0].format('YYYY-MM-DD'));
+            console.log(timeRange[1].format('YYYY-MM-DD'));
+
             form.resetFields();
 
             let params = new URLSearchParams();
@@ -302,8 +342,8 @@ class TicketManage extends Component{
             params.append('city',values.city);
             params.append('type',values.type);
             params.append('address',values.address);
-            params.append('startDate',values.startDate);
-            params.append('endDate',values.endDate);
+            params.append('startDate',timeRange[0].format('YYYY-MM-DD'));
+            params.append('endDate',timeRange[1].format('YYYY-MM-DD'));
             axios.post('/addShow', params)
                 .then(function (response) {
                     let newShow = {
@@ -314,8 +354,8 @@ class TicketManage extends Component{
                         type:values.type,
                         address:values.address,
                         rate:0,
-                        startDate:values.startDate,
-                        endDate:values.endDate,
+                        startDate:timeRange[0].format('YYYY-MM-DD'),
+                        endDate:timeRange[1].format('YYYY-MM-DD'),
                     };
 
                     let newData = self.state.show;
@@ -378,7 +418,7 @@ class TicketManage extends Component{
                     newData.unshift(newTicket);
 
                     self.setState({
-                        visible:false,
+                        ticketVisible:false,
                         ticket:newData
                     })
                 })
