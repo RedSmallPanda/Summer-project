@@ -7,9 +7,9 @@ import Register from './Register'
 import "../../css/App.css"
 import axios from "axios";
 
-
 const SubMenu = Menu.SubMenu;
 const Search = Input.Search;
+
 
 class HeaderMenu extends Component {
     state = {
@@ -20,6 +20,7 @@ class HeaderMenu extends Component {
         type:'',
         current: window.location.pathname,
         search: '',
+        imgUrl:'',
     };
     componentWillMount(){
         let username = Cookies.get('username');
@@ -36,6 +37,8 @@ class HeaderMenu extends Component {
                 })
             }
         }
+
+        this.getAvatar(this);
         // let strCookie = document.cookie;
         // let arrCookie = strCookie.split(";");
         // for(let i = 0; i < arrCookie.length; i++){
@@ -55,6 +58,23 @@ class HeaderMenu extends Component {
         //     }
         // }
     }
+
+    getAvatar(self) {
+        axios.get("/getAvatar",{
+            params:{
+                username:Cookies.get('username')
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
 
     handleSearch = (value) => {
         browserHistory.push({
@@ -379,7 +399,17 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={3}/>
                         <Col span={1}>
-                            <Avatar icon="user" style={{cursor: "pointer"}} onClick={this.handleAvatar}/>
+                            {
+                                this.state.isLogin && this.state.imgUrl !== '' ?
+                                    <img src={this.state.imgUrl}
+                                         className="infoAvatar" width={40} height={40}
+                                         style={{cursor: "pointer"}} onClick={this.handleAvatar}
+                                         alt="default"
+                                    />
+                                    :
+                                    <Avatar icon="user" onClick={this.handleAvatar}
+                                            style={{cursor: "pointer"}}/>
+                            }
                         </Col>
                         <Col span={3}>
                             {loginOrInfo}
@@ -390,7 +420,7 @@ class HeaderMenu extends Component {
                     bottom: 50,
                     right: 50,
                 }}/>
-                {this.state.isLogin&&!this.state.isAdmin?
+                {this.state.isLogin && !this.state.isAdmin ?
                     <BackTop visibilityHeight={-1} style={{
                         bottom: 100,
                         right: 50,
@@ -399,11 +429,11 @@ class HeaderMenu extends Component {
                         fontSize: 25,
                         textAlign: "center",
                         color: "#ffffff",
-                        background:'rgba(0,0,0,0.5)',
+                        background: 'rgba(0,0,0,0.5)',
                         borderRadius: 5,
                     }}>
                         <Icon type="shopping-cart" onClick={this.handleShoppingCart}/>
-                    </BackTop>:<div/>
+                    </BackTop> : <div/>
                 }
             </div>;
         return (
