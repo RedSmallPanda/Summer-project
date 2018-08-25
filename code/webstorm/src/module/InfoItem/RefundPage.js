@@ -17,7 +17,7 @@ const data={
 
 class DemoRefundPage extends Component {
     state={
-        data:data,
+        data:[],
         orderId:this.props.orderId,
     };
 
@@ -45,6 +45,24 @@ class DemoRefundPage extends Component {
             }
         });
     };
+
+    componentWillMount(){
+        let self = this;
+        axios.get("/getShowByOrderId",{
+            params:{
+                orderId:this.state.orderId,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
 
     render(){
         const { getFieldDecorator } = this.props.form;
@@ -102,15 +120,15 @@ class DemoRefundPage extends Component {
                         <Card
                             hoverable
                             style={{ width: 240 }}
-                            cover={<img alt="example" src={this.state.data.img} />}
+                            cover={<img alt="example" src={this.state.data.img} />} //这里添加图片
                         >
                             <Meta
-                                title={this.state.data.name}
+                                title={this.state.data.title}
                                 description={
                                     <div>
-                                        <Icon type="environment" />{" "+this.state.data.location}<br/>
-                                        <Icon type="calendar" />{" "+this.state.data.time}<br/>
-                                        <Rate allowHalf disabled defaultValue={this.state.data.rate} />
+                                        <Icon type="environment" />{" "+this.state.data.address}<br/>
+                                        <Icon type="calendar" />{" "+this.state.data.starttime+" 起"}<br/>
+                                        <Rate allowHalf disabled value={this.state.data.rate} />
                                     </div>}
                             />
                         </Card>

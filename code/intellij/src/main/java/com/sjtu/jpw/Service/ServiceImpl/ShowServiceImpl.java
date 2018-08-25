@@ -1,7 +1,9 @@
 package com.sjtu.jpw.Service.ServiceImpl;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sjtu.jpw.Repository.ShowsRepository;
 import com.sjtu.jpw.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,5 +50,13 @@ public class ShowServiceImpl implements ShowService {
             showsData.add(showObject);
         }
         return showsData;
+    }
+
+    public JsonObject getShowsByShowId(int showId){
+        Shows show=showsRepository.findFirstByShowId(showId);
+        Gson showGson=new Gson();
+        String showJson = showGson.toJson(show);
+        JsonObject showObject = new JsonParser().parse(showJson).getAsJsonObject();
+        return showObject;
     }
 }

@@ -43,7 +43,7 @@ class GoodDetailPage extends Component{
         pickticknum:1,
         tickmaxnum:100,
         totalprice:40,
-        data:data,
+        data:[],
 
 
     };
@@ -101,7 +101,22 @@ class GoodDetailPage extends Component{
     }*/
     componentWillMount(){
         window.scrollTo(0,0);
-    //    console.log("willmount")
+        //    console.log("willmount")
+        let self=this;
+        axios.get("/getShowById",{
+            params:{
+                showId:self.props.params.showId,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    data: response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
         this.getResult(this,this.props);
     }
 
@@ -199,7 +214,7 @@ class GoodDetailPage extends Component{
             state:{
                 firstStep:0,
                 secondStep:0,
-                showName:this.state.data.name,
+                showName:this.state.data.title,
                 ticketInfo:this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx],
                 number:this.state.pickticknum,
                 totalPrice:this.state.pickticknum * this.state.ticketDetails[this.state.pickeddate][this.state.picktime][this.state.pickpriceIdx].price,
@@ -258,17 +273,17 @@ class GoodDetailPage extends Component{
                                                     <Card
                                                         hoverable
                                                         style={{ width: 240 }}
-                                                        cover={<img alt="example" src={this.state.data.img} />}
+                                                        cover={<img alt="example" src={this.state.data.img} />} //这里添加图片
                                                     >
                                                         <Meta
-                                                            title={this.state.data.name}
+                                                            title={this.state.data.title}
                                                             description={
                                                                 <div>
                                                                     <Icon type="environment"/>
-                                                                    <a href={"https://baike.baidu.com/item/"+this.state.data.location} style={{color:"#777777"}} target="_blank">
-                                                                        {" "+this.state.data.location}
-                                                                    </a>
-                                                                    <Rate allowHalf disabled defaultValue={this.state.data.rate} />
+                                                                    <a href={"https://baike.baidu.com/item/"+this.state.data.address} style={{color:"#777777"}} target="_blank">
+                                                                        {" "+this.state.data.address}
+                                                                    </a><br/>
+                                                                    <Rate allowHalf disabled value={this.state.data.rate} />
                                                                 </div>}
                                                         />
                                                     </Card>

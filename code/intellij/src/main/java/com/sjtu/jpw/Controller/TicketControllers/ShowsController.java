@@ -8,6 +8,7 @@ import com.mongodb.DBObject;
 import com.sjtu.jpw.Domain.ShowLocation;
 import com.sjtu.jpw.Service.MongoDBService;
 import com.sjtu.jpw.Service.ShowLocationService;
+import com.sjtu.jpw.Service.OrdersService;
 import com.sjtu.jpw.Service.ShowService;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,8 @@ public class ShowsController {
     private ShowService showService;
     @Autowired
     private ShowLocationService showLocationService;
+    @Autowired
+    private OrdersService orderService;
 
     @Resource(name="mongoDBService")
     private MongoDBService mongoDBService;
@@ -170,6 +173,30 @@ public class ShowsController {
         Gson gson = new Gson();
         System.out.println(gson.toJson(locations));
         out.print(gson.toJson(locations));
+        out.flush();
+    }
+
+    @RequestMapping(value = "/getShowById", produces = "application/json;charset=UTF-8")
+    public void GetShowById(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        int showId=Integer.parseInt(request.getParameter("showId"));
+
+        System.out.println(showId);
+        out.print(showService.getShowsByShowId(showId));
+        out.flush();
+    }
+
+    @RequestMapping(value = "/getShowByOrderId", produces = "application/json;charset=UTF-8")
+    public void GetShowByOrderId(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        int orderId=Integer.parseInt(request.getParameter("orderId"));
+        int showId=orderService.getShowIdByOrderId(orderId);
+        System.out.println(showId);
+        out.print(showService.getShowsByShowId(showId));
         out.flush();
     }
 }

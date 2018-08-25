@@ -18,4 +18,5 @@ public interface OrdersService {
     void useCoupon(int userId,int couponId);
     void UpdateOrderState(String state,int orderId);
     JsonArray getSalesData(String choice,String timeString,String kind);
+    int getShowIdByOrderId(int orderId);
 }

@@ -630,4 +630,13 @@ public class OrdersServiceImpl implements OrdersService {
         }
         return salesData;
     }
+
+    @Override
+    public int getShowIdByOrderId(int orderId){
+        Orders order=ordersRepository.findFirstByOrderId(orderId);
+        int ticketId=order.getTicketId();
+        Ticket ticket=ticketRepository.findFirstByTicketId(ticketId);
+        int showId=ticket.getShowId();
+        return showId;
+    }
 }
