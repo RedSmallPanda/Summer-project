@@ -110,7 +110,7 @@ class Order extends Component {
         let self = this;
         axios.get("/getHistoryOrder",{
             params:{
-                userId: 1,
+
             }
         })
             .then(function (response) {
