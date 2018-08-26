@@ -1,6 +1,6 @@
 import { Slider, InputNumber, Row, Col } from 'antd';
 import React, { Component } from 'react';
-class Ticknumpick extends Component {
+class TickNumPick extends Component {
     //props: func:  setnum,   number: maxnum
     state = {
         inputValue: 1,
@@ -73,4 +73,4 @@ class Ticknumpick extends Component {
         );
     }
 }
-export default Ticknumpick;
+export default TickNumPick;
