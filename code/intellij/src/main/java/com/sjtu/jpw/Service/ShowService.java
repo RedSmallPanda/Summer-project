@@ -6,4 +6,6 @@ public interface ShowService {
                 String startDate, String endDate);
 
     JsonArray getShows();
+
+    void deleteShow(Integer showId);
 }

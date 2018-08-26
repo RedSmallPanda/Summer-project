@@ -6,6 +6,7 @@ import com.mongodb.BasicDBObject;
 import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sjtu.jpw.Repository.ShowsRepository;
+import com.sjtu.jpw.Repository.TicketRepository;
 import com.sjtu.jpw.Service.MongoDBService;
 import com.sjtu.jpw.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +14,18 @@ import com.sjtu.jpw.Domain.Shows;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.text.SimpleDateFormat;
 import java.util.Iterator;
 import java.util.List;
+import java.sql.Date;
 
 @Service("showService")
 public class ShowServiceImpl implements ShowService {
     @Autowired
     private ShowsRepository showsRepository;
+
+    @Autowired
+    private TicketRepository ticketRepository;
 
     @Resource(name="mongoDBService")
     private MongoDBService mongoDBService;
@@ -33,8 +39,8 @@ public class ShowServiceImpl implements ShowService {
         show.setType(type);
         show.setAddress(address);
         show.setRate(0);
-
-
+        show.setStarttime(strToDate(startDate));
+        show.setEndtime(strToDate(endDate));
         showsRepository.save(show);
     }
 
@@ -47,6 +53,7 @@ public class ShowServiceImpl implements ShowService {
         while(it.hasNext()){
             Shows show = it.next();
             JsonObject showObject = new JsonObject();
+            showObject.addProperty("showId",show.getShowId());
             showObject.addProperty("title",show.getTitle());
             query.put("title",show.getTitle());
             DBObject img = collection.findOne(query);
@@ -61,5 +68,22 @@ public class ShowServiceImpl implements ShowService {
             showsData.add(showObject);
         }
         return showsData;
+    }
+
+    public void deleteShow(Integer showId){
+        ticketRepository.deleteAllByShowId(showId);
+        showsRepository.deleteAllByShowId(showId);
+    }
+
+    private Date strToDate(String strDate) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date d = null;
+        try {
+            d = format.parse(strDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Date date = new java.sql.Date(d.getTime());
+        return new Date(d.getTime());
     }
 }

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import java.util.List;
 
     @Repository
@@ -31,6 +32,11 @@ import java.util.List;
 
         public List<Ticket> findAllByShowId(Integer showId);
 
+        @Transactional
+        public void deleteAllByShowId(Integer showId);
+
+        @Transactional
+        public void deleteAllByTicketId(Integer ticketId);
 
         //   @Modifying
         //   @Query("update Shows show set user.password=:password where user.userId=:userId")

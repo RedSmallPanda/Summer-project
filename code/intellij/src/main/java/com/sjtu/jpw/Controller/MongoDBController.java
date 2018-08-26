@@ -55,9 +55,9 @@ public class MongoDBController {
         BasicDBObject query = new BasicDBObject();
         query.put("username",username);
         DBObject img = collection.findOne(query);
-        System.out.println(img);
+        //System.out.println(img);
         if(img != null){
-            System.out.println(img.get("imgUrl"));
+            //System.out.println(img.get("imgUrl"));
             out.print(img.get("imgUrl"));
         }
         out.flush();
