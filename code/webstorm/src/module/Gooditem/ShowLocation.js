@@ -2,6 +2,7 @@ import React, {Component} from "react";
 import {Button, Icon} from "antd";
 import axios from "axios";
 
+// let count = 0;
 class ShowLocation extends Component {
     constructor(props) {
         super(props);
@@ -13,15 +14,19 @@ class ShowLocation extends Component {
             latitude: null,
             working: true,
             error: false,
+            got: false,
+            shouldUpdate: false,
+            shouldRequest: false,
         };
+        // console.log("ShowLocation: constructor " + (++count));
+        // console.log(this.state);
         this.getLocation = this.getLocation.bind(this);
-    }
-
-    componentWillMount() {
-        this.getLocation();
+        this.renderMap = this.renderMap.bind(this);
     }
 
     render() {
+        // console.log("ShowLocation: render" + (++count));
+        // console.log(this.state);
         return (
             <div>
                 <div id='map' style={{
@@ -34,27 +39,102 @@ class ShowLocation extends Component {
                             fontSize: 80
                         }}/>
                         :
-                        <div>{
-                            this.state.error?
-                                <div>
-                                    <p>error</p>
-                                    <Button htmlType="button"
-                                            onClick={this.getLocation}>
-                                        重新获取
-                                    </Button>
-                                </div>
-                                :
-                                "暂无地图数据"
-                        }</div>
+                        <div>
+                            <p>{this.state.error?"error":"暂无地图数据"}</p>
+                            <Button htmlType="button"
+                                    onClick={this.getLocation}>
+                                重新获取
+                            </Button>
+                        </div>
                 }</div>
             </div>
         );
     }
 
-    componentDidUpdate() {
-        if (this.state.error||!this.state.working) {
+    componentWillReceiveProps(nextProps) {
+        // console.log("ShowLocation: nextProps " + (++count));
+        // console.log(nextProps);
+        if (nextProps.city !== this.state.city && nextProps.location !== this.state.location) {
+            this.setState({
+                ...nextProps,
+                shouldUpdate: true,
+                shouldRequest: true,
+            });
+        }
+    }
+
+    shouldComponentUpdate() {
+        // console.log("ShowLocation: shouldComponentUpdate " + this.state.shouldUpdate + (++count));
+        if (this.state.shouldUpdate) {
+            this.setState({
+                shouldUpdate: false,
+            });
+            return true;
+        }
+        return false;
+    }
+
+    componentWillUpdate() {
+        // console.log("ShowLocation: willUpdate " + this.state.shouldRequest + (++count));
+        if (this.state.shouldRequest) {
+            this.setState({
+                shouldRequest: false,
+            });
+            this.getLocation();
+        }
+    }
+
+    getLocation() {
+        // console.log("ShowLocation: getLocation" + (++count));
+        let self = this;
+        axios.get("/getLocation", {
+            params: {
+                location: self.state.location
+            }
+        })
+            .then(function (response) {
+                // console.log(response.data);
+                if (response.data.length === 0) {
+                    self.setState({
+                        error: false,
+                        working: false,
+                        got: false,
+                        shouldUpdate: true,
+                    });
+                } else {
+                    self.setState({
+                        error: false,
+                        working: true,
+                        got: true,
+                        shouldUpdate: true,
+                        longitude: response.data[0].longitude,
+                        latitude: response.data[0].latitude,
+                        // longitude: 121.439224,
+                        // latitude: 31.026026,
+                    });
+                    self.renderMap();
+                }
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    error: true,
+                    working: false,
+                    got: false,
+                    shouldUpdate: true,
+                });
+            });
+    }
+
+    renderMap() {
+        // console.log("ShowLocation: update" + (++count));
+        // console.log(this.state);
+        if (this.state.longitude === null || this.state.latitude === null ||
+            this.state.error || !this.state.working) {
             return;
         }
+        console.log("map rendering");
+
         let BMap = window.BMap;
         let map = new BMap.Map("map"); // 创建Map实例 "map":<div id='map'>...</div>
 
@@ -116,40 +196,6 @@ class ShowLocation extends Component {
         marker.addEventListener("click", function () {
             map.openInfoWindow(infoWindow, point); //开启信息窗口
         });
-    }
-
-    getLocation() {
-        let self = this;
-        axios.get("/getLocation", {
-            params: {
-                location: self.props.location
-            }
-        })
-            .then(function (response) {
-                console.log(response.data);
-                if (response.data.length === 0) {
-                    self.setState({
-                        error: false,
-                        working: false,
-                    });
-                } else {
-                    self.setState({
-                        error: false,
-                        working: true,
-                        longitude: response.data[0].longitude,
-                        // longitude: 121.439224,
-                        latitude: response.data[0].latitude,
-                        // latitude: 31.026026,
-                    });
-                }
-            })
-            .catch(function (error) {
-                console.log(error);
-                self.setState({
-                    error: true,
-                    working: false,
-                });
-            });
     }
 
 }
