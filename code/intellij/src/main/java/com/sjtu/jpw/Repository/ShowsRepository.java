@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -35,4 +36,7 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
 
     public Shows save(Shows show);
     Shows findFirstByShowId(int showId);
+
+    @Transactional
+    public void deleteAllByShowId(Integer showId);
 }

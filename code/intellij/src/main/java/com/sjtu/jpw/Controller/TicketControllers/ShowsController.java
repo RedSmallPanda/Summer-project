@@ -113,7 +113,6 @@ public class ShowsController {
         showService.addShow(title,info,city,type,address,startDate,endDate);
         DBCollection collection = mongoDBService.getCollection("cache");
         DBObject img = collection.findOne();
-        System.out.println(img.get("imgUrl"));
         out.print(img.get("imgUrl").toString());
         out.flush();
 
@@ -132,9 +131,18 @@ public class ShowsController {
         PrintWriter out = response.getWriter();
 
         JsonArray allShows = showService.getShows();
-        System.out.println(allShows);
         out.print(allShows);
         out.flush();
+    }
+
+    @RequestMapping(value="/deleteShow",produces="application/json;charset=UTF-8")
+    public void DeleteShow(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int showId= Integer.parseInt(request.getParameter("showId"));
+        showService.deleteShow(showId);
+
+        System.out.println("delete show successfully");
     }
 
     @RequestMapping(value="/addTicket",produces="application/json;charset=UTF-8")

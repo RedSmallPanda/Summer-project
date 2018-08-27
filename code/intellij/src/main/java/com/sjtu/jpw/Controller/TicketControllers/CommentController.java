@@ -131,7 +131,7 @@ public class CommentController {
     }
 
     @RequestMapping(value="/deleteComment",produces="application/json;charset=UTF-8")
-    public void DeleteAddress(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void DeleteComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
 
         int commentId= Integer.parseInt(request.getParameter("commentId"));
