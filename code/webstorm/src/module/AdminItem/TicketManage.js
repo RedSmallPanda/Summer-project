@@ -12,44 +12,6 @@ const { RangePicker } = DatePicker;
 const date = new Date();
 const startDate=date.toLocaleDateString();
 
-const columns = [{
-    title: '缩略图',
-    key: 'image',
-    render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
-},{
-    title: '票品名称',
-    dataIndex: 'title',
-    key: 'title',
-},{
-    title: '城市',
-    dataIndex: 'city',
-    key: 'city',
-},{
-    title: '类型',
-    dataIndex: 'type',
-    key: 'type',
-},{
-    title: '评分',
-    dataIndex: 'rate',
-    key: 'rate',
-},{
-    title: '开始日期',
-    dataIndex: 'startDate',
-    key: 'startDate',
-},{
-    title: '结束日期',
-    dataIndex: 'endDate',
-    key: 'endDate',
-},{
-    title:'操作',
-    key:'action',
-    render: (text) => (
-        <span>
-      <a>下架</a>
-    </span>
-    ),
-}];
-
 const ticketColumns = [{
     title: '票品名称',
     dataIndex: 'title',
@@ -128,6 +90,16 @@ const cityOptions = [{
 },];
 
 let showOptions = [];
+
+
+function onChange(value) {
+    console.log(value);
+};
+
+function disabledDate(current) {
+    // Can not select days before today and today
+    return current && current < moment().endOf('day');
+}
 
 const ShowForm = Form.create()(
     class extends React.Component {
@@ -220,7 +192,7 @@ const TicketForm = Form.create()(
                             {getFieldDecorator('title', {
                                 rules: [{ required: true, message: '请选择演出' }],
                             })(
-                                <Cascader options={showOptions} placeholder="演出"/>
+                                <Cascader options={showOptions} onChange={onChange} changeOnSelect placeholder="演出"/>
                             )}
                         </FormItem>
                         <FormItem label="价格">
@@ -234,7 +206,12 @@ const TicketForm = Form.create()(
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择时间' }],
                             })(
-                                <Input type="textarea" placeholder="时间"/>
+                                <DatePicker
+                                    format="YYYY-MM-DD HH:mm"
+                                    disabledDate={disabledDate}
+                                    locale={locale}
+                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                />
                             )}
                         </FormItem>
                         <FormItem label="座位信息">
@@ -314,7 +291,8 @@ class TicketManage extends Component{
                 console.log(response);
                 self.setState({
                     show:response.data
-                })
+                });
+                self.setShowOptions();
             })
             .catch(function (error) {
                 console.log(error);
@@ -335,7 +313,15 @@ class TicketManage extends Component{
     }
 
     setShowOptions = () =>{
-
+        showOptions = [];
+        let showData = this.state.show;
+        for(let j=0;j<showData.length;j++){
+            let newOption = {
+                value:showData[j].showId,
+                label:showData[j].title,
+            };
+            showOptions.push(newOption);
+        }
     };
 
     componentDidMount(){
@@ -377,25 +363,10 @@ class TicketManage extends Component{
             params.append('startDate',timeRange[0].format('YYYY-MM-DD'));
             params.append('endDate',timeRange[1].format('YYYY-MM-DD'));
             axios.post('/addShow', params)
-                .then(function (response) {
-                    let newShow = {
-                        image:response.data,
-                        title:values.title,
-                        info:values.info,
-                        city:values.city,
-                        type:values.type,
-                        address:values.address,
-                        rate:0,
-                        startDate:timeRange[0].format('YYYY-MM-DD'),
-                        endDate:timeRange[1].format('YYYY-MM-DD'),
-                    };
-
-                    let newData = self.state.show;
-                    newData.unshift(newShow);
-
+                .then(function () {
+                    self.getShows(self);
                     self.setState({
                         visible:false,
-                        show:newData
                     })
                 })
                 .catch(function (error) {

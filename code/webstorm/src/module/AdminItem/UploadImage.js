@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Upload, Icon, /*message*/ } from 'antd';
+import { Upload, Icon, message } from 'antd';
 import axios from 'axios';
 
 function getBase64(img, callback) {
@@ -36,18 +36,30 @@ class UploadImage extends Component{
             showUploadList:false,
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
-                console.log(file);
-                let self = this;
-                let reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function(e){
-                    file = e.target.result;
-                    self.setState({
-                        base64:file,
-                    });
-                    self.addCache();
-                    return file;
-                };
+                const isJPG = file.type === 'image/jpeg';
+                if (!isJPG) {
+                    message.error('You can only upload JPG file!');
+                }
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                    message.error('Image must smaller than 2MB!');
+                }
+                if(!(isJPG && isLt2M)){
+                    return isJPG && isLt2M;
+                }
+                else {
+                    let self = this;
+                    let reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                        file = e.target.result;
+                        self.setState({
+                            base64: file,
+                        });
+                        self.addCache();
+                        return file;
+                    };
+                }
             },
         }
     }
