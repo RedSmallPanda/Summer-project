@@ -53,16 +53,36 @@ const cityOptions = [{
     label:'广州',
 },];
 
-let showOptions = [];
+let show = [{
+    image:'',
+    showId:'',
+    title:'',
+    info:'',
+    city:'',
+    type:'',
+    address:'',
+    rate:'',
+    startDate:'',
+    endDate:'',
 
+}];
+let showOptions = [];
+let startDate = '';
+let endDate = '';
 
 function onChange(value) {
-    console.log(value);
-};
+    console.log(value[0]);
+    for(let i = 0;i < show.length; i++){
+        if(show[i].showId === value[0]){
+            startDate = show[i].startDate;
+            endDate = show[i].endDate;
+        }
+    }
+}
 
 function disabledDate(current) {
     // Can not select days before today and today
-    return current && current < moment().endOf('day');
+    return current < moment(startDate).startOf('day') || current > moment(endDate).endOf('day');
 }
 
 const ShowForm = Form.create()(
@@ -320,6 +340,7 @@ class TicketManage extends Component{
             };
             showOptions.push(newOption);
         }
+        show = this.state.show;
     };
 
     componentDidMount(){
