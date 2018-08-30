@@ -15,6 +15,7 @@ public interface TicketService {
     void addCollection(Integer userId,Integer showId);
     void deleteCollection(Integer userId,Integer showId);
     void deleteAllCollection(Integer userId);
-    void addTicket(String title, Integer price, String time, String seat, Integer amount);
+    void addTicket(Integer showId, Integer price, String time, String seat, Integer amount);
     JsonArray getTickets();
+    void deleteTicket(Integer ticketId);
 }

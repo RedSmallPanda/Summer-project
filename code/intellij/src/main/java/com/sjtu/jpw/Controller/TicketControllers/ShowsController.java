@@ -148,13 +148,13 @@ public class ShowsController {
     @RequestMapping(value="/addTicket",produces="application/json;charset=UTF-8")
     public void AddTicket(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
-        String title = request.getParameter("title");
+        int showId = Integer.parseInt(request.getParameter("showId"),10);
         int price = Integer.parseInt(request.getParameter("price"),10);
         String time = request.getParameter("time");
         String seat = request.getParameter("seat");
         int amount = Integer.parseInt(request.getParameter("amount"),10);
 
-        ticketService.addTicket(title,price,time,seat,amount);
+        ticketService.addTicket(showId,price,time,seat,amount);
         System.out.println("add ticket successfully");
     }
 
@@ -168,6 +168,17 @@ public class ShowsController {
         out.print(allTickets);
         out.flush();
     }
+
+    @RequestMapping(value="/deleteTicket",produces="application/json;charset=UTF-8")
+    public void DeleteTicket(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int ticketId= Integer.parseInt(request.getParameter("ticketId"));
+        ticketService.deleteTicket(ticketId);
+
+        System.out.println("delete ticket successfully");
+    }
+
 
     @RequestMapping(value="/getLocation",produces = "application/json;charset=UTF-8")
     public void getLocation(HttpServletRequest request, HttpServletResponse response) throws IOException{

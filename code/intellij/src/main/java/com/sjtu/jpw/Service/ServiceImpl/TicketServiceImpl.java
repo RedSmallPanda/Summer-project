@@ -15,6 +15,7 @@ import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -155,8 +156,19 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public void addTicket(String title, Integer price, String time, String seat, Integer amount){
+    public void addTicket(Integer showId, Integer price, String time, String seat, Integer amount){
+        Ticket ticket = new Ticket();
+        ticket.setShowId(showId);
+        ticket.setPrice(price);
+        ticket.setTime(strToTimeStamp(time));
+        ticket.setSeat(seat);
+        ticket.setAmount(amount);
+        ticket.setStock(amount);
+        ticketRepository.save(ticket);
+    }
 
+    public void deleteTicket(Integer ticketId){
+        ticketRepository.deleteAllByTicketId(ticketId);
     }
 
     @Override
@@ -167,6 +179,7 @@ public class TicketServiceImpl implements TicketService {
         while(it.hasNext()){
             Ticket ticket = it.next();
             JsonObject ticketObject = new JsonObject();
+            ticketObject.addProperty("ticketId",ticket.getTicketId());
             String title = showsRepository.findFirstByShowId(ticket.getShowId()).getTitle();
             ticketObject.addProperty("title",title);
             ticketObject.addProperty("price",ticket.getPrice());
@@ -177,5 +190,16 @@ public class TicketServiceImpl implements TicketService {
             ticketsData.add(ticketObject);
         }
         return ticketsData;
+    }
+
+    private Timestamp strToTimeStamp(String timeStamp){
+        Timestamp ts = new Timestamp(System.currentTimeMillis());
+        try {
+            ts = Timestamp.valueOf(timeStamp);
+            System.out.println(ts);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ts;
     }
 }

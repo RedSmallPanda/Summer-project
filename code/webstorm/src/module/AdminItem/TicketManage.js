@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table, Divider,Tabs, Cascader, DatePicker } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker } from 'antd';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 import moment from 'moment';
@@ -9,83 +9,47 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
-const date = new Date();
-const startDate=date.toLocaleDateString();
-
-const ticketColumns = [{
-    title: '票品名称',
-    dataIndex: 'title',
-    key: 'title',
-},{
-    title:'价格',
-    dataIndex:'price',
-    key:'price',
-},{
-    title: '时间',
-    dataIndex: 'time',
-    key: 'time',
-},{
-    title: '座位信息',
-    dataIndex: 'seat',
-    key: 'seat',
-},{
-    title: '座位总数',
-    dataIndex: 'amount',
-    key: 'amount',
-},{
-    title: '库存',
-    dataIndex: 'stock',
-    key: 'stock',
-},{
-    title:'操作',
-    key:'action',
-    render: (text) => (
-        <span>
-      <a>删除</a>
-    </span>
-    ),
-}];
 
 const typeOptions = [{
-    value:'演唱会',
+    value:'concert',
     label:'演唱会',
 },{
-    value: '音乐会',
+    value: 'music',
     label: '音乐会',
 }, {
-    value: '曲苑杂坛',
+    value: 'cnopera',
     label: '曲苑杂坛',
 },{
-    value: '话剧歌剧',
+    value: 'opera',
     label: '话剧歌剧',
 },{
-    value: '体育比赛',
+    value: 'sports',
     label: '体育比赛',
 },{
-    value: '舞蹈芭蕾',
+    value: 'dance',
     label: '舞蹈芭蕾',
 },{
-    value: '动漫游戏',
+    value: 'comic',
     label: '动漫游戏',
 },];
 
 const cityOptions = [{
-    value:'上海',
+    value:'sh',
     label:'上海',
 },{
-    value:'北京',
+    value:'bj',
     label:'北京',
 },{
-    value:'杭州',
+    value:'hz',
     label:'杭州',
 },{
-    value:'成都',
+    value:'cd',
     label:'成都',
 },{
-    value:'深圳',
+    value:'sz',
     label:'深圳',
 },{
-    value:'广州',
+    value:'gz',
     label:'广州',
 },];
 
@@ -159,7 +123,7 @@ const ShowForm = Form.create()(
                         </FormItem>
                         <FormItem label="开始日期">
                             {getFieldDecorator('startDate',
-                                {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
+                                // {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
                                 {rules:[{ required:true, message:'请选择日期'}]}
                                 )(
                                 <RangePicker locale={locale}/>
@@ -207,7 +171,7 @@ const TicketForm = Form.create()(
                                 rules: [{ required: true, message: '请选择时间' }],
                             })(
                                 <DatePicker
-                                    format="YYYY-MM-DD HH:mm"
+                                    format="YYYY-MM-DD HH:mm:ss"
                                     disabledDate={disabledDate}
                                     locale={locale}
                                     showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
@@ -271,7 +235,41 @@ class TicketManage extends Component{
             key:'action',
             render: (text,record) => (
                 <span>
-                    <a onClick={()=>this.handleDelete(record.showId)}>下架</a>
+                    <a onClick={()=>this.handleDeleteShow(record.showId)}>下架</a>
+                </span>
+            ),
+        }];
+
+        this.ticketColumns = [{
+            title: '票品名称',
+            dataIndex: 'title',
+            key: 'title',
+        },{
+            title:'价格',
+            dataIndex:'price',
+            key:'price',
+        },{
+            title: '时间',
+            dataIndex: 'time',
+            key: 'time',
+        },{
+            title: '座位信息',
+            dataIndex: 'seat',
+            key: 'seat',
+        },{
+            title: '座位总数',
+            dataIndex: 'amount',
+            key: 'amount',
+        },{
+            title: '库存',
+            dataIndex: 'stock',
+            key: 'stock',
+        },{
+            title:'操作',
+            key:'action',
+            render: (text,record) => (
+                <span>
+                    <a onClick={()=>this.handleDeleteTicket(record.ticketId)}>删除</a>
                 </span>
             ),
         }];
@@ -347,11 +345,7 @@ class TicketManage extends Component{
 
             console.log('Received values of form: ', values);
             const formData = form.getFieldsValue();
-
             const timeRange = formData['startDate'];
-            console.log(timeRange[0].format('YYYY-MM-DD'));
-            console.log(timeRange[1].format('YYYY-MM-DD'));
-
             form.resetFields();
 
             let params = new URLSearchParams();
@@ -397,32 +391,32 @@ class TicketManage extends Component{
             }
 
             console.log('Received values of form: ', values);
+            const formData = form.getFieldsValue();
+            const time = formData['time'];
             form.resetFields();
 
             let params = new URLSearchParams();
-            params.append('title',values.title);
+            params.append('showId',values.title[0]);
             params.append('price',values.price);
-            params.append('time',values.time);
+            params.append('time',time.format('YYYY-MM-DD HH:mm:ss'));
             params.append('seat',values.seat);
             params.append('amount',values.amount);
             axios.post('/addTicket', params)
-                .then(function (response) {
-                    console.log(response.data);
-                    let newTicket = {
-                        title:values.title,
-                        price:values.price,
-                        time:values.time,
-                        seat:values.seat,
-                        amount:values.amount,
-                        stock:values.amount,
-                    };
-
-                    let newData = self.state.ticket;
-                    newData.unshift(newTicket);
-
+                .then(function () {
+                    // let newTicket = {
+                    //     title:values.title,
+                    //     price:values.price,
+                    //     time:values.time,
+                    //     seat:values.seat,
+                    //     amount:values.amount,
+                    //     stock:values.amount,
+                    // };
+                    //
+                    // let newData = self.state.ticket;
+                    // newData.unshift(newTicket);
+                    self.getTickets(self);
                     self.setState({
                         ticketVisible:false,
-                        ticket:newData
                     })
                 })
                 .catch(function (error) {
@@ -436,7 +430,7 @@ class TicketManage extends Component{
         this.TicketformRef = formRef;
     };
 
-    handleDelete = (showId) => {
+    handleDeleteShow = (showId) => {
         let self = this;
         Modal.confirm({
             title: '是否下架?',
@@ -463,6 +457,35 @@ class TicketManage extends Component{
         let params = new URLSearchParams();
         params.append('showId',showId);
         axios.post('/deleteShow', params);
+    };
+
+    handleDeleteTicket = (ticketId) => {
+        let self = this;
+        Modal.confirm({
+            title: '是否删除?',
+            content: '',
+            okText: "确认",
+            cancelText: "取消",
+            onOk() {
+                const newData = [...self.state.ticket];
+                const index = newData.findIndex(item => ticketId === item.ticketId);
+                self.deleteTicket(ticketId);
+                newData.splice(index,1);
+                self.setState({
+                    ticket: newData
+                })
+
+            },
+            onCancel() {
+                //do nothing
+            },
+        });
+    };
+
+    deleteTicket = (ticketId) =>{
+        let params = new URLSearchParams();
+        params.append('ticketId',ticketId);
+        axios.post('/deleteTicket', params);
     };
 
     render(){
@@ -492,7 +515,7 @@ class TicketManage extends Component{
                         />
                     </TabPane>
                     <TabPane tab="票品" key="2">
-                        <Table columns={ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}}/>
+                        <Table columns={this.ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}}/>
                     </TabPane>
                 </Tabs>
                 <ShowForm

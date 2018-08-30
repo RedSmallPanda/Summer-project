@@ -84,7 +84,7 @@ public class MongoDBController {
 
         PrintWriter out = response.getWriter();
 
-        DBCollection collection = mongoDBService.getCollection("show");
+        DBCollection collection = mongoDBService.getCollection("image");
 //        BasicDBObject query = new BasicDBObject();
 //        query.put("showId","1");
         DBObject img = collection.findOne();
