@@ -130,10 +130,6 @@ class HomePage extends Component{
                         </Row>
                         {homeRecommend}
                         {homeRecommend}
-                        {homeRecommend}
-                        {homeRecommend}
-                        {homeRecommend}
-                        {homeRecommend}
 
                     </Col>
                 </Row>

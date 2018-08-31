@@ -9,8 +9,8 @@ import locale from 'antd/lib/date-picker/locale/zh_CN';
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
-const date = new Date();
-const startDate=date.toLocaleDateString();
+// const date = new Date();
+// const startDate=date.toLocaleDateString();
 
 const ticketColumns = [{
     title: '票品名称',
@@ -159,7 +159,7 @@ const ShowForm = Form.create()(
                         </FormItem>
                         <FormItem label="开始日期">
                             {getFieldDecorator('startDate',
-                                {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
+                                // {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
                                 {rules:[{ required:true, message:'请选择日期'}]}
                                 )(
                                 <RangePicker locale={locale}/>

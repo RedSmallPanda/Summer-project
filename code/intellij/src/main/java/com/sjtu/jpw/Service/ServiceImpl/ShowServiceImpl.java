@@ -59,7 +59,9 @@ public class ShowServiceImpl implements ShowService {
             showObject.addProperty("title",show.getTitle());
             query.put("title",show.getTitle());
             DBObject img = collection.findOne(query);
-            showObject.addProperty("image",img.get("imgUrl").toString());
+            if (img != null) {
+                showObject.addProperty("image", img.get("imgUrl").toString());
+            }
             showObject.addProperty("info",show.getInfo());
             showObject.addProperty("city",show.getCity());
             showObject.addProperty("type",show.getType());
