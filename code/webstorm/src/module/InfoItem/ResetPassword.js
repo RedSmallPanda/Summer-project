@@ -28,7 +28,7 @@ class ResetStep0Form extends Component {
                                 "\n验证码已经发出，请前往查看\n"
                                 + values.email);
                         } else if (response.data === false) {
-                            alert("邮箱输入有误");
+                            alert("账号或邮箱输入有误");
                         } else {
                             alert(response.data);
                         }

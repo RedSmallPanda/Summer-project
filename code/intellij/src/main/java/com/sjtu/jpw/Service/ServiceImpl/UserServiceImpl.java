@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User usernameMatchEmail(String username, String email){
         User toReset = userRepository.findByUsername(username);
-        if (toReset.getEmail().equals(email)) {
+        if (toReset != null && toReset.getEmail().equals(email)) {
             return toReset;
         } else {
             return null;

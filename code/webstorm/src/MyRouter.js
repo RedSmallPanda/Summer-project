@@ -13,7 +13,7 @@ import Help from "./module/MainPages/Help";
 import RefundPage from "./module/InfoItem/RefundPage";
 import Error from "./module/MainPages/Error";
 import Activate from "./module/MainPages/Activate";
-import ResetPassword from "./module/MainPages/ResetPassword";
+import ResetPassword from "./module/InfoItem/ResetPassword";
 
 class MyRouter extends Component{
     constructor(props){
