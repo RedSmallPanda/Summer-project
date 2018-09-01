@@ -15,4 +15,5 @@ public interface CommentService {
     JsonArray getMyComment(String username);
     JsonArray getMyReply(String username);
     void deleteComment(Integer commentId);
+    void setRate(Integer showId);
 }

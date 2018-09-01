@@ -2,6 +2,7 @@ package com.sjtu.jpw.Repository;
 import com.sjtu.jpw.Domain.Shows;
 import com.sjtu.jpw.Domain.AssistDomain.ShowTicket;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -39,4 +40,9 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
 
     @Transactional
     public void deleteAllByShowId(Integer showId);
+
+    @Transactional
+    @Modifying
+    @Query("update Shows show set rate=:rate where showId=:showId")
+    public void setRateByShowId(@Param("showId")Integer showId, @Param("rate")Integer rate);
 }

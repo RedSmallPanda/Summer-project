@@ -91,7 +91,6 @@ class ResultList extends Component {
 
     componentDidMount(){
         this.getResult(this, this.props);
-        this.getImage(this);
     }
     componentWillReceiveProps(nextProps) {
         this.getResult(this, nextProps);
@@ -223,7 +222,7 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src={this.state.imgUrl}
+                                avatar={<img width={120} alt="logo" src={"http://localhost:8080/getImage"+"?showId="+item.showId}
                                              onClick={() => this.detail(item.showId)}/>}
                                 title={
                                     <a onClick={() => this.detail(item.showId)}

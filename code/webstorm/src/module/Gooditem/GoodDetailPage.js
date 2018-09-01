@@ -104,6 +104,22 @@ class GoodDetailPage extends Component{
             });
     };
 
+    getImage(self) {
+        axios.get("/getImage",{
+            params: {
+                showId: self.props.params.showId,
+            }
+        })
+            .then(function (response) {
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     componentWillMount(){
         // console.log("Detail: willMount");
         window.scrollTo(0,0);
@@ -124,6 +140,7 @@ class GoodDetailPage extends Component{
                 console.log(error);
             });
         this.getResult(this);
+        this.getImage(this);
     }
 
     scrollToAnchor = (anchorName) => {
@@ -277,7 +294,7 @@ class GoodDetailPage extends Component{
                                                     <Card
                                                         hoverable
                                                         style={{width: 240}}
-                                                        cover={<img alt="example" src={this.state.data.img}/>} //这里添加图片
+                                                        cover={<img alt="example" src={this.state.imgUrl}/>} //这里添加图片
                                                     >
                                                         <Meta
                                                             title={this.state.data.title}

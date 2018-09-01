@@ -99,4 +99,9 @@ public class CommentServiceImpl implements CommentService{
     public void deleteComment(Integer commentId){
         commentRepository.deleteAllByCommentId(commentId);
     }
+
+    @Override
+    public void setRate(Integer showId){
+        showsRepository.setRateByShowId(showId,commentRepository.getRateByShowId(showId));
+    }
 }
