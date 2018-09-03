@@ -477,7 +477,7 @@ class GoodDetailPage extends Component{
                                         <Col>
                                             <div id="block2" style={{}}>
                                                 <div style={{height: 80}}/>
-                                                <div><TicketComment/></div>
+                                                <div><TicketComment showId={this.props.params.showId}/></div>
                                             </div>
                                         </Col>
                                     </Row>
