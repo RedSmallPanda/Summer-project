@@ -102,7 +102,7 @@ public class CommentController {
             int commentId = Integer.parseInt(request.getParameter("commentId"),10);
             commentService.editComment(commentId, username, showId, parentId, target, content, rate, time);
         }
-
+        commentService.setRate(showId);
         System.out.println("add comment successfully");
     }
 

@@ -199,10 +199,7 @@ public class ShowsController {
     public void GetShowById(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
-
         int showId=Integer.parseInt(request.getParameter("showId"));
-
-        System.out.println(showId);
         out.print(showService.getShowsByShowId(showId));
         out.flush();
     }

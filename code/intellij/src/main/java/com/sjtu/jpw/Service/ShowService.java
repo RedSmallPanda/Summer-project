@@ -10,4 +10,5 @@ public interface ShowService {
     JsonArray getShows();
     JsonObject getShowsByShowId(int showId);
     void deleteShow(Integer showId);
+    String getTitleByShowId(Integer showId);
 }

@@ -46,7 +46,7 @@ public class TicketServiceImpl implements TicketService {
             if (showsLike.contains(showId)) {
                 temp.setIsLike(true);
             }
-            System.out.println(temp.toString());
+            System.out.println("allTickets:"+temp.toString());
         }
 
 

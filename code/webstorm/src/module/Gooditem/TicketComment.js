@@ -53,7 +53,8 @@ class TicketComment extends Component {
         if (true);//POST to get data
         this.state = {
             comment:data,
-            value:""
+            value:"",
+            showId:this.props.showId,
         };
         this.cancelLike = this.cancelLike.bind(this);
         this.detailComment = this.detailComment.bind(this);
@@ -62,7 +63,7 @@ class TicketComment extends Component {
     getResult(self) {
         axios.get("/comments",{
             params:{
-                showId:1
+                showId:this.state.showId
             }
         })
             .then(function (response) {
@@ -152,7 +153,7 @@ class TicketComment extends Component {
             pathname: '/commentPage',
             state:{
                 purpose: "add",
-                showId:1
+                showId:this.state.showId
             }
         });
     };

@@ -98,4 +98,8 @@ public class ShowServiceImpl implements ShowService {
         //Date date = new java.sql.Date(d.getTime());
         return new Date(d.getTime());
     }
+
+    public String getTitleByShowId(Integer showId){
+        return showsRepository.findFirstByShowId(showId).getTitle();
+    }
 }
