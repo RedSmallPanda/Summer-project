@@ -61,6 +61,7 @@ public class ShowServiceImpl implements ShowService {
             DBObject img = collection.findOne(query);
             if (img != null) {
                 showObject.addProperty("image", img.get("imgUrl").toString());
+                System.out.println("imgTest:"+img.get("imgUrl").toString());
             }
             showObject.addProperty("info",show.getInfo());
             showObject.addProperty("city",show.getCity());

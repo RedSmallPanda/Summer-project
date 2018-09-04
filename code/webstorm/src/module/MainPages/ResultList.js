@@ -5,6 +5,8 @@ import axios from 'axios';
 import moment from 'moment';
 import Cookies from "js-cookie";
 
+import Image from './Image'
+
 const dateFormat = "YYYY-MM-DD";
 let listData = [];
 // for (let i = 0; i < 10; i++) {
@@ -222,8 +224,7 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<img width={120} alt="logo" src={"/getImage?showId="+item.showId}
-                                             onClick={() => this.detail(item.showId)}/>}
+                                avatar={<Image showId={item.showId}/>}
                                 title={
                                     <a onClick={() => this.detail(item.showId)}
                                        dangerouslySetInnerHTML={{
