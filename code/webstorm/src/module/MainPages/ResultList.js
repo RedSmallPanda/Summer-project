@@ -224,7 +224,7 @@ class ResultList extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<Image showId={item.showId}/>}
+                                avatar={<Image width={120} showId={item.showId}/>}
                                 title={
                                     <a onClick={() => this.detail(item.showId)}
                                        dangerouslySetInnerHTML={{

@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.Table;
+import javax.transaction.Transactional;
 import java.sql.Date;
 import java.util.List;
 
@@ -26,4 +27,9 @@ public interface CouponRepository extends CrudRepository<Coupon,Integer> {
     @Query("select coupon from Coupon coupon where coupon.enddate>=:date and coupon.discCond<=:price and coupon.discCond>= all (select tempCoupon.discCond from Coupon tempCoupon where tempCoupon.enddate>=:date and tempCoupon.discCond<=:price)")
     public List<Coupon> getCurrentCoupon(@Param("date")Date date, @Param("price")int price);
 
+    @Query("select coupon from Coupon coupon")
+    List<Coupon> findAllCoupons();
+
+    @Transactional
+    void deleteAllByCouponId(Integer couponId);
 }

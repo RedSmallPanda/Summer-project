@@ -3,6 +3,7 @@ import { List,  Icon,  Rate, Tabs, Modal} from 'antd';
 import {browserHistory} from "react-router";
 import axios from 'axios'
 import Cookies from "js-cookie"
+import Image from "../MainPages/Image"
 
 const TabPane = Tabs.TabPane;
 
@@ -166,7 +167,7 @@ class Comment extends Component {
                                 >
                                     <List.Item.Meta
                                         align='left'
-                                        avatar={<img width={80} alt="logo" src={item.image}/>}
+                                        avatar={<Image width={80} showId={item.showId}/>}
                                         title={<a onClick={this.detail}>{item.title}</a>}
                                         description={
                                             <p>
@@ -206,7 +207,7 @@ class Comment extends Component {
                                 >
                                     <List.Item.Meta
                                         align='left'
-                                        avatar={<img width={80} alt="logo" src={item.image}/>}
+                                        avatar={<Image width={80} showId={item.showId}/>}
                                         title={<span>回复:&nbsp;{item.target}</span>}
                                         description={
                                             <p>
@@ -244,7 +245,7 @@ class Comment extends Component {
                                 >
                                     <List.Item.Meta
                                         align='left'
-                                        avatar={<img width={80} alt="logo" src={item.image}/>}
+                                        avatar={<Image width={80} showId={item.showId}/>}
                                         title={<span>用户:&nbsp;{item.username}</span>}
                                         description={
                                             <p>

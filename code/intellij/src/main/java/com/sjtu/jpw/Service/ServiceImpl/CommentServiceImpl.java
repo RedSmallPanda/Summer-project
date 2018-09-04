@@ -87,6 +87,7 @@ public class CommentServiceImpl implements CommentService{
             commentObject.addProperty("key",comment.getCommentId());
             String title = showsRepository.findFirstByShowId(comment.getShowId()).getTitle();
             commentObject.addProperty("title",title);
+            commentObject.addProperty("showId",comment.getShowId());
             commentObject.addProperty("username",comment.getUsername());
             commentObject.addProperty("content",comment.getContent());
             commentObject.addProperty("time",comment.getTime().toString());

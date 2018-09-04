@@ -23,7 +23,7 @@ public class CouponController {
     private OrdersService ordersService;
 
     @RequestMapping(value="/getMyCoupon",produces="application/json;charset=UTF-8")
-    public void GetCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+    public void GetMyCoupon(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
         PrintWriter out = response.getWriter();
         int userId=(int)request.getSession().getAttribute("userId");
@@ -60,5 +60,39 @@ public class CouponController {
         System.out.println(myCoupon);
         out.print(myCoupon);
         out.flush();
+    }
+
+    @RequestMapping(value="/getCoupon",produces = "application/json;charset=UTF-8")
+    public void GetCoupon(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        JsonArray allCoupon = couponService.getCoupon();
+        System.out.println(allCoupon);
+        out.print(allCoupon);
+        out.flush();
+    }
+
+    @RequestMapping(value="/addCoupon",produces="application/json;charset=UTF-8")
+    public void AddCoupon(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        String title = request.getParameter("title");
+        Integer condition = Integer.valueOf(request.getParameter("condition"));
+        Integer discount = Integer.valueOf(request.getParameter("discount"));
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+        couponService.addCoupon(title,condition,discount,startDate,endDate);
+        System.out.println("add coupon successfully");
+    }
+
+    @RequestMapping(value="/deleteCoupon",produces="application/json;charset=UTF-8")
+    public void DeleteCoupon(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+
+        int couponId= Integer.parseInt(request.getParameter("couponId"));
+        couponService.deleteCoupon(couponId);
+
+        System.out.println("delete coupon successfully");
     }
 }
