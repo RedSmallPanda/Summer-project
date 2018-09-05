@@ -7,6 +7,8 @@ import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
 import com.sjtu.jpw.Service.CommentService;
 import com.sjtu.jpw.Service.OrdersService;
+import com.sjtu.jpw.Service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -28,6 +30,9 @@ public class CommentController {
     @Resource(name="ordersService")
     private OrdersService ordersService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value="/comments",produces="application/json;charset=UTF-8")
     public void GetComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -44,6 +49,8 @@ public class CommentController {
             Comment comment = it.next();
             String commentJson = gson.toJson(comment);
             JsonObject commentObject = new JsonParser().parse(commentJson).getAsJsonObject();
+            String tempName = commentObject.get("username").toString();
+            commentObject.addProperty("nickname",userService.getNicknameByUsername(tempName.substring(1,tempName.length()-1)));
             commentObject.addProperty("replyCount",0);
             if(comment.getParentId() == -1){
                 allComment.add(commentObject);
