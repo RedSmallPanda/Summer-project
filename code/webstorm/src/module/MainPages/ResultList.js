@@ -128,80 +128,84 @@ class ResultList extends Component {
     };
 
     componentDidMount(){
-        let size = 0;
-        let self=this;
+        if(this.props.type!=="collection") {
+            let size = 0;
+            let self = this;
 
-        axios.get("/originNumber", {
-            params: {
-                city: self.props.filter.city,
-                type: self.props.filter.type,
-                time: self.props.filter.time,
-                starttime: moment(self.props.filter.starttime).format(dateFormat),
-                endtime: moment(self.props.filter.endtime).format(dateFormat),
-                search: self.props.filter.search,
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
-
-                console.log("dataaaaaa: "+response.data);
-                console.log("sizeeeeee: "+self.state.size);
-                size = response.data;
-                console.log(size);
-                let data=[];
-                for(let i=0;i<size;i++){
-                    data.push({title:"xxx"});
+            axios.get("/originNumber", {
+                params: {
+                    city: self.props.filter.city,
+                    type: self.props.filter.type,
+                    time: self.props.filter.time,
+                    starttime: moment(self.props.filter.starttime).format(dateFormat),
+                    endtime: moment(self.props.filter.endtime).format(dateFormat),
+                    search: self.props.filter.search,
                 }
-                console.log("originnnnnn: "+self.state.data.length);
-                console.log(size);
-                console.log(data);
-                self.setState({
-                    data:data,
-                    size:response.data,
-                    page:1,
-                });
             })
-            .catch(function (error) {
-                console.log(error);
-                self.setState({
-                    loading: false,
+                .then(function (response) {
+                    console.log(response);
+                    // alert(JSON.stringify(response.data[0]));
+
+                    console.log("dataaaaaa: " + response.data);
+                    console.log("sizeeeeee: " + self.state.size);
+                    size = response.data;
+                    console.log(size);
+                    let data = [];
+                    for (let i = 0; i < size; i++) {
+                        data.push({title: "xxx"});
+                    }
+                    console.log("originnnnnn: " + self.state.data.length);
+                    console.log(size);
+                    console.log(data);
+                    self.setState({
+                        data: data,
+                        size: response.data,
+                        page: 1,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    self.setState({
+                        loading: false,
+                    });
                 });
-            });
 
 
-
-        axios.get("/shows", {
-            params: {
-                city: self.props.filter.city,
-                type: self.props.filter.type,
-                time: self.props.filter.time,
-                starttime: moment(self.props.filter.starttime).format(dateFormat),
-                endtime: moment(self.props.filter.endtime).format(dateFormat),
-                search: self.props.filter.search,
-                collection: self.props.type,
-                page:1,
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
-                listData = response.data;
-                let tempData=self.state.data;
-                for(let i=0;i<listData.length;i++){
-                    tempData.splice(i,1,listData[i]);
+            axios.get("/shows", {
+                params: {
+                    city: self.props.filter.city,
+                    type: self.props.filter.type,
+                    time: self.props.filter.time,
+                    starttime: moment(self.props.filter.starttime).format(dateFormat),
+                    endtime: moment(self.props.filter.endtime).format(dateFormat),
+                    search: self.props.filter.search,
+                    collection: self.props.type,
+                    page: 1,
                 }
-                self.setState({
-                    loading: false,
-                    data: tempData,
-                });
             })
-            .catch(function (error) {
-                console.log(error);
-                self.setState({
-                    loading: false,
+                .then(function (response) {
+                    console.log(response);
+                    // alert(JSON.stringify(response.data[0]));
+                    listData = response.data;
+                    let tempData = self.state.data;
+                    for (let i = 0; i < listData.length; i++) {
+                        tempData.splice(i, 1, listData[i]);
+                    }
+                    self.setState({
+                        loading: false,
+                        data: tempData,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    self.setState({
+                        loading: false,
+                    });
                 });
-            });
+        }
+        else{
+            this.getResult(this,this.props,1);
+        }
     }
     componentWillReceiveProps(nextProps) {
         let size = 0;
