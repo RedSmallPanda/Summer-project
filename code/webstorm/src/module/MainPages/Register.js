@@ -105,7 +105,7 @@ const Register = Form.create()(
                                             var is_valid=phone_validator.test(String(value));
                                             //   const form = this.formRef.props.form;
                                             //value's type need to transform
-                                            if(String(value).length>13){is_valid=false;}
+                                            if(String(value).length !== 11){is_valid=false;}
                                             if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("手机号格式错误");}
                                             else {callback()}
 

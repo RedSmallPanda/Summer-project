@@ -2,45 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from "axios/index";
-
-// function amountOnChange(value,e) {
-//     console.log('changed', value);
-//     for(var i=0;i<data.length;i++){
-//
-//     }
-// }
-//
-// const data = [{
-//     key: '1',
-//     img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
-//     detailInfo: {
-//         name:'周杰伦演唱会',
-//         date:'2018/1/2'
-//     },
-//     price: '￥1200',
-//     amount: 1,
-//     totalPrice:'￥1200'
-// }, {
-//     key: '2',
-//     img:'https://pimg.dmcdn.cn/perform/project/1523/152368_n.jpg',
-//     detailInfo: {
-//         name:'张学友演唱会',
-//         date:'2017/2/14'
-//     },
-//     price: '￥2000',
-//     amount: 2,
-//     totalPrice:'￥4000'
-// }];
-
-// const rowSelection = {
-//     onChange: (selectedRowKeys, selectedRows) => {
-//         console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-//     },
-//     getCheckboxProps: record => ({
-//         disabled: record.name === 'Disabled User', // Column configuration not to be checked
-//         name: record.name,
-//     }),
-// };
+import Image from '../MainPages/Image';
 
 const action=[
     '已退款','评价','已评价'
@@ -57,7 +19,7 @@ class Order extends Component {
         this.columns = [{
             title: '缩略图',
             key: 'img',
-            render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
+            render: (text, record) => (<Image width={60} showId={record.showId}/>)
         },/*{
          title: '票品信息',
          dataIndex: 'name',

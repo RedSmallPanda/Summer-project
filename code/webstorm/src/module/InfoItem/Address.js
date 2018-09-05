@@ -105,18 +105,32 @@ const AddressForm = Form.create()(
                     cancelText="取消"
                     onCancel={onCancel}
                     onOk={onCreate}
+                    width="400px"
                 >
                     <Form layout="vertical">
                         <FormItem label="收件人姓名">
                             {getFieldDecorator('name', {
-                                rules: [{ required: true, message: '请正确填写收件人姓名' }],
+                                rules: [{ required: true, message: '请填写收件人姓名' }],
                             })(
                                 <Input type="textarea" placeholder="收件人姓名"/>
                             )}
                         </FormItem>
                         <FormItem label="手机号">
                             {getFieldDecorator('phone', {
-                                rules: [{ required: true, message: '请正确填写收件人手机号' }],
+                                rules: [
+                                    { required: true, message: '请输入手机号' },
+                                    //                       { max:12,message:'用户名长度不超过12', },
+                                    {validator:(rule,value,callback)=>{
+                                        var phone_validator=/^([0-9])+/;
+                                        var is_valid=phone_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length !== 11){is_valid=false;}
+                                        if(!is_valid &&!(String(value)==='')&&!(value===null)){callback("手机号格式错误");}
+                                        else {callback()}
+                                    }},
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="收件人手机号" />
                             )}
@@ -156,7 +170,7 @@ class Address extends Component {
             dataIndex: 'phone',
             key: 'phone',
             width:'20%',
-            editable:true,
+            editable:false,
         }, {
             title: '地区',
             dataIndex: 'city',

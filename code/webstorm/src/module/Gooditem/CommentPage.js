@@ -53,10 +53,6 @@ class DemoCommentPage extends Component {
         browserHistory.goBack();
     };
 
-    handleSuccess = () =>{
-        message.success("发表成功",2,this.onClose)
-    };
-
     addComment = (values) =>{
         let params = new URLSearchParams();
         let username = Cookies.get('username');
@@ -86,7 +82,8 @@ class DemoCommentPage extends Component {
                     rate:values.rate,
                     value:values.confirm,
                 });
-                this.addComment(values)
+                this.addComment(values);
+                message.success("发表成功",1,this.onClose)
 
             }
         });
@@ -125,10 +122,13 @@ class DemoCommentPage extends Component {
                             >
                                 {getFieldDecorator('confirm', {
                                     rules: [{
-                                        required: true, message: '请输入评论内容!',
+                                        required: true, message: this.state.content ? '尚未修改评论内容' : '请输入评论内容',
                                     }],
                                 })(
-                                    <textarea style={{width:'500px',height:'400px'}} defaultValue={this.state.content}/>
+                                    <textarea
+                                        style={{width:'500px',height:'400px'}}
+                                        defaultValue={this.state.content}
+                                    />
 
                                 )}
                             </FormItem>
@@ -136,7 +136,7 @@ class DemoCommentPage extends Component {
                             <FormItem
                                 wrapperCol={{ span: 4, offset: 2 }}
                             >
-                                <Button type="primary" htmlType="submit" onClick={this.handleSuccess}>提交</Button>
+                                <Button type="primary" htmlType="submit">提交</Button>
                             </FormItem>
                         </Form>
                     </Col>

@@ -123,7 +123,6 @@ class Comment extends Component {
 
                 self.deleteComment(thing);
                 newData.splice(index,1);
-                console.log("length: "+newData.length);
                 self.setState({
                     comment: newData
                 })
@@ -134,9 +133,64 @@ class Comment extends Component {
         });
     };
 
-    detail = (e) =>{
-        e.preventDefault();
-        browserHistory.push("/detail");
+    handleDeleteReply = (thing) => {
+        let self = this;
+        Modal.confirm({
+            title: '是否删除?',
+            content: '',
+            okText: "确认",
+            cancelText: "取消",
+            onOk() {
+                const newData = [...self.state.reply];
+                const index = newData.findIndex(item => thing.key === item.key);
+
+                const newReplyToMe = [...self.state.replyToMe];
+                const index2 = newReplyToMe.findIndex(item => thing.key === item.key);
+
+                self.deleteComment(thing);
+                newData.splice(index,1);
+                newReplyToMe.splice(index2,1);
+                self.setState({
+                    reply: newData,
+                    replyTome: newReplyToMe
+                })
+            },
+            onCancel() {
+                //do nothing
+            },
+        });
+    };
+
+    handleDeleteReplyToMe = (thing) => {
+        let self = this;
+        Modal.confirm({
+            title: '是否删除?',
+            content: '',
+            okText: "确认",
+            cancelText: "取消",
+            onOk() {
+                const newData = [...self.state.replyToMe];
+                const index = newData.findIndex(item => thing.key === item.key);
+
+                const newReply = [...self.state.reply];
+                const index2 = newReply.findIndex(item => thing.key === item.key);
+
+                self.deleteComment(thing);
+                newData.splice(index,1);
+                newReply.splice(index2,1);
+                self.setState({
+                    replyToMe: newData,
+                    reply: newReply,
+                })
+            },
+            onCancel() {
+                //do nothing
+            },
+        });
+    };
+
+    detail = (showId) =>{
+        browserHistory.push("/detail/"+showId);
     };
 
     render(){
@@ -161,6 +215,7 @@ class Comment extends Component {
                                 <List.Item
                                     key={item.key}
                                     actions={[
+                                        <Icon type="edit" onClick={()=>this.handleEdit(item)}/>,
                                         <Icon type="delete" onClick={()=>this.handleDelete(item)}/>,
                                     ]}
 
@@ -168,7 +223,7 @@ class Comment extends Component {
                                     <List.Item.Meta
                                         align='left'
                                         avatar={<Image width={80} showId={item.showId}/>}
-                                        title={<a onClick={this.detail}>{item.title}</a>}
+                                        title={<a onClick={()=>this.detail(item.showId)}>{item.title}</a>}
                                         description={
                                             <p>
                                                 <Rate allowHalf disabled defaultValue={item.rate / 2} /><br/>
@@ -200,8 +255,7 @@ class Comment extends Component {
                                 <List.Item
                                     key={item.key}
                                     actions={[
-                                        <Icon type="edit" />,
-                                        <Icon type="delete" />,
+                                        <Icon type="delete" onClick={()=>this.handleDeleteReply(item)}/>,
                                     ]}
 
                                 >
@@ -212,7 +266,7 @@ class Comment extends Component {
                                         description={
                                             <p>
                                                 {item.content}<br/><br/>
-                                                <a style={{color:"#777777"}} onClick={this.detail}>{item.title}</a><br/>
+                                                <a style={{color:"#777777"}} onClick={()=>this.detail(item.showId)}>{item.title}</a><br/>
                                                 {item.time}
                                             </p>
                                         }
@@ -239,7 +293,7 @@ class Comment extends Component {
                                 <List.Item
                                     key={item.key}
                                     actions={[
-                                        <Icon type="delete" />,
+                                        <Icon type="delete" onClick={()=>this.handleDeleteReplyToMe(item)}/>,
                                     ]}
 
                                 >
@@ -250,7 +304,7 @@ class Comment extends Component {
                                         description={
                                             <p>
                                                 {item.content}<br/><br/>
-                                                <a style={{color:"#777777"}} onClick={this.detail}>{item.title}</a><br/>
+                                                <a style={{color:"#777777"}} onClick={()=>this.detail(item.showId)}>{item.title}</a><br/>
                                                 {item.time}
                                             </p>
                                         }

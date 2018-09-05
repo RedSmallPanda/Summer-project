@@ -103,7 +103,7 @@ class TicketComment extends Component {
         params.append('parentId',item.commentId);
         params.append('target',item.username);
         params.append('content',content);
-        params.append('rate',-1);
+        params.append('rate',0);
         params.append('time',time);
         axios.post('/addComment', params);
         this.sendComment(item);
@@ -123,7 +123,7 @@ class TicketComment extends Component {
         params.append('parentId',item.commentId);
         params.append('target',thing.username);
         params.append('content',content);
-        params.append('rate',-1);
+        params.append('rate',0);
         params.append('time',time);
         axios.post('/addComment', params);
         this.sendSmallComment(item,thing);

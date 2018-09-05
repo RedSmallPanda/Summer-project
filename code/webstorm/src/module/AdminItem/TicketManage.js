@@ -100,50 +100,49 @@ const ShowForm = Form.create()(
                     onOk={onCreate}
                     width="400px"
                 >
-                    <Form layout="vertical">
-                        <FormItem label="缩略图">
+                    <Form>
+                        <FormItem label={null}>
                             {getFieldDecorator('image')(
                                 <UploadImage/>
                             )}
                         </FormItem>
-                        <FormItem label="演出名称">
+                        <FormItem label={null}>
                             {getFieldDecorator('title', {
                                 rules: [{ required: true, message: '请填写演出名称' }],
                             })(
                                 <Input type="textarea" placeholder="演出名称"/>
                             )}
                         </FormItem>
-                        <FormItem label="简介">
+                        <FormItem label={null}>
                             {getFieldDecorator('info', {
                                 rules: [{ required: true, message: '请填写简介' }],
                             })(
                                 <Input type="textarea" placeholder="简介" />
                             )}
                         </FormItem>
-                        <FormItem label="城市">
+                        <FormItem label={null}>
                             {getFieldDecorator('city', {
                                 rules: [{ required: true, message: '请选择城市' }],
                             })(
                                 <Cascader options={cityOptions} placeholder="城市"/>
                             )}
                         </FormItem>
-                        <FormItem label="类型">
+                        <FormItem label={null}>
                             {getFieldDecorator('type',{
                                 rules:[{ required:true, message:'请选择类型'}]
                             })(
                                 <Cascader options={typeOptions} placeholder="类型"/>
                             )}
                         </FormItem>
-                        <FormItem label="地址">
+                        <FormItem label={null}>
                             {getFieldDecorator('address',{
                                 rules:[{ required:true, message:'请填写地址'}]
                             })(
                                 <Input type="textarea" placeholder="地址"/>
                             )}
                         </FormItem>
-                        <FormItem label="日期">
+                        <FormItem label={null}>
                             {getFieldDecorator('startDate',
-                                // {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
                                 {rules:[{ required:true, message:'请选择日期'}]}
                                 )(
                                 <RangePicker locale={locale}/>
@@ -171,22 +170,34 @@ const TicketForm = Form.create()(
                     onOk={onCreate}
                     width="400px"
                 >
-                    <Form layout="vertical">
-                        <FormItem label="演出名称">
+                    <Form>
+                        <FormItem label={null}>
                             {getFieldDecorator('title', {
                                 rules: [{ required: true, message: '请选择演出' }],
                             })(
-                                <Cascader options={showOptions} onChange={onChange} changeOnSelect placeholder="演出"/>
+                                <Cascader options={showOptions} onChange={onChange} changeOnSelect placeholder="演出名称"/>
                             )}
                         </FormItem>
-                        <FormItem label="价格">
+                        <FormItem label={null}>
                             {getFieldDecorator('price', {
-                                rules: [{ required: true, message: '请填写价格' }],
+                                rules: [
+                                    { required: true, message: '请填写价格' },
+                                    {validator:(rule,value,callback)=>{
+                                        var price_validator=/^([0-9])+/;
+                                        var is_valid=price_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>13){is_valid=false;}
+                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("价格仅限整数");}
+                                        else {callback()}
+                                    }},
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="价格" />
                             )}
                         </FormItem>
-                        <FormItem label="时间">
+                        <FormItem label={null}>
                             {getFieldDecorator('time', {
                                 rules: [{ required: true, message: '请选择时间' }],
                             })(
@@ -198,16 +209,28 @@ const TicketForm = Form.create()(
                                 />
                             )}
                         </FormItem>
-                        <FormItem label="座位信息">
+                        <FormItem label={null}>
                             {getFieldDecorator('seat',{
                                 rules:[{ required:true, message:'请填写座位信息'}]
                             })(
                                 <Input type="textarea" placeholder="座位信息"/>
                             )}
                         </FormItem>
-                        <FormItem label="座位总数">
+                        <FormItem label={null}>
                             {getFieldDecorator('amount',{
-                                rules:[{ required:true, message:'请填写座位总数'}]
+                                rules:[
+                                    { required:true, message:'请填写座位总数'},
+                                    {validator:(rule,value,callback)=>{
+                                        var price_validator=/^([0-9])+/;
+                                        var is_valid=price_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>13){is_valid=false;}
+                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("座位数仅限整数");}
+                                        else {callback()}
+                                    }},
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="座位总数"/>
                             )}
@@ -235,28 +258,52 @@ const CouponForm = Form.create()(
                     width="400px"
                 >
                     <Form layout="vertical">
-                        <FormItem label="优惠券名称">
+                        <FormItem label={null}>
                             {getFieldDecorator('title', {
                                 rules: [{ required: true, message: '请填写优惠券名称' }],
                             })(
                                 <Input type="textarea" placeholder="优惠券名称" />
                             )}
                         </FormItem>
-                        <FormItem label="满减条件">
+                        <FormItem label={null}>
                             {getFieldDecorator('condition', {
-                                rules: [{ required: true, message: '请填写满减条件' }],
+                                rules: [
+                                    { required: true, message: '请填写满减条件' },
+                                    {validator:(rule,value,callback)=>{
+                                        var price_validator=/^([0-9])+/;
+                                        var is_valid=price_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>13){is_valid=false;}
+                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("仅限整数");}
+                                        else {callback()}
+                                    }},
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="满减条件" />
                             )}
                         </FormItem>
-                        <FormItem label="优惠额度">
+                        <FormItem label={null}>
                             {getFieldDecorator('discount', {
-                                rules: [{ required: true, message: '请填写优惠额度' }],
+                                rules: [
+                                    { required: true, message: '请填写优惠额度' },
+                                    {validator:(rule,value,callback)=>{
+                                        var price_validator=/^([0-9])+/;
+                                        var is_valid=price_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if(String(value).length>13){is_valid=false;}
+                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("仅限整数");}
+                                        else {callback()}
+                                    }},
+                                ],
+                                validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="优惠额度" />
                             )}
                         </FormItem>
-                        <FormItem label="日期">
+                        <FormItem label={null}>
                             {getFieldDecorator('date',
                                 {rules:[{ required:true, message:'请选择日期'}]}
                             )(
