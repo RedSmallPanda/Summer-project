@@ -42,6 +42,7 @@ class ResultList extends Component {
             data: [],
             size:0,
             tempData:[],
+            page:1,
         };
 
         this.collect = this.collect.bind(this);
@@ -158,6 +159,7 @@ class ResultList extends Component {
                 self.setState({
                     data:data,
                     size:response.data,
+                    page:1,
                 });
             })
             .catch(function (error) {
@@ -233,6 +235,7 @@ class ResultList extends Component {
                 self.setState({
                     data:data,
                     size:response.data,
+                    page:1,
                 });
             })
             .catch(function (error) {
@@ -347,8 +350,12 @@ class ResultList extends Component {
                         onChange: (page) => {
                             console.log(page);
                             this.getResult(this, this.props,page);
+                            this.setState({
+                                page:page,
+                            });
                         },
                         pageSize: 10,
+                        current: this.state.page,
                     }}
 
                     renderItem={item => (
