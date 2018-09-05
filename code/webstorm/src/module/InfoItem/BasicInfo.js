@@ -58,14 +58,10 @@ class Demo extends Component {
 
     componentDidMount(){
         let self = this;
-        let strCookie = document.cookie;
-        let arrCookie = strCookie.split(";");
-        for(let i = 0; i < arrCookie.length; i++){
-            let arr = arrCookie[i].split("=");
-            if("username" === arr[0] && arr[1]){
+
                 axios.get("http://localhost:8080/userInfo", {
                     params: {
-                        username: arr[1],
+                        username: Cookies.get('username'),
                     }
                 })
                     .then(function (response) {
@@ -79,8 +75,7 @@ class Demo extends Component {
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
-        }
+
         this.getAvatar(this);
     };
 
