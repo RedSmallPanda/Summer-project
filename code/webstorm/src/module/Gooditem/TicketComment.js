@@ -1,8 +1,9 @@
 import React, {Component} from "react";
-import {Avatar, Button, Col, Collapse, Icon, Input, List, Rate, Row, message, Divider} from "antd";
+import {Button, Col, Collapse, Icon, Input, List, Rate, Row, message, Divider} from "antd";
 import {browserHistory} from "react-router";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Avatar from '../MainPages/Avatar';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -249,13 +250,12 @@ class TicketComment extends Component {
                             style={{border:'0px'}}
                             key={item.username}
                             actions={[
-                                <IconText type="like-o"/>,
                                 <IconText type="message" text={item.replyCount} onClick={() => {this.showReplyBar(item)}}/>
                             ]}
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<Avatar size='large' icon="user"/>}
+                                avatar={<Avatar username={item.username}/>}
                                 title={<span>{item.username}</span>}
                                 description={
                                     <div>
@@ -297,12 +297,11 @@ class TicketComment extends Component {
                                                         <List.Item
                                                             style={{border:'0px'}}
                                                             actions={[
-                                                                <Icon type="like-o"/>,
                                                                 <Icon type="message" onClick={() => {this.showSmallBar(item,thing)}}/>
                                                             ]}
                                                         >
                                                             <List.Item.Meta
-                                                                avatar={<Avatar icon="user" />}
+                                                                avatar={<Avatar username={thing.username}/>}
                                                                 title={<span>{thing.username}</span>}
                                                                 description={thing.content}
                                                             />

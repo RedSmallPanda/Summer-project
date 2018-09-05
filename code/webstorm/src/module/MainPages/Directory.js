@@ -5,6 +5,7 @@ import '../../css/Directory.css'
 import ResultList from "./ResultList";
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import locale from 'antd/lib/date-picker/locale/zh_CN';
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -139,6 +140,7 @@ class Directory extends Component {
                                         value={[this.state.starttime, this.state.endtime]}
                                         format={dateFormat}
                                         onChange={this.selectDate}
+                                        locale={locale}
                                     />
                                 </div>
                             </div>

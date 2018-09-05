@@ -141,7 +141,7 @@ const ShowForm = Form.create()(
                                 <Input type="textarea" placeholder="地址"/>
                             )}
                         </FormItem>
-                        <FormItem label="开始日期">
+                        <FormItem label="日期">
                             {getFieldDecorator('startDate',
                                 // {initialValue:[moment(startDate).startOf('day'),moment(startDate).endOf('day')]},
                                 {rules:[{ required:true, message:'请选择日期'}]}
@@ -210,6 +210,57 @@ const TicketForm = Form.create()(
                                 rules:[{ required:true, message:'请填写座位总数'}]
                             })(
                                 <Input type="textarea" placeholder="座位总数"/>
+                            )}
+                        </FormItem>
+                    </Form>
+                </Modal>
+            );
+        }
+    }
+);
+
+const CouponForm = Form.create()(
+    class extends React.Component {
+        render() {
+            const { visible, onCancel, onCreate, form } = this.props;
+            const { getFieldDecorator } = form;
+            return (
+                <Modal
+                    visible={visible}
+                    title="新增优惠券"
+                    okText="确定"
+                    cancelText="取消"
+                    onCancel={onCancel}
+                    onOk={onCreate}
+                    width="400px"
+                >
+                    <Form layout="vertical">
+                        <FormItem label="优惠券名称">
+                            {getFieldDecorator('title', {
+                                rules: [{ required: true, message: '请填写优惠券名称' }],
+                            })(
+                                <Input type="textarea" placeholder="优惠券名称" />
+                            )}
+                        </FormItem>
+                        <FormItem label="满减条件">
+                            {getFieldDecorator('condition', {
+                                rules: [{ required: true, message: '请填写满减条件' }],
+                            })(
+                                <Input type="textarea" placeholder="满减条件" />
+                            )}
+                        </FormItem>
+                        <FormItem label="优惠额度">
+                            {getFieldDecorator('discount', {
+                                rules: [{ required: true, message: '请填写优惠额度' }],
+                            })(
+                                <Input type="textarea" placeholder="优惠额度" />
+                            )}
+                        </FormItem>
+                        <FormItem label="日期">
+                            {getFieldDecorator('date',
+                                {rules:[{ required:true, message:'请选择日期'}]}
+                            )(
+                                <RangePicker locale={locale}/>
                             )}
                         </FormItem>
                     </Form>
@@ -293,14 +344,46 @@ class TicketManage extends Component{
                 </span>
             ),
         }];
+
+        this.couponColumns = [{
+            title: '优惠券名称',
+            dataIndex: 'title',
+            key: 'title',
+        },{
+            title:'满减条件',
+            dataIndex:'condition',
+            key:'condition',
+        },{
+            title: '优惠额度',
+            dataIndex: 'discount',
+            key: 'discount',
+        },{
+            title: '开始日期',
+            dataIndex: 'startDate',
+            key: 'startDate',
+        },{
+            title: '结束日期',
+            dataIndex: 'endDate',
+            key: 'endDate',
+        },{
+            title:'操作',
+            key:'action',
+            render: (text,record) => (
+                <span>
+                    <a onClick={()=>this.handleDeleteCoupon(record.couponId)}>删除</a>
+                </span>
+            ),
+        }];
     }
 
     state = {
         visible: false,
         ticketVisible: false,
+        couponVisible: false,
         cacheImage:'',
         show: '',
         ticket:'',
+        coupon:'',
     };
 
     getShows(self) {
@@ -330,6 +413,19 @@ class TicketManage extends Component{
             });
     }
 
+    getCoupon(self){
+        axios.get("/getCoupon")
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    coupon:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     setShowOptions = () =>{
         showOptions = [];
         let showData = this.state.show;
@@ -346,6 +442,7 @@ class TicketManage extends Component{
     componentDidMount(){
         this.getShows(this);
         this.getTickets(this);
+        this.getCoupon(this);
     }
 
     showModal = () => {
@@ -424,17 +521,6 @@ class TicketManage extends Component{
             params.append('amount',values.amount);
             axios.post('/addTicket', params)
                 .then(function () {
-                    // let newTicket = {
-                    //     title:values.title,
-                    //     price:values.price,
-                    //     time:values.time,
-                    //     seat:values.seat,
-                    //     amount:values.amount,
-                    //     stock:values.amount,
-                    // };
-                    //
-                    // let newData = self.state.ticket;
-                    // newData.unshift(newTicket);
                     self.getTickets(self);
                     self.setState({
                         ticketVisible:false,
@@ -449,6 +535,51 @@ class TicketManage extends Component{
 
     saveTicketFormRef = (formRef) => {
         this.TicketformRef = formRef;
+    };
+
+    showCouponModal = () => {
+        this.setState({ couponVisible: true });
+    };
+
+    handleCouponCancel = () => {
+        this.setState({ couponVisible: false });
+    };
+
+    handleCouponCreate = () => {
+        const form = this.CouponformRef.props.form;
+        let self = this;
+        form.validateFields((err, values) => {
+            if (err) {
+                return;
+            }
+
+            console.log('Received values of form: ', values);
+            const formData = form.getFieldsValue();
+            const time = formData['date'];
+            form.resetFields();
+
+            let params = new URLSearchParams();
+            params.append('title',values.title);
+            params.append('condition',values.condition);
+            params.append('discount',values.discount);
+            params.append('startDate',time[0].format('YYYY-MM-DD'));
+            params.append('endDate',time[1].format('YYYY-MM-DD'));
+            axios.post('/addCoupon', params)
+                .then(function () {
+                    self.getCoupon(self);
+                    self.setState({
+                        couponVisible:false,
+                    })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+        });
+    };
+
+    saveCouponFormRef = (formRef) => {
+        this.CouponformRef = formRef;
     };
 
     handleDeleteShow = (showId) => {
@@ -509,6 +640,35 @@ class TicketManage extends Component{
         axios.post('/deleteTicket', params);
     };
 
+    handleDeleteCoupon = (couponId) => {
+        let self = this;
+        Modal.confirm({
+            title: '是否删除?',
+            content: '',
+            okText: "确认",
+            cancelText: "取消",
+            onOk() {
+                const newData = [...self.state.coupon];
+                const index = newData.findIndex(item => couponId === item.couponId);
+                self.deleteCoupon(couponId);
+                newData.splice(index,1);
+                self.setState({
+                    coupon: newData
+                })
+
+            },
+            onCancel() {
+                //do nothing
+            },
+        });
+    };
+
+    deleteCoupon = (couponId) =>{
+        let params = new URLSearchParams();
+        params.append('couponId',couponId);
+        axios.post('/deleteCoupon', params);
+    };
+
     render(){
         return(
             <div>
@@ -516,7 +676,8 @@ class TicketManage extends Component{
                 <Tabs tabBarExtraContent={
                     <div>
                         <Button onClick={this.showModal} style={{marginRight:10}}><Icon type="plus"/>新增演出</Button>
-                        <Button onClick={this.showTicketModal}><Icon type="plus"/>新增票品</Button>
+                        <Button onClick={this.showTicketModal} style={{marginRight:10}}><Icon type="plus"/>新增票品</Button>
+                        <Button onClick={this.showCouponModal}><Icon type="plus"/>新增优惠券</Button>
                     </div>
                 }
                 >
@@ -538,6 +699,9 @@ class TicketManage extends Component{
                     <TabPane tab="票品" key="2">
                         <Table columns={this.ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}}/>
                     </TabPane>
+                    <TabPane tab="优惠券" key="3">
+                        <Table columns={this.couponColumns} dataSource={this.state.coupon} style={{marginTop:16}}/>
+                    </TabPane>
                 </Tabs>
                 <ShowForm
                     wrappedComponentRef={this.saveFormRef}
@@ -550,6 +714,12 @@ class TicketManage extends Component{
                     visible={this.state.ticketVisible}
                     onCancel={this.handleTicketCancel}
                     onCreate={this.handleTicketCreate}
+                />
+                <CouponForm
+                    wrappedComponentRef={this.saveCouponFormRef}
+                    visible={this.state.couponVisible}
+                    onCancel={this.handleCouponCancel}
+                    onCreate={this.handleCouponCreate}
                 />
             </div>
         )

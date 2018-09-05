@@ -4,6 +4,7 @@ import {browserHistory} from "react-router";
 class Image extends Component {
     state = {
         imgUrl:"",
+        width:this.props.width,
     };
 
     getImage(self) {
@@ -36,7 +37,7 @@ class Image extends Component {
         let self=this;
         return (
             <div>
-                <img width={120} alt="logo" src={self.state.imgUrl}
+                <img width={this.state.width} alt="logo" src={self.state.imgUrl}
                      onClick={() => this.detail(self.props.showId)}/>
             </div>
         );

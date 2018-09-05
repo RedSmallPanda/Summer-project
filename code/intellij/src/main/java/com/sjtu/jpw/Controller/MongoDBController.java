@@ -89,12 +89,10 @@ public class MongoDBController {
         DBCollection collection = mongoDBService.getCollection("image");
         Integer showId = Integer.valueOf(request.getParameter("showId"),10);
         String title = showService.getTitleByShowId(showId);
-        System.out.println("get title: "+title);
         BasicDBObject query = new BasicDBObject();
         query.put("title",title);
         DBObject img = collection.findOne(query);
         if(img!=null) {
-            System.out.println("get image: "+img.get("imgUrl").toString());
             out.print(img.get("imgUrl"));
             out.flush();
         }

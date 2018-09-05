@@ -15,7 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 @Service("couponService")
@@ -107,5 +109,52 @@ public class CouponServiceImpl implements CouponService {
             return newCoupon;
 
         }
+    }
+
+    @Override
+    public JsonArray getCoupon(){
+        List<Coupon> coupons = couponRepository.findAllCoupons();
+        JsonArray couponData = new JsonArray();
+        Iterator<Coupon> it = coupons.iterator();
+        while(it.hasNext()){
+            Coupon coupon = it.next();
+            JsonObject couponObject = new JsonObject();
+            couponObject.addProperty("couponId",coupon.getCouponId());
+            couponObject.addProperty("title",coupon.getTitle());
+            couponObject.addProperty("condition",coupon.getDiscCond());
+            couponObject.addProperty("discount",coupon.getDiscount());
+            couponObject.addProperty("startDate",coupon.getBegindate().toString());
+            couponObject.addProperty("endDate",coupon.getEnddate().toString());
+            couponData.add(couponObject);
+        }
+        return couponData;
+    }
+
+    @Override
+    public void addCoupon(String title, Integer condition, Integer discount, String startDate, String endDate){
+        Coupon coupon = new Coupon();
+        coupon.setTitle(title);
+        coupon.setDiscount(discount);
+        coupon.setDiscCond(condition);
+        coupon.setBegindate(strToDate(startDate));
+        coupon.setEnddate(strToDate(endDate));
+        couponRepository.save(coupon);
+    }
+
+    @Override
+    public void deleteCoupon(Integer couponId){
+        couponRepository.deleteAllByCouponId(couponId);
+    }
+
+    private Date strToDate(String strDate){
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        java.util.Date d = null;
+        try {
+            d = format.parse(strDate);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Date date = new java.sql.Date(d.getTime());
+        return new Date(d.getTime());
     }
 }

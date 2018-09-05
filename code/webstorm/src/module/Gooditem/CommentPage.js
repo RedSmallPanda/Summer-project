@@ -3,6 +3,7 @@ import {Row, Col, Form, Rate, Button, Card, Icon, message} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Image from "../MainPages/Image"
 import moment from 'moment'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -143,7 +144,7 @@ class DemoCommentPage extends Component {
                         <Card
                             hoverable
                             style={{ width: 240 }}
-                            cover={<img alt="example" src={this.state.data.img} />} //这里添加图片
+                            cover={<Image width={240} showId={this.state.showId}/>} //这里添加图片
                         >
                             <Meta
                                 title={this.state.data.title}
