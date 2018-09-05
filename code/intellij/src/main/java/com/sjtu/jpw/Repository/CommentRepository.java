@@ -28,4 +28,11 @@ public interface CommentRepository extends CrudRepository<Comment,Integer> {
             "where comment.showId=:showId and comment.parentId=-1")
     public Integer getRateByShowId(@Param("showId")Integer showId);
 
+    @Query(nativeQuery = true,
+            value = "select show_id from " +
+                    "(select show_id,avg(rate)as avg_rate from comment " +
+                    "where show_id in :shows and parent_id=-1 group by show_id)as A " +
+                    "order by avg_rate")
+    public int[] rateRankOfOnSale(@Param("shows")int[] shows);
+
 }

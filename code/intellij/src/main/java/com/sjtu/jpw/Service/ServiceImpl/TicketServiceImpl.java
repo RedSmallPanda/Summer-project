@@ -167,6 +167,7 @@ public class TicketServiceImpl implements TicketService {
         ticketRepository.save(ticket);
     }
 
+    @Override
     public void deleteTicket(Integer ticketId){
         ticketRepository.deleteAllByTicketId(ticketId);
     }
@@ -191,6 +192,26 @@ public class TicketServiceImpl implements TicketService {
         }
         return ticketsData;
     }
+
+    @Override
+    public int[] recommendByRate(Timestamp startTime, Integer topN) {
+        int[] onSale = ticketRepository.onSale(startTime);
+        int[] tops = commentRepository.rateRankOfOnSale(onSale);
+        if (tops.length > topN) {
+            tops = Arrays.copyOfRange(tops, 0, topN);
+        }
+        return tops;
+    }
+
+    @Override
+    public int[] recommendBySales(Timestamp startTime, Integer topN) {
+        int[] tops = ticketRepository.rankOfOnSale(startTime);
+        if (tops.length > topN) {
+            tops = Arrays.copyOfRange(tops, 0, topN);
+        }
+        return tops;
+    }
+
 
     private Timestamp strToTimeStamp(String timeStamp){
         Timestamp ts = new Timestamp(System.currentTimeMillis());

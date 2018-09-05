@@ -1,25 +1,93 @@
 import React, { Component } from 'react';
-import { Menu, Row, Col, Carousel,Card} from 'antd'
+import {Menu, Row, Col, Carousel, Card, Divider, Icon, List, Avatar, Rate} from 'antd'
 import '../../css/App.css'
-import { browserHistory} from 'react-router'
-
+import {browserHistory} from 'react-router';
+import axios from "axios";
 
 const { Meta } = Card;
-class HomePage extends Component{
+const IconText = ({ type, text }) => (
+    <span>
+        <Icon type={type} style={{ marginRight: 8 }} />
+        {text}
+    </span>
+);
 
-    handleDirectory = (e) =>{
+class HomePage extends Component {
+
+    state = {
+        salesRecommendLoading: false,
+        salesRecommend: null,
+
+        rateRecommendLoading: true,
+        rateRecommend: null,
+
+        guessRecommendLoading: true,
+        guessRecommend: null,
+    };
+
+    componentWillMount() {
+        let self = this;
+
+        axios.get("/getRecommend", {
+            params: {
+                recommendBy: "sales"
+            }
+        })
+            .then(function (response) {
+                self.setState({
+                    salesRecommendLoading: false,
+                    salesRecommend: response.data,
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("/getRecommend", {
+            params: {
+                recommendBy: "rate"
+            }
+        })
+            .then(function (response) {
+                self.setState({
+                    rateRecommendLoading: false,
+                    rateRecommend: response.data,
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+
+        axios.get("/getRecommend", {
+            params: {
+                recommendBy: "guess"
+            }
+        })
+            .then(function (response) {
+                self.setState({
+                    guessRecommendLoading: false,
+                    guessRecommend: response.data,
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
+    handleDirectory = (e) => {
         browserHistory.push({
-            pathname:'/dir',
-            state:{
-                type: e.key
+            pathname: '/dir',
+            state: {
+                type: e.key,
             }
         });
     };
 
-    render(){
+    render() {
+        let self = this;
         const homeBar =
             <div align="center">
-                <Menu >
+                <Menu>
                     <Menu.Item key="concert" onClick={this.handleDirectory}>演唱会</Menu.Item>
                     <Menu.Item key="music" onClick={this.handleDirectory}>音乐会</Menu.Item>
                     <Menu.Item key="cnopera" onClick={this.handleDirectory}>曲苑杂坛</Menu.Item>
@@ -31,8 +99,8 @@ class HomePage extends Component{
             </div>;
 
         const homeCarousel =
-            <div style={{marginTop:20,}}>
-                <Carousel autoplay effect="scrollx" style={{height:'500px'}}>
+            <div style={{marginTop: 20,}}>
+                <Carousel autoplay effect="scrollx" style={{height: '500px'}}>
                     <div><img src="https://img.alicdn.com/tfs/TB1je1eC_tYBeNjy1XdXXXXyVXa-1200-320.jpg" alt=""/></div>
                     <div><img src="https://img.alicdn.com/tfs/TB1FxK5GkCWBuNjy0FaXXXUlXXa-1200-320.jpg" alt=""/></div>
                     <div><img src="https://img.alicdn.com/tfs/TB1D5HZEf1TBuNjy0FjXXajyXXa-1200-320.jpg" alt=""/></div>
@@ -40,74 +108,79 @@ class HomePage extends Component{
                 </Carousel>
             </div>;
 
-        const homeRecommend =
+        const RecommendCard = ({item}) => (
+            <Card
+                hoverable
+                style={{width: 200}}
+                cover={<img alt="example"
+                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
+            >
+                <Meta
+                    title={item.title}
+                    description={
+                        <div>
+                            <Icon type="environment"/>&nbsp;
+                            <text style={{color: "#777777"}}>{item.address}</text>
+                            <br/>
+                            <Icon type="calendar"/>&nbsp;
+                            <text style={{color: "#777777"}}>{item.starttime + " - " + item.endtime}</text>
+                            <br/>
+                            <Rate allowHalf disabled value={item.rate / 2}/>
+                        </div>
+                    }
+                />
+            </Card>
+        );
+
+        const RecommendLine = ({dataSource}) => (
             <div style={{marginTop: 10}}>
                 <div>
                     <Row type="flex" justify="space-around">
-                        <Col span={4}>
-                            <Card
-                                style={{width: 200}}
-                                cover={<img alt="example"
-                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
-                            >
-                                <Meta
-                                    title="周杰伦演唱会"
-                                    description="地表最强"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={4}>
-                            <Card
-                                style={{width: 200}}
-                                cover={<img alt="example"
-                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
-                            >
-                                <Meta
-                                    title="周杰伦演唱会"
-                                    description="地表最强"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={4}>
-                            <Card
-                                style={{width: 200}}
-                                cover={<img alt="example"
-                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
-                            >
-                                <Meta
-                                    title="周杰伦演唱会"
-                                    description="地表最强"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={4}>
-                            <Card
-                                style={{width: 200}}
-                                cover={<img alt="example"
-                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
-                            >
-                                <Meta
-                                    title="周杰伦演唱会"
-                                    description="地表最强"
-                                />
-                            </Card>
-                        </Col>
-                        <Col span={4}>
-                            <Card
-                                style={{width: 200}}
-                                cover={<img alt="example"
-                                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
-                            >
-                                <Meta
-                                    title="周杰伦演唱会"
-                                    description="地表最强"
-                                />
-                            </Card>
-                        </Col>
+                        {
+                            dataSource !== null ?
+                                dataSource.map(function (item) {
+                                    return (
+                                        <Col span={4}>
+                                            <RecommendCard item={item}/>
+                                        </Col>
+                                    );
+                                })
+                                :
+                                ""
+                        }
                     </Row>
                 </div>
+            </div>
+        );
 
-            </div>;
+
+        let RecommendTitle = ({text, onClick}) => (
+            <Row>
+                <br/>
+                <Col>
+                    <Divider/>
+                    <div>
+                        <h2 style={{display: "inline"}}>
+                            {text}
+                        </h2>
+                        <a style={{float: "right"}} onClick={onClick}>
+                            更多<Icon type="double-right"/>
+                        </a>
+                    </div>
+                </Col>
+                <br/>
+            </Row>
+        );
+
+        const listData = [];
+        for (let i = 0; i < 9; i++) {
+            listData.push({
+                title: `user ${i}`,
+                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
+                description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
+                content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
+            });
+        }
 
         const homeContainer =
             <div>
@@ -123,21 +196,95 @@ class HomePage extends Component{
                 <Row>
                     <Col span={3}/>
                     <Col span={20}>
-                        <Row>
-                            <Col span={4}>
-                                <div style={{marginTop:20}}><h3>今日推荐</h3></div><br/>
-                            </Col>
-                        </Row>
-                        {homeRecommend}
-                        {homeRecommend}
-
+                        <RecommendTitle text="当前热门"/>
+                        {
+                            self.state.salesRecommendLoading ?
+                                <Icon type="loading"
+                                      style={{
+                                          textAlign: "center",
+                                          fontSize: 50
+                                      }}/>
+                                :
+                                <RecommendLine dataSource={this.state.salesRecommend}/>
+                        }
+                        <RecommendTitle text="高分推荐"/>
+                        {
+                            self.state.rateRecommendLoading ?
+                                <Icon type="loading"
+                                      style={{
+                                          textAlign: "center",
+                                          fontSize: 50
+                                      }}/>
+                                :
+                                <RecommendLine dataSource={this.state.rateRecommend}/>
+                        }
+                        <RecommendTitle text="猜你喜欢"/>
+                        {
+                            self.state.guessRecommendLoading ?
+                                <Icon type="loading"
+                                      style={{
+                                          textAlign: "center",
+                                          fontSize: 50
+                                      }}/>
+                                :
+                                <RecommendLine dataSource={this.state.guessRecommend}/>
+                        }
+                        <RecommendTitle text="大家评论"/>
+                        <List
+                            grid={{gutter: 24, column: 2}}
+                            itemLayout="vertical"
+                            size="large"
+                            pagination={{
+                                onChange: (page) => {
+                                    console.log(page);
+                                },
+                                pageSize: 6,
+                            }}
+                            dataSource={listData}
+                            footer={<div><b>ant design</b> footer part</div>}
+                            renderItem={item => (
+                                <List.Item
+                                    key={item.title}
+                                    actions={[
+                                        <IconText type="star-o" text="156"/>,
+                                        <IconText type="like-o" text="156"/>,
+                                        <IconText type="message" text="2"/>,
+                                    ]}
+                                    extra={
+                                        <div style={{textAlign: "center"}}>
+                                            <text>周杰伦【地表最强】演唱会</text>
+                                            <br/>
+                                            <img width={180} alt="logo"
+                                                 src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>
+                                        </div>
+                                    }
+                                    style={{
+                                        padding: 20
+                                    }}
+                                >
+                                    <List.Item.Meta
+                                        avatar={<Avatar src={item.avatar}/>}
+                                        title={
+                                            <div>
+                                                <Avatar src={item.avatar}
+                                                        style={{verticalAlign: "text-bottom"}}/>
+                                                &nbsp;
+                                                <text>{item.title}</text>
+                                            </div>
+                                        }
+                                        description={item.description}
+                                    />
+                                    {item.content}
+                                </List.Item>
+                            )}
+                        />
                     </Col>
                 </Row>
             </div>;
 
-        return(
+        return (
             homeContainer
-        )
+        );
     }
 }
 

@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.sql.Date;
@@ -85,6 +86,14 @@ public class ShowServiceImpl implements ShowService {
     public void deleteShow(Integer showId){
         ticketRepository.deleteAllByShowId(showId);
         showsRepository.deleteAllByShowId(showId);
+    }
+
+    public List<Shows> getShowsByIdArray(int[] showIds){
+        List<Shows> recommendList = new ArrayList<>();
+        for (int i : showIds) {
+            recommendList.add(showsRepository.findFirstByShowId(i));
+        }
+        return recommendList;
     }
 
     private Date strToDate(String strDate){
