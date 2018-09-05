@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
+import Image from '../MainPages/Image'
 
 // const data = [{
 //     key: '1',
@@ -77,7 +78,7 @@ class Order extends Component {
         this.columns = [{
             title: '缩略图',
             key: 'img',
-            render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
+            render: (text, record) => (<Image width={60} showId={record.showId}/>)
         },/*{
          title: '票品信息',
          dataIndex: 'name',
@@ -87,7 +88,7 @@ class Order extends Component {
                 title: '票品信息',
                 dataIndex: 'detailInfo',
                 render: (text, record) => (<div>
-                    <p><a onClick={this.handleDetail}>{record.detailInfo.showName}</a></p>
+                    <p><a onClick={()=>this.handleDetail(record.showId)}>{record.detailInfo.showName}</a></p>
                     <p>{record.detailInfo.showDate}</p>
                 </div>)
             },{
@@ -108,7 +109,7 @@ class Order extends Component {
                 key: 'action',
                 render: (text, record) => (
                     <span>
-                        <a onClick={()=>this.handleAction(record.state,record.orderId,record.totalPrice)}>{action[parseInt(record.state,10)]}</a>
+                        <a onClick={()=>this.handleAction(record.showId,record.state,record.orderId,record.totalPrice)}>{action[parseInt(record.state,10)]}</a>
                     </span>
                 ),
             }];
@@ -145,12 +146,13 @@ class Order extends Component {
             });
     }
 
-    handleAction = (state,orderId,totalPrice) =>{
+    handleAction = (showId,state,orderId,totalPrice) =>{
         let id=orderId;
         if(state==='0'){
             browserHistory.push({
                 pathname:'/buyStep',
                 state:{
+                    showId:showId,
                     orderId:id,
                     firstStep:1,
                     secondStep:0,
@@ -164,6 +166,7 @@ class Order extends Component {
             browserHistory.push({
                 pathname:'/refundPage',
                 state:{
+                    showId:showId,
                     orderId:id,
                 }
             })
@@ -171,6 +174,7 @@ class Order extends Component {
         else if(state==='2'){
             axios.get("/dontWantToRefund",{
                 params:{
+                    showId:showId,
                     orderId:orderId,
                 }
             })
@@ -185,8 +189,8 @@ class Order extends Component {
         }
     };
 
-    handleDetail = () =>{
-        browserHistory.push('/detail')
+    handleDetail = (showId) =>{
+        browserHistory.push('/detail/'+showId)
     };
 
     render(){

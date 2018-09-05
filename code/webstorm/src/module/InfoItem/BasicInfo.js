@@ -330,25 +330,17 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('phone', {
                             rules: [
-                                {
-                                    validator: (rule, value, callback) => {
-                                        //   const form = this.formRef.props.form;
-                                        //value's type need to transform
-                                        if (value == null) {
-                                            value = this.state.formData.phone;
-                                        }
-                                        console.log(String(value));
-                                        if (String(value).length !== 11) {
-                                            callback("手机号格式错误");
-                                        }
-                                        //else if(String(value).length<11){callback("手机号格式错误");}
-                                        else {
-                                            callback()
-                                        }
-
-                                    }
-                                },
+                                {validator:(rule,value,callback)=>{
+                                    var phone_validator=/^([0-9])+/;
+                                    var is_valid=phone_validator.test(String(value));
+                                    //   const form = this.formRef.props.form;
+                                    //value's type need to transform
+                                    if(String(value).length !== 11){is_valid=false;}
+                                    if(!is_valid &&!(String(value)==='')&&!(value===null)){callback("手机号格式错误");}
+                                    else {callback()}
+                                }},
                             ],
+                            validateTrigger:'onBlur',
                         })(
                             <div>
                                 <Input id="inputPhone" value={this.state.formData.phone} onChange={this.phoneOnChange}/>

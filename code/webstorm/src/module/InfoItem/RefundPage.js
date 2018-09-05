@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Row, Col, Form, Rate, Button, Card, Icon, Radio} from 'antd';
 import axios from "axios/index";
 import {browserHistory} from "react-router";
+import Image from "../MainPages/Image";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -18,6 +19,7 @@ const data={
 class DemoRefundPage extends Component {
     state={
         data:[],
+        showId:this.props.showId,
         orderId:this.props.orderId,
     };
 
@@ -101,7 +103,7 @@ class DemoRefundPage extends Component {
                             >
                                 {getFieldDecorator('confirm', {
                                     rules: [{
-                                        required: true, message: '请输入评论内容!',
+                                        required: true, message: '请输入详细退款理由!',
                                     }],
                                 })(
                                     <textarea style={{width:'500px',height:'400px'}} />
@@ -120,7 +122,7 @@ class DemoRefundPage extends Component {
                         <Card
                             hoverable
                             style={{ width: 240 }}
-                            cover={<img alt="example" src={this.state.data.img} />} //这里添加图片
+                            cover={<Image width={240} showId={this.state.showId}/>} //这里添加图片
                         >
                             <Meta
                                 title={this.state.data.title}
@@ -145,7 +147,7 @@ const RealRefundPage = Form.create()(DemoRefundPage);
 class RefundPage extends Component {
     render(){
         return (
-            <RealRefundPage orderId={this.props.location.state.orderId}/>
+            <RealRefundPage showId={this.props.location.state.showId} orderId={this.props.location.state.orderId}/>
         );
     }
 }

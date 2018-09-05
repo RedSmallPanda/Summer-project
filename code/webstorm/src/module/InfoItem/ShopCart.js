@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import {Divider, Modal, Table} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
+import Image from '../MainPages/Image';
+
 const data = [
     // {
     //     key: '1',
@@ -31,12 +33,12 @@ class ShopCart extends Component {
         this.columns = [{
             title: '缩略图',
             key: 'img',
-            render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
+            render: (text, record) => (<Image width={60} showId={record.showId}/>)
         }, {
             title: '票品信息',
             dataIndex: 'detailInfo',
             render: (text, record) => (<div>
-                <p><a onClick={this.handleDetail}>{record.detailInfo.name}</a></p>
+                <p><a onClick={()=>this.handleDetail(record.showId)}>{record.detailInfo.name}</a></p>
                 <p>{record.detailInfo.date}</p>
             </div>)
         },{
@@ -78,7 +80,7 @@ class ShopCart extends Component {
                     let temp={
                         key: tempdata.key,
                         showId:tempdata.showId,
-                        img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
+                        img:'',
                         detailInfo: {
                             name:tempdata.title,
                             date:tempdata.time
@@ -144,8 +146,8 @@ class ShopCart extends Component {
         });
     };
 
-    handleDetail = () =>{
-        browserHistory.push('/detail')
+    handleDetail = (showId) =>{
+        browserHistory.push('/detail/'+showId)
     };
 
     render(){
