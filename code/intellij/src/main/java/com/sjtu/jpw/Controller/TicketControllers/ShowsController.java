@@ -37,6 +37,39 @@ public class ShowsController {
     @Resource(name="mongoDBService")
     private MongoDBService mongoDBService;
 
+
+    @RequestMapping(value = "/originNumber", produces = "application/json;charset=UTF-8")
+    public void getNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        //print result list
+            Timestamp temp1;
+            Timestamp temp2;
+
+            if (request.getParameter("time").equals("all")) {
+                temp1 = new Timestamp(System.currentTimeMillis());
+                temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
+            }
+            else {
+                temp1 = Timestamp.valueOf(request.getParameter("starttime") + " 00:00:00");
+                temp2 = Timestamp.valueOf(request.getParameter("endtime") + " 23:59:59");
+            }
+
+
+            out.print(
+                    ticketService.getOriginNumber(
+                            request.getParameter("city"),
+                            request.getParameter("type"),
+                            temp1,
+                            temp2,
+                            request.getParameter("search")
+                    )
+            );
+
+        out.flush();
+    }
+
     @RequestMapping(value = "/shows", produces = "application/json;charset=UTF-8")
     public void getShows(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -49,6 +82,11 @@ public class ShowsController {
             userId = (int) id;
         }
 
+        int page = 0;
+        if(request.getParameter("page") != null){
+            page = Integer.valueOf(request.getParameter("page"));
+        }
+
         //print result list
         if (request.getParameter("collection").equals("collection")) {//my collection
             out.print(ticketService.userCollection(userId));
@@ -56,7 +94,9 @@ public class ShowsController {
             Timestamp temp1;
             Timestamp temp2;
             if (request.getParameter("time").equals("all")) {
-                temp1 = Timestamp.valueOf("0001-01-01 00:00:00");
+               // temp1 = Timestamp.valueOf("0001-01-01 00:00:00");
+               // temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
+                temp1 = new Timestamp(System.currentTimeMillis());
                 temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
             } else {
                 temp1 = Timestamp.valueOf(request.getParameter("starttime") + " 00:00:00");
@@ -77,7 +117,8 @@ public class ShowsController {
                             temp1,
                             temp2,
                             request.getParameter("search"),
-                            userId
+                            userId,
+                            page
                     )
             );
         }

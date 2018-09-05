@@ -13,6 +13,8 @@ import com.sjtu.jpw.Repository.TicketRepository;
 import com.sjtu.jpw.Domain.AssistDomain.ShowTicket;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -35,11 +37,12 @@ public class TicketServiceImpl implements TicketService {
 
     @Override
     public String allTickets(String city, String type, Timestamp startTime, Timestamp endTime,
-                             String search, Integer userId) {
+                             String search, Integer userId, int page) {
 
         List<Integer> showsLike = collectionRepository.findAllShowCollectionId(userId);
-        List<ShowTicket> itemList = showsRepository.findAllShowsByParams(city, type, startTime, endTime, search);
-        System.out.println(itemList.size());
+        Page<ShowTicket> tempItemList = showsRepository.findAllShowsByParamsAndPage(city, type, startTime, endTime, "%"+search+"%", new PageRequest(page-1,10));
+        System.out.println(tempItemList.getContent());
+        List<ShowTicket> itemList=tempItemList.getContent();
         for (int i = 0; i < itemList.size(); i++) {
             ShowTicket temp = itemList.get(i);
             Integer showId = setShowTicketInfo(temp);
@@ -52,6 +55,15 @@ public class TicketServiceImpl implements TicketService {
 
         Gson gson = new Gson();
         return gson.toJson(itemList);
+    }
+
+    @Override
+    public int getOriginNumber(String city, String type, Timestamp startTime, Timestamp endTime,
+                             String search) {
+
+        List<ShowTicket> itemList = showsRepository.findAllShowsByParams(city, type, startTime, endTime, search);
+        System.out.println(itemList.size());
+        return itemList.size();
     }
 
     private Integer setShowTicketInfo(ShowTicket temp) {

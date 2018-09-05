@@ -39,7 +39,9 @@ class ResultList extends Component {
         super(props);
         this.state = {
             loading:true,
-            data: []
+            data: [],
+            size:0,
+            tempData:[],
         };
 
         this.collect = this.collect.bind(this);
@@ -49,7 +51,7 @@ class ResultList extends Component {
     }
 
     // POST to get data and filter
-    getResult(self, prop) {
+    getResult(self, prop, currentPage) {
         axios.get("/shows", {
             params: {
                 city: prop.filter.city,
@@ -59,16 +61,49 @@ class ResultList extends Component {
                 endtime: moment(prop.filter.endtime).format(dateFormat),
                 search: prop.filter.search,
                 collection: prop.type,
+                page:currentPage,
             }
         })
             .then(function (response) {
                 console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 listData = response.data;
+                let tempData=self.state.data;
+                for(let i=0;i<listData.length;i++){
+                    tempData.splice((currentPage-1)*10+i,1,listData[i]);
+                }
                 self.setState({
                     loading: false,
-                    data: listData,
+                    data: tempData,
                 });
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    loading: false,
+                });
+            });
+    }
+
+    getOriginSize(self, prop) {
+        axios.get("/originNumber", {
+            params: {
+                city: prop.filter.city,
+                type: prop.filter.type,
+                time: prop.filter.time,
+                starttime: moment(prop.filter.starttime).format(dateFormat),
+                endtime: moment(prop.filter.endtime).format(dateFormat),
+                search: prop.filter.search,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                // alert(JSON.stringify(response.data[0]));
+                self.setState({
+                    size:response.data,
+                });
+                console.log("dataaaaaa: "+response.data);
+                console.log("sizeeeeee: "+self.state.size);
             })
             .catch(function (error) {
                 console.log(error);
@@ -92,10 +127,154 @@ class ResultList extends Component {
     };
 
     componentDidMount(){
-        this.getResult(this, this.props);
+        let size = 0;
+        let self=this;
+
+        axios.get("/originNumber", {
+            params: {
+                city: self.props.filter.city,
+                type: self.props.filter.type,
+                time: self.props.filter.time,
+                starttime: moment(self.props.filter.starttime).format(dateFormat),
+                endtime: moment(self.props.filter.endtime).format(dateFormat),
+                search: self.props.filter.search,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                // alert(JSON.stringify(response.data[0]));
+
+                console.log("dataaaaaa: "+response.data);
+                console.log("sizeeeeee: "+self.state.size);
+                size = response.data;
+                console.log(size);
+                let data=[];
+                for(let i=0;i<size;i++){
+                    data.push({title:"xxx"});
+                }
+                console.log("originnnnnn: "+self.state.data.length);
+                console.log(size);
+                console.log(data);
+                self.setState({
+                    data:data,
+                    size:response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    loading: false,
+                });
+            });
+
+
+
+        axios.get("/shows", {
+            params: {
+                city: self.props.filter.city,
+                type: self.props.filter.type,
+                time: self.props.filter.time,
+                starttime: moment(self.props.filter.starttime).format(dateFormat),
+                endtime: moment(self.props.filter.endtime).format(dateFormat),
+                search: self.props.filter.search,
+                collection: self.props.type,
+                page:1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                // alert(JSON.stringify(response.data[0]));
+                listData = response.data;
+                let tempData=self.state.data;
+                for(let i=0;i<listData.length;i++){
+                    tempData.splice(i,1,listData[i]);
+                }
+                self.setState({
+                    loading: false,
+                    data: tempData,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    loading: false,
+                });
+            });
     }
     componentWillReceiveProps(nextProps) {
-        this.getResult(this, nextProps);
+        let size = 0;
+        let self=this;
+
+        axios.get("/originNumber", {
+            params: {
+                city: nextProps.filter.city,
+                type: nextProps.filter.type,
+                time: nextProps.filter.time,
+                starttime: moment(nextProps.filter.starttime).format(dateFormat),
+                endtime: moment(nextProps.filter.endtime).format(dateFormat),
+                search: nextProps.filter.search,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                // alert(JSON.stringify(response.data[0]));
+
+                console.log("dataaaaaa: "+response.data);
+                console.log("sizeeeeee: "+self.state.size);
+                size = response.data;
+                console.log(size);
+                let data=[];
+                for(let i=0;i<size;i++){
+                    data.push({title:"xxx"});
+                }
+                console.log("originnnnnn: "+self.state.data.length);
+                console.log(size);
+                console.log(data);
+                self.setState({
+                    data:data,
+                    size:response.data,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    loading: false,
+                });
+            });
+
+
+
+        axios.get("/shows", {
+            params: {
+                city: nextProps.filter.city,
+                type: nextProps.filter.type,
+                time: nextProps.filter.time,
+                starttime: moment(nextProps.filter.starttime).format(dateFormat),
+                endtime: moment(nextProps.filter.endtime).format(dateFormat),
+                search: nextProps.filter.search,
+                collection: nextProps.type,
+                page:1,
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                // alert(JSON.stringify(response.data[0]));
+                listData = response.data;
+                let tempData=self.state.data;
+                for(let i=0;i<listData.length;i++){
+                    tempData.splice(i,1,listData[i]);
+                }
+                self.setState({
+                    loading: false,
+                    data: tempData,
+                });
+            })
+            .catch(function (error) {
+                console.log(error);
+                self.setState({
+                    loading: false,
+                });
+            });
     }
 
     collect(showId,isLike) {
@@ -167,8 +346,9 @@ class ResultList extends Component {
                     pagination={{
                         onChange: (page) => {
                             console.log(page);
+                            this.getResult(this, this.props,page);
                         },
-                        pageSize: 3,
+                        pageSize: 10,
                     }}
 
                     renderItem={item => (
