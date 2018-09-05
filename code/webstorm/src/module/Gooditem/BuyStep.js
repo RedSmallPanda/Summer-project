@@ -3,6 +3,7 @@ import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown} f
 import '../../css/BuyStep.css';
 import axios from "axios/index";
 import { browserHistory} from 'react-router';
+import Cookies from 'js-cookie';
 
 const Step=Steps.Step;
 
@@ -90,21 +91,21 @@ class BuyStep extends Component {
     constructor(props){
         super(props);
         this.ticketInfo = [{
-            ticketId:this.props.location.state.ticketInfo.ticketId,
+            ticketId:parseInt(JSON.parse(Cookies.get('ticketInfo')).ticketId),
             key: '0',
             img:'https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg',
             detailInfo: {
-                name:this.props.location.state.showName,
-                date:this.props.location.state.ticketInfo.time,
+                name:Cookies.get('showName'),
+                date:JSON.parse(Cookies.get('ticketInfo')).time,
             },
-            price: this.props.location.state.ticketInfo.price,
-            amount: this.props.location.state.number,
-            totalPrice:this.props.location.state.totalPrice,
+            price: parseInt(JSON.parse(Cookies.get('ticketInfo')).price),
+            amount: parseInt(Cookies.get('number')),
+            totalPrice:parseInt(Cookies.get('totalPrice')),
         }];
 
         this.state={
-            firstStep:this.props.location.state.firstStep,
-            secondStep:this.props.location.state.secondStep,
+            firstStep:parseInt(Cookies.get('firstStep')),
+            secondStep:parseInt(Cookies.get('secondStep')),
             //orderInfo:this.ticketInfo,
             selectedRow:[0],
             data:this.ticketInfo,
@@ -117,12 +118,12 @@ class BuyStep extends Component {
             ],
             selectedCoupon:"请选择优惠券",
             selectedCouponId:"",
-            originTotalPrice:this.props.location.state.totalPrice,
-            totalPrice:this.props.location.state.totalPrice,
-            getNoCoupon:0,
-            newCoupon:[{discCond:"100000",discount:"30"}],
-            orderId:this.props.location.state.orderId,
-            isCart:this.props.location.state.isCart,
+            originTotalPrice:parseInt(Cookies.get('totalPrice')),
+            totalPrice:parseInt(Cookies.get('totalPrice')),
+            getNoCoupon:parseInt(Cookies.get('getNoCoupon')),
+            newCoupon:[JSON.parse(Cookies.get('newCoupon'))],
+            orderId:parseInt(Cookies.get('orderId')),
+            isCart:parseInt(Cookies.get('isCart')),
         };
     }
 
@@ -156,6 +157,7 @@ class BuyStep extends Component {
                 }
                 else{
                     alert("orderId:" + response.data[1]);
+                    Cookies.set('orderId',response.data[1]);
                     self.setState({orderId:response.data[1]});
                 }
 
@@ -178,11 +180,13 @@ class BuyStep extends Component {
                     console.log(error);
                 });
         }
+        Cookies.set('firstStep',1);
         this.setState({firstStep:1});
     }
 
     confirmS2 = () => {
         console.log('step changed to: 2');
+        Cookies.set('secondStep',1);
         this.setState({secondStep:1});
         let self = this;
         axios.get("/giveMeCoupon",{
@@ -195,9 +199,12 @@ class BuyStep extends Component {
             .then(function (response) {
                 console.log(response);
                 if(response.data.length===0){
+                    Cookies.set('getNoCoupon',1);
                     self.setState({getNoCoupon:1});
                 }
                 else{
+                    Cookies.set('getNoCoupon',0);
+                    Cookies.set('newCoupon',response.data[0]);
                     self.setState({newCoupon:response.data});
                 }
             })

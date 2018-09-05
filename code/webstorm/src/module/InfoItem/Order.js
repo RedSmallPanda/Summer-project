@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Table } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
 // const data = [{
 //     key: '1',
@@ -158,7 +159,15 @@ class Order extends Component {
                     ticketInfo:[],
                     isCart:0,
                 }
-            })
+            });
+            Cookies.set('orderId',id);
+            Cookies.set('firstStep',1);
+            Cookies.set('secondStep',0);
+            Cookies.set('totalPrice',totalPrice);
+            Cookies.set('ticketInfo',[]);
+            Cookies.set('isCart',0);
+            Cookies.set('getNoCoupon',0);
+            Cookies.set('newCoupon',{discCond:"100000",discount:"30"});
         }
         else if(state==='1'){
             browserHistory.push({

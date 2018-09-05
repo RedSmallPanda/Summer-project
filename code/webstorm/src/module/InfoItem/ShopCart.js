@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {Divider, Modal, Table} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
+import Cookies from "js-cookie";
 const data = [
     // {
     //     key: '1',
@@ -110,7 +111,16 @@ class ShopCart extends Component {
                 totalPrice:record.intPrice*record.amount,
                 isCart:1,
             }
-        })
+        });
+        Cookies.set('firstStep',0);
+        Cookies.set('secondStep',0);
+        Cookies.set('showName',record.detailInfo.name);
+        Cookies.set('ticketInfo',{"ticketId": record.key, "price": record.intPrice,"time":record.detailInfo.date});
+        Cookies.set('number',record.amount);
+        Cookies.set('totalPrice',record.intPrice*record.amount);
+        Cookies.set('isCart',1);
+        Cookies.set('getNoCoupon',0);
+        Cookies.set('newCoupon',{discCond:"100000",discount:"30"});
     };
 
     handleDelete = (record,index) =>{

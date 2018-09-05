@@ -163,6 +163,12 @@ class Coupon extends Component{
             let value = val;    //数组中的每一项的值
             return <div>{value}</div>;    //数组中的每一项return出去为map方法的返回值
         });
+
+        if(arr.length===0){
+            result = <div>
+                <p>当前还没有优惠券，请多多浏览买票哦~</p>
+            </div>;
+        }
         return result;
     }
 }

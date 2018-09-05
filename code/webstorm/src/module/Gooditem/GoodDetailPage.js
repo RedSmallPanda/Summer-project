@@ -10,6 +10,7 @@ import TicketComment from "./TicketComment";
 import axios from 'axios';
 import { browserHistory} from 'react-router';
 import Sider from '../MainPages/Sider';
+import Cookies from 'js-cookie';
 import ShowLocation from "./ShowLocation";
 moment.locale('zh-cn');
 
@@ -230,6 +231,15 @@ class GoodDetailPage extends Component{
                 isCart: 0,
             }
         });
+        Cookies.set('firstStep', 0);
+        Cookies.set('secondStep', 0);
+        Cookies.set('showName', this.state.data.title);
+        Cookies.set('ticketInfo', this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx]);
+        Cookies.set('number', this.state.pickTickNum);
+        Cookies.set('totalPrice', this.state.pickTickNum * this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price);
+        Cookies.set('isCart', 0);
+        Cookies.set('getNoCoupon',0);
+        Cookies.set('newCoupon',{discCond:"100000",discount:"30"});
         // console.log(window.location.pathname);
     };
 
