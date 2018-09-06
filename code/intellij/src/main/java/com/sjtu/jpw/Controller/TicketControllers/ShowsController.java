@@ -256,4 +256,16 @@ public class ShowsController {
         out.print(showService.getShowsByShowId(showId));
         out.flush();
     }
+
+    @RequestMapping(value="/searchShow",produces = "application/json;charset=UTF-8")
+    public void SearchShow(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String search = request.getParameter("search");
+        JsonArray allShows = showService.searchShows(search);
+        System.out.println(allShows);
+        out.print(allShows);
+        out.flush();
+    }
 }

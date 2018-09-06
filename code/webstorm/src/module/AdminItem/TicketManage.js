@@ -5,10 +5,12 @@ import axios from 'axios';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import locale from 'antd/lib/date-picker/locale/zh_CN';
+import Image from '../MainPages/Image';
 
 const FormItem = Form.Item;
 const TabPane = Tabs.TabPane;
 const { RangePicker } = DatePicker;
+const Search = Input.Search;
 
 const typeOptions = [{
     value:'concert',
@@ -323,7 +325,7 @@ class TicketManage extends Component{
         this.columns = [{
             title: '缩略图',
             key: 'image',
-            render: (text, record) => (<img style={{width:'60px'}} src={record.image} alt="default"/>)
+            render: (text, record) => (<Image width={60} showId={record.showId}/>)
         },{
             title: '票品名称',
             dataIndex: 'title',
@@ -431,6 +433,7 @@ class TicketManage extends Component{
         show: '',
         ticket:'',
         coupon:'',
+        searchText:'',
     };
 
     getShows(self) {
@@ -716,12 +719,35 @@ class TicketManage extends Component{
         axios.post('/deleteCoupon', params);
     };
 
+    handleSearch = (value,self) =>{
+        axios.get("/searchShow",{
+            params:{
+                search:value
+            }
+        })
+            .then(function (response) {
+                console.log(response);
+                self.setState({
+                    show:response.data
+                });
+                self.setShowOptions();
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    };
+
     render(){
         return(
             <div>
                 {/*<Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增演出</Button>*/}
                 <Tabs tabBarExtraContent={
                     <div>
+                        <Search
+                            placeholder=""
+                            onSearch={value => this.handleSearch(value,this)}
+                            style={{ width: 160, marginRight:10}}
+                        />
                         <Button onClick={this.showModal} style={{marginRight:10}}><Icon type="plus"/>新增演出</Button>
                         <Button onClick={this.showTicketModal} style={{marginRight:10}}><Icon type="plus"/>新增票品</Button>
                         <Button onClick={this.showCouponModal}><Icon type="plus"/>新增优惠券</Button>
@@ -741,13 +767,14 @@ class TicketManage extends Component{
                             </span>}
                             dataSource={this.state.show}
                             style={{marginTop:16}}
+                            size="small"
                         />
                     </TabPane>
                     <TabPane tab="票品" key="2">
-                        <Table columns={this.ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}}/>
+                        <Table columns={this.ticketColumns} dataSource={this.state.ticket} style={{marginTop:16}} size="small"/>
                     </TabPane>
                     <TabPane tab="优惠券" key="3">
-                        <Table columns={this.couponColumns} dataSource={this.state.coupon} style={{marginTop:16}}/>
+                        <Table columns={this.couponColumns} dataSource={this.state.coupon} style={{marginTop:16}} size="small"/>
                     </TabPane>
                 </Tabs>
                 <ShowForm

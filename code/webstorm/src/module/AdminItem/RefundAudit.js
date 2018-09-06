@@ -153,8 +153,10 @@ class RefundAudit extends Component{
                 <Table columns={this.columns}
                        expandedRowRender={record => <p style={{ margin: 0 }}>
                            {'数量：'+record.number + '   总价：'+record.totalPrice +'   退款理由：'+record.reason}
-                           </p>}
-                       dataSource={this.state.data}/>
+                       </p>}
+                       dataSource={this.state.data}
+                       size="small"/>
+
             </div>
         )
     }
