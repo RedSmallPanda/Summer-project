@@ -30,4 +30,7 @@ public interface CollectionRepository extends CrudRepository<Collection,Integer>
     @Query("select collection.showId from Collection collection where collection.userId=:userId")
     public List<Integer>  findAllShowCollectionId(@Param("userId") Integer userId);
 
+    @Query("select collection.userId from Collection collection where collection.showId in :shows")
+    public Integer[] showCollectors(@Param("shows") Integer[] shows);
+
 }

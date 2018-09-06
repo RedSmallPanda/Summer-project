@@ -4,12 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.sjtu.jpw.Domain.Collection;
-import com.sjtu.jpw.Domain.Shows;
 import com.sjtu.jpw.Domain.Ticket;
-import com.sjtu.jpw.Repository.CollectionRepository;
-import com.sjtu.jpw.Repository.CommentRepository;
-import com.sjtu.jpw.Repository.ShowsRepository;
-import com.sjtu.jpw.Repository.TicketRepository;
+import com.sjtu.jpw.Repository.*;
 import com.sjtu.jpw.Domain.AssistDomain.ShowTicket;
 import com.sjtu.jpw.Service.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +13,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -33,6 +27,8 @@ public class TicketServiceImpl implements TicketService {
     private CommentRepository commentRepository;
     @Autowired
     private CollectionRepository collectionRepository;
+    @Autowired
+    private OrdersRepository ordersRepository;
 
 
     @Override
@@ -40,6 +36,7 @@ public class TicketServiceImpl implements TicketService {
                              String search, Integer userId, int page) {
 
         List<Integer> showsLike = collectionRepository.findAllShowCollectionId(userId);
+        System.out.println(page);
         Page<ShowTicket> tempItemList = showsRepository.findAllShowsByParamsAndPage(city, type, startTime, endTime, "%"+search+"%", new PageRequest(page-1,10));
         System.out.println(tempItemList.getContent());
         List<ShowTicket> itemList=tempItemList.getContent();
@@ -206,9 +203,8 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public int[] recommendByRate(Timestamp startTime, Integer topN) {
-        int[] onSale = ticketRepository.onSale(startTime);
-        int[] tops = commentRepository.rateRankOfOnSale(onSale);
+    public Integer[] recommendBySales(Timestamp startTime, Integer topN) {
+        Integer[] tops = ticketRepository.rankOfOnSale(startTime);
         if (tops.length > topN) {
             tops = Arrays.copyOfRange(tops, 0, topN);
         }
@@ -216,14 +212,110 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
-    public int[] recommendBySales(Timestamp startTime, Integer topN) {
-        int[] tops = ticketRepository.rankOfOnSale(startTime);
+    public Integer[] recommendByRate(Timestamp startTime, Integer topN) {
+        Integer[] onSale = ticketRepository.onSale(startTime);
+        Integer[] tops = onSale.length > 0 ? commentRepository.rateRankOfOnSale(onSale) : new Integer[0];
         if (tops.length > topN) {
             tops = Arrays.copyOfRange(tops, 0, topN);
         }
         return tops;
     }
 
+    @Override
+    public Integer[] recommendByGuess(int userId, Timestamp startTime, Integer topN) {
+//        onSale --filter
+        Integer[] onSale = ticketRepository.onSale(startTime);//show ids
+        List<Integer> onSaleList = Arrays.asList(onSale);
+
+
+//        target interests
+        Integer[] shows = interestOfUser(userId);
+        List<Integer> showsList = Arrays.asList(shows);
+
+
+//        similar users
+        Integer[] tickets = shows.length > 0 ? ticketRepository.ticketIdOfShows(shows) : new Integer[0];
+        Integer[] sameBuy = tickets.length > 0 ? ordersRepository.ticketBuyers(tickets) : new Integer[0];
+        Integer[] sameCollect = shows.length > 0 ? collectionRepository.showCollectors(shows) : new Integer[0];
+//        similarity
+        Map<Integer, Integer> similar = new HashMap<>();
+        for (Integer user: sameBuy) {
+            similar.merge(user, 1, (a, b) -> a + b);//if not exists:1 , else:+=1
+        }
+        for (Integer user: sameCollect) {
+            similar.merge(user, 1, (a, b) -> a + b);
+        }//unsorted
+        similar = sortMapByValue(similar);//sorted
+
+
+//        get recommend contents
+        List<Integer> recommendList = new ArrayList<>();
+        if (similar != null) {
+            for (Integer user :
+                    similar.keySet()) {
+                Integer[] otherLike = interestOfUser(user);
+                for (Integer recommendShow : otherLike) {
+                    if (onSaleList.contains(recommendShow) && !showsList.contains(recommendShow)) {
+                        recommendList.add(recommendShow);
+                    }
+                }
+                if (recommendList.size() >= topN) break;
+            }
+        }
+
+
+//        delete after topN parts
+        Integer[] recommend = new Integer[recommendList.size()];
+        recommendList.toArray(recommend);
+        if (recommend.length > topN) {
+            recommend = Arrays.copyOfRange(recommend, 0, topN);
+        }
+        return recommend;
+    }
+
+    private Integer[] interestOfUser(int userId) {
+        //        collected --target collection
+        List<Integer> collectList = collectionRepository.findAllShowCollectionId(userId);
+        Integer[] collected = new Integer[collectList.size()];
+        collectList.toArray(collected);
+//        buyShows --target orders
+        Integer[] buyTickets = ordersRepository.allTicketByUserId(userId);
+        Integer[] buyShows = buyTickets.length > 0 ?
+                ticketRepository.showIdOfTickets(buyTickets) :
+                new Integer[0];
+//        shows ---target all interests
+        List<Integer> showsList = new ArrayList<>();
+        for (Integer show: collected) {
+            if (!showsList.contains(show)) {
+                showsList.add(show);
+            }
+        }
+        for (Integer show: buyShows) {
+            if (!showsList.contains(show)) {
+                showsList.add(show);
+            }
+        }
+        Integer[] shows = new Integer[showsList.size()];
+        showsList.toArray(shows);
+        return shows;
+    }
+
+    private static Map<Integer, Integer> sortMapByValue(Map<Integer, Integer> oriMap) {
+        if (oriMap == null || oriMap.isEmpty()) {
+            return null;
+        }
+        List<Map.Entry<Integer, Integer>> entryList
+                = new ArrayList<>(oriMap.entrySet());
+        entryList.sort((o1, o2) -> {
+            return o2.getValue() - o1.getValue();//maybe descending?
+        });
+
+        Map<Integer, Integer> sortedMap = new LinkedHashMap<>();
+        for (Map.Entry<Integer, Integer> entry : entryList) {
+            sortedMap.put(entry.getKey(), entry.getValue());
+        }
+        return sortedMap;
+    }
 
     private Timestamp strToTimeStamp(String timeStamp){
         Timestamp ts = new Timestamp(System.currentTimeMillis());
@@ -235,4 +327,5 @@ public class TicketServiceImpl implements TicketService {
         }
         return ts;
     }
+
 }

@@ -146,7 +146,7 @@ class HomePage extends Component {
                                     );
                                 })
                                 :
-                                ""
+                                "暂无推荐"
                         }
                     </Row>
                 </div>
