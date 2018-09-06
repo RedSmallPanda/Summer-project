@@ -1,8 +1,11 @@
 package com.sjtu.jpw.Repository;
 import com.sjtu.jpw.Domain.AssistDomain.OneKindData;
+import com.sjtu.jpw.Domain.AssistDomain.OrderData;
 import com.sjtu.jpw.Domain.AssistDomain.SalesData;
 import com.sjtu.jpw.Domain.Orders;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -44,5 +47,15 @@ public interface OrdersRepository extends CrudRepository<Orders,Integer> {
             "and o1.time between:startTime and :endTime and s1.type=:kind)" )
 
     public List<OneKindData> findOneTypeSales(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("kind")String kind);
+
+
+    @Query("select orders from Orders orders where ((orders.orderId=:orderId or (-1)=:orderId) and (orders.userId=:userId or (-1)=:userId)) order by orders.time desc")
+    public Page<Orders> findAllOrdersByPage(@Param("orderId")int orderId, @Param("userId")int userId,Pageable pageable);
+
+    @Query("select orders " +
+            "from Orders orders " +
+            "where (orders.orderId =:orderId or (-1)=:orderId) and (orders.userId=:userId or (-1)=:userId)")
+    public List<Orders> getOriginNumber(@Param("orderId") int orderId, @Param("userId")int userId);
+
 
 }

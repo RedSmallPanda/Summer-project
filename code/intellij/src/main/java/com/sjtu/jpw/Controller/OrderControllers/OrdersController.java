@@ -53,6 +53,31 @@ public class OrdersController {
         out.flush();
     }
 
+    @RequestMapping(value="/getAllOrders",produces="application/json;charset=UTF-8")
+    public void GetAllOrders(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int userId=-1;
+        if(request.getParameter("userId")!=null && !request.getParameter("userId").equals("")){
+            userId=Integer.valueOf(request.getParameter("userId"));
+        }
+
+        int orderId=-1;
+        if(request.getParameter("orderId")!=null && !request.getParameter("orderId").equals("")){
+            orderId=Integer.valueOf(request.getParameter("orderId"));
+        }
+
+        int page=0;
+        if(request.getParameter("page")!=null && !request.getParameter("page").equals("")){
+            page=Integer.valueOf(request.getParameter("page"));
+        }
+        JsonArray orders=ordersService.getAllOrders(orderId,userId,page);
+
+        System.out.println(orders);
+        out.print(orders);
+        out.flush();
+    }
+
     @RequestMapping(value="/changeOrderState",produces="application/json;charset=UTF-8")
     public void ChangeOrderState(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");
@@ -165,6 +190,26 @@ public class OrdersController {
 
         System.out.println(order);
         out.print(String.valueOf(idBool));
+        out.flush();
+    }
+
+    @RequestMapping(value="/getOriginOrderNumber",produces="application/json;charset=UTF-8")
+    public void GetOriginOrderNumber(HttpServletRequest request, HttpServletResponse response) throws InterruptedException,IOException {
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+        int userId=-1;
+        if(request.getParameter("userId")!=null && !request.getParameter("userId").equals("")){
+            userId=Integer.valueOf(request.getParameter("userId"));
+        }
+
+        int orderId=-1;
+        if(request.getParameter("orderId")!=null && !request.getParameter("orderId").equals("")){
+            orderId=Integer.valueOf(request.getParameter("orderId"));
+        }
+
+        int number=ordersService.getOriginNumber(orderId,userId);
+        System.out.println(number);
+        out.print(number);
         out.flush();
     }
 }

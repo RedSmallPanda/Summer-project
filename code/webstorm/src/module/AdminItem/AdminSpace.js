@@ -4,6 +4,7 @@ import TicketManage from './TicketManage'
 import SalesData from './SalesData'
 import UserManage from './UserManage'
 import RefundAudit from './RefundAudit'
+import OrderManage from './OrderManage'
 
 class AdminSpace extends Component{
 
@@ -32,6 +33,7 @@ class AdminSpace extends Component{
         let ticketManage = <TicketManage/>;
         let refundAudit = <RefundAudit/>;
         let salesData = <SalesData/>;
+        let orderManage = <OrderManage/>
 
         let adminContent = null;
 
@@ -47,6 +49,9 @@ class AdminSpace extends Component{
                 adminContent = refundAudit;
                 break;
             case '4':
+                adminContent = orderManage;
+                break;
+            case '5':
                 adminContent = salesData;
                 break;
             default:
@@ -62,7 +67,8 @@ class AdminSpace extends Component{
             <Menu.Item key="1"><Icon type="usergroup-add" />用户管理</Menu.Item>
             <Menu.Item key="2"><Icon type="book" />票品管理</Menu.Item>
             <Menu.Item key="3"><Icon type="exception" />退款审核</Menu.Item>
-            <Menu.Item key="4"><Icon type="area-chart" />销量统计</Menu.Item>
+            <Menu.Item key="4"><Icon type="bars" theme="outlined" />订单查询</Menu.Item>
+            <Menu.Item key="5"><Icon type="area-chart" />销量统计</Menu.Item>
         </Menu>
         //alert
         let adminBar =
