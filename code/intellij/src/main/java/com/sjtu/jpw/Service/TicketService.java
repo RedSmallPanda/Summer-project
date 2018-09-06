@@ -21,6 +21,7 @@ public interface TicketService {
     JsonArray getTickets();
     void deleteTicket(Integer ticketId);
 
-    int[] recommendByRate(Timestamp startTime, Integer topN);
-    int[] recommendBySales(Timestamp startTime, Integer topN);
+    Integer[] recommendBySales(Timestamp startTime, Integer topN);
+    Integer[] recommendByRate(Timestamp startTime, Integer topN);
+    Integer[] recommendByGuess(int userId, Timestamp startTime, Integer topN);
 }

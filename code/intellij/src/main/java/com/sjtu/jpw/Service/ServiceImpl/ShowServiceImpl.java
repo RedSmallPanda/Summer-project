@@ -89,9 +89,9 @@ public class ShowServiceImpl implements ShowService {
         showsRepository.deleteAllByShowId(showId);
     }
 
-    public List<Shows> getShowsByIdArray(int[] showIds){
+    public List<Shows> getShowsByIdArray(Integer[] showIds){
         List<Shows> recommendList = new ArrayList<>();
-        for (int i : showIds) {
+        for (Integer i : showIds) {
             recommendList.add(showsRepository.findFirstByShowId(i));
         }
         return recommendList;

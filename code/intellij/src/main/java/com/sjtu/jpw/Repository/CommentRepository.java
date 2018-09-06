@@ -33,6 +33,6 @@ public interface CommentRepository extends CrudRepository<Comment,Integer> {
                     "(select show_id,avg(rate)as avg_rate from comment " +
                     "where show_id in :shows and parent_id=-1 group by show_id)as A " +
                     "order by avg_rate")
-    public int[] rateRankOfOnSale(@Param("shows")int[] shows);
+    public Integer[] rateRankOfOnSale(@Param("shows")Integer[] shows);
 
 }

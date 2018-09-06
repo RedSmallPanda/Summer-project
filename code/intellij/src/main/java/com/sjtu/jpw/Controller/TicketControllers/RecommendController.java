@@ -31,7 +31,7 @@ public class RecommendController {
         PrintWriter out = response.getWriter();
 
         String recommendBy = request.getParameter("recommendBy");
-        int[] showIds;
+        Integer[] showIds;
         List<Shows> recommend = new ArrayList<>();
 
         switch (recommendBy) {
@@ -45,6 +45,10 @@ public class RecommendController {
                 recommend = showsService.getShowsByIdArray(showIds);
                 break;
             case "guess":
+                if(request.getSession().getAttribute("userId")==null) break;
+                int userId = (int) request.getSession().getAttribute("userId");
+                showIds = ticketService.recommendByGuess(userId, new Timestamp(System.currentTimeMillis()), 5);
+                recommend = showsService.getShowsByIdArray(showIds);
                 break;
             default:
         }

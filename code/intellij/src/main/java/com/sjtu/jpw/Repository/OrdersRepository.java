@@ -36,13 +36,16 @@ public interface OrdersRepository extends CrudRepository<Orders,Integer> {
             "from Orders o1 ,Ticket t1 ,Shows s1 where (o1.ticketId=t1.ticketId and t1.showId=s1.showId " +
             "and o1.time between:startTime and :endTime) " +
             "group by s1.type ")
-
     public List<SalesData> findAllTypeSales(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
 
     @Query("select new com.sjtu.jpw.Domain.AssistDomain.OneKindData(o1.number,o1.time) " +
             "from Orders o1 ,Ticket t1 ,Shows s1 where (o1.ticketId=t1.ticketId and t1.showId=s1.showId " +
             "and o1.time between:startTime and :endTime and s1.type=:kind)" )
-
     public List<OneKindData> findOneTypeSales(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("kind")String kind);
 
+    @Query("select order.ticketId from Orders order where order.userId=:userId")
+    public Integer[] allTicketByUserId(@Param("userId") int userId);
+
+    @Query("select order.userId from Orders order where order.ticketId in :tickets")
+    public Integer[] ticketBuyers(@Param("tickets")Integer[] tickets);
 }

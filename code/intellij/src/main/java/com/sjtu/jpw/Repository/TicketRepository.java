@@ -41,15 +41,22 @@ import java.util.List;
 
         @Query(nativeQuery = true,
                 value="select distinct t.show_id from ticket t where t.time>:startTime and t.stock>0")
-        public int[] onSale(@Param("startTime") Timestamp startTime);
+        public Integer[] onSale(@Param("startTime") Timestamp startTime);
 
         @Query(nativeQuery = true,
                 value="select show_id from (select t1.show_id as show_id, sum(t1.amount-t1.stock)as sales from ticket t1 " +
                         "where t1.show_id in (select t2.show_id from ticket t2 where t2.time>:startTime and t2.stock>0) " +
                         "group by t1.show_id " +
                         "order by sales desc) as B")
-        public int[] rankOfOnSale(@Param("startTime") Timestamp startTime);
+        public Integer[] rankOfOnSale(@Param("startTime") Timestamp startTime);
 
+        @Query(nativeQuery = true,
+                value="select show_id from ticket where ticket_id in :tickets")
+        public Integer[] showIdOfTickets(@Param("tickets") Integer[] tickets);
+
+        @Query(nativeQuery = true,
+                value="select ticket_id from ticket where show_id in :shows")
+        public Integer[] ticketIdOfShows(@Param("shows") Integer[] shows);
         //   @Modifying
         //   @Query("update Shows show set user.password=:password where user.userId=:userId")
         //  public void updatePassword(@Param("password")String password, @Param("userId") int id);

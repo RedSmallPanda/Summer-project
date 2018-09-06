@@ -14,5 +14,5 @@ public interface ShowService {
     void deleteShow(Integer showId);
     String getTitleByShowId(Integer showId);
 
-    List<Shows> getShowsByIdArray(int[] showIds);
+    List<Shows> getShowsByIdArray(Integer[] showIds);
 }
