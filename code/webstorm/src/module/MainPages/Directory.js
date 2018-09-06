@@ -104,6 +104,15 @@ class Directory extends Component {
                                     <RadioButton className='radio-button' value="hz">杭州</RadioButton>
                                     <RadioButton className='radio-button' value="sh">上海</RadioButton>
                                     <RadioButton className='radio-button' value="bj">北京</RadioButton>
+                                    <RadioButton className='radio-button' value="gz">广州</RadioButton>
+                                    <RadioButton className='radio-button' value="sz">深圳</RadioButton>
+                                    <RadioButton className='radio-button' value="bj">重庆</RadioButton>
+                                    <RadioButton className='radio-button' value="tj">天津</RadioButton>
+                                    <RadioButton className='radio-button' value="km">昆明</RadioButton>
+                                    <RadioButton className='radio-button' value="nj">南京</RadioButton>
+                                    <RadioButton className='radio-button' value="wh">武汉</RadioButton>
+                                    <RadioButton className='radio-button' value="xa">西安</RadioButton>
+                                    <RadioButton className='radio-button' value="cs">长沙</RadioButton>
                                     <RadioButton className='radio-button' value="cd">成都</RadioButton>
                                 </RadioGroup>
                             </div>
@@ -112,13 +121,14 @@ class Directory extends Component {
                                 <RadioGroup value={this.state.type} onChange={this.handleType}>
                                     <span>选择分类：</span>
                                     <RadioButton value="all">全部</RadioButton>
-                                    <RadioButton value="concert">演唱会</RadioButton>
-                                    <RadioButton value="music">音乐会</RadioButton>
-                                    <RadioButton value="cnopera">曲苑杂坛</RadioButton>
-                                    <RadioButton value="opera">话剧歌剧</RadioButton>
+                                    <RadioButton value="concerts">演唱会</RadioButton>
+                                    <RadioButton value="musicale">音乐会</RadioButton>
+                                    <RadioButton value="shows">曲苑杂坛</RadioButton>
+                                    <RadioButton value="dramas">话剧歌剧</RadioButton>
                                     <RadioButton value="sports">体育比赛</RadioButton>
                                     <RadioButton value="dance">舞蹈芭蕾</RadioButton>
-                                    <RadioButton value="comic">动漫游戏</RadioButton>
+                                    <RadioButton value="exhibits">休闲展览</RadioButton>
+                                    <RadioButton value="family">儿童亲子</RadioButton>
                                 </RadioGroup>
                             </div>
                             <br/>

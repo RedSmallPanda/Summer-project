@@ -325,6 +325,7 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('phone', {
                             rules: [
+                                { required: true, message: '手机号不能为空' },
                                 {validator:(rule,value,callback)=>{
                                     var phone_validator=/^([0-9])+/;
                                     var is_valid=phone_validator.test(String(value));
