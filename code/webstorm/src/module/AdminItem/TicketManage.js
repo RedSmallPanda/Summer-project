@@ -68,14 +68,15 @@ let show = [{
     endDate:'',
 
 }];
-let showOptions = [];
+let showOptions = [{value:1,label:"a"}];
 let startDate = '';
 let endDate = '';
 
-function onChange(value) {
-    console.log(value[0]);
+function onChange(showOpt) {
+    console.log(showOpt);
+    // console.log(showOpt.value);
     for(let i = 0;i < show.length; i++){
-        if(show[i].showId === value[0]){
+        if(show[i].showId === showOpt.value){
             startDate = show[i].startDate;
             endDate = show[i].endDate;
         }
@@ -206,9 +207,15 @@ const TicketForm = Form.create()(
                             })(
                                 <div>
                                     {/*<Cascader options={showOptions} onChange={onChange} changeOnSelect*/}
-                                              {/*placeholder="演出名称"/>*/}
+                                    {/*placeholder="演出名称"/>*/}
                                     <AutoComplete
-                                        dataSource={showOptions}
+                                        dataSource={
+                                            showOptions.map(opt =>(
+                                                <AutoComplete.Option key={opt.value} value={opt.label} onSelect={onChange(opt)}>
+                                                    {opt.label}
+                                                </AutoComplete.Option>
+                                            ))
+                                        }
                                         filterOption={true}
                                         backfill={true}
                                         onFocus={this.onFocus.bind(this)}
@@ -216,6 +223,7 @@ const TicketForm = Form.create()(
                                         onSelect={this.onSelect.bind(this)}
                                         onBlur={this.onBlur.bind(this)}
                                         value={this.state.value}
+                                        optionLabelProp="value"
 
                                         // onSelect={onSelect}
                                         // onSearch={this.handleSearch}
