@@ -392,7 +392,6 @@ class HeaderMenu extends Component {
                         </Col>
                         <Col span={7}>
                             <Search
-                                placeholder="搜索   TODO:  销量  退款申请  找回密码"
                                 onSearch={value => this.handleSearch(value)}
                                 defaultValue={this.state.search}
                                 enterButton
