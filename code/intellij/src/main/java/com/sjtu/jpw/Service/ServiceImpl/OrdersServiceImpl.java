@@ -12,6 +12,8 @@ import com.sjtu.jpw.Domain.AssistDomain.SalesData;
 import com.sjtu.jpw.Repository.*;
 import com.sjtu.jpw.Service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.sql.Time;
@@ -638,5 +640,48 @@ public class OrdersServiceImpl implements OrdersService {
         Ticket ticket=ticketRepository.findFirstByTicketId(ticketId);
         int showId=ticket.getShowId();
         return showId;
+    }
+
+    @Override
+    public JsonArray getAllOrders(int orderId,int userId,int page){
+        Page<Orders> tempOrders=ordersRepository.findAllOrdersByPage(orderId,userId,new PageRequest(page-1,10));
+        List<Orders> orders=tempOrders.getContent();
+        JsonArray orderData=new JsonArray();
+        for (int i = 0; i < orders.size(); i++) {
+            Orders temp=orders.get(i);
+            int state=Integer.valueOf(temp.getState());
+            if(state==0){
+                temp.setState("待付款");
+            }
+            else if(state==1){
+                temp.setState("已付款");
+            }
+            else if(state==2){
+                temp.setState("退款申请中");
+            }
+            else if(state==3){
+                temp.setState("退款失败");
+            }
+            else if(state==4){
+                temp.setState("已退款");
+            }
+            else if(state==5){
+                temp.setState("待评价");
+            }
+            else if(state==6){
+                temp.setState("已评价");
+            }
+            Gson orderGson=new Gson();
+            String orderJson = orderGson.toJson(temp);
+            JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
+            orderData.add(orderObject);
+        }
+        return orderData;
+    }
+
+    @Override
+    public int getOriginNumber(int orderId,int userId){
+        int number=ordersRepository.getOriginNumber(orderId,userId).size();
+        return number;
     }
 }

@@ -336,7 +336,8 @@ class HeaderMenu extends Component {
                     <Menu.Item key="1" onClick={this.handleAdminSpace}>用户管理</Menu.Item>
                     <Menu.Item key="2" onClick={this.handleAdminSpace}>票品管理</Menu.Item>
                     <Menu.Item key="3" onClick={this.handleAdminSpace}>退款审核</Menu.Item>
-                    <Menu.Item key="4" onClick={this.handleAdminSpace}>销量统计</Menu.Item>
+                    <Menu.Item key="4" onClick={this.handleAdminSpace}>订单查询</Menu.Item>
+                    <Menu.Item key="5" onClick={this.handleAdminSpace}>销量统计</Menu.Item>
                     <Menu.Item onClick={this.handleLogout}>退出登录</Menu.Item>
                 </SubMenu>
             </Menu>;

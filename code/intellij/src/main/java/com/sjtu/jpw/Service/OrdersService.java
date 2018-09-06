@@ -9,6 +9,8 @@ public interface OrdersService {
     JsonArray getCurrentOrder(int userId);
     JsonArray getHistoryOrder(int userId);
     JsonArray getRefundOrder();
+    JsonArray getAllOrders(int orderId,int userId,int page);
+    int getOriginNumber(int orderId,int userId);
     void refund(int orderId,String reason);
     void approveRefund(int orderId);
     void rejectRefund(int orderId);

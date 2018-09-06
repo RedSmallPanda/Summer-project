@@ -220,28 +220,35 @@ class GoodDetailPage extends Component{
 
     toBuyStep = () => {
         // console.log("ready to jump");
-        browserHistory.push({
-            pathname: '/buyStep',
-            state: {
-                firstStep: 0,
-                secondStep: 0,
-                showName: this.state.data.title,
-                ticketInfo: this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx],
-                number: this.state.pickTickNum,
-                totalPrice: this.state.pickTickNum * this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price,
-                isCart: 0,
-            }
-        });
-        Cookies.set('firstStep', 0);
-        Cookies.set('secondStep', 0);
-        Cookies.set('showName', this.state.data.title);
-        Cookies.set('ticketInfo', this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx]);
-        Cookies.set('number', this.state.pickTickNum);
-        Cookies.set('totalPrice', this.state.pickTickNum * this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price);
-        Cookies.set('isCart', 0);
-        Cookies.set('getNoCoupon',0);
-        Cookies.set('newCoupon',{discCond:"100000",discount:"30"});
-        // console.log(window.location.pathname);
+        if(Cookies.get("username")===null || Cookies.get("username")==='' || Cookies.get("username")==="admin"){
+            browserHistory.push({
+                pathname: '/error',
+            });
+        }
+        else {
+            browserHistory.push({
+                pathname: '/buyStep',
+                state: {
+                    firstStep: 0,
+                    secondStep: 0,
+                    showName: this.state.data.title,
+                    ticketInfo: this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx],
+                    number: this.state.pickTickNum,
+                    totalPrice: this.state.pickTickNum * this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price,
+                    isCart: 0,
+                }
+            });
+            Cookies.set('firstStep', 0);
+            Cookies.set('secondStep', 0);
+            Cookies.set('showName', this.state.data.title);
+            Cookies.set('ticketInfo', this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx]);
+            Cookies.set('number', this.state.pickTickNum);
+            Cookies.set('totalPrice', this.state.pickTickNum * this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price);
+            Cookies.set('isCart', 0);
+            Cookies.set('getNoCoupon', 0);
+            Cookies.set('newCoupon', {discCond: "100000", discount: "30"});
+            // console.log(window.location.pathname);
+        }
     };
 
     render(){

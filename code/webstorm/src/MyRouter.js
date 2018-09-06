@@ -59,6 +59,7 @@ class MyRouter extends Component{
                 <Route path="/refundPage" component={RefundPage}/>
                 <Route path="/activate" component={Activate}/>
                 <Route path="/resetPassword" component={ResetPassword}/>
+                <Route path="/error" component={Error}/>
             </Router>;
 
         const unLoginRouter =
@@ -76,6 +77,7 @@ class MyRouter extends Component{
                 <Route path="/refundPage" component={Error}/>
                 <Route path="/activate" component={Activate}/>
                 <Route path="/resetPassword" component={ResetPassword}/>
+                <Route path="/error" component={Error}/>
             </Router>;
 
         if(this.state.isLogin){
