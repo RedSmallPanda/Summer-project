@@ -3,6 +3,7 @@ import {Menu, Row, Col, Carousel, Card, Divider, Icon, List, Avatar, Rate} from 
 import '../../css/App.css'
 import {browserHistory} from 'react-router';
 import axios from "axios";
+import Image from './Image';
 
 const { Meta } = Card;
 const IconText = ({ type, text }) => (
@@ -112,8 +113,7 @@ class HomePage extends Component {
             <Card
                 hoverable
                 style={{width: 200}}
-                cover={<img alt="example"
-                            src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>}
+                cover={<Image width={200} showId={item.showId}/>}
             >
                 <Meta
                     title={item.title}

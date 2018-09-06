@@ -60,4 +60,7 @@ public interface ShowsRepository extends CrudRepository<Shows,Integer> {
     @Modifying
     @Query("update Shows show set rate=:rate where showId=:showId")
     public void setRateByShowId(@Param("showId")Integer showId, @Param("rate")Integer rate);
+
+    @Query("select show from Shows show where show.title like %:search%")
+    List<Shows> searchShows(@Param("search")String search);
 }

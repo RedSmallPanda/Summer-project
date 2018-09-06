@@ -113,7 +113,7 @@ class TicketComment extends Component {
         let params = new URLSearchParams();
         let username = Cookies.get('username');
         let time = moment().format('YYYY-MM-DD hh:mm:ss');
-        let content = "@" + thing.username+": " + this.state.value;
+        let content = "@" + thing.nickname+": " + this.state.value;
 
         params.append('purpose',"add");
         params.append('showId',item.showId);
@@ -256,7 +256,7 @@ class TicketComment extends Component {
                             <List.Item.Meta
                                 align='left'
                                 avatar={<Avatar username={item.username}/>}
-                                title={<span>{item.username}</span>}
+                                title={<span>{item.nickname?item.nickname:item.username}</span>}
                                 description={
                                     <div>
                                         <Rate disabled allowHalf defaultValue={item.rate/2}/><br/>
@@ -269,7 +269,7 @@ class TicketComment extends Component {
                         {item.showReplyBar ? <div>
                             <Row>
                                 <Col span={1}/>
-                                <span>回复&nbsp;{item.username}:</span>
+                                <span>回复&nbsp;{item.nickname?item.nickname:item.username}:</span>
                             </Row>
                             <Row>
                                 <Col span={1}/>
@@ -302,7 +302,7 @@ class TicketComment extends Component {
                                                         >
                                                             <List.Item.Meta
                                                                 avatar={<Avatar username={thing.username}/>}
-                                                                title={<span>{thing.username}</span>}
+                                                                title={<span>{thing.nickname?thing.nickname:thing.username}</span>}
                                                                 description={thing.content}
                                                             />
                                                             {thing.time}
@@ -310,7 +310,7 @@ class TicketComment extends Component {
                                                         {thing.showSmallBar ? <div>
                                                             <Row>
                                                                 <Col span={1}/>
-                                                                <span>回复&nbsp;{thing.username}:</span>
+                                                                <span>回复&nbsp;{thing.nickname?thing.nickname:thing.username}:</span>
                                                             </Row>
                                                             <Row>
                                                                 <Col span={1}/>

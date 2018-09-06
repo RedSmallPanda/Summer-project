@@ -33,6 +33,23 @@ class Image extends Component {
         this.getImage(this);
     }
 
+    componentWillReceiveProps(nextProps){
+        let self = this;
+        axios.get("/getImage",{
+            params: {
+                showId: nextProps.showId,
+            }
+        })
+            .then(function (response) {
+                self.setState({
+                    imgUrl:response.data
+                })
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    }
+
     render() {
         let self=this;
         return (

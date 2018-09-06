@@ -49,31 +49,7 @@ public class ShowServiceImpl implements ShowService {
 
     public JsonArray getShows(){
         List<Shows> shows = showsRepository.findAllShows();
-        DBCollection collection = mongoDBService.getCollection("image");
-        BasicDBObject query = new BasicDBObject();
-        JsonArray showsData = new JsonArray();
-        Iterator<Shows> it = shows.iterator();
-        while(it.hasNext()){
-            Shows show = it.next();
-            JsonObject showObject = new JsonObject();
-            showObject.addProperty("showId",show.getShowId());
-            showObject.addProperty("title",show.getTitle());
-            query.put("title",show.getTitle());
-            DBObject img = collection.findOne(query);
-            if (img != null) {
-                showObject.addProperty("image", img.get("imgUrl").toString());
-                System.out.println("imgTest:"+img.get("imgUrl").toString());
-            }
-            showObject.addProperty("info",show.getInfo());
-            showObject.addProperty("city",show.getCity());
-            showObject.addProperty("type",show.getType());
-            showObject.addProperty("address",show.getAddress());
-            showObject.addProperty("rate",show.getRate());
-            showObject.addProperty("startDate",show.getStarttime().toString());
-            showObject.addProperty("endDate",show.getEndtime().toString());
-            showsData.add(showObject);
-        }
-        return showsData;
+        return tempShows(shows);
     }
 
     public JsonObject getShowsByShowId(int showId) {
@@ -111,5 +87,30 @@ public class ShowServiceImpl implements ShowService {
 
     public String getTitleByShowId(Integer showId){
         return showsRepository.findFirstByShowId(showId).getTitle();
+    }
+
+    public JsonArray searchShows(String search){
+        List<Shows> shows = showsRepository.searchShows(search);
+        return tempShows(shows);
+    }
+
+    private JsonArray tempShows(List<Shows> shows){
+        JsonArray showsData = new JsonArray();
+        Iterator<Shows> it = shows.iterator();
+        while(it.hasNext()){
+            Shows show = it.next();
+            JsonObject showObject = new JsonObject();
+            showObject.addProperty("showId",show.getShowId());
+            showObject.addProperty("title",show.getTitle());
+            showObject.addProperty("info",show.getInfo());
+            showObject.addProperty("city",show.getCity());
+            showObject.addProperty("type",show.getType());
+            showObject.addProperty("address",show.getAddress());
+            showObject.addProperty("rate",show.getRate());
+            showObject.addProperty("startDate",show.getStarttime().toString());
+            showObject.addProperty("endDate",show.getEndtime().toString());
+            showsData.add(showObject);
+        }
+        return showsData;
     }
 }

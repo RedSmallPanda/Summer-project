@@ -13,4 +13,5 @@ public interface UserService {
     List<User> allUsers();
     Boolean activate(String activate);
     User usernameMatchEmail(String username, String email);
+    String getNicknameByUsername(String username);
 }

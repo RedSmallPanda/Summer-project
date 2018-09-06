@@ -13,6 +13,6 @@ public interface ShowService {
     JsonObject getShowsByShowId(int showId);
     void deleteShow(Integer showId);
     String getTitleByShowId(Integer showId);
-
     List<Shows> getShowsByIdArray(int[] showIds);
+    JsonArray searchShows(String search);
 }
