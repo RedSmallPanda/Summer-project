@@ -494,7 +494,7 @@ class GoodDetailPage extends Component{
                                 </Col>
                                 <Col span={2}/>
                                 <Col span={4} className="test">
-                                    <Sider/>
+                                    <Sider data={this.state.data} imgUrl={this.state.imgUrl}/>
                                 </Col>
                             </Row>
                         </div>

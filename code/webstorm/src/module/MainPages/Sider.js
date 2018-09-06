@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, Icon, Rate, } from 'antd';
+import { Card, Icon, Rate } from 'antd';
 
 const data={
     name:'森林音乐会',
@@ -12,31 +12,45 @@ const data={
 class Sider extends Component{
 
     state={
-        data:data
+        data: [],
+        imgUrl: null
     };
+
+    componentWillMount() {
+        this.setState({
+            data: this.props.data,
+            imgUrl: this.props.imgUrl
+        });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
+    }
 
     render(){
         const { Meta } = Card;
 
-        return(
+        return (
             <div>
                 <Card
                     hoverable
-                    style={{ width: 240 }}
-                    cover={<img alt="example" src={this.state.data.img} />}
+                    style={{width: 240}}
+                    cover={<img alt="example" src={this.state.imgUrl}/>}
                 >
                     <Meta
-                        title={this.state.data.name}
+                        title={this.state.data.title}
                         description={
                             <div>
-                                <Icon type="environment" />{" "+this.state.data.location}<br/>
-                                <Icon type="calendar" />{" "+this.state.data.time}<br/>
-                                <Rate allowHalf disabled defaultValue={this.state.data.rate} />
+                                <Icon type="environment"/>{" " + this.state.data.address}<br/>
+                                <Icon type="calendar"/>
+                                {" " + this.state.data.starttime + " - " + this.state.data.endtime}
+                                <br/>
+                                <Rate allowHalf disabled value={this.state.data.rate / 2}/>
                             </div>}
                     />
                 </Card>
             </div>
-        )
+        );
     }
 }
 
