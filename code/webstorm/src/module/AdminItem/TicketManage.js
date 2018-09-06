@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker } from 'antd';
+import {Button, Modal, Form, Input, Icon, Table, Tabs, Cascader, DatePicker, AutoComplete} from 'antd';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 import moment from 'moment';
@@ -159,6 +159,33 @@ const ShowForm = Form.create()(
 
 const TicketForm = Form.create()(
     class extends React.Component {
+        state = {
+            selected: false,
+            value: "",
+        };
+        onSelect(value) {
+            this.setState({
+                selected: true,
+                value: value,
+            });
+        }
+        onChange(value) {
+            this.setState({
+                value: value,
+            });
+        }
+        onFocus() {
+            this.setState({
+                selected: false,
+            });
+        }
+        onBlur() {
+            if (this.state.selected === false) {
+                this.setState({
+                    value: "",
+                })
+            }
+        }
         render() {
             const { visible, onCancel, onCreate, form } = this.props;
             const { getFieldDecorator } = form;
@@ -175,64 +202,97 @@ const TicketForm = Form.create()(
                     <Form>
                         <FormItem label={null}>
                             {getFieldDecorator('title', {
-                                rules: [{ required: true, message: '请选择演出' }],
+                                rules: [{required: true, message: '请选择演出'}],
                             })(
-                                <Cascader options={showOptions} onChange={onChange} changeOnSelect placeholder="演出名称"/>
+                                <div>
+                                    {/*<Cascader options={showOptions} onChange={onChange} changeOnSelect*/}
+                                              {/*placeholder="演出名称"/>*/}
+                                    <AutoComplete
+                                        dataSource={showOptions}
+                                        filterOption={true}
+                                        backfill={true}
+                                        onFocus={this.onFocus.bind(this)}
+                                        onChange={this.onChange.bind(this)}
+                                        onSelect={this.onSelect.bind(this)}
+                                        onBlur={this.onBlur.bind(this)}
+                                        value={this.state.value}
+
+                                        // onSelect={onSelect}
+                                        // onSearch={this.handleSearch}
+                                        placeholder="演出名称"
+                                    />
+                                </div>
                             )}
                         </FormItem>
                         <FormItem label={null}>
                             {getFieldDecorator('price', {
                                 rules: [
-                                    { required: true, message: '请填写价格' },
-                                    {validator:(rule,value,callback)=>{
-                                        var price_validator=/^([0-9])+/;
-                                        var is_valid=price_validator.test(String(value));
-                                        //   const form = this.formRef.props.form;
-                                        //value's type need to transform
-                                        if(String(value).length>13){is_valid=false;}
-                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("价格仅限整数");}
-                                        else {callback()}
-                                    }},
+                                    {required: true, message: '请填写价格'},
+                                    {
+                                        validator: (rule, value, callback) => {
+                                            var price_validator = /^([0-9])+/;
+                                            var is_valid = price_validator.test(String(value));
+                                            //   const form = this.formRef.props.form;
+                                            //value's type need to transform
+                                            if (String(value).length > 13) {
+                                                is_valid = false;
+                                            }
+                                            if (!is_valid && !(String(value) === '') && !(value == null)) {
+                                                callback("价格仅限整数");
+                                            }
+                                            else {
+                                                callback()
+                                            }
+                                        }
+                                    },
                                 ],
-                                validateTrigger:'onBlur',
+                                validateTrigger: 'onBlur',
                             })(
-                                <Input type="textarea" placeholder="价格" />
+                                <Input type="textarea" placeholder="价格"/>
                             )}
                         </FormItem>
                         <FormItem label={null}>
                             {getFieldDecorator('time', {
-                                rules: [{ required: true, message: '请选择时间' }],
+                                rules: [{required: true, message: '请选择时间'}],
                             })(
                                 <DatePicker
                                     format="YYYY-MM-DD HH:mm:ss"
                                     disabledDate={disabledDate}
                                     locale={locale}
-                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                    showTime={{defaultValue: moment('00:00:00', 'HH:mm:ss')}}
                                 />
                             )}
                         </FormItem>
                         <FormItem label={null}>
-                            {getFieldDecorator('seat',{
-                                rules:[{ required:true, message:'请填写座位信息'}]
+                            {getFieldDecorator('seat', {
+                                rules: [{required: true, message: '请填写座位信息'}]
                             })(
                                 <Input type="textarea" placeholder="座位信息"/>
                             )}
                         </FormItem>
                         <FormItem label={null}>
-                            {getFieldDecorator('amount',{
-                                rules:[
-                                    { required:true, message:'请填写座位总数'},
-                                    {validator:(rule,value,callback)=>{
-                                        var price_validator=/^([0-9])+/;
-                                        var is_valid=price_validator.test(String(value));
-                                        //   const form = this.formRef.props.form;
-                                        //value's type need to transform
-                                        if(String(value).length>13){is_valid=false;}
-                                        if(!is_valid &&!(String(value)==='')&&!(value==null)){callback("座位数仅限整数");}
-                                        else {callback()}
-                                    }},
+                            {getFieldDecorator('amount', {
+                                rules: [
+                                    {required: true, message: '请填写座位总数'},
+                                    {
+                                        validator: (rule, value, callback) => {
+                                            var price_validator = /^([0-9])+/;
+                                            var is_valid = price_validator.test(String(value));
+                                            //   const form = this.formRef.props.form;
+                                            //value's type need to transform
+                                            if (String(value).length > 13) {
+                                                is_valid = false;
+                                            }
+                                            if (!is_valid && !(String(value) === '') && !(value == null)) {
+                                                callback("座位数仅限整数");
+                                            }
+                                            else {
+                                                callback()
+                                            }
+                                        }
+                                    },
                                 ],
-                                validateTrigger:'onBlur',
+                                validateTrigger: 'onBlur',
                             })(
                                 <Input type="textarea" placeholder="座位总数"/>
                             )}
