@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker,Divider } from 'antd';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 import moment from 'moment';
@@ -71,11 +71,12 @@ let show = [{
 let showOptions = [];
 let startDate = '';
 let endDate = '';
+let tempTitle = '';
+let tempShowId = '';
 
-function onChange(value) {
-    console.log(value[0]);
+function onChange(showId) {
     for(let i = 0;i < show.length; i++){
-        if(show[i].showId === value[0]){
+        if(show[i].showId === showId){
             startDate = show[i].startDate;
             endDate = show[i].endDate;
         }
@@ -165,7 +166,7 @@ const TicketForm = Form.create()(
             return (
                 <Modal
                     visible={visible}
-                    title="新增票品"
+                    title={tempTitle}
                     okText="确定"
                     cancelText="取消"
                     onCancel={onCancel}
@@ -174,10 +175,15 @@ const TicketForm = Form.create()(
                 >
                     <Form>
                         <FormItem label={null}>
-                            {getFieldDecorator('title', {
-                                rules: [{ required: true, message: '请选择演出' }],
+                            {getFieldDecorator('time', {
+                                rules: [{ required: true, message: '请选择时间' }],
                             })(
-                                <Cascader options={showOptions} onChange={onChange} changeOnSelect placeholder="演出名称"/>
+                                <DatePicker
+                                    format="YYYY-MM-DD HH:mm:ss"
+                                    disabledDate={disabledDate}
+                                    locale={locale}
+                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
+                                />
                             )}
                         </FormItem>
                         <FormItem label={null}>
@@ -197,18 +203,6 @@ const TicketForm = Form.create()(
                                 validateTrigger:'onBlur',
                             })(
                                 <Input type="textarea" placeholder="价格" />
-                            )}
-                        </FormItem>
-                        <FormItem label={null}>
-                            {getFieldDecorator('time', {
-                                rules: [{ required: true, message: '请选择时间' }],
-                            })(
-                                <DatePicker
-                                    format="YYYY-MM-DD HH:mm:ss"
-                                    disabledDate={disabledDate}
-                                    locale={locale}
-                                    showTime={{ defaultValue: moment('00:00:00', 'HH:mm:ss') }}
-                                />
                             )}
                         </FormItem>
                         <FormItem label={null}>
@@ -355,7 +349,9 @@ class TicketManage extends Component{
             key:'action',
             render: (text,record) => (
                 <span>
-                    <a onClick={()=>this.handleDeleteShow(record.showId)}>下架</a>
+                    <Icon type="plus" onClick={()=>this.showTicketModal(record.showId,record.title)} style={{cursor: "pointer"}}/>
+                    <Divider type="vertical" />
+                    <Icon type="delete" onClick={()=>this.handleDeleteShow(record.showId)} style={{cursor: "pointer"}}/>
                 </span>
             ),
         }];
@@ -542,7 +538,10 @@ class TicketManage extends Component{
         this.formRef = formRef;
     };
 
-    showTicketModal = () => {
+    showTicketModal = (showId,title) => {
+        tempTitle = title;
+        tempShowId = showId;
+        onChange(showId);
         this.setState({ ticketVisible: true });
     };
 
@@ -564,7 +563,7 @@ class TicketManage extends Component{
             form.resetFields();
 
             let params = new URLSearchParams();
-            params.append('showId',values.title[0]);
+            params.append('showId',tempShowId);
             params.append('price',values.price);
             params.append('time',time.format('YYYY-MM-DD HH:mm:ss'));
             params.append('seat',values.seat);
@@ -749,7 +748,6 @@ class TicketManage extends Component{
                             style={{ width: 160, marginRight:10}}
                         />
                         <Button onClick={this.showModal} style={{marginRight:10}}><Icon type="plus"/>新增演出</Button>
-                        <Button onClick={this.showTicketModal} style={{marginRight:10}}><Icon type="plus"/>新增票品</Button>
                         <Button onClick={this.showCouponModal}><Icon type="plus"/>新增优惠券</Button>
                     </div>
                 }
