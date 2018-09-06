@@ -90,9 +90,9 @@ public class MongoUtil {
     public static void main(String args[]){
         Mongo mongo = new Mongo("localhost",27017);
         DB db = mongo.getDB("test");
-        DBCollection dbCollection = db.getCollection("testImage");
+        DBCollection dbCollection = db.getCollection("image");
 
-        File file = new File("");
+        File file = new File("D:\\SJTU\\2017-2018\\jpwimage");
         List<String> imgPaths = printDirectory(file,depth);
         System.out.println(imgPaths);
         for(int i = 0; i < imgPaths.size(); i++){
@@ -100,11 +100,13 @@ public class MongoUtil {
             String imgUrl = "data:image/jpeg;base64,"+GetImageStrFromPath(imgPath);
             int startIdx = imgPath.lastIndexOf("\\");
             int endIdx = imgPath.lastIndexOf(".");
-            String title = imgPath.substring(startIdx+1,endIdx);
-            DBObject dbObject = new BasicDBObject();
-            dbObject.put("imgUrl",imgUrl);
-            dbObject.put("title",title);
-            dbCollection.insert(dbObject);
+            if(startIdx != -1 && endIdx != -1) {
+                String title = imgPath.substring(startIdx + 1, endIdx);
+                DBObject dbObject = new BasicDBObject();
+                dbObject.put("imgUrl", imgUrl);
+                dbObject.put("title", title);
+                dbCollection.insert(dbObject);
+            }
         }
     }
 }

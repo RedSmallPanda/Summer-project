@@ -12,6 +12,7 @@ import { browserHistory} from 'react-router';
 import Sider from '../MainPages/Sider';
 import Cookies from 'js-cookie';
 import ShowLocation from "./ShowLocation";
+import Image from '../MainPages/Image';
 moment.locale('zh-cn');
 
 const RadioButton = Radio.Button;
@@ -105,21 +106,21 @@ class GoodDetailPage extends Component{
             });
     };
 
-    getImage(self) {
-        axios.get("/getImage",{
-            params: {
-                showId: self.props.params.showId,
-            }
-        })
-            .then(function (response) {
-                self.setState({
-                    imgUrl:response.data
-                })
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    };
+    // getImage(self) {
+    //     axios.get("/getImage",{
+    //         params: {
+    //             showId: self.props.params.showId,
+    //         }
+    //     })
+    //         .then(function (response) {
+    //             self.setState({
+    //                 imgUrl:response.data
+    //             })
+    //         })
+    //         .catch(function (error) {
+    //             console.log(error);
+    //         });
+    // };
 
     componentWillMount(){
         // console.log("Detail: willMount");
@@ -141,7 +142,7 @@ class GoodDetailPage extends Component{
                 console.log(error);
             });
         this.getResult(this);
-        this.getImage(this);
+        // this.getImage(this);
     }
 
     scrollToAnchor = (anchorName) => {
@@ -304,7 +305,7 @@ class GoodDetailPage extends Component{
                                                     <Card
                                                         hoverable
                                                         style={{width: 240}}
-                                                        cover={<img alt="example" src={this.state.imgUrl}/>} //这里添加图片
+                                                        cover={<Image width={240} showId={this.props.params.showId}/>} //这里添加图片
                                                     >
                                                         <Meta
                                                             title={this.state.data.title}
