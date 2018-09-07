@@ -105,7 +105,7 @@ public class TicketServiceImpl implements TicketService {
         SimpleDateFormat dateformat =  new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat timeformat =  new SimpleDateFormat("HH:mm");
         Map<String,Map<String,List<Ticket>>> ticketMap= new HashMap<>();
-        List<Ticket> allTickets=ticketRepository.findAllByShowId(showId);
+        List<Ticket> allTickets=ticketRepository.findAllByShowIdAfterNow(showId);
         for (Ticket ticket : allTickets) {
             String date = dateformat.format(ticket.getTime());
             String time = timeformat.format(ticket.getTime());
