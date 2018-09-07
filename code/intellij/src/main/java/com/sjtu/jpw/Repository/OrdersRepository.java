@@ -44,13 +44,14 @@ public interface OrdersRepository extends CrudRepository<Orders,Integer> {
 
     @Query("select new com.sjtu.jpw.Domain.AssistDomain.SalesData(SUM(o1.number),s1.type) " +
             "from Orders o1 ,Ticket t1 ,Shows s1 where (o1.ticketId=t1.ticketId and t1.showId=s1.showId " +
-            "and o1.time between:startTime and :endTime) " +
+            "and (o1.time between:startTime and :endTime) " +
+            "and o1.state>=5) " +
             "group by s1.type ")
     public List<SalesData> findAllTypeSales(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime);
 
     @Query("select new com.sjtu.jpw.Domain.AssistDomain.OneKindData(o1.number,o1.time) " +
             "from Orders o1 ,Ticket t1 ,Shows s1 where (o1.ticketId=t1.ticketId and t1.showId=s1.showId " +
-            "and o1.time between:startTime and :endTime and s1.type=:kind)" )
+            "and o1.time between:startTime and :endTime and s1.type=:kind and o1.state>=5)" )
     public List<OneKindData> findOneTypeSales(@Param("startTime")Timestamp startTime, @Param("endTime")Timestamp endTime, @Param("kind")String kind);
 
 

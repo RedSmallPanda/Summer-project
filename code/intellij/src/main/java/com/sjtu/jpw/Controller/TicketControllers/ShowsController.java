@@ -11,6 +11,7 @@ import com.sjtu.jpw.Service.ShowLocationService;
 import com.sjtu.jpw.Service.OrdersService;
 import com.sjtu.jpw.Service.ShowService;
 import com.sjtu.jpw.Service.TicketService;
+import com.sun.tools.corba.se.idl.constExpr.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -38,6 +40,26 @@ public class ShowsController {
     private MongoDBService mongoDBService;
 
 
+
+    public List<Timestamp> editTime(String time,String startTime,String endTime){
+        Timestamp temp1;
+        Timestamp temp2;
+        List<Timestamp> temp=new ArrayList<>();
+
+        if (time.equals("all")) {
+            temp1 = new Timestamp(System.currentTimeMillis());
+            temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
+        }
+        else {
+            temp1 = Timestamp.valueOf(startTime + " 00:00:00");
+            temp2 = Timestamp.valueOf(endTime + " 23:59:59");
+        }
+
+        temp.add(temp1);
+        temp.add(temp2);
+        return temp;
+    }
+
     @RequestMapping(value = "/originNumber", produces = "application/json;charset=UTF-8")
     public void getNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type", "application/json;charset=UTF-8");
@@ -46,15 +68,13 @@ public class ShowsController {
         //print result list
             Timestamp temp1;
             Timestamp temp2;
+            String time=request.getParameter("time");
+            String startTime=request.getParameter("starttime");
+            String endTime=request.getParameter("endtime");
 
-            if (request.getParameter("time").equals("all")) {
-                temp1 = new Timestamp(System.currentTimeMillis());
-                temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
-            }
-            else {
-                temp1 = Timestamp.valueOf(request.getParameter("starttime") + " 00:00:00");
-                temp2 = Timestamp.valueOf(request.getParameter("endtime") + " 23:59:59");
-            }
+            List<Timestamp> temp=editTime(time,startTime,endTime);
+            temp1=temp.get(0);
+            temp2=temp.get(1);
 
 
             out.print(
@@ -93,15 +113,13 @@ public class ShowsController {
         } else {//all directory
             Timestamp temp1;
             Timestamp temp2;
-            if (request.getParameter("time").equals("all")) {
-               // temp1 = Timestamp.valueOf("0001-01-01 00:00:00");
-               // temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
-                temp1 = new Timestamp(System.currentTimeMillis());
-                temp2 = Timestamp.valueOf("9999-12-31 23:59:59");
-            } else {
-                temp1 = Timestamp.valueOf(request.getParameter("starttime") + " 00:00:00");
-                temp2 = Timestamp.valueOf(request.getParameter("endtime") + " 23:59:59");
-            }
+            String time=request.getParameter("time");
+            String startTime=request.getParameter("starttime");
+            String endTime=request.getParameter("endtime");
+
+            List<Timestamp> temp=editTime(time,startTime,endTime);
+            temp1=temp.get(0);
+            temp2=temp.get(1);
 
             System.out.println("[JPW SHOWS  ] "
                     + "city:" + request.getParameter("city")
@@ -110,6 +128,7 @@ public class ShowsController {
                     + "(" + temp1.toString() + "--" + temp2.toString() + ")"
                     + "||search by:" + request.getParameter("search")
                     + "||userId:" + userId);
+
             out.print(
                     ticketService.allTickets(
                             request.getParameter("city"),
@@ -125,6 +144,54 @@ public class ShowsController {
 
         out.flush();
     }
+
+    @RequestMapping(value = "/showsAndNumber", produces = "application/json;charset=UTF-8")
+    public void getShowsAndNumber(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        response.setHeader("Content-type", "application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        //get userId to display whether collected
+        Object id = request.getSession().getAttribute("userId");
+        int userId = 0;
+        if (id != null) {
+            userId = (int) id;
+        }
+
+        int page = 0;
+        if(request.getParameter("page") != null){
+            page = Integer.valueOf(request.getParameter("page"));
+        }
+
+        //print result list
+        if (request.getParameter("collection").equals("collection")) {//my collection
+            out.print(ticketService.userCollection(userId));
+        } else {//all directory
+            Timestamp temp1;
+            Timestamp temp2;
+            String time=request.getParameter("time");
+            String startTime=request.getParameter("starttime");
+            String endTime=request.getParameter("endtime");
+            List<Timestamp> temp=editTime(time,startTime,endTime);
+            temp1=temp.get(0);
+            temp2=temp.get(1);
+
+            out.print(
+                    ticketService.firstPageTicketsAndNumber(
+                            request.getParameter("city"),
+                            request.getParameter("type"),
+                            temp1,
+                            temp2,
+                            request.getParameter("search"),
+                            userId,
+                            page
+                    )
+            );
+        }
+
+        out.flush();
+    }
+
+
 
     @RequestMapping(value = "/showDetail", produces = "application/json;charset=UTF-8")
     public void showDetail(HttpServletRequest request, HttpServletResponse response) throws IOException {

@@ -247,6 +247,8 @@ class GoodDetailPage extends Component{
             Cookies.set('isCart', 0);
             Cookies.set('getNoCoupon', 0);
             Cookies.set('newCoupon', {discCond: "100000", discount: "30"});
+            Cookies.set('tempShowId', this.props.params.showId);
+
             // console.log(window.location.pathname);
         }
     };

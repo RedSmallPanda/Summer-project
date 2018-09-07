@@ -123,6 +123,7 @@ class ShopCart extends Component {
         Cookies.set('isCart',1);
         Cookies.set('getNoCoupon',0);
         Cookies.set('newCoupon',{discCond:"100000",discount:"30"});
+        Cookies.set('tempShowId',record.showId);
     };
 
     handleDelete = (record,index) =>{

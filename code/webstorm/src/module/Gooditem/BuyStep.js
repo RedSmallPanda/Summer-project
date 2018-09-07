@@ -4,6 +4,7 @@ import '../../css/BuyStep.css';
 import axios from "axios/index";
 import { browserHistory} from 'react-router';
 import Cookies from 'js-cookie';
+import Image from "../MainPages/Image";
 
 const Step=Steps.Step;
 
@@ -25,7 +26,7 @@ const RadioGroup = Radio.Group;
 const dataColumns = [{
     title: '缩略图',
     key: 'img',
-    render: (text, record) => (<img style={{width:'60px'}} src={record.img} alt="default"/>)
+    render: (text, record) => (<Image width={60} showId={parseInt(Cookies.get("tempShowId"))}/>)
 },{
     title: '票品信息',
     dataIndex: 'detailInfo',

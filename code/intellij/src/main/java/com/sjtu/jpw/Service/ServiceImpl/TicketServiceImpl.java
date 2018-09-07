@@ -56,6 +56,44 @@ public class TicketServiceImpl implements TicketService {
     }
 
     @Override
+    public String firstPageTicketsAndNumber(String city, String type, Timestamp startTime, Timestamp endTime,
+                                     String search, Integer userId, int page){
+
+        JsonArray tempData=new JsonArray();
+        List<Integer> showsLike = collectionRepository.findAllShowCollectionId(userId);
+        Page<ShowTicket> tempItemList = showsRepository.findAllShowsByParamsAndPage(city, type, startTime, endTime, "%"+search+"%", new PageRequest(page-1,10));
+        System.out.println(tempItemList.getContent());
+        List<ShowTicket> itemList=tempItemList.getContent();
+        for (int i = 0; i < itemList.size(); i++) {
+            ShowTicket temp = itemList.get(i);
+            Integer showId = setShowTicketInfo(temp);
+            if (showsLike.contains(showId)) {
+                temp.setIsLike(true);
+            }
+        }
+        List<ShowTicket> tempNumber = showsRepository.findAllShowsByParams(city, type, startTime, endTime, search);
+        int number=tempNumber.size();
+        if(itemList==null || !(itemList.size()>0)){
+            Gson gson = new Gson();
+            return gson.toJson(itemList);
+        }
+        ShowTicket temp = itemList.get(0);
+        temp.setStock(number);
+        //itemList.add(temp);
+
+        List<ShowTicket> tempTickets= new ArrayList<>();
+        for(int i=0;i<itemList.size();i++){
+            ShowTicket aaa=itemList.get(i);
+            tempTickets.add(aaa);
+        }
+        tempTickets.add(temp);
+
+
+        Gson gson = new Gson();
+        return gson.toJson(tempTickets);
+    }
+
+    @Override
     public int getOriginNumber(String city, String type, Timestamp startTime, Timestamp endTime,
                              String search) {
 
@@ -80,7 +118,14 @@ public class TicketServiceImpl implements TicketService {
     @Override
     public String userCollection(Integer userId) {
 
-        List<ShowTicket> itemList=showsRepository.findCollectionShows(collectionRepository.findAllShowCollectionId(userId));
+        List<Integer> tempIds=collectionRepository.findAllShowCollectionId(userId);
+        List<ShowTicket> itemList=new ArrayList<>();
+
+        if(tempIds!=null && tempIds.size()>0){
+            itemList = showsRepository.findCollectionShows(
+                    collectionRepository.findAllShowCollectionId(userId)
+            );
+        }
 
         for(int i=0;i<itemList.size();i++){
             ShowTicket temp=itemList.get(i);
