@@ -45,37 +45,7 @@ class OrderManage extends Component{
 
     getData(userId,orderId,page) {
         let self = this;
-        let size=0;
-        axios.get("/getOriginOrderNumber",{
-            params:{
-                userId:userId,
-                orderId:orderId,
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
 
-                console.log("dataaaaaa: " + response.data);
-                console.log("sizeeeeee: " + self.state.size);
-                size = response.data;
-                console.log(size);
-                let data = [];
-                for (let i = 0; i < size; i++) {
-                    data.push({title: "xxx"});
-                }
-                console.log("originnnnnn: " + self.state.data.length);
-                console.log(size);
-                console.log(data);
-                self.setState({
-                    data: data,
-                    size: response.data,
-                    page: page,
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
 
         axios.get("/getAllOrders",{
             params:{
@@ -86,15 +56,25 @@ class OrderManage extends Component{
         })
             .then(function (response) {
                 console.log(response);
-                // alert(JSON.stringify(response.data[0]));
+
+                let size=response.data[response.data.length-1].number;
+                console.log("sizeeeeee:",size);
+                let data = [];
+                for (let i = 0; i < size; i++) {
+                    data.push({title: "xxx"});
+                }
+
                 let listData = response.data;
-                let tempData=self.state.data;
-                for(let i=0;i<listData.length;i++){
+                //let tempData = self.state.data;
+                let tempData=data;
+                for (let i = 0; i < listData.length-1; i++) {
                     tempData.splice((page-1)*10+i,1,listData[i]);
                 }
+                console.log(tempData);
+
                 self.setState({
-                    loading: false,
                     data: tempData,
+                    page:page,
                 });
             })
             .catch(function (error) {
@@ -104,39 +84,8 @@ class OrderManage extends Component{
 
     componentDidMount(){
         let self = this;
-        let size=0;
-        axios.get("/getOriginOrderNumber",{
-            params:{
-                userId:-1,
-                orderId:-1,
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
 
-                console.log("dataaaaaa: " + response.data);
-                console.log("sizeeeeee: " + self.state.size);
-                size = response.data;
-                console.log(size);
-                let data = [];
-                for (let i = 0; i < size; i++) {
-                    data.push({title: "xxx"});
-                }
-                console.log("originnnnnn: " + self.state.data.length);
-                console.log(size);
-                console.log(data);
-                self.setState({
-                    data: data,
-                    size: response.data,
-                    page: 1,
-                });
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-
-        axios.get("/getAllOrders",{
+        axios.get("/getAllOrdersAndNumber",{
             params:{
                 userId:-1,
                 orderId:-1,
@@ -144,15 +93,27 @@ class OrderManage extends Component{
             }
         })
             .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
-                let listData = response.data;
-                let tempData=self.state.data;
-                for(let i=0;i<listData.length;i++){
-                    tempData.splice(i,1,listData[i]);
+                let size=0;
+                if(response.data.length>0) {
+                    size = response.data[response.data.length - 1].number;
+                    console.log("sizeeeeee:", size);
                 }
+                let data = [];
+                for (let i = 0; i < size; i++) {
+                    data.push({title: "xxx"});
+                }
+
+                let listData = response.data;
+                //let tempData = self.state.data;
+                let tempData=data;
+                for (let i = 0; i < listData.length-1; i++) {
+                    tempData.splice(i, 1, listData[i]);
+                }
+                console.log(tempData);
+
                 self.setState({
                     data: tempData,
+                    page:1,
                 });
             })
             .catch(function (error) {
@@ -167,7 +128,41 @@ class OrderManage extends Component{
             alert("订单号 和 用户ID 必须为数字");
         }
         else{
-            self.getData(usid,odid,1);
+            axios.get("/getAllOrdersAndNumber",{
+                params:{
+                    userId:usid,
+                    orderId:odid,
+                    page:1,
+                }
+            })
+                .then(function (response) {
+
+                    let size=0;
+                    if(response.data.length>0) {
+                        size = response.data[response.data.length - 1].number;
+                        console.log("sizeeeeee:", size);
+                    }
+                    let data = [];
+                    for (let i = 0; i < size; i++) {
+                        data.push({title: "xxx"});
+                    }
+
+                    let listData = response.data;
+                    //let tempData = self.state.data;
+                    let tempData=data;
+                    for (let i = 0; i < listData.length-1; i++) {
+                        tempData.splice(i, 1, listData[i]);
+                    }
+                    console.log(tempData);
+
+                    self.setState({
+                        data: tempData,
+                        page:1,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         }
     }
 

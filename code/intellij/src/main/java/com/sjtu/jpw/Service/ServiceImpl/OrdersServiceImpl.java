@@ -656,6 +656,64 @@ public class OrdersServiceImpl implements OrdersService {
     }
 
     @Override
+    public JsonArray getAllOrdersAndNumber(int orderId,int userId,int page){
+        Page<Orders> tempOrders=ordersRepository.findAllOrdersByPage(orderId,userId,new PageRequest(page-1,10));
+        List<Orders> orders=tempOrders.getContent();
+        JsonArray orderData=new JsonArray();
+
+        int number=ordersRepository.getOriginNumber(orderId,userId).size();
+
+        for (int i = 0; i < orders.size(); i++) {
+            Orders temp=orders.get(i);
+            int state=Integer.valueOf(temp.getState());
+            if(state==0){
+                temp.setState("待付款");
+            }
+            else if(state==1){
+                temp.setState("已付款");
+            }
+            else if(state==2){
+                temp.setState("退款申请中");
+            }
+            else if(state==3){
+                temp.setState("退款失败");
+            }
+            else if(state==4){
+                temp.setState("已退款");
+            }
+            else if(state==5){
+                temp.setState("待评价");
+            }
+            else if(state==6){
+                temp.setState("已评价");
+            }
+
+        }
+
+        List<Orders> temp1=new ArrayList<>();
+        if(orders==null || !(orders.size()>0)){return orderData;}
+        Orders tempData=orders.get(0);
+        tempData.setNumber(number);
+        for(int i=0;i<orders.size();i++){
+            Orders aaa=orders.get(i);
+            temp1.add(aaa);
+        }
+        temp1.add(tempData);
+        System.out.println(temp1);
+
+        for(int i=0;i<temp1.size();i++) {
+            Orders tempOrder=temp1.get(i);
+            Gson orderGson = new Gson();
+            String orderJson = orderGson.toJson(tempOrder);
+            JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
+            orderData.add(orderObject);
+
+        }
+
+        return orderData;
+    }
+
+    @Override
     public int getOriginNumber(int orderId,int userId){
         int number=ordersRepository.getOriginNumber(orderId,userId).size();
         return number;

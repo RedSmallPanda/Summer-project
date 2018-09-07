@@ -9,6 +9,8 @@ import Image from './Image'
 
 const dateFormat = "YYYY-MM-DD";
 let listData = [];
+
+let size=0;
 // for (let i = 0; i < 10; i++) {
 //     listData.push({
 //         showId: i,
@@ -66,11 +68,17 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
+                console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 listData = response.data;
                 let tempData=self.state.data;
-                for(let i=0;i<listData.length;i++){
-                    tempData.splice((currentPage-1)*10+i,1,listData[i]);
+                if(prop.type!=="collection") {
+                    for (let i = 0; i < listData.length; i++) {
+                        tempData.splice((currentPage - 1) * 10 + i, 1, listData[i]);
+                    }
+                }
+                else{
+                    tempData=response.data;
                 }
                 self.setState({
                     loading: false,
@@ -97,10 +105,13 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
+                console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 self.setState({
                     size:response.data,
                 });
+                console.log("dataaaaaa: "+response.data);
+                console.log("sizeeeeee: "+self.state.size);
             })
             .catch(function (error) {
                 console.log(error);
@@ -113,6 +124,7 @@ class ResultList extends Component {
     getImage(self) {
         axios.get("/getImage")
             .then(function (response) {
+                console.log(response);
                 self.setState({
                     imgUrl:response.data
                 })
@@ -123,42 +135,10 @@ class ResultList extends Component {
     };
 
     componentDidMount(){
-        console.log("componentDidMount");
         if(this.props.type!=="collection") {
-            let size = 0;
             let self = this;
 
-            axios.get("/originNumber", {
-                params: {
-                    city: self.props.filter.city,
-                    type: self.props.filter.type,
-                    time: self.props.filter.time,
-                    starttime: moment(self.props.filter.starttime).format(dateFormat),
-                    endtime: moment(self.props.filter.endtime).format(dateFormat),
-                    search: self.props.filter.search,
-                }
-            })
-                .then(function (response) {
-                    size = response.data;
-                    let data = [];
-                    for (let i = 0; i < size; i++) {
-                        data.push({title: "xxx"});
-                    }
-                    self.setState({
-                        data: data,
-                        size: response.data,
-                        page: 1,
-                    });
-                })
-                .catch(function (error) {
-                    console.log(error);
-                    self.setState({
-                        loading: false,
-                    });
-                });
-
-
-            axios.get("/shows", {
+            axios.get("/showsAndNumber", {
                 params: {
                     city: self.props.filter.city,
                     type: self.props.filter.type,
@@ -171,15 +151,31 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
+                    console.log(response);
                     // alert(JSON.stringify(response.data[0]));
+
+                    let size=0;
+                    if(response.data.length>0) {
+                        size = response.data[response.data.length - 1].stock;
+                        console.log("sizeeeeee:", size);
+                    }
+                    let data = [];
+                    for (let i = 0; i < size; i++) {
+                        data.push({title: "xxx"});
+                    }
+
                     listData = response.data;
-                    let tempData = self.state.data;
-                    for (let i = 0; i < listData.length; i++) {
+                    //let tempData = self.state.data;
+                    let tempData=data;
+                    for (let i = 0; i < listData.length-1; i++) {
                         tempData.splice(i, 1, listData[i]);
                     }
+                    console.log(tempData);
+
                     self.setState({
                         loading: false,
                         data: tempData,
+                        page:1,
                     });
                 })
                 .catch(function (error) {
@@ -196,68 +192,56 @@ class ResultList extends Component {
     componentWillReceiveProps(nextProps) {
         let size = 0;
         let self=this;
-        console.log("componentWillReceiveProps");
-        axios.get("/originNumber", {
-            params: {
-                city: nextProps.filter.city,
-                type: nextProps.filter.type,
-                time: nextProps.filter.time,
-                starttime: moment(nextProps.filter.starttime).format(dateFormat),
-                endtime: moment(nextProps.filter.endtime).format(dateFormat),
-                search: nextProps.filter.search,
-            }
-        })
-            .then(function (response) {
-                size = response.data;
-                let data=[];
-                for(let i=0;i<size;i++){
-                    data.push({title:"xxx"});
+        console.log(nextProps);
+
+        if(nextProps.type!=="collection") {
+            axios.get("/showsAndNumber", {
+                params: {
+                    city: nextProps.filter.city,
+                    type: nextProps.filter.type,
+                    time: nextProps.filter.time,
+                    starttime: moment(nextProps.filter.starttime).format(dateFormat),
+                    endtime: moment(nextProps.filter.endtime).format(dateFormat),
+                    search: nextProps.filter.search,
+                    collection: nextProps.type,
+                    page: 1,
                 }
-                self.setState({
-                    data:data,
-                    size:response.data,
-                    page:1,
-                });
             })
-            .catch(function (error) {
-                console.log(error);
-                self.setState({
-                    loading: false,
-                });
-            });
+                .then(function (response) {
+                    let size = 0;
+                    if (response.data.length > 0) {
+                        size = response.data[response.data.length - 1].stock;
+                        console.log("sizeeeeee:", size);
+                    }
+                    let data = [];
+                    for (let i = 0; i < size; i++) {
+                        data.push({title: "xxx"});
+                    }
 
+                    listData = response.data;
+                    //let tempData = self.state.data;
+                    let tempData = data;
+                    for (let i = 0; i < listData.length - 1; i++) {
+                        tempData.splice(i, 1, listData[i]);
+                    }
+                    console.log(tempData);
 
-
-        axios.get("/shows", {
-            params: {
-                city: nextProps.filter.city,
-                type: nextProps.filter.type,
-                time: nextProps.filter.time,
-                starttime: moment(nextProps.filter.starttime).format(dateFormat),
-                endtime: moment(nextProps.filter.endtime).format(dateFormat),
-                search: nextProps.filter.search,
-                collection: nextProps.type,
-                page:1,
-            }
-        })
-            .then(function (response) {
-                // alert(JSON.stringify(response.data[0]));
-                listData = response.data;
-                let tempData=self.state.data;
-                for(let i=0;i<listData.length;i++){
-                    tempData.splice(i,1,listData[i]);
-                }
-                self.setState({
-                    loading: false,
-                    data: tempData,
+                    self.setState({
+                        loading: false,
+                        data: tempData,
+                        page: 1,
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    self.setState({
+                        loading: false,
+                    });
                 });
-            })
-            .catch(function (error) {
-                console.log(error);
-                self.setState({
-                    loading: false,
-                });
-            });
+        }
+        else{
+            this.getResult(this,nextProps,1);
+        }
     }
 
     collect(showId,isLike) {
@@ -271,14 +255,16 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
+                    console.log("change collection" + showId + response);
                     if (response.data === true || response.data === false) {
-                        listData.forEach(function (item) {
+                        let newData=self.state.data;
+                        newData.forEach(function (item) {
                             if (item.showId === showId) {
                                 item.isLike = !item.isLike;
                             }
                         });
                         self.setState({
-                            data: listData,
+                            data: newData,
                         });
                         alert(response.data ? "收藏成功！" : "已移出收藏");
                     } else {
@@ -327,6 +313,7 @@ class ResultList extends Component {
                     loading={this.state.loading}
                     pagination={{
                         onChange: (page) => {
+                            console.log(page);
                             this.getResult(this, this.props,page);
                             this.setState({
                                 page:page,

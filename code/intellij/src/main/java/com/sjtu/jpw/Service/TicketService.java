@@ -9,6 +9,10 @@ public interface TicketService {
     // impl 中实现 static JsonObject ComposeItem(Integer showId);
     String allTickets(String city, String type, Timestamp startTime, Timestamp endTime,
                       String search, Integer userId, int page);
+
+    String firstPageTicketsAndNumber(String city, String type, Timestamp startTime, Timestamp endTime,
+                      String search, Integer userId, int page);
+
     int getOriginNumber(String city, String type, Timestamp startTime, Timestamp endTime,
                       String search);
     String userCollection(Integer userId);
