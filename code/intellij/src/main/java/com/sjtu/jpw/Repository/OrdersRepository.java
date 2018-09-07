@@ -1,6 +1,7 @@
 package com.sjtu.jpw.Repository;
 import com.sjtu.jpw.Domain.AssistDomain.OneKindData;
 import com.sjtu.jpw.Domain.AssistDomain.OrderData;
+import com.sjtu.jpw.Domain.AssistDomain.OrderShow;
 import com.sjtu.jpw.Domain.AssistDomain.SalesData;
 import com.sjtu.jpw.Domain.Orders;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -23,11 +24,17 @@ import java.util.List;
 public interface OrdersRepository extends CrudRepository<Orders,Integer> {
     public Orders save(Orders orders);
 
-    @Query("select order from Orders order where order.userId=:userId and order.state<=:state2 and order.state>=:state1")
-    public List<Orders> findByUserIdAndState(@Param("userId") int userId,@Param("state1") String state1,@Param("state2")String state2);
+    @Query("select new com.sjtu.jpw.Domain.AssistDomain.OrderShow(orders.orderId,shows.showId,orders.number,orders.time,orders.ticketId,orders.userId,orders.price,orders.province,orders.city,orders.block,orders.addrdetail,orders.phone,orders.name,orders.state,orders.totalPrice,shows.title,ticket.time) " +
+            "from Orders orders ,Shows shows, Ticket ticket " +
+            "where orders.ticketId=ticket.ticketId and ticket.showId=shows.showId and orders.userId=:userId and orders.state<=:state2 and orders.state>=:state1")
+    public List<OrderShow> findByUserIdAndState(@Param("userId") int userId,@Param("state1") String state1,@Param("state2")String state2);
+
     public Orders findFirstByOrderId(int orderId);
 
-    public List<Orders> findAllByState(String state);
+    @Query("select new com.sjtu.jpw.Domain.AssistDomain.OrderShow(orders.orderId,shows.showId,orders.number,orders.time,orders.ticketId,orders.userId,orders.price,orders.province,orders.city,orders.block,orders.addrdetail,orders.phone,orders.name,orders.state,orders.totalPrice,shows.title,ticket.time) " +
+            "from Orders orders ,Shows shows, Ticket ticket " +
+            "where orders.ticketId=ticket.ticketId and ticket.showId=shows.showId and orders.state=:state")
+    public List<OrderShow> findAllByState(String state);
 
     @Query("select order from Orders order where order.time>=:startTime and order.time<=:endTime and order.state>=5")
     public List<Orders> findAllByTimeRange(@Param("startTime") Timestamp startTime, @Param("endTime")Timestamp endTime);

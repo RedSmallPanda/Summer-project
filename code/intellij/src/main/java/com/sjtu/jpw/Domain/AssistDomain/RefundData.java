@@ -13,6 +13,16 @@ public class RefundData {
     private String showName;
     private String reason;
 
+    public RefundData(int orderId, Integer number, Object time, Object refundTime, String state, Integer totalPrice, String showName, String reason) {
+        this.orderId = orderId;
+        this.number = number;
+        this.time = Timestamp.valueOf(time.toString());
+        this.refundTime = Timestamp.valueOf(refundTime.toString());
+        this.state = state;
+        this.totalPrice = totalPrice;
+        this.showName = showName;
+        this.reason = reason;
+    }
 
     public int getOrderId() {
         return orderId;
