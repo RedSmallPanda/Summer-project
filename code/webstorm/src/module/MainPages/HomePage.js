@@ -102,10 +102,10 @@ class HomePage extends Component {
         const homeCarousel =
             <div style={{marginTop: 20,}}>
                 <Carousel autoplay effect="scrollx" style={{height: '500px'}}>
-                    <div><img src="https://img.alicdn.com/tfs/TB1je1eC_tYBeNjy1XdXXXXyVXa-1200-320.jpg" alt=""/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB1FxK5GkCWBuNjy0FaXXXUlXXa-1200-320.jpg" alt=""/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB1D5HZEf1TBuNjy0FjXXajyXXa-1200-320.jpg" alt=""/></div>
-                    <div><img src="https://img.alicdn.com/tfs/TB15yuhFqmWBuNjy1XaXXXCbXXa-1200-320.png" alt=""/></div>
+                    <div><a href="http://localhost:8080/detail/389"><img src="https://img.alicdn.com/tfs/TB1ptM1CDtYBeNjy1XdXXXXyVXa-1200-320.png" alt=""/></a></div>
+                    <div><a href="http://localhost:8080/detail/8611"><img src="https://img.alicdn.com/tfs/TB1FxK5GkCWBuNjy0FaXXXUlXXa-1200-320.jpg" alt=""/></a></div>
+                    <div><a href="http://localhost:8080/detail/7"><img src="https://img.alicdn.com/tfs/TB1D5HZEf1TBuNjy0FjXXajyXXa-1200-320.jpg" alt=""/></a></div>
+                    <div><a href="http://localhost:8080/detail/8612"><img src="https://img.alicdn.com/tfs/TB1YKllDWmWBuNjy1XaXXXCbXXa-1200-320.jpg" alt=""/></a></div>
                 </Carousel>
             </div>;
 

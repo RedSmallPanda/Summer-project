@@ -5,10 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.*;
-import com.sjtu.jpw.Domain.AssistDomain.OneKindData;
-import com.sjtu.jpw.Domain.AssistDomain.OrderData;
-import com.sjtu.jpw.Domain.AssistDomain.RefundData;
-import com.sjtu.jpw.Domain.AssistDomain.SalesData;
+import com.sjtu.jpw.Domain.AssistDomain.*;
 import com.sjtu.jpw.Repository.*;
 import com.sjtu.jpw.Service.OrdersService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,62 +34,41 @@ public class OrdersServiceImpl implements OrdersService {
     private RefundRepository refundRepository;
 
     public JsonArray getOrderByState(int userId,String state1,String state2){
-        List<Orders> neededOrders = new ArrayList<>();
+        JsonArray allOrders=new JsonArray();
         if(userId==-1){
-            neededOrders = ordersRepository.findAllByState(state1);
+            List<RefundData> neededOrders = new ArrayList<>();
+            neededOrders = refundRepository.getAllRefundData(state1);
+            for(int i=0;i<neededOrders.size();i++){
+                RefundData tempRefund=neededOrders.get(i);
+                Gson orderGson=new Gson();
+                String orderJson = orderGson.toJson(tempRefund);
+                JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
+
+                allOrders.add(orderObject);
+            }
         }
         else {
+            List<OrderShow> neededOrders = new ArrayList<>();
             neededOrders = ordersRepository.findByUserIdAndState(userId, state1, state2);
-        }
-        JsonArray allOrders=new JsonArray();
-        for(int i=0;i<neededOrders.size();i++){
-            Orders temp=neededOrders.get(i);
-            OrderData tempOrder=new OrderData();
-            tempOrder.setUserId(temp.getUserId());
-            tempOrder.setAddrdetail(temp.getAddrdetail());
-            tempOrder.setBlock(temp.getBlock());
-            tempOrder.setCity(temp.getCity());
-            tempOrder.setProvince(temp.getProvince());
-            tempOrder.setName(temp.getName());
-            tempOrder.setState(temp.getState());
-            tempOrder.setNumber(temp.getNumber());
-            tempOrder.setOrderId(temp.getOrderId());
-            tempOrder.setPhone(temp.getPhone());
-            tempOrder.setPrice(temp.getPrice());
-            int ticketId=temp.getTicketId();
-            Ticket tempTicket=ticketRepository.findFirstByTicketId(ticketId);
-            int showId=tempTicket.getShowId();
-            Shows tempShow=showsRepository.findFirstByShowId(showId);
-            String showTitle=tempShow.getTitle();
-            Timestamp showTime=tempTicket.getTime();
-            tempOrder.setDetailInfo(showTitle,showTime);
-            tempOrder.setTicketId(ticketId);
-            tempOrder.setTotalPrice(temp.getTotalPrice());
-            tempOrder.setTime(temp.getTime());
+            for(int i=0;i<neededOrders.size();i++){
+                OrderShow tempOrder=neededOrders.get(i);
+                Gson orderGson=new Gson();
+                String orderJson = orderGson.toJson(tempOrder);
+                JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
 
+                allOrders.add(orderObject);
+            }
+
+        }
+        /*JsonArray allOrders=new JsonArray();
+        for(int i=0;i<neededOrders.size();i++){
+            OrderShow tempOrder=neededOrders.get(i);
             Gson orderGson=new Gson();
             String orderJson = orderGson.toJson(tempOrder);
             JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
-            orderObject.addProperty("showId",showId);
-            if(userId==-1){
-                Refund refund=refundRepository.findFirstByOrderId(temp.getOrderId());
-                RefundData neededRefund=new RefundData();
-                String reason=refund.getReason();
-                Timestamp time=refund.getRefundTime();
-                neededRefund.setNumber(temp.getNumber());
-                neededRefund.setOrderId(temp.getOrderId());
-                neededRefund.setReason(reason);
-                neededRefund.setRefundTime(time);
-                neededRefund.setShowName(tempOrder.getDetailInfo().getShowName());
-                neededRefund.setState("未审核");
-                neededRefund.setTime(temp.getTime());
-                neededRefund.setTotalPrice(temp.getTotalPrice());
-                orderJson=orderGson.toJson(neededRefund);
-                orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
-            }
 
             allOrders.add(orderObject);
-        }
+        }*/
         return allOrders;
     }
 
