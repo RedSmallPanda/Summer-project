@@ -168,20 +168,6 @@ class UserManage extends React.Component {
             visible: false,
         };
         this.columns = [{
-            title: '头像',
-            dataIndex: 'avatar',
-            width: 65,//'2%',
-            key: 'avatar',
-            fixed: 'left',
-        }, {
-            title: 'id',
-            dataIndex: 'userId',
-            key: 'userId',
-            editable: false,
-            width: 60,//'7%',
-            align: 'center',
-            fixed: 'left',
-        }, {
             title: '用户名',
             dataIndex: 'username',
             key: 'username',

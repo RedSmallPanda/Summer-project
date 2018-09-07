@@ -66,7 +66,6 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 listData = response.data;
                 let tempData=self.state.data;
@@ -98,13 +97,10 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 self.setState({
                     size:response.data,
                 });
-                console.log("dataaaaaa: "+response.data);
-                console.log("sizeeeeee: "+self.state.size);
             })
             .catch(function (error) {
                 console.log(error);
@@ -117,7 +113,6 @@ class ResultList extends Component {
     getImage(self) {
         axios.get("/getImage")
             .then(function (response) {
-                console.log(response);
                 self.setState({
                     imgUrl:response.data
                 })
@@ -128,6 +123,7 @@ class ResultList extends Component {
     };
 
     componentDidMount(){
+        console.log("componentDidMount");
         if(this.props.type!=="collection") {
             let size = 0;
             let self = this;
@@ -143,20 +139,11 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
-                    console.log(response);
-                    // alert(JSON.stringify(response.data[0]));
-
-                    console.log("dataaaaaa: " + response.data);
-                    console.log("sizeeeeee: " + self.state.size);
                     size = response.data;
-                    console.log(size);
                     let data = [];
                     for (let i = 0; i < size; i++) {
                         data.push({title: "xxx"});
                     }
-                    console.log("originnnnnn: " + self.state.data.length);
-                    console.log(size);
-                    console.log(data);
                     self.setState({
                         data: data,
                         size: response.data,
@@ -184,7 +171,6 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
-                    console.log(response);
                     // alert(JSON.stringify(response.data[0]));
                     listData = response.data;
                     let tempData = self.state.data;
@@ -210,7 +196,7 @@ class ResultList extends Component {
     componentWillReceiveProps(nextProps) {
         let size = 0;
         let self=this;
-
+        console.log("componentWillReceiveProps");
         axios.get("/originNumber", {
             params: {
                 city: nextProps.filter.city,
@@ -222,20 +208,11 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
-
-                console.log("dataaaaaa: "+response.data);
-                console.log("sizeeeeee: "+self.state.size);
                 size = response.data;
-                console.log(size);
                 let data=[];
                 for(let i=0;i<size;i++){
                     data.push({title:"xxx"});
                 }
-                console.log("originnnnnn: "+self.state.data.length);
-                console.log(size);
-                console.log(data);
                 self.setState({
                     data:data,
                     size:response.data,
@@ -264,7 +241,6 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
                 // alert(JSON.stringify(response.data[0]));
                 listData = response.data;
                 let tempData=self.state.data;
@@ -295,7 +271,6 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
-                    console.log("change collection" + showId + response);
                     if (response.data === true || response.data === false) {
                         listData.forEach(function (item) {
                             if (item.showId === showId) {
@@ -352,7 +327,6 @@ class ResultList extends Component {
                     loading={this.state.loading}
                     pagination={{
                         onChange: (page) => {
-                            console.log(page);
                             this.getResult(this, this.props,page);
                             this.setState({
                                 page:page,
