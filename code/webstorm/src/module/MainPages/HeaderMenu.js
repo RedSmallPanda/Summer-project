@@ -13,50 +13,27 @@ const Search = Input.Search;
 
 class HeaderMenu extends Component {
     state = {
-        isLogin:false,
-        isAdmin:false,
-        visible:false,
-        regVisible:false,
-        type:'',
+        isLogin: this.props.isLogin,
+        isAdmin: this.props.isAdmin,
+        visible: false,
+        regVisible: false,
+        type: '',
         current: window.location.pathname,
         search: '',
-        imgUrl:'',
+        imgUrl: '',
     };
-    componentWillMount(){
-        let username = Cookies.get('username');
-        if(typeof(username) !== "undefined" && username !== ""){
-            if(username === "admin"){
-                this.setState({
-                    isLogin: true,
-                    isAdmin: true
-                });
-            }
-            else{
-                this.setState({
-                    isLogin: true
-                })
-            }
-        }
 
-        this.getAvatar(this);
-        // let strCookie = document.cookie;
-        // let arrCookie = strCookie.split(";");
-        // for(let i = 0; i < arrCookie.length; i++){
-        //     let arr = arrCookie[i].split("=");
-        //     if("username" === arr[0] && arr[1]){
-        //         if(arr[1] === "admin") {
-        //             this.setState({
-        //                 isLogin: true,
-        //                 isAdmin: true
-        //             });
-        //         }
-        //         else {
-        //             this.setState({
-        //                 isLogin: true
-        //             })
-        //         }
-        //     }
-        // }
+    componentWillMount() {
+        if (this.props.isLogin) {
+            this.getAvatar(this);
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
+        if (this.props.isLogin) {
+            this.getAvatar(this);
+        }
     }
 
     getAvatar(self) {
@@ -87,6 +64,7 @@ class HeaderMenu extends Component {
             current: window.location.pathname,
         });
     };
+
     handleLogout = () =>{
         axios.get("/logout")
             .then(function(response){
@@ -95,12 +73,12 @@ class HeaderMenu extends Component {
             .catch(function (error) {
                 console.log(error);
             });
-        this.setState({
-            isLogin:false,
-            isAdmin:false,
+        this.props.handleLogin({
+            isLogin: false,
+            isAdmin: false,
         });
         Cookies.remove('username');
-        this.handleHomePage()
+        this.handleHomePage();
     };
 
     handleHomePage = () =>{
@@ -121,6 +99,7 @@ class HeaderMenu extends Component {
             current: window.location.pathname,
         });
     };
+
     handleShoppingCart = () =>{
         browserHistory.push({
             pathname:'/info',
@@ -220,16 +199,20 @@ class HeaderMenu extends Component {
                         if (values.username === 'admin') {
                             self.setState({
                                 visible: false,
+                            });
+                            self.props.handleLogin({
                                 isLogin: true,
                                 isAdmin: true,
                             });
-                            window.location.reload();
-                            return;
+                        } else {
+                            self.setState({
+                                visible: false,
+                            });
+                            self.props.handleLogin({
+                                isLogin: true,
+                                isAdmin: false,
+                            });
                         }
-                        self.setState({
-                            visible: false,
-                            isLogin: true,
-                        });
                         window.location.reload();
                     }
                 })

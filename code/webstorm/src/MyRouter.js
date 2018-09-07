@@ -19,32 +19,17 @@ class MyRouter extends Component{
     constructor(props){
         super(props);
         this.state = {
-            isLogin:false
-        }
+            isLogin: this.props.isLogin,
+            isAdmin: this.props.isAdmin,
+        };
     }
 
-    componentWillMount(){
-
-        let username = Cookies.get('username');
-        if(typeof(username) !== "undefined" && username !== ''){
-            this.setState({
-                isLogin:true
-            })
-        }
-        // let strCookie = document.cookie;
-        // let arrCookie = strCookie.split(";");
-        // for(let i = 0; i < arrCookie.length; i++){
-        //     let arr = arrCookie[i].split("=");
-        //     if("username" === arr[0] && arr[1]) {
-        //         this.setState({
-        //             isLogin: true
-        //         })
-        //     }
-        // }
+    componentWillReceiveProps(nextProps) {
+        this.setState(nextProps);
     }
 
     renderRouter = () =>{
-        const loginRouter =
+        const adminRouter =
             <Router history={browserHistory}>
                 <Route path='/' component={HomePage}/>
                 <Route path='/home' component={HomePage}/>
@@ -62,6 +47,24 @@ class MyRouter extends Component{
                 <Route path="/error" component={Error}/>
             </Router>;
 
+        const loginRouter =
+            <Router history={browserHistory}>
+                <Route path='/' component={HomePage}/>
+                <Route path='/home' component={HomePage}/>
+                <Route path='/info' component={InfoSpace}/>
+                <Route path='/dir(/:type)' component={Directory}/>
+                <Route path="/commentPage" component={CommentPage}/>
+                <Route path="/detail(/:showId)" component={GoodDetailPage}/>
+                {/*<Route path="/admin" component={AdminSpace}/>*/}
+                <Route path="/buyStep" component={BuyStep}/>
+                <Route path="/us" component={Us}/>
+                <Route path="/help" component={Help}/>
+                <Route path="/refundPage" component={RefundPage}/>
+                <Route path="/activate" component={Activate}/>
+                <Route path="/resetPassword" component={ResetPassword}/>
+                <Route path="/error" component={Error}/>
+            </Router>;
+
         const unLoginRouter =
             <Router history={browserHistory}>
                 <Route path='/' component={HomePage}/>
@@ -70,7 +73,7 @@ class MyRouter extends Component{
                 <Route path='/dir(/:type)' component={Directory}/>
                 <Route path="/commentPage" component={Error}/>
                 <Route path="/detail(/:showId)" component={GoodDetailPage}/>
-                <Route path="/admin" component={Error}/>
+                {/*<Route path="/admin" component={Error}/>*/}
                 <Route path="/buyStep" component={Error}/>
                 <Route path="/us" component={Us}/>
                 <Route path="/help" component={Help}/>
@@ -80,11 +83,15 @@ class MyRouter extends Component{
                 <Route path="/error" component={Error}/>
             </Router>;
 
-        if(this.state.isLogin){
+        if (this.state.isAdmin) {
+            return adminRouter;
+        }
+        else if (this.state.isLogin) {
             return loginRouter;
         }
-        else
+        else {
             return unLoginRouter;
+        }
     };
 
     render(){
