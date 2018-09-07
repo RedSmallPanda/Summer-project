@@ -3,6 +3,7 @@ import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber 
 import axios from 'axios';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
+import Position from './Position';
 moment.locale('zh-cn');
 
 const data = [];
@@ -108,14 +109,14 @@ const AddressForm = Form.create()(
                     width="400px"
                 >
                     <Form layout="vertical">
-                        <FormItem label="收件人姓名">
+                        <FormItem label={null}>
                             {getFieldDecorator('name', {
                                 rules: [{ required: true, message: '请填写收件人姓名' }],
                             })(
                                 <Input type="textarea" placeholder="收件人姓名"/>
                             )}
                         </FormItem>
-                        <FormItem label="手机号">
+                        <FormItem label={null}>
                             {getFieldDecorator('phone', {
                                 rules: [
                                     { required: true, message: '请输入手机号' },
@@ -135,14 +136,14 @@ const AddressForm = Form.create()(
                                 <Input type="textarea" placeholder="收件人手机号" />
                             )}
                         </FormItem>
-                        <FormItem label="省市">
+                        <FormItem label={null}>
                             {getFieldDecorator('district', {
                                 rules: [{ required: true, message: '请选择地区' }],
                             })(
-                                <Cascader options={options}  placeholder="请选择地区" />
+                                <Cascader options={Position}  placeholder="请选择地区" />
                             )}
                         </FormItem>
-                        <FormItem label="详细地址">
+                        <FormItem label={null}>
                             {getFieldDecorator('description',{
                                 rules:[{ required:true, message:'请正确填写详细地址'}]
                             })(

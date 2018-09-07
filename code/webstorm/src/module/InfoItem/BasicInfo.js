@@ -223,7 +223,7 @@ class Demo extends Component {
                     </FormItem>
                     <FormItem
                         {...formItemLayout}
-                        label="名字"
+                        label="用户名"
                     >
                         <span className="ant-form-text">{this.state.formData.username}</span>
                     </FormItem>
