@@ -214,6 +214,10 @@ class GoodDetailPage extends Component{
     };
 
     handleShopCart = () =>{
+        if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '') {
+            alert("请先登录");
+            return;
+        }
         axios.get("/addCurrentCart",{
             params:{
                 ticketId: this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].ticketId,
@@ -230,7 +234,7 @@ class GoodDetailPage extends Component{
 
     toBuyStep = () => {
         // console.log("ready to jump");
-        if(Cookies.get("username")===null || Cookies.get("username")==='' || Cookies.get("username")==="admin"){
+        if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '' || Cookies.get("username") === "admin") {
             browserHistory.push({
                 pathname: '/error',
             });
@@ -322,7 +326,8 @@ class GoodDetailPage extends Component{
                                                     <Card
                                                         hoverable
                                                         style={{width: 240}}
-                                                        cover={<Image width={240} showId={this.props.params.showId}/>} //这里添加图片
+                                                        cover={<Image width={240}
+                                                                      showId={this.props.params.showId}/>} //这里添加图片
                                                     >
                                                         <Meta
                                                             title={this.state.data.title}
@@ -530,7 +535,9 @@ class GoodDetailPage extends Component{
                                 </Col>
                                 <Col span={2}/>
                                 <Col span={4} className="test">
-                                    <Sider data={this.state.data} imgUrl={this.state.imgUrl}/>
+                                    <Affix offsetTop={50}>
+                                        <Sider data={this.state.data} showId={this.props.params.showId}/>
+                                    </Affix>
                                 </Col>
                             </Row>
                         </div>
