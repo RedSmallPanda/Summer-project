@@ -98,15 +98,14 @@ class Directory extends Component {
                     <Col span={16}>
                         <div className="selectArea">
                             <div className='selectBar' style={{marginTop: 16}}>
-                                <RadioGroup value={this.state.city} onChange={this.handleCity}>
+                                <RadioGroup value={this.state.city} onChange={this.handleCity} defaultValue="sh">
                                     <span>选择城市：</span>
-                                    <RadioButton className='radio-button' value="all">全部</RadioButton>
-                                    <RadioButton className='radio-button' value="hz">杭州</RadioButton>
                                     <RadioButton className='radio-button' value="sh">上海</RadioButton>
+                                    <RadioButton className='radio-button' value="hz">杭州</RadioButton>
                                     <RadioButton className='radio-button' value="bj">北京</RadioButton>
                                     <RadioButton className='radio-button' value="gz">广州</RadioButton>
                                     <RadioButton className='radio-button' value="sz">深圳</RadioButton>
-                                    <RadioButton className='radio-button' value="bj">重庆</RadioButton>
+                                    <RadioButton className='radio-button' value="cq">重庆</RadioButton>
                                     <RadioButton className='radio-button' value="tj">天津</RadioButton>
                                     <RadioButton className='radio-button' value="km">昆明</RadioButton>
                                     <RadioButton className='radio-button' value="nj">南京</RadioButton>
@@ -114,6 +113,7 @@ class Directory extends Component {
                                     <RadioButton className='radio-button' value="xa">西安</RadioButton>
                                     <RadioButton className='radio-button' value="cs">长沙</RadioButton>
                                     <RadioButton className='radio-button' value="cd">成都</RadioButton>
+                                    <RadioButton className='radio-button' value="other">其他</RadioButton>
                                 </RadioGroup>
                             </div>
                             <br/>

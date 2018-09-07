@@ -1,6 +1,8 @@
 package com.sjtu.jpw.Repository;
 
+import com.sjtu.jpw.Domain.AssistDomain.TicketData;
 import com.sjtu.jpw.Domain.Ticket;
+import com.sjtu.jpw.Domain.Shows;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -28,8 +30,13 @@ import java.util.List;
         @Query("select sum(ticket.stock) from Ticket ticket where ticket.showId=:showId")
         public Integer getStock(@Param("showId") Integer showId);
 
-        @Query("select ticket from Ticket ticket")
-        public List<Ticket> findAllTickets();
+        @Query("select new com.sjtu.jpw.Domain.AssistDomain.TicketData(t.ticketId,s.title,t.time,t.price,t.seat,t.amount,t.stock,t.showId) " +
+                "from Ticket t join Shows s on t.showId=s.showId")
+        public List<TicketData> findAllTickets();
+
+        @Query("select new com.sjtu.jpw.Domain.AssistDomain.TicketData(t.ticketId,s.title,t.time,t.price,t.seat,t.amount,t.stock,t.showId) " +
+                "from Ticket t join Shows s on t.showId=s.showId where s.title like %:search%")
+        public List<TicketData> searchTickets(@Param("search")String search);
 
         public List<Ticket> findAllByShowId(Integer showId);
 

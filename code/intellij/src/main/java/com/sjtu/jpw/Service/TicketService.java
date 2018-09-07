@@ -19,6 +19,7 @@ public interface TicketService {
     void deleteAllCollection(Integer userId);
     void addTicket(Integer showId, Integer price, String time, String seat, Integer amount);
     JsonArray getTickets();
+    JsonArray searchTickets(String search);
     void deleteTicket(Integer ticketId);
 
     Integer[] recommendBySales(Timestamp startTime, Integer topN);

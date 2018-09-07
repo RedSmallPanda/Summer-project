@@ -243,7 +243,7 @@ class TicketComment extends Component {
                         },
                         pageSize: 4,
                     }}
-                    locale="暂无评论"
+                    emptyText="暂无评论"
                     renderItem={item => (
                     <div>
                         <List.Item

@@ -210,6 +210,17 @@ public class ShowsController {
         out.flush();
     }
 
+    @RequestMapping(value="/searchTicket",produces = "application/json;charset=UTF-8")
+    public void SearchTicket(HttpServletRequest request, HttpServletResponse response) throws IOException{
+        response.setHeader("Content-type","application/json;charset=UTF-8");
+        PrintWriter out = response.getWriter();
+
+        String search = request.getParameter("search");
+        JsonArray allShows = ticketService.searchTickets(search);
+        out.print(allShows);
+        out.flush();
+    }
+
     @RequestMapping(value="/deleteTicket",produces="application/json;charset=UTF-8")
     public void DeleteTicket(HttpServletRequest request, HttpServletResponse response) throws IOException {
         response.setHeader("Content-type","application/json;charset=UTF-8");

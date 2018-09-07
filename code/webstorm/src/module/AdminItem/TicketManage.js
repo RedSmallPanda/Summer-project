@@ -68,11 +68,12 @@ let show = [{
     endDate:'',
 
 }];
-let showOptions = [];
+
 let startDate = '';
 let endDate = '';
 let tempTitle = '';
 let tempShowId = '';
+let selectKey = "1";
 
 function onChange(showId) {
     for(let i = 0;i < show.length; i++){
@@ -124,6 +125,13 @@ const ShowForm = Form.create()(
                             )}
                         </FormItem>
                         <FormItem label={null}>
+                            {getFieldDecorator('startDate',
+                                {rules:[{ required:true, message:'请选择日期'}]}
+                            )(
+                                <RangePicker locale={locale}/>
+                            )}
+                        </FormItem>
+                        <FormItem label={null}>
                             {getFieldDecorator('city', {
                                 rules: [{ required: true, message: '请选择城市' }],
                             })(
@@ -142,13 +150,6 @@ const ShowForm = Form.create()(
                                 rules:[{ required:true, message:'请填写地址'}]
                             })(
                                 <Input type="textarea" placeholder="地址"/>
-                            )}
-                        </FormItem>
-                        <FormItem label={null}>
-                            {getFieldDecorator('startDate',
-                                {rules:[{ required:true, message:'请选择日期'}]}
-                                )(
-                                <RangePicker locale={locale}/>
                             )}
                         </FormItem>
                     </Form>
@@ -385,7 +386,7 @@ class TicketManage extends Component{
             key:'action',
             render: (text,record) => (
                 <span>
-                    <a onClick={()=>this.handleDeleteTicket(record.ticketId)}>删除</a>
+                    <Icon type="delete" onClick={()=>this.handleDeleteTicket(record.ticketId)} style={{cursor: "pointer"}}/>
                 </span>
             ),
         }];
@@ -415,7 +416,7 @@ class TicketManage extends Component{
             key:'action',
             render: (text,record) => (
                 <span>
-                    <a onClick={()=>this.handleDeleteCoupon(record.couponId)}>删除</a>
+                    <Icon type="delete" onClick={()=>this.handleDeleteCoupon(record.couponId)} style={{cursor: "pointer"}}/>
                 </span>
             ),
         }];
@@ -439,7 +440,6 @@ class TicketManage extends Component{
                 self.setState({
                     show:response.data
                 });
-                self.setShowOptions();
             })
             .catch(function (error) {
                 console.log(error);
@@ -471,19 +471,6 @@ class TicketManage extends Component{
                 console.log(error);
             });
     }
-
-    setShowOptions = () =>{
-        showOptions = [];
-        let showData = this.state.show;
-        for(let j=0;j<showData.length;j++){
-            let newOption = {
-                value:showData[j].showId,
-                label:showData[j].title,
-            };
-            showOptions.push(newOption);
-        }
-        show = this.state.show;
-    };
 
     componentDidMount(){
         this.getShows(this);
@@ -719,21 +706,44 @@ class TicketManage extends Component{
     };
 
     handleSearch = (value,self) =>{
-        axios.get("/searchShow",{
-            params:{
-                search:value
-            }
-        })
-            .then(function (response) {
-                console.log(response);
-                self.setState({
-                    show:response.data
-                });
-                self.setShowOptions();
+
+        if(selectKey === "1" || selectKey === "3") {
+            axios.get("/searchShow", {
+                params: {
+                    search: value
+                }
             })
-            .catch(function (error) {
-                console.log(error);
-            });
+                .then(function (response) {
+                    console.log(response);
+                    self.setState({
+                        show: response.data
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+        else{
+            axios.get("/searchTicket", {
+                params: {
+                    search: value
+                }
+            })
+                .then(function (response) {
+                    console.log(response);
+                    self.setState({
+                        ticket: response.data
+                    });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+
+    };
+
+    tabChange = (key) =>{
+        selectKey = key;
     };
 
     render(){
@@ -751,14 +761,13 @@ class TicketManage extends Component{
                         <Button onClick={this.showCouponModal}><Icon type="plus"/>新增优惠券</Button>
                     </div>
                 }
+                      onChange={this.tabChange}
+
                 >
                     <TabPane tab="演出" key="1">
                         <Table
                             columns={this.columns}
                             expandedRowRender={record => <span>
-                                <p style={{ margin: 0 }}>
-                                    {'简介：'+record.info}
-                                </p>
                                 <p style={{ margin: 0 }}>
                                     {'详细地址：'+record.address}
                                 </p>
