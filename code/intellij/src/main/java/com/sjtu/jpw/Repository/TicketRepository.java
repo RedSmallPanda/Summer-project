@@ -33,6 +33,9 @@ import java.util.List;
 
         public List<Ticket> findAllByShowId(Integer showId);
 
+        @Query("select ticket from Ticket ticket where  ticket.time>current_timestamp and ticket.showId=:showId")
+        public List<Ticket> findAllByShowIdAfterNow(@Param("showId") Integer showId);
+
         @Transactional
         public void deleteAllByShowId(Integer showId);
 

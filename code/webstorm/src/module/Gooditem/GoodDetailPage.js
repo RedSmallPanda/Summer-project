@@ -59,6 +59,10 @@ class GoodDetailPage extends Component{
                 let temp=[];
                 // self.setState({ticketDetails:response.data})
                 let data=response.data;
+                if(data==null){ self.setState({
+                    ticketDetails: null,
+
+                });   return;}
                 let i;
                 for(i in data){
                     temp.push(String(i));
@@ -81,7 +85,8 @@ class GoodDetailPage extends Component{
                     pickPriceIdx: 0,
                     enabledDate: temp,
                     pickedDate: temp[0],
-                    pickTime: pickTime[0]
+                    pickTime: pickTime[0],
+                    tickMaxNum: data[temp[0]][pickTime[0]][0].stock
                 });
 
                 console.log("Result got.");
@@ -102,6 +107,9 @@ class GoodDetailPage extends Component{
                 });*/
             })
             .catch(function (error) {
+                self.setState({
+                    ticketDetails: null,
+                });
                 console.log(error);
             });
     };
@@ -174,7 +182,8 @@ class GoodDetailPage extends Component{
         this.setState({
             pickedDate: value,
             pickTime: time[0],
-            pickPriceIdx: 0
+            pickPriceIdx: 0,
+            tickMaxNum: this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][0].stock
         });
     };
 
@@ -182,7 +191,8 @@ class GoodDetailPage extends Component{
         console.log("pick time :" + e.target.value);//get <Radiobutton value=xxx>'s  value
         this.setState({
             pickTime: e.target.value,
-            pickPriceIdx: 0
+            pickPriceIdx: 0,
+            tickMaxNum: this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][0].stock
         });
 
     };
@@ -256,7 +266,7 @@ class GoodDetailPage extends Component{
         // console.log(this.state);
 
         let timeButton=[];
-        if(this.state.pickTime!=="") {
+        if(this.state.pickTime!==""&&this.state.ticketDetails!==null) {
             for (let time in this.state.ticketDetails[this.state.pickedDate]) {
                 // console.log("refresh priceButton");
                 // let temp=this.state.times[i];
@@ -268,7 +278,7 @@ class GoodDetailPage extends Component{
             }
         }
         let priceButton=[];
-        if(this.state.pickTime!=="") {
+        if(this.state.pickTime!==""&&this.state.ticketDetails!==null) {
             // console.log("refresh priceButton");
             for (let i in this.state.ticketDetails[this.state.pickedDate][this.state.pickTime]) {
                 let temp = this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][i];
@@ -355,8 +365,8 @@ class GoodDetailPage extends Component{
                                                                     <Col span={1}/>
                                                                     <Col>
                                                                         <div>
-                                                                            <DatePick Dates={this.state.enabledDate}
-                                                                                      setdate={this.onSetPickDate}/>
+                                                                            {this.state.ticketDetails?<DatePick Dates={this.state.enabledDate}
+                                                                                      setdate={this.onSetPickDate}/>:null}
                                                                         </div>
                                                                     </Col>
                                                                 </Row>
@@ -372,11 +382,13 @@ class GoodDetailPage extends Component{
                                                                     <div className="timepickletter">选择时间:</div>
                                                                 </Col>
                                                                 <Col span={1}/>
-                                                                <Col>
+                                                                <Col>{
+                                                                    this.state.ticketDetails?
                                                                     <RadioGroup onChange={this.selectTime}
                                                                                 value={this.state.pickTime}>
                                                                         {timeButton}
-                                                                    </RadioGroup>
+                                                                    </RadioGroup>:null
+                                                                }
                                                                 </Col>
                                                             </Row>
                                                         </div>
@@ -392,10 +404,14 @@ class GoodDetailPage extends Component{
                                                                 <Col span={1}/>
                                                                 <Col>
                                                                     <div className="priceclassblock">
-                                                                        <RadioGroup onChange={this.selectPrice}
-                                                                                    value={this.state.pickPriceIdx}>
-                                                                            {priceButton}
-                                                                        </RadioGroup>
+                                                                        {
+                                                                            this.state.ticketDetails?
+                                                                            <RadioGroup onChange={this.selectPrice}
+                                                                                        value={this.state.pickPriceIdx}>
+                                                                                {priceButton}
+                                                                            </RadioGroup>
+                                                                                :null
+                                                                        }
                                                                     </div>
                                                                 </Col>
                                                             </Row>
@@ -412,8 +428,12 @@ class GoodDetailPage extends Component{
                                                                 </Col>
                                                                 <Col span={1}/>
                                                                 <Col>
-                                                                    <TickNumPick setnum={this.setTickNum}
-                                                                                 maxnum={this.state.tickMaxNum}/>
+                                                                    {
+                                                                        this.state.ticketDetails?
+                                                                        <TickNumPick setnum={this.setTickNum}
+                                                                                     maxnum={this.state.tickMaxNum}/>
+                                                                            :null
+                                                                    }
                                                                 </Col>
                                                             </Row>
                                                         </div>
@@ -428,18 +448,28 @@ class GoodDetailPage extends Component{
                                                                 </Col>
                                                                 <Col span={1}/>
                                                                 <Col span={8}>
-                                                                    <div>
-                                                                        <p className="price">{'￥' + this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price * this.state.pickTickNum}</p>
-                                                                    </div>
+                                                                    {this.state.ticketDetails?
+                                                                        <div>
+                                                                            <p className="price">{'￥' + this.state.ticketDetails[this.state.pickedDate][this.state.pickTime][this.state.pickPriceIdx].price * this.state.pickTickNum}</p>
+                                                                        </div>
+                                                                        :null
+                                                                    }
                                                                 </Col>
                                                                 <Col span={4}>
-                                                                    <Button type="primary" size="large"
-                                                                            onClick={this.handleShopCart}>加入购物车</Button>
+                                                                    {
+                                                                        this.state.ticketDetails?
+                                                                        <Button type="primary" size="large"
+                                                                                onClick={this.handleShopCart}>加入购物车</Button>
+                                                                            :null
+                                                                    }
                                                                 </Col>
                                                                 <Col span={1}/>
                                                                 <Col span={4}>
-                                                                    <Button type="primary" size="large"
-                                                                            onClick={this.toBuyStep}>立即购买</Button>
+                                                                    {this.state.ticketDetails?
+                                                                        <Button type="primary" size="large"
+                                                                                onClick={this.toBuyStep}>立即购买</Button>
+                                                                        :null
+                                                                    }
                                                                 </Col>
                                                             </Row>
                                                         </div>
@@ -477,7 +507,6 @@ class GoodDetailPage extends Component{
                                                        className="tab">评论</a>
                                                 </Col>
                                                 <Col span={4}>
-                                                    <a href="" className="tab">温馨提示</a>
                                                 </Col>
                                             </Row>
                                         </div>
@@ -487,7 +516,6 @@ class GoodDetailPage extends Component{
                                             <div id="block1" style={{height: 1000}}>
                                                 <div style={{height: 80}}/>
                                                 <div>演出详情</div>
-                                                <div className="editor"><CommentEditor/></div>
                                             </div>
                                         </Col>
                                     </Row>

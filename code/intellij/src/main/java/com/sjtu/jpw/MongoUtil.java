@@ -92,7 +92,7 @@ public class MongoUtil {
         DB db = mongo.getDB("test");
         DBCollection dbCollection = db.getCollection("image");
 
-        File file = new File("D:\\SJTU\\2017-2018\\jpwimage");
+        File file = new File("E:\\jpwImg");
         List<String> imgPaths = printDirectory(file,depth);
         System.out.println(imgPaths);
         for(int i = 0; i < imgPaths.size(); i++){
