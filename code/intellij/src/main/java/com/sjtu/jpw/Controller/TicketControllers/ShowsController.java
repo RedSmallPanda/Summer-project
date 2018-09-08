@@ -11,7 +11,6 @@ import com.sjtu.jpw.Service.ShowLocationService;
 import com.sjtu.jpw.Service.OrdersService;
 import com.sjtu.jpw.Service.ShowService;
 import com.sjtu.jpw.Service.TicketService;
-import com.sun.tools.corba.se.idl.constExpr.Times;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

@@ -5,6 +5,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.sjtu.jpw.Domain.Comment;
+import com.sjtu.jpw.Repository.CommentRepository;
 import com.sjtu.jpw.Service.CommentService;
 import com.sjtu.jpw.Service.OrdersService;
 import com.sjtu.jpw.Service.UserService;
@@ -32,6 +33,9 @@ public class CommentController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private CommentRepository commentRepository;
 
     @RequestMapping(value="/comments",produces="application/json;charset=UTF-8")
     public void GetComment(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -143,7 +147,7 @@ public class CommentController {
 
         int commentId= Integer.parseInt(request.getParameter("commentId"));
         commentService.deleteComment(commentId);
-
+        commentService.setRate(commentRepository.findFirstByCommentId(commentId).getShowId());
         System.out.println("delete comment successfully");
     }
 }

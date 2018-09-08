@@ -36,13 +36,13 @@ class UploadImage extends Component{
             showUploadList:false,
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
-                const isJPG = file.type === 'image/jpeg';
+                const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
                 if (!isJPG) {
-                    message.error('You can only upload JPG file!');
+                    message.error('只能上传jpg或png格式的图片！');
                 }
                 const isLt2M = file.size / 1024 / 1024 < 2;
                 if (!isLt2M) {
-                    message.error('Image must smaller than 2MB!');
+                    message.error('图片的大小不能超过2MB!');
                 }
                 if(!(isJPG && isLt2M)){
                     return isJPG && isLt2M;

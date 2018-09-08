@@ -19,6 +19,7 @@ public interface CommentRepository extends CrudRepository<Comment,Integer> {
     public Integer countByShowId(Integer showId);
     public List<Comment> findAllByShowId(Integer showId);
     public List<Comment> findAllByUsername(String username);
+    public Comment findFirstByCommentId(Integer commentId);
     List<Comment> findAllByTarget(String target);
 
     @Transactional
