@@ -32,8 +32,6 @@ class Demo extends Component {
 
         };
 
-        let self = this;
-
         this.uploaderProps = {
             name:"avatar",
             listType:"picture-card",
@@ -53,6 +51,7 @@ class Demo extends Component {
                     return isJPG && isLt2M;
                 }
                 else {
+                    let self = this;
                     let reader = new FileReader();
                     reader.readAsDataURL(file);
                     reader.onload = function (e) {
@@ -113,7 +112,9 @@ class Demo extends Component {
                 loading: false,
             }));
         }
-        window.location.reload();
+        if(this.state.base64){
+            window.location.reload();
+        }
     };
 
     nicknameOnChange = () => {

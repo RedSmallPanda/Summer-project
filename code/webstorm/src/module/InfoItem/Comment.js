@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { List,  Icon,  Rate, Tabs, Modal} from 'antd';
+import { List,  Icon,  Rate, Tabs, Modal, message} from 'antd';
 import {browserHistory} from "react-router";
 import axios from 'axios'
 import Cookies from "js-cookie"
@@ -125,7 +125,8 @@ class Comment extends Component {
                 newData.splice(index,1);
                 self.setState({
                     comment: newData
-                })
+                });
+                message.success("删除评论成功");
             },
             onCancel() {
                 //do nothing
@@ -153,7 +154,8 @@ class Comment extends Component {
                 self.setState({
                     reply: newData,
                     replyTome: newReplyToMe
-                })
+                });
+                message.success("删除回复成功");
             },
             onCancel() {
                 //do nothing
@@ -181,7 +183,8 @@ class Comment extends Component {
                 self.setState({
                     replyToMe: newData,
                     reply: newReply,
-                })
+                });
+                message.success("删除回复成功");
             },
             onCancel() {
                 //do nothing

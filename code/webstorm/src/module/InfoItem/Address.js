@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber } from 'antd';
+import { Button, Modal, Form, Input, Icon,Cascader, Table, Divider, InputNumber, message } from 'antd';
 import axios from 'axios';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
@@ -369,6 +369,7 @@ class Address extends Component {
 
                 this.addAddress(this,sendAddr);
                 this.setState({ data: newData, editingKey: '' });
+                message.success("修改地址成功");
             } else {
                 this.setState({editingKey: '' });
             }
@@ -395,7 +396,8 @@ class Address extends Component {
 
                 self.setState({
                     data: newData
-                })
+                });
+                message.success("删除地址成功");
             },
             onCancel() {
                 //do nothing

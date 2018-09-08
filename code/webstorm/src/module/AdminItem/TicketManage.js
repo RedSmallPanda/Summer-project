@@ -516,7 +516,7 @@ class TicketManage extends Component{
                     self.setState({
                         visible:false,
                     });
-                    message.success("添加成功");
+                    message.success("添加演出成功");
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -564,7 +564,8 @@ class TicketManage extends Component{
                     self.getTickets(self);
                     self.setState({
                         ticketVisible:false,
-                    })
+                    });
+                    message.success("添加票品成功");
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -609,7 +610,8 @@ class TicketManage extends Component{
                     self.getCoupon(self);
                     self.setState({
                         couponVisible:false,
-                    })
+                    });
+                    message.success("添加优惠券成功");
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -665,8 +667,8 @@ class TicketManage extends Component{
                 newData.splice(index,1);
                 self.setState({
                     ticket: newData
-                })
-
+                });
+                message.success("删除票品成功");
             },
             onCancel() {
                 //do nothing
@@ -694,8 +696,8 @@ class TicketManage extends Component{
                 newData.splice(index,1);
                 self.setState({
                     coupon: newData
-                })
-
+                });
+                message.success("删除优惠券成功");
             },
             onCancel() {
                 //do nothing

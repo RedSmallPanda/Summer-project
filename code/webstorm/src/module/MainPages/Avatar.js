@@ -30,7 +30,9 @@ class MyAvatar extends Component {
     render() {
         let self=this;
         return (
-            self.state.imgUrl ? <Avatar size="large" src={self.state.imgUrl}/> : <Avatar size="large" icon="user"/>
+            self.state.imgUrl ? <img className="infoAvatar" style={{width:100,height:100}} src={self.state.imgUrl}/> :
+                <img className="infoAvatar" style={{width:100,height:100}}
+                     src="http://bpic.588ku.com/element_origin_min_pic/01/31/87/96573b585a7c9c4.jpg"/>
         );
     }
 }
