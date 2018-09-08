@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker,Divider } from 'antd';
+import { Button, Modal, Form, Input, Icon, Table,Tabs, Cascader, DatePicker,Divider,message } from 'antd';
 import UploadImage from './UploadImage';
 import axios from 'axios';
 import moment from 'moment';
@@ -512,7 +512,8 @@ class TicketManage extends Component{
                     self.getShows(self);
                     self.setState({
                         visible:false,
-                    })
+                    });
+                    message.success("添加成功");
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -632,8 +633,8 @@ class TicketManage extends Component{
                 newData.splice(index,1);
                 self.setState({
                     show: newData
-                })
-
+                });
+                message.success("下架成功");
             },
             onCancel() {
                 //do nothing

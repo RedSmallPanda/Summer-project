@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
-    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon
+    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon, Avatar
 } from 'antd';
 import moment from 'moment';
 import axios from "axios/index";
 import Cookies from "js-cookie";
+import MyAvatar from "../MainPages/Avatar"
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
@@ -100,6 +101,7 @@ class Demo extends Component {
                 loading: false,
             }));
         }
+        window.location.reload();
     };
 
     nicknameOnChange = () => {
@@ -218,7 +220,9 @@ class Demo extends Component {
                         label="头像"
                     >
                         <Popover placement="rightTop" title={text} content={content}>
-                            <img className="infoAvatar" height="100" width="100" src={this.state.base64 ? this.state.base64 : this.state.imgUrl} alt="default"/>
+                            <div style={{width:100,height:100}}>
+                                <MyAvatar username={Cookies.get("username")}/>
+                            </div>
                         </Popover>
                     </FormItem>
                     <FormItem

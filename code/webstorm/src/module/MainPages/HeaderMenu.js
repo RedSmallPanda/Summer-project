@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Menu, Icon, Input, Avatar,BackTop } from 'antd';
+import { Row, Col, Menu, Icon, Input, Avatar,BackTop,message } from 'antd';
 import { browserHistory} from 'react-router'
 import Cookies from 'js-cookie';
 import Login from './Login'
@@ -68,7 +68,6 @@ class HeaderMenu extends Component {
     handleLogout = () =>{
         axios.get("/logout")
             .then(function(response){
-                alert(response.data);
             })
             .catch(function (error) {
                 console.log(error);
@@ -183,17 +182,17 @@ class HeaderMenu extends Component {
                         self.setState({
                             visible: false,
                         });
-                        alert("登录失败,请重新登录");
+                        message.error("用户名或密码错误");
                     } else if (response.data === "banned") {
                         self.setState({
                             visible: false,
                         });
-                        alert("该账户已被禁用（请联系管理员？？？）");
+                        message.info("该账户已被禁用");
                     } else if (response.data === "unactivated") {
                         self.setState({
                             visible: false,
                         });
-                        alert("账户尚未激活，请先查看注册邮箱进行激活。");
+                        message.info("账户尚未激活，请先查看注册邮箱进行激活。");
                     } else {
                         Cookies.set('username', values.username);
                         if (values.username === 'admin') {
@@ -276,9 +275,9 @@ class HeaderMenu extends Component {
                         self.setState({
                             regVisible: false,
                         });
-                        alert("注册失败");
+                        message.info("注册失败");
                     } else {
-                        alert("验证邮件已发到邮箱，请前往激活！");
+                        message.info("验证邮件已发到邮箱，请前往激活！");
                         self.setState({
                             regVisible: false,
                         });

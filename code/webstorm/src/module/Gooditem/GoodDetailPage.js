@@ -215,7 +215,7 @@ class GoodDetailPage extends Component{
 
     handleShopCart = () =>{
         if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '') {
-            alert("请先登录");
+            message.info("登录后才能使用购物车");
             return;
         }
         axios.get("/addCurrentCart",{
@@ -235,9 +235,7 @@ class GoodDetailPage extends Component{
     toBuyStep = () => {
         // console.log("ready to jump");
         if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '' || Cookies.get("username") === "admin") {
-            browserHistory.push({
-                pathname: '/error',
-            });
+            message.info("登陆后才能购买")
         }
         else {
             browserHistory.push({
