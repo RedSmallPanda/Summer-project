@@ -68,8 +68,6 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
                 listData = response.data;
                 let tempData=self.state.data;
                 if(prop.type!=="collection") {
@@ -105,13 +103,9 @@ class ResultList extends Component {
             }
         })
             .then(function (response) {
-                console.log(response);
-                // alert(JSON.stringify(response.data[0]));
                 self.setState({
                     size:response.data,
                 });
-                console.log("dataaaaaa: "+response.data);
-                console.log("sizeeeeee: "+self.state.size);
             })
             .catch(function (error) {
                 console.log(error);
@@ -124,7 +118,6 @@ class ResultList extends Component {
     getImage(self) {
         axios.get("/getImage")
             .then(function (response) {
-                console.log(response);
                 self.setState({
                     imgUrl:response.data
                 })
@@ -151,13 +144,10 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
-                    console.log(response);
-                    // alert(JSON.stringify(response.data[0]));
 
                     let size=0;
                     if(response.data.length>0) {
                         size = response.data[response.data.length - 1].stock;
-                        console.log("sizeeeeee:", size);
                     }
                     let data = [];
                     for (let i = 0; i < size; i++) {
@@ -170,7 +160,6 @@ class ResultList extends Component {
                     for (let i = 0; i < listData.length-1; i++) {
                         tempData.splice(i, 1, listData[i]);
                     }
-                    console.log(tempData);
 
                     self.setState({
                         loading: false,
@@ -211,7 +200,6 @@ class ResultList extends Component {
                     let size = 0;
                     if (response.data.length > 0) {
                         size = response.data[response.data.length - 1].stock;
-                        console.log("sizeeeeee:", size);
                     }
                     let data = [];
                     for (let i = 0; i < size; i++) {
@@ -224,7 +212,6 @@ class ResultList extends Component {
                     for (let i = 0; i < listData.length - 1; i++) {
                         tempData.splice(i, 1, listData[i]);
                     }
-                    console.log(tempData);
 
                     self.setState({
                         loading: false,
@@ -255,7 +242,6 @@ class ResultList extends Component {
                 }
             })
                 .then(function (response) {
-                    console.log("change collection" + showId + response);
                     if (response.data === true || response.data === false) {
                         let newData=self.state.data;
                         newData.forEach(function (item) {

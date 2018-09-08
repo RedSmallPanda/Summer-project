@@ -272,28 +272,28 @@ public class OrdersServiceImpl implements OrdersService {
                 endTime = Timestamp.valueOf(time.get(1));
             }
 
-            List<Integer> allKindSales = Arrays.asList(0, 0, 0, 0, 0, 0, 0);
+            List<Integer> allKindSales = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0);
             List<String> allKinds = Arrays.asList("演唱会", "音乐会", "曲苑杂坛", "话剧歌剧", "体育比赛", "舞蹈芭蕾",
-                    "动漫游戏");
+                    "休闲展览","儿童亲子");
 
             List<SalesData> yearlyOrders=ordersRepository.findAllTypeSales(startTime,endTime);
             for(int i=0;i<yearlyOrders.size();i++){
                 SalesData temp=yearlyOrders.get(i);
 
                 System.out.println(temp);
-                if(temp.getType().equals("concert")){
+                if(temp.getType().equals("concerts")){
                     temp.setType("演唱会");
                     allKindSales.set(0,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
-                else if(temp.getType().equals("music")){
+                else if(temp.getType().equals("musicale")){
                     temp.setType("音乐会");
                     allKindSales.set(1,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
-                else if(temp.getType().equals("cnopera")){
+                else if(temp.getType().equals("shows")){
                     temp.setType("曲苑杂坛");
                     allKindSales.set(2,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
-                else if(temp.getType().equals("opera")){
+                else if(temp.getType().equals("dramas")){
                     temp.setType("话剧歌剧");
                     allKindSales.set(3,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
@@ -305,9 +305,13 @@ public class OrdersServiceImpl implements OrdersService {
                     temp.setType("舞蹈芭蕾");
                     allKindSales.set(5,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
-                else {
-                    temp.setType("动漫游戏");
+                else if(temp.getType().equals("exhibits")){
+                    temp.setType("休闲展览");
                     allKindSales.set(6,Integer.valueOf(String.valueOf(temp.getNumber())));
+                }
+                else {
+                    temp.setType("儿童亲子");
+                    allKindSales.set(7,Integer.valueOf(String.valueOf(temp.getNumber())));
                 }
             }
 

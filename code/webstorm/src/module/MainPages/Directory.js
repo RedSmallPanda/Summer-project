@@ -100,6 +100,7 @@ class Directory extends Component {
                             <div className='selectBar' style={{marginTop: 16}}>
                                 <RadioGroup value={this.state.city} onChange={this.handleCity} defaultValue="sh">
                                     <span>选择城市：</span>
+                                    <RadioButton className='radio-button' value="all">全部</RadioButton>
                                     <RadioButton className='radio-button' value="sh">上海</RadioButton>
                                     <RadioButton className='radio-button' value="hz">杭州</RadioButton>
                                     <RadioButton className='radio-button' value="bj">北京</RadioButton>

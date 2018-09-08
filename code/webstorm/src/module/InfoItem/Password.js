@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Form, Input, Button, } from 'antd';
 import axios from "axios/index";
+import Cookies from 'js-cookie';
 
 
 const FormItem = Form.Item;
@@ -15,14 +16,10 @@ class DemoForm extends React.Component {
 
     componentDidMount(){
         let self = this;
-        let strCookie = document.cookie;
-        let arrCookie = strCookie.split(";");
-        for(let i = 0; i < arrCookie.length; i++){
-            let arr = arrCookie[i].split("=");
-            if("username" === arr[0] && arr[1]){
+            let username = Cookies.get("username");
                 axios.get("http://localhost:8080/userInfo", {
                     params: {
-                        username: arr[1],
+                        username: username,
                     }
                 })
                     .then(function (response) {
@@ -35,8 +32,7 @@ class DemoForm extends React.Component {
                     .catch(function (error) {
                         console.log(error);
                     });
-            }
-        }
+
     }
 
     handleSubmit = (e) => {//TODO: login again after password modified.

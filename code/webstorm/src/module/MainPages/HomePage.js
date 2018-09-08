@@ -90,13 +90,14 @@ class HomePage extends Component {
         const homeBar =
             <div align="center">
                 <Menu>
-                    <Menu.Item key="concert" onClick={this.handleDirectory}>演唱会</Menu.Item>
-                    <Menu.Item key="music" onClick={this.handleDirectory}>音乐会</Menu.Item>
-                    <Menu.Item key="cnopera" onClick={this.handleDirectory}>曲苑杂坛</Menu.Item>
-                    <Menu.Item key="opera" onClick={this.handleDirectory}>话剧歌剧</Menu.Item>
+                    <Menu.Item key="concerts" onClick={this.handleDirectory}>演唱会</Menu.Item>
+                    <Menu.Item key="musicale" onClick={this.handleDirectory}>音乐会</Menu.Item>
+                    <Menu.Item key="shows" onClick={this.handleDirectory}>曲苑杂坛</Menu.Item>
+                    <Menu.Item key="dramas" onClick={this.handleDirectory}>话剧歌剧</Menu.Item>
                     <Menu.Item key="sports" onClick={this.handleDirectory}>体育比赛</Menu.Item>
                     <Menu.Item key="dance" onClick={this.handleDirectory}>舞蹈芭蕾</Menu.Item>
-                    <Menu.Item key="comic" onClick={this.handleDirectory}>动漫游戏</Menu.Item>
+                    <Menu.Item key="exhibits" onClick={this.handleDirectory}>休闲展览</Menu.Item>
+                    <Menu.Item key="family" onClick={this.handleDirectory}>儿童亲子</Menu.Item>
                 </Menu>
             </div>;
 

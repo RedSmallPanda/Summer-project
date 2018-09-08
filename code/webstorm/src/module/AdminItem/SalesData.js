@@ -245,13 +245,14 @@ class SalesData extends Component {
                     <br/>
                     <Select defaultValue="all" style={{width: 180}} onChange={this.kindHandleChange}>
                         <Option value="all">全部分类</Option>
-                        <Option value="concert">演唱会</Option>
-                        <Option value="music">音乐会</Option>
-                        <Option value="cnopera">曲苑杂坛</Option>
-                        <Option value="opera">话剧歌剧</Option>
+                        <Option value="concerts">演唱会</Option>
+                        <Option value="musicale">音乐会</Option>
+                        <Option value="shows">曲苑杂坛</Option>
+                        <Option value="dramas">话剧歌剧</Option>
                         <Option value="sports">体育比赛</Option>
                         <Option value="dance">舞蹈芭蕾</Option>
-                        <Option value="comic">动漫游戏</Option>
+                        <Option value="exhibits">休闲展览</Option>
+                        <Option value="family">儿童亲子</Option>
                     </Select>
                     <br/>
                     <br/>

@@ -13,16 +13,16 @@ const { RangePicker } = DatePicker;
 const Search = Input.Search;
 
 const typeOptions = [{
-    value:'concert',
+    value:'concerts',
     label:'演唱会',
 },{
-    value: 'music',
+    value: 'musicale',
     label: '音乐会',
 }, {
-    value: 'cnopera',
+    value: 'shows',
     label: '曲苑杂坛',
 },{
-    value: 'opera',
+    value: 'dramas',
     label: '话剧歌剧',
 },{
     value: 'sports',
@@ -31,8 +31,11 @@ const typeOptions = [{
     value: 'dance',
     label: '舞蹈芭蕾',
 },{
-    value: 'comic',
-    label: '动漫游戏',
+    value: 'exhibits',
+    label: '休闲展览',
+},{
+    value: 'family',
+    label: '儿童亲子',
 },];
 
 const cityOptions = [{
