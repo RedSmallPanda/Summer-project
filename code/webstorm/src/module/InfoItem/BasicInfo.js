@@ -262,10 +262,8 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('nickname', {
                             rules: [
-                                //{
-                                //  required: true, message: '请输入昵称!',
-                                //},
-                                {max: 12, message: '昵称长度不能超过12',},
+                                // {required: true, message: '请输入昵称!'},
+                                {max: 12, message: '昵称长度不能超过12'},
                                 {
                                     validator: (rule, value, callback) => {
                                         //   const form = this.formRef.props.form;
@@ -294,9 +292,9 @@ class Demo extends Component {
                         label="E-mail"
                     >
                         {getFieldDecorator('email', {
-                            rules: [{
-                                type: 'email', message: '不合法的E-mail地址!',
-                            },
+                            rules: [
+                                // {required: true, message: '邮箱不能为空'},
+                                {type: 'email', message: '不合法的E-mail地址!'},
                                 {
                                     validator: (rule, value, callback) => {
                                         //   const form = this.formRef.props.form;
@@ -325,18 +323,26 @@ class Demo extends Component {
                     >
                         {getFieldDecorator('phone', {
                             rules: [
-                                { required: true, message: '手机号不能为空' },
-                                {validator:(rule,value,callback)=>{
-                                    var phone_validator=/^([0-9])+/;
-                                    var is_valid=phone_validator.test(String(value));
-                                    //   const form = this.formRef.props.form;
-                                    //value's type need to transform
-                                    if(String(value).length !== 11){is_valid=false;}
-                                    if(!is_valid &&!(String(value)==='')&&!(value===null)){callback("手机号格式错误");}
-                                    else {callback()}
-                                }},
+                                // { required: true, message: '手机号不能为空' },
+                                {
+                                    validator: (rule, value, callback) => {
+                                        let phone_validator = /^([0-9])+/;
+                                        let is_valid = phone_validator.test(String(value));
+                                        //   const form = this.formRef.props.form;
+                                        //value's type need to transform
+                                        if (String(value).length !== 11) {
+                                            is_valid = false;
+                                        }
+                                        if (!is_valid && !(String(value) === '') && !(value === null)) {
+                                            callback("手机号格式错误");
+                                        }
+                                        else {
+                                            callback();
+                                        }
+                                    }
+                                },
                             ],
-                            validateTrigger:'onBlur',
+                            // validateTrigger:'onBlur',
                         })(
                             <div>
                                 <Input id="inputPhone" value={this.state.formData.phone} onChange={this.phoneOnChange}/>
