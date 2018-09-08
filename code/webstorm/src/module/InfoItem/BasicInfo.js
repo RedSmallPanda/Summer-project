@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
-    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon, Avatar
+    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon, message
 } from 'antd';
 import moment from 'moment';
 import axios from "axios/index";
@@ -41,17 +41,29 @@ class Demo extends Component {
             showUploadList:false,
             action:"http://localhost:8080/uploadImg",
             beforeUpload:(file)=>{
-                console.log(file);
-                let reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = function(e){
-                    file = e.target.result;
-                    self.setState({
-                        base64:file,
-                    });
-                    self.addAvatar();
-                    return file;
-                };
+                const isJPG = (file.type === 'image/jpeg' || file.type === 'image/png');
+                if (!isJPG) {
+                    message.error('只能上传jpg或png格式的图片！');
+                }
+                const isLt2M = file.size / 1024 / 1024 < 2;
+                if (!isLt2M) {
+                    message.error('图片的大小不能超过2MB!');
+                }
+                if(!(isJPG && isLt2M)){
+                    return isJPG && isLt2M;
+                }
+                else {
+                    let reader = new FileReader();
+                    reader.readAsDataURL(file);
+                    reader.onload = function (e) {
+                        file = e.target.result;
+                        self.setState({
+                            base64: file,
+                        });
+                        self.addAvatar();
+                        return file;
+                    };
+                }
             },
         }
 

@@ -90,43 +90,53 @@ class TicketComment extends Component {
     };
 
     addComment = (item) =>{
-        let params = new URLSearchParams();
-        let username = Cookies.get('username');
-        let time = moment().format('YYYY-MM-DD hh:mm:ss');
-        let content = this.state.value;
+        if(this.state.value) {
+            let params = new URLSearchParams();
+            let username = Cookies.get('username');
+            let time = moment().format('YYYY-MM-DD hh:mm:ss');
+            let content = this.state.value;
 
-        params.append('purpose',"add");
-        params.append('showId',item.showId);
-        params.append('orderId',-1);
-        params.append('isFromOrder',-1);
-        params.append('username', username);
-        params.append('parentId',item.commentId);
-        params.append('target',item.username);
-        params.append('content',content);
-        params.append('rate',0);
-        params.append('time',time);
-        axios.post('/addComment', params);
-        this.sendComment(item);
+            params.append('purpose', "add");
+            params.append('showId', item.showId);
+            params.append('orderId', -1);
+            params.append('isFromOrder', -1);
+            params.append('username', username);
+            params.append('parentId', item.commentId);
+            params.append('target', item.username);
+            params.append('content', content);
+            params.append('rate', 0);
+            params.append('time', time);
+            axios.post('/addComment', params);
+            this.sendComment(item);
+        }
+        else{
+            message.error("请输入回复内容！");
+        }
     };
 
     addReply = (item, thing) =>{
-        let params = new URLSearchParams();
-        let username = Cookies.get('username');
-        let time = moment().format('YYYY-MM-DD hh:mm:ss');
-        let content = "@" + thing.nickname+": " + this.state.value;
+        if(this.state.value){
+            let params = new URLSearchParams();
+            let username = Cookies.get('username');
+            let time = moment().format('YYYY-MM-DD hh:mm:ss');
+            let content = "@" + thing.nickname+": " + this.state.value;
 
-        params.append('purpose',"add");
-        params.append('showId',item.showId);
-        params.append('orderId',-1);
-        params.append('isFromOrder',-1);
-        params.append('username', username);
-        params.append('parentId',item.commentId);
-        params.append('target',thing.username);
-        params.append('content',content);
-        params.append('rate',0);
-        params.append('time',time);
-        axios.post('/addComment', params);
-        this.sendSmallComment(item,thing);
+            params.append('purpose',"add");
+            params.append('showId',item.showId);
+            params.append('orderId',-1);
+            params.append('isFromOrder',-1);
+            params.append('username', username);
+            params.append('parentId',item.commentId);
+            params.append('target',thing.username);
+            params.append('content',content);
+            params.append('rate',0);
+            params.append('time',time);
+            axios.post('/addComment', params);
+            this.sendSmallComment(item,thing);
+        }
+        else{
+            message.error("请输入回复内容！");
+        }
     };
 
     componentDidMount(){

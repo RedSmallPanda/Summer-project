@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Menu, Dropdown, List, Button, Icon, Rate } from 'antd';
+import { Menu, Dropdown, List, Button, Icon, Rate, message } from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import moment from 'moment';
@@ -252,16 +252,16 @@ class ResultList extends Component {
                         self.setState({
                             data: newData,
                         });
-                        alert(response.data ? "收藏成功！" : "已移出收藏");
+                        message.info(response.data ? "收藏成功！" : "已移出收藏");
                     } else {
-                        alert("收藏失败！");
+                        message.info("收藏失败！");
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         } else {
-            alert("请先登录~~~");
+            message.info("请先登录~~~");
         }
     }
 
@@ -308,7 +308,7 @@ class ResultList extends Component {
                         pageSize: 10,
                         current: this.state.page,
                     }}
-
+                    locale={{emptyText:"暂无相关票品"}}
                     renderItem={item => (
                         <List.Item
                             key={item.title}
