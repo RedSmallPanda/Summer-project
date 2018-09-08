@@ -4,6 +4,7 @@ import {DatePicker, Select, Button} from 'antd';
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 
 import axios from "axios/index";
+import {message} from "antd/lib/index";
 
 const {MonthPicker, WeekPicker} = DatePicker;
 
@@ -96,7 +97,7 @@ class SalesData extends Component {
     buttonOnClick = () =>{
         let self=this;
         if(this.state.time===""){
-            alert("请选择时间范围");
+            message.error("请选择时间范围", 1);
         }
         else{
             console.log(this.state);
@@ -149,7 +150,7 @@ class SalesData extends Component {
                             self.setState({onShow: 1});
                         }
                         else{
-                            alert("当前选择的时间段没有销量数据，请重新选择！");
+                            message.error("当前选择的时间段没有销量数据，请重新选择！", 1);
                         }
                 })
                 .catch(function (error) {

@@ -60,15 +60,7 @@ public class OrdersServiceImpl implements OrdersService {
             }
 
         }
-        /*JsonArray allOrders=new JsonArray();
-        for(int i=0;i<neededOrders.size();i++){
-            OrderShow tempOrder=neededOrders.get(i);
-            Gson orderGson=new Gson();
-            String orderJson = orderGson.toJson(tempOrder);
-            JsonObject orderObject = new JsonParser().parse(orderJson).getAsJsonObject();
 
-            allOrders.add(orderObject);
-        }*/
         return allOrders;
     }
 
