@@ -20,6 +20,6 @@ public interface RefundRepository extends CrudRepository<Refund,Integer> {
 
     @Query("select new com.sjtu.jpw.Domain.AssistDomain.RefundData(orders.orderId,orders.number,orders.time,refund.refundTime,refund.state,orders.totalPrice,shows.title,refund.reason) " +
             "from Orders orders ,Refund refund ,Ticket ticket, Shows shows " +
-            "where refund.orderId=orders.orderId and orders.ticketId=ticket.ticketId and ticket.showId=shows.showId and refund.state =:state")
+            "where refund.orderId=orders.orderId and orders.ticketId=ticket.ticketId and ticket.showId=shows.showId and refund.state =:state order by refund.refundTime asc ")
     public List<RefundData> getAllRefundData(@Param("state")String state);
 }
