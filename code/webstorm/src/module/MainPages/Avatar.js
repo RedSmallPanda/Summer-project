@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import axios from "axios/index";
 import "../../css/BasicInfo.css"
-class Avatar extends Component {
+import { Avatar } from 'antd';
+class MyAvatar extends Component {
     state = {
         imgUrl:"",
     };
@@ -29,10 +30,8 @@ class Avatar extends Component {
     render() {
         let self=this;
         return (
-            <div className="infoAvatar">
-                <img width={60} height={60} alt="logo" src={self.state.imgUrl}/>
-            </div>
+            self.state.imgUrl ? <Avatar size="large" src={self.state.imgUrl}/> : <Avatar size="large" icon="user"/>
         );
     }
 }
-export default Avatar;
+export default MyAvatar;

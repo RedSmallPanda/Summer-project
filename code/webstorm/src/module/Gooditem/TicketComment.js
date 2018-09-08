@@ -150,13 +150,19 @@ class TicketComment extends Component {
 
     detailComment =(e) =>{
         e.preventDefault();
-        browserHistory.push({
-            pathname: '/commentPage',
-            state:{
-                purpose: "add",
-                showId:this.state.showId
-            }
-        });
+        let username = Cookies.get('username');
+        if (typeof(username) !== "undefined" && username !== '') {
+            browserHistory.push({
+                pathname: '/commentPage',
+                state:{
+                    purpose: "add",
+                    showId:this.state.showId
+                }
+            });
+        }
+        else {
+            message.info("登录后才能发表评论")
+        }
     };
 
     cancelLike(e) {
@@ -177,41 +183,55 @@ class TicketComment extends Component {
     };
 
     showReplyBar = (item) =>{
-        for(let i = 0; i < data.length; i++){
-            if(data[i].commentId === item.commentId){
-                data[i].showReplyBar = !item.showReplyBar;
+        let username = Cookies.get('username');
+        if (typeof(username) !== "undefined" && username !== '') {
+            for(let i = 0; i < data.length; i++){
+                if(data[i].commentId === item.commentId){
+                    data[i].showReplyBar = !item.showReplyBar;
+                }
+                else {
+                    data[i].showReplyBar = false;
+                }
+                for(let j = 0; j < data[i].replyCount; j++){
+                    data[i].reply[j].showSmallBar = false;
+                }
             }
-            else {
-                data[i].showReplyBar = false;
-            }
-            for(let j = 0; j < data[i].replyCount; j++){
-                data[i].reply[j].showSmallBar = false;
-            }
+            this.setState({
+                comment:data
+            })
         }
-        this.setState({
-            comment:data
-        })
+        else {
+            message.info("登录后才能发表回复")
+        }
+
     };
 
     showSmallBar = (item,thing) =>{
-        for(let i = 0; i < data.length; i++){
-            if(data[i].commentId === item.commentId){
-                let thisReply = data[i].reply;
-                for(let j = 0; j < data[i].replyCount; j++){
-                    if(thisReply[j].commentId === thing.commentId){
-                        data[i].reply[j].showSmallBar = !thing.showSmallBar;
+        let username = Cookies.get('username');
+        if (typeof(username) !== "undefined" && username !== '') {
+            for(let i = 0; i < data.length; i++){
+                if(data[i].commentId === item.commentId){
+                    let thisReply = data[i].reply;
+                    for(let j = 0; j < data[i].replyCount; j++){
+                        if(thisReply[j].commentId === thing.commentId){
+                            data[i].reply[j].showSmallBar = !thing.showSmallBar;
+                        }
+                        else
+                            data[i].reply[j].showSmallBar = false;
                     }
-                    else
-                        data[i].reply[j].showSmallBar = false;
+                    data[i].showReplyBar = false;
                 }
-                data[i].showReplyBar = false;
+                else
+                    data[i].showReplyBar = false;
             }
-            else
-                data[i].showReplyBar = false;
+            this.setState({
+                comment:data
+            })
         }
-        this.setState({
-            comment:data
-        })
+        else {
+            message.info("登录后才能发表回复")
+        }
+
     };
 
     refresh = () =>{
