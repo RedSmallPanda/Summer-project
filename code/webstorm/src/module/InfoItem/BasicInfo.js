@@ -233,7 +233,7 @@ class Demo extends Component {
                         label="头像"
                     >
                         <Popover placement="rightTop" title={text} content={content}>
-                            <div style={{width:100,height:100}}>
+                            <div style={{width: 100, height: 100}}>
                                 <MyAvatar size={100} username={Cookies.get("username")}/>
                             </div>
                         </Popover>
@@ -265,11 +265,11 @@ class Demo extends Component {
                         // hasFeedback
                     >
                         {getFieldDecorator('date-picker')(
-                                <div>
-                                    <DatePicker id="datePicker" allowClear={false}
-                                                value={moment(this.state.formData.birthday, dateFormat)}
-                                                format={dateFormat} onChange={this.dateOnChange}/>
-                                </div>
+                            <div>
+                                <DatePicker id="datePicker" allowClear={false}
+                                            value={moment(this.state.formData.birthday, dateFormat)}
+                                            format={dateFormat} onChange={this.dateOnChange}/>
+                            </div>
                         )}
                     </FormItem>
 
@@ -336,13 +336,14 @@ class Demo extends Component {
                     <FormItem
                         {...formItemLayout}
                         label="手机号"
-                        initialValue={this.state.formData.phone}
+                        // initialValue={this.state.formData.phone}
                     >
                         {getFieldDecorator('phone', {
                             rules: [
-                                // { required: true, message: '手机号不能为空' },
+                                // {required: true, message: '手机号不能为空'},
                                 {
                                     validator: (rule, value, callback) => {
+                                        console.log(value);
                                         let phone_validator = /^([0-9])+/;
                                         let is_valid = phone_validator.test(String(value));
                                         //   const form = this.formRef.props.form;
@@ -362,7 +363,9 @@ class Demo extends Component {
                             // validateTrigger:'onBlur',
                         })(
                             <div>
-                                <Input id="inputPhone" value={this.state.formData.phone} onChange={this.phoneOnChange}/>
+                                <Input id="inputPhone"
+                                       value={this.state.formData.phone}
+                                       onChange={this.phoneOnChange}/>
                             </div>
                         )}
                     </FormItem>

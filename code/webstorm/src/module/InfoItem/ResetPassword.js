@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
-    Form, Input, Steps, Row, Col, Icon, Button
+    Form, Input, Steps, Row, Col, Icon, Button, Modal
 } from 'antd';
 import axios from "axios";
+import {browserHistory} from "react-router";
 
 const Step=Steps.Step;
 const FormItem = Form.Item;
@@ -112,7 +113,7 @@ class ResetStep1Form extends Component {
     compareToFirstPassword = (rule, value, callback) => {
         const form = this.props.form;
         if (value && value !== form.getFieldValue('password')) {
-            callback('Two passwords that you enter is inconsistent!');
+            callback('两次输入密码不一致！');
         } else {
             callback();
         }
@@ -149,6 +150,18 @@ class ResetStep1Form extends Component {
                             required: true, message: 'Please input your password!',
                         }, {
                             validator: this.validateToNextPassword,
+                        }, {
+                            validator: (rule, value, callback) => {
+                                if (String(value).length < 6) {
+                                    callback("密码长度不足6位");
+                                }
+                                if (String(value).length > 18) {
+                                    callback("密码长度超过18位");
+                                }
+                                else {
+                                    callback();
+                                }
+                            }
                         }],
                     })(
                         <Input type="password"/>
@@ -197,7 +210,10 @@ class ResetPassword extends Component {
                         console.log('Reset password with auth: ', values);
                         self.setState({firstStep: 1});
                     } else if (response.data === false) {
-                        alert("请检查填写信息和验证码是否有误");
+                        Modal.error({
+                            title: '验证失败！',
+                            content: '请检查填写信息和验证码是否有误',
+                        });
                     } else {
                         alert(response.data);
                     }

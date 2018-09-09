@@ -20,11 +20,63 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-    getInput = () => {
-        if (this.props.inputType === 'number') {
-            return <InputNumber />;
+    getFormItem = (getFieldDecorator) => {
+        const {
+            editing,
+            dataIndex,
+            title,
+            record,
+            ...restProps
+        } = this.props;
+        switch (title) {
+            case "手机号":
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [
+                            {required: true, message: '请输入手机号'},
+                            {
+                                validator: (rule, value, callback) => {
+                                    let phone_validator = /^([0-9])+/;
+                                    let is_valid = phone_validator.test(String(value));
+                                    //   const form = this.formRef.props.form;
+                                    //value's type need to transform
+                                    if (String(value).length !== 11) {
+                                        is_valid = false;
+                                    }
+                                    if (!is_valid && !(String(value) === '') && !(value === null)) {
+                                        callback("手机号格式错误");
+                                    }
+                                    else {
+                                        callback();
+                                    }
+                                }
+                            },],
+                        initialValue: record[dataIndex],
+                    })(<Input placeholder="手机号"/>)}
+                </FormItem>;
+            case "地区":
+                return <FormItem style={{margin: 0}}>{
+                    getFieldDecorator(dataIndex, {
+                        rules: [{
+                            type: 'array',
+                            required: true,
+                            message: `请输入${title}`,
+                        }],
+                        initialValue: [record[dataIndex]],
+                    })(<Cascader options={Position} placeholder="请选择地区" />)
+                }</FormItem>;
+            default:
+                return <FormItem style={{margin: 0}}>{
+                    getFieldDecorator(dataIndex, {
+                        rules: [{
+                            required: true,
+                            message: `请输入${title}`,
+                        }],
+                        initialValue: record[dataIndex],
+                    })(<Input/>)
+                }</FormItem>;
+
         }
-        return <Input />;
     };
 
     render() {
@@ -32,9 +84,7 @@ class EditableCell extends React.Component {
             editing,
             dataIndex,
             title,
-            inputType,
             record,
-            index,
             ...restProps
         } = this.props;
         return (
@@ -42,56 +92,18 @@ class EditableCell extends React.Component {
                 {(form) => {
                     const { getFieldDecorator } = form;
                     return (
-                        <td {...restProps}>
-                            {editing ? (
-                                <FormItem style={{ margin: 0 }}>
-                                    {getFieldDecorator(dataIndex, {
-                                        rules: [{
-                                            required: true,
-                                            message: `请输入${title}`,
-                                        }],
-                                        initialValue: record[dataIndex],
-                                    })(this.getInput())}
-                                </FormItem>
-                            ) : restProps.children}
-                        </td>
+                        <td {...restProps}>{
+                            editing ?
+                                this.getFormItem(getFieldDecorator)
+                                :
+                                restProps.children
+                        }</td>
                     );
                 }}
             </EditableContext.Consumer>
         );
     }
 }
-
-const options = [{
-        value:'上海',
-        label:'上海',
-        children:[{
-            value:'闵行区',
-            label:'闵行区',
-        }]
-},{
-    value: '浙江',
-    label: '浙江',
-    children: [{
-        value: '杭州',
-        label: '杭州',
-        children: [{
-            value: '上城区',
-            label: '上城区',
-        }],
-    }],
-}, {
-    value: '江苏',
-    label: '江苏',
-    children: [{
-        value: '南京',
-        label: '南京',
-        children: [{
-            value: '鼓楼区',
-            label: '鼓楼区',
-        }],
-    }],
-},];
 
 const AddressForm = Form.create()(
     class extends React.Component {
@@ -164,45 +176,45 @@ class Address extends Component {
             title: '收件人姓名',
             dataIndex: 'name',
             key: 'name',
-            width:'15%',
-            editable:true,
+            width: '15%',
+            editable: true,
         }, {
             title: '手机号',
             dataIndex: 'phone',
             key: 'phone',
-            width:'20%',
-            editable:false,
+            width: '20%',
+            editable: true,
         }, {
             title: '地区',
             dataIndex: 'city',
             key: 'city',
-            width:'20%',
-
+            width: '20%',
+            editable: true,
         }, {
             title: '详细地址',
-            dataIndex:'detail',
+            dataIndex: 'detail',
             key: 'detail',
-            editable:true,
-            width:'30%',
-        },{
-            title:'操作',
-            key:'action',
-            align:'center',
-            width:'20%',
+            editable: true,
+            width: '30%',
+        }, {
+            title: '操作',
+            key: 'action',
+            align: 'center',
+            width: '20%',
             render: (text, record) => {
                 const editable = this.isEditing(record);
-                return(
+                return (
                     <div>
                         {editable ? (
                             <span>
                                 <EditableContext.Consumer>
                                     {
-                                        form =>(
+                                        form => (
                                             <span>
-                                            <a onClick={()=>this.save(form,record.key)}>
+                                            <a onClick={() => this.save(form, record.key)}>
                                                 保存
                                             </a>
-                                            <Divider type="vertical" />
+                                            <Divider type="vertical"/>
                                             <a onClick={this.cancel}>取消</a>
                                             </span>
                                         )
@@ -211,9 +223,10 @@ class Address extends Component {
                             </span>
                         ) : (
                             <span>
-                                <Icon type="edit" style={{cursor:"pointer"}} onClick={()=>this.edit(record.key)}/>
-                                <Divider type="vertical" />
-                                <Icon type="delete" style={{cursor:"pointer"}} onClick={()=>this.handleDelete(record.key)}/>
+                                <Icon type="edit" style={{cursor: "pointer"}} onClick={() => this.edit(record.key)}/>
+                                <Divider type="vertical"/>
+                                <Icon type="delete" style={{cursor: "pointer"}}
+                                      onClick={() => this.handleDelete(record.key)}/>
                             </span>
                         )}
                     </div>
@@ -265,7 +278,7 @@ class Address extends Component {
 
     deleteAddress = (self,item) =>{
         let params = new URLSearchParams();
-        params.append('userId',1);
+        // params.append('userId',1);
         params.append('key',item.key);
         axios.post('/deleteAddress', params);
     };
@@ -321,6 +334,7 @@ class Address extends Component {
             };
 
             this.addAddress(this,sendAddr);
+            message.info("地址添加成功！");//todo: message by response
 
             this.setState({
                 visible:false,
@@ -355,7 +369,7 @@ class Address extends Component {
                     ...item,
                     ...row,
                 });
-                let newAddr = newData[index].city.split(' ');
+                let newAddr = newData[index].city;
 
                 let sendAddr = {
                     key:newData[index].key,

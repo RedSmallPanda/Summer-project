@@ -133,7 +133,7 @@ const Register = Form.create()(
                                     // validateTrigger: 'onBlur',
                                 })(
                                     <p>
-                                        <Input className="input" placeholder="email"
+                                        <Input className="input" placeholder="邮箱"
                                                prefix={<Icon type="mail"/>}/>
                                     </p>
                                 )}
@@ -142,7 +142,6 @@ const Register = Form.create()(
                                 {getFieldDecorator('phone', {
                                     rules: [
                                         {required: true, message: '请输入手机号'},
-                                        //                       { max:12,message:'用户名长度不超过12', },
                                         {
                                             validator: (rule, value, callback) => {
                                                 let phone_validator = /^([0-9])+/;
@@ -164,7 +163,7 @@ const Register = Form.create()(
                                     // validateTrigger: 'onBlur',
                                 })(
                                     <p>
-                                        <Input className="input" placeholder="phone"
+                                        <Input className="input" placeholder="手机号"
                                                prefix={<Icon type="phone"/>}/>
                                     </p>
                                 )}

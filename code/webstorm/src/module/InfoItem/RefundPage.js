@@ -3,19 +3,10 @@ import {Row, Col, Form, Rate, Button, Card, Icon, Radio, Modal} from 'antd';
 import axios from "axios/index";
 import {browserHistory} from "react-router";
 import Image from "../MainPages/Image";
-import {message} from "antd/lib/index";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const FormItem = Form.Item;
-
-const data={
-    name:'森林音乐会',
-    time:'2018/6/8 19:30',
-    location:'梅赛德斯奔驰文化中心',
-    rate:4.5,
-    img:'https://pimg.dmcdn.cn/perform/project/1551/155173_n.jpg'
-};
 
 class DemoRefundPage extends Component {
     state={
