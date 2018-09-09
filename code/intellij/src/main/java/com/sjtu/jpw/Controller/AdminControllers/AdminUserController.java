@@ -68,7 +68,7 @@ public class AdminUserController {
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
-        userService.updateInfo(updateUser);
+        System.out.println(userService.updateInfo(updateUser) + " rows updated.");
 
         System.out.println("[JPW ADMIN  ] User update: " + updateUser);
         System.out.println("[JPW WARNING] User update may fail.");

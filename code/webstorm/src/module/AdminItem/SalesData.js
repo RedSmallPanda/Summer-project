@@ -9,28 +9,25 @@ import {browserHistory} from "react-router";
 
 const {MonthPicker, WeekPicker} = DatePicker;
 
-
 const Option = Select.Option;
 
-
-
-const data = [
-    { year: '1月', sales: 38 },
-    { year: '2月', sales: 52 },
-    { year: '3月', sales: 61 },
-    { year: '4月', sales: 145 },
-    { year: '5月', sales: 48 },
-    { year: '6月', sales: 38 },
-    { year: '7月', sales: 38 },
-    { year: '8月', sales: 38 },
-    { year: '9月', sales: 38 },
-    { year: '10月', sales: 52 },
-    { year: '11月', sales: 61 },
-    { year: '12月', sales: 145 },
-];
-const cols = {
-    'number': {tickInterval: 50},
-};
+// const data = [
+//     { year: '1月', sales: 38 },
+//     { year: '2月', sales: 52 },
+//     { year: '3月', sales: 61 },
+//     { year: '4月', sales: 145 },
+//     { year: '5月', sales: 48 },
+//     { year: '6月', sales: 38 },
+//     { year: '7月', sales: 38 },
+//     { year: '8月', sales: 38 },
+//     { year: '9月', sales: 38 },
+//     { year: '10月', sales: 52 },
+//     { year: '11月', sales: 61 },
+//     { year: '12月', sales: 145 },
+// ];
+// const cols = {
+//     'number': {tickInterval: 50},
+// };
 // const columns = [{
 //     title: '票品名称',
 //     dataIndex: 'ticketName',
@@ -64,11 +61,14 @@ class SalesData extends Component {
         kind:"all",
         onShow:0,
         interval:50,
+        cols:{
+            'number': {tickInterval: 50},
+        }
     };
-
-    cols = {
-        'number': {tickInterval: this.state.interval},
-    };
+    //
+    // cols = {
+    //     'number': {tickInterval: this.state.interval},
+    // };
 
     choiceHandleChange = (value) => {
         console.log(`selected ${value}`);
@@ -95,73 +95,115 @@ class SalesData extends Component {
         this.setState({onShow:0});
     };
 
-    buttonOnClick = () =>{
-        let self=this;
-        if(this.state.time===""){
+    buttonOnClick = () => {
+        let self = this;
+        if (this.state.time === "") {
             message.error("请选择时间范围", 1);
         }
-        else{
+        else {
             console.log(this.state);
-            axios.get("/drawChart",{
-                params:{
-                    choice:this.state.choice,
-                    timeString:this.state.time,
-                    kind:this.state.kind,
+            axios.get("/drawChart", {
+                params: {
+                    choice: this.state.choice,
+                    timeString: this.state.time,
+                    kind: this.state.kind,
                 }
             })
                 .then(function (response) {
                     console.log(response);
-                    self.setState({data:response.data});
-                        let sum=0;
-                        for(let i=0;i<response.data.length;i++){
-                            sum=sum+response.data[i].number;
-                        }
-                        if(sum>0){
-                            let avg=sum/(response.data.length);
-                            if(avg<=50){
-                                self.setState({interval:50});
-                            }
-                            else if(avg<=100){
-                                self.setState({interval:100});
-                            }
-                            else if(avg<=200){
-                                self.setState({interval:200});
-                            }
-                            else if(avg<=500){
-                                self.setState({interval:500});
-                            }
-                            else if(avg<=1000){
-                                self.setState({interval:1000});
-                            }
-                            else if(avg<=2000){
-                                self.setState({interval:2000});
-                            }
-                            else if(avg<=10000){
-                                self.setState({interval:10000});
-                            }
-                            else if(avg<=20000){
-                                self.setState({interval:20000});
-                            }
-                            else if(avg<=100000){
-                                self.setState({interval:100000});
-                            }
-                            else{
-                                self.setState({interval:1000000});
-                            }
-                            self.setState({onShow: 1});
-                        }
-                        else{
-                            Modal.error({
-                                title: '所选时间段无销售数据！',
-                                content: '请重新选择筛选条件',
+                    self.setState({data: response.data});
+                    let sum = 0;
+                    for (let i = 0; i < response.data.length; i++) {
+                        sum = sum + response.data[i].number;
+                    }
+                    console.log("sum: " + sum);
+                    if (sum > 0) {
+                        let avg = sum / (response.data.length);
+                        console.log("avg: " + avg);
+                        if (avg <= 50) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 20},
+                                }
                             });
                         }
+                        else if (avg <= 100) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 50},
+                                }
+                            });
+                        }
+                        else if (avg <= 200) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 100},
+                                }
+                            });
+                        }
+                        else if (avg <= 500) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 200},
+                                }
+                            });
+                        }
+                        else if (avg <= 1000) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 500},
+                                }
+                            });
+                        }
+                        else if (avg <= 2000) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 1000},
+                                }
+                            });
+                        }
+                        else if (avg <= 10000) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 5000},
+                                }
+                            });
+                        }
+                        else if (avg <= 20000) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 10000},
+                                }
+                            });
+                        }
+                        else if (avg <= 100000) {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 50000},
+                                }
+                            });
+                        }
+                        else {
+                            self.setState({
+                                cols: {
+                                    'number': {tickInterval: 100000},
+                                }
+                            });
+                        }
+                        self.setState({onShow: 1});
+                    }
+                    else {
+                        Modal.error({
+                            title: '所选时间段无销售数据！',
+                            content: '请重新选择筛选条件',
+                        });
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
         }
-    }
+    };
 
 
     render() {
@@ -213,7 +255,7 @@ class SalesData extends Component {
         let chart=null;
         if(this.state.kind==='all'&&this.state.onShow===1){
             chart=<div>
-                <Chart height={400} data={this.state.data} scale={this.cols} forceFit>
+                <Chart height={400} data={this.state.data} scale={this.state.cols} forceFit>
                     <Axis name="type" />
                     <Axis name="number" />
                     <Tooltip crosshairs={{type : "y"}}/>
@@ -221,9 +263,10 @@ class SalesData extends Component {
                 </Chart>
             </div>;
         }
+
         else if(this.state.kind!=='all'&&this.state.onShow===1){
             chart=<div>
-                <Chart height={400} data={this.state.data} scale={this.cols} forceFit>
+                <Chart height={400} data={this.state.data} scale={this.state.cols} forceFit>
                     <Axis name="time" />
                     <Axis name="number" />
                     <Tooltip crosshairs={{type : "y"}}/>
@@ -235,38 +278,38 @@ class SalesData extends Component {
             chart=null;
         }
 
-            return (
-                <div>
-                    <br/>
-                    <Select defaultValue="year" style={{width: 180}} onChange={this.choiceHandleChange}>
-                        <Option value="year">按年统计</Option>
-                        <Option value="month">按月统计</Option>
-                        <Option value="week">按周统计</Option>
-                        <Option value="day">按日统计</Option>
-                    </Select>
-                    <br/>
-                    <br/>
-                    {choice}
-                    <br/>
-                    <Select defaultValue="all" style={{width: 180}} onChange={this.kindHandleChange}>
-                        <Option value="all">全部分类</Option>
-                        <Option value="concerts">演唱会</Option>
-                        <Option value="musicale">音乐会</Option>
-                        <Option value="shows">曲苑杂坛</Option>
-                        <Option value="dramas">话剧歌剧</Option>
-                        <Option value="sports">体育比赛</Option>
-                        <Option value="dance">舞蹈芭蕾</Option>
-                        <Option value="exhibits">休闲展览</Option>
-                        <Option value="family">儿童亲子</Option>
-                    </Select>
-                    <br/>
-                    <br/>
-                    <Button type="primary" onClick={this.buttonOnClick}>生成图表</Button>
-                    <br/>
-                    <br/>
-                    {chart}
-                </div>
-            )
+        return (
+            <div>
+                <br/>
+                <Select defaultValue="year" style={{width: 180}} onChange={this.choiceHandleChange}>
+                    <Option value="year">按年统计</Option>
+                    <Option value="month">按月统计</Option>
+                    <Option value="week">按周统计</Option>
+                    <Option value="day">按日统计</Option>
+                </Select>
+                <br/>
+                <br/>
+                {choice}
+                <br/>
+                <Select defaultValue="all" style={{width: 180}} onChange={this.kindHandleChange}>
+                    <Option value="all">全部分类</Option>
+                    <Option value="concerts">演唱会</Option>
+                    <Option value="musicale">音乐会</Option>
+                    <Option value="shows">曲苑杂坛</Option>
+                    <Option value="dramas">话剧歌剧</Option>
+                    <Option value="sports">体育比赛</Option>
+                    <Option value="dance">舞蹈芭蕾</Option>
+                    <Option value="exhibits">休闲展览</Option>
+                    <Option value="family">儿童亲子</Option>
+                </Select>
+                <br/>
+                <br/>
+                <Button type="primary" onClick={this.buttonOnClick}>生成图表</Button>
+                <br/>
+                <br/>
+                {chart}
+            </div>
+        )
     }
 }
 

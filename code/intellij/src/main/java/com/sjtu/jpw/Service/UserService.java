@@ -8,7 +8,7 @@ public interface UserService {
     List<User> login(String username,String password);
     User userInfo(Integer userId);
     User register(User newUser);
-    Boolean updateInfo(User updateUser);
+    Integer updateInfo(User updateUser);
     Integer usernameDuplicated(String username);
     List<User> allUsers();
     Boolean activate(String activate);

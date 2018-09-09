@@ -24,7 +24,7 @@ class Collection extends Component {
                 axios.get("/clearCollection")
                     .then(function(response){
                         console.log(response);
-                        window.location.reload();
+                        // window.location.reload();
                     })
                     .catch(function (error) {
                         console.log(error);

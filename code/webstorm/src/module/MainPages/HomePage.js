@@ -38,7 +38,7 @@ class HomePage extends Component {
                 self.setState({
                     salesRecommendLoading: false,
                     salesRecommend: response.data,
-                })
+                });
                 console.log(response.data);
             })
             .catch(function (error) {
@@ -139,7 +139,7 @@ class HomePage extends Component {
                 <div>
                     <Row type="flex" justify="space-around">
                         {
-                            dataSource !== null ?
+                            dataSource !== null && dataSource.length !== 0 ?
                                 dataSource.map(function (item) {
                                     return (
                                         <Col span={4}>
@@ -173,16 +173,6 @@ class HomePage extends Component {
                 <br/>
             </Row>
         );
-
-        const listData = [];
-        for (let i = 0; i < 9; i++) {
-            listData.push({
-                title: `user ${i}`,
-                avatar: 'https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png',
-                description: 'Ant Design, a design language for background applications, is refined by Ant UED Team.',
-                content: 'We supply a series of design principles, practical patterns and high quality design resources (Sketch and Axure), to help people create their product prototypes beautifully and efficiently.',
-            });
-        }
 
         const homeContainer =
             <div>
@@ -231,55 +221,6 @@ class HomePage extends Component {
                                 :
                                 <RecommendLine dataSource={this.state.guessRecommend}/>
                         }
-                        <RecommendTitle text="大家评论"/>
-                        <List
-                            grid={{gutter: 24, column: 2}}
-                            itemLayout="vertical"
-                            size="large"
-                            pagination={{
-                                onChange: (page) => {
-                                    console.log(page);
-                                },
-                                pageSize: 6,
-                            }}
-                            dataSource={listData}
-                            footer={<div><b>ant design</b> footer part</div>}
-                            renderItem={item => (
-                                <List.Item
-                                    key={item.title}
-                                    actions={[
-                                        <IconText type="star-o" text="156"/>,
-                                        <IconText type="like-o" text="156"/>,
-                                        <IconText type="message" text="2"/>,
-                                    ]}
-                                    extra={
-                                        <div style={{textAlign: "center"}}>
-                                            <text>周杰伦【地表最强】演唱会</text>
-                                            <br/>
-                                            <img width={180} alt="logo"
-                                                 src="https://img.piaoniu.com/poster/d1ecfa59a6c6d38740578624acbdcdcd087db77c.jpg"/>
-                                        </div>
-                                    }
-                                    style={{
-                                        padding: 20
-                                    }}
-                                >
-                                    <List.Item.Meta
-                                        avatar={<Avatar src={item.avatar}/>}
-                                        title={
-                                            <div>
-                                                <Avatar src={item.avatar}
-                                                        style={{verticalAlign: "text-bottom"}}/>
-                                                &nbsp;
-                                                <text>{item.title}</text>
-                                            </div>
-                                        }
-                                        description={item.description}
-                                    />
-                                    {item.content}
-                                </List.Item>
-                            )}
-                        />
                     </Col>
                 </Row>
             </div>;

@@ -83,7 +83,7 @@ public class ResetPasswordController {
         if (request.getSession().getAttribute("toReset") != null) {
             toReset = (User) request.getSession().getAttribute("toReset");
             toReset.setPassword(newPassword);
-            if (userService.updateInfo(toReset)) {
+            if (userService.updateInfo(toReset) > 0) {
                 out.print(true);
                 request.getSession().removeAttribute("auth");
                 request.getSession().removeAttribute("toReset");
