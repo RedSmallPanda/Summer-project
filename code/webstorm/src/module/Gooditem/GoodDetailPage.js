@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Affix,Radio,Card, Icon,Rate,Button,message } from 'antd';
 import moment from 'moment'
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+// import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'moment/locale/zh-cn';
 import TickNumPick from "./TickNumPick";
 import DatePick from './DatePick';
