@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/jpw</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="connection.username">root</property>
+        <property name="connection.password">123456</property>
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <mapping class="Jpwcrawler.Domain.ShowLocation"/>
+        <mapping class="Jpwcrawler.Domain.Shows"/>
+        <mapping class="Jpwcrawler.Domain.Ticket"/>
+        <mapping class="Jpwcrawler.Domain.User"/>
+        <mapping class="Jpwcrawler.Domain.UserCoupon"/>
+        <mapping class="Jpwcrawler.Domain.Collection"/>
+        <mapping class="Jpwcrawler.Domain.Orders"/>
+        <mapping class="Jpwcrawler.Domain.Sendingaddr"/>
+        <mapping class="Jpwcrawler.Domain.Refund"/>
+
+        <!-- <property name="connection.username"/> -->
+
+        <!-- <property name="connection.password"/> -->
+
+        <!-- DB schema will be updated if needed -->
+        <!-- <property name="hbm2ddl.auto">update</property> -->
+    </session-factory>
+</hibernate-configuration>
