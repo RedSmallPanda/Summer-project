@@ -377,6 +377,7 @@ class HeaderMenu extends Component {
                                 onSearch={value => this.handleSearch(value)}
                                 defaultValue={this.state.search}
                                 enterButton
+                                placeholder="搜索演出"
                             />
                         </Col>
                         <Col span={3}/>

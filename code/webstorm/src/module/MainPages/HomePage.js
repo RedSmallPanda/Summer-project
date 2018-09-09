@@ -165,9 +165,9 @@ class HomePage extends Component {
                         <h2 style={{display: "inline"}}>
                             {text}
                         </h2>
-                        <a style={{float: "right"}} onClick={onClick}>
-                            更多<Icon type="double-right"/>
-                        </a>
+                        {/*<a style={{float: "right"}} onClick={onClick}>*/}
+                            {/*更多<Icon type="double-right"/>*/}
+                        {/*</a>*/}
                     </div>
                 </Col>
                 <br/>

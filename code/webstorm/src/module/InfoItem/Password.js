@@ -153,6 +153,18 @@ class DemoForm extends React.Component {
                                 required: true, message: '请输入新密码!',
                             }, {
                                 validator: this.validateToNextPassword,
+                            },{
+                                validator: (rule, value, callback) => {
+                                    if (String(value).length < 6) {
+                                        callback("密码长度不足6位");
+                                    }
+                                    if (String(value).length > 18) {
+                                        callback("密码长度超过18位");
+                                    }
+                                    else {
+                                        callback();
+                                    }
+                                }
                             }],
                         })(
                             <Input type="password" />
