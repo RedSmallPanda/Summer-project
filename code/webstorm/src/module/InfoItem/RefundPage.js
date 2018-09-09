@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import {Row, Col, Form, Rate, Button, Card, Icon, Radio} from 'antd';
+import {Row, Col, Form, Rate, Button, Card, Icon, Radio, Modal} from 'antd';
 import axios from "axios/index";
 import {browserHistory} from "react-router";
 import Image from "../MainPages/Image";
+import {message} from "antd/lib/index";
 
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
@@ -41,9 +42,15 @@ class DemoRefundPage extends Component {
                     .catch(function (error) {
                         console.log(error);
                     });
-                browserHistory.push({
-                    pathname:'/info',
-                })
+
+                Modal.success({
+                    title: '退款申请已提交！',
+                    content: '请耐心等待退款结果',
+                    onOk(){browserHistory.push({
+                        pathname:'/info',
+                    });},
+                });
+
             }
         });
     };

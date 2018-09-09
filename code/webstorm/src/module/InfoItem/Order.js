@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Table } from 'antd';
+import { Table , message} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Image from '../MainPages/Image'
+import {Modal} from "antd/lib/index";
 
 // const data = [{
 //     key: '1',
@@ -195,7 +196,11 @@ class Order extends Component {
                     console.log(error);
                 });
 
-            window.location.reload();
+            Modal.success({
+                title: '退款申请已取消！',
+                content: '请确认订单状态',
+                onOk(){window.location.reload();},
+            });
         }
     };
 
