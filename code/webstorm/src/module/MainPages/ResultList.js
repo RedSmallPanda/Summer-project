@@ -215,7 +215,7 @@ class ResultList extends Component {
     collect(showId,isLike) {
         let self = this;
         let username = Cookies.get('username');
-        if (typeof(username) !== "undefined" && username !== "") {
+        if (typeof(username) !== "undefined" && username !== "" && username !== 'admin') {
             axios.get("/collect", {
                 params: {
                     showId: showId,

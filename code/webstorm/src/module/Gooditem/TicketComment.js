@@ -161,7 +161,7 @@ class TicketComment extends Component {
     detailComment =(e) =>{
         e.preventDefault();
         let username = Cookies.get('username');
-        if (typeof(username) !== "undefined" && username !== '') {
+        if (typeof(username) !== "undefined" && username !== '' && username !== 'admin') {
             browserHistory.push({
                 pathname: '/commentPage',
                 state:{
