@@ -7,28 +7,25 @@ import axios from "axios/index";
 
 const {MonthPicker, WeekPicker} = DatePicker;
 
-
 const Option = Select.Option;
 
-
-
-const data = [
-    { year: '1月', sales: 38 },
-    { year: '2月', sales: 52 },
-    { year: '3月', sales: 61 },
-    { year: '4月', sales: 145 },
-    { year: '5月', sales: 48 },
-    { year: '6月', sales: 38 },
-    { year: '7月', sales: 38 },
-    { year: '8月', sales: 38 },
-    { year: '9月', sales: 38 },
-    { year: '10月', sales: 52 },
-    { year: '11月', sales: 61 },
-    { year: '12月', sales: 145 },
-];
-const cols = {
-    'number': {tickInterval: 50},
-};
+// const data = [
+//     { year: '1月', sales: 38 },
+//     { year: '2月', sales: 52 },
+//     { year: '3月', sales: 61 },
+//     { year: '4月', sales: 145 },
+//     { year: '5月', sales: 48 },
+//     { year: '6月', sales: 38 },
+//     { year: '7月', sales: 38 },
+//     { year: '8月', sales: 38 },
+//     { year: '9月', sales: 38 },
+//     { year: '10月', sales: 52 },
+//     { year: '11月', sales: 61 },
+//     { year: '12月', sales: 145 },
+// ];
+// const cols = {
+//     'number': {tickInterval: 50},
+// };
 // const columns = [{
 //     title: '票品名称',
 //     dataIndex: 'ticketName',
@@ -62,11 +59,14 @@ class SalesData extends Component {
         kind:"all",
         onShow:0,
         interval:50,
+        cols:{
+            'number': {tickInterval: 50},
+        }
     };
-
-    cols = {
-        'number': {tickInterval: this.state.interval},
-    };
+    //
+    // cols = {
+    //     'number': {tickInterval: this.state.interval},
+    // };
 
     choiceHandleChange = (value) => {
         console.log(`selected ${value}`);
@@ -110,47 +110,89 @@ class SalesData extends Component {
                 .then(function (response) {
                     console.log(response);
                     self.setState({data:response.data});
-                        let sum=0;
-                        for(let i=0;i<response.data.length;i++){
-                            sum=sum+response.data[i].number;
+                    let sum=0;
+                    for(let i=0;i<response.data.length;i++){
+                        sum=sum+response.data[i].number;
+                    }
+                    console.log("sum: " + sum);
+                    if(sum>0){
+                        let avg=sum/(response.data.length);
+                        console.log("avg: " + avg);
+                        if(avg<=50){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 20},
+                                }
+                            });
                         }
-                        if(sum>0){
-                            let avg=sum/(response.data.length);
-                            if(avg<=50){
-                                self.setState({interval:50});
-                            }
-                            else if(avg<=100){
-                                self.setState({interval:100});
-                            }
-                            else if(avg<=200){
-                                self.setState({interval:200});
-                            }
-                            else if(avg<=500){
-                                self.setState({interval:500});
-                            }
-                            else if(avg<=1000){
-                                self.setState({interval:1000});
-                            }
-                            else if(avg<=2000){
-                                self.setState({interval:2000});
-                            }
-                            else if(avg<=10000){
-                                self.setState({interval:10000});
-                            }
-                            else if(avg<=20000){
-                                self.setState({interval:20000});
-                            }
-                            else if(avg<=100000){
-                                self.setState({interval:100000});
-                            }
-                            else{
-                                self.setState({interval:1000000});
-                            }
-                            self.setState({onShow: 1});
+                        else if(avg<=100){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 50},
+                                }
+                            });
+                        }
+                        else if(avg<=200){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 100},
+                                }
+                            });
+                        }
+                        else if(avg<=500){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 200},
+                                }
+                            });
+                        }
+                        else if(avg<=1000){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 500},
+                                }
+                            });
+                        }
+                        else if(avg<=2000){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 1000},
+                                }
+                            });
+                        }
+                        else if(avg<=10000){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 5000},
+                                }
+                            });
+                        }
+                        else if(avg<=20000){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 10000},
+                                }
+                            });
+                        }
+                        else if(avg<=100000){
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 50000},
+                                }
+                            });
                         }
                         else{
-                            alert("当前选择的时间段没有销量数据，请重新选择！");
+                            self.setState({
+                                cols:{
+                                    'number': {tickInterval: 100000},
+                                }
+                            });
                         }
+                        self.setState({onShow: 1});
+                    }
+                    else{
+                        alert("当前选择的时间段没有销量数据，请重新选择！");
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -208,7 +250,7 @@ class SalesData extends Component {
         let chart=null;
         if(this.state.kind==='all'&&this.state.onShow===1){
             chart=<div>
-                <Chart height={400} data={this.state.data} scale={this.cols} forceFit>
+                <Chart height={400} data={this.state.data} scale={this.state.cols} forceFit>
                     <Axis name="type" />
                     <Axis name="number" />
                     <Tooltip crosshairs={{type : "y"}}/>
@@ -218,7 +260,7 @@ class SalesData extends Component {
         }
         else if(this.state.kind!=='all'&&this.state.onShow===1){
             chart=<div>
-                <Chart height={400} data={this.state.data} scale={this.cols} forceFit>
+                <Chart height={400} data={this.state.data} scale={this.state.cols} forceFit>
                     <Axis name="time" />
                     <Axis name="number" />
                     <Tooltip crosshairs={{type : "y"}}/>
