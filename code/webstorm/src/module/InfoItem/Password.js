@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Form, Input, Button, } from 'antd';
+import { Form, Input, Button, message} from 'antd';
 import axios from "axios/index";
 import Cookies from 'js-cookie';
 
@@ -48,7 +48,7 @@ class DemoForm extends React.Component {
                 axios.post("/userInfo",params)
                     .then(function(response){
                         console.log(response);
-                        alert(response);
+                        message.success("修改成功！",1);
                     })
                     .catch(function (error) {
                         console.log(error);

@@ -503,10 +503,6 @@ class GoodDetailPage extends Component{
                                         <div className="affixbar">
                                             <Row>
                                                 <Col span={4}>
-                                                    <a onClick={() => this.scrollToAnchor("block1")}
-                                                       className="tab">演出详情</a>
-                                                </Col>
-                                                <Col span={4}>
                                                     <a onClick={() => this.scrollToAnchor("block2")}
                                                        className="tab">评论</a>
                                                 </Col>
@@ -517,9 +513,8 @@ class GoodDetailPage extends Component{
                                     </Affix>
                                     <Row>
                                         <Col>
-                                            <div id="block1" style={{height: 1000}}>
+                                            <div id="block1" style={{height: 100}}>
                                                 <div style={{height: 80}}/>
-                                                <div>演出详情</div>
                                             </div>
                                         </Col>
                                     </Row>
