@@ -6,6 +6,7 @@ import Login from './Login'
 import Register from './Register'
 import "../../css/App.css"
 import axios from "axios";
+import {Modal} from "antd/lib/index";
 
 const SubMenu = Menu.SubMenu;
 const Search = Input.Search;
@@ -277,11 +278,16 @@ class HeaderMenu extends Component {
                         });
                         message.info("注册失败");
                     } else {
-                        message.info("验证邮件已发到邮箱，请前往激活！");
                         self.setState({
                             regVisible: false,
                         });
-                        window.location.reload();
+                        Modal.success({
+                            title: '验证邮件已发到邮箱！',
+                            content: '请前往激活',
+                            onOk(){
+                                window.location.reload();
+                            }
+                        });
                     }
                 })
                 .catch(function (error) {
