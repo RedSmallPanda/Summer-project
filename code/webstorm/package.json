@@ -6,13 +6,10 @@
     "antd": "^3.6.4",
     "axios": "0.18.0",
     "bizcharts": "^3.2.1-beta.2",
-    "d3": "5.5.0",
-    "draft-js": "^0.10.5",
     "js-cookie": "^2.2.0",
     "moment": "^2.22.2",
     "react": "^16.4.1",
     "react-dom": "^16.4.1",
-    "react-draft-wysiwyg": "^1.12.13",
     "react-router": "^3.2.1",
     "react-scripts": "1.1.4"
   },
