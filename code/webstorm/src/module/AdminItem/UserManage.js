@@ -1,28 +1,36 @@
 import React from 'react';
-import { Table, Input, InputNumber, Modal, Form, Button, Icon } from 'antd';
+import {Table, Input, InputNumber, Modal, Form, Button, Icon, DatePicker, Cascader, message} from 'antd';
+
 import axios from "axios";
 import '../../css/Admin.css';
+import moment from "moment";
 
 const confirm = Modal.confirm;
+const Search = Input.Search;
 
-const data = [];
-for(let i = 0; i < 20; i++){
-    data.push({
-        // avatar: <Avatar icon="user"/>,
-        userId: i*999,
-        username: `Jack ${i}`,
-        password: '123456',
-        gender: 'male',
-        birthday: '2000-01-30',
-        nickname: 'nick',
-        phone: 18812345678,
-        email: '123456@qq.com',
-        state: '0'
-    });
-}
+let data = [];
+
+const userStateOptions = [{
+    value: '0',
+    label: '0（正常）',
+}, {
+    value: '1',
+    label: '1（删除）',
+}, {
+    value: '2',
+    label: '2（禁用）',
+},
+];
+const genderOptions = [{
+    value: 'male',
+    label: 'male（男）',
+}, {
+    value: 'female',
+    label: 'female（女）',
+},
+];
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
-
 
 const EditableRow = ({ form, index, ...props, }) => (
     <EditableContext.Provider value={form}>
@@ -33,11 +41,116 @@ const EditableRow = ({ form, index, ...props, }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
-    getInput = () => {
-        if (this.props.inputType === 'number') {
-            return <InputNumber />;
+    getFormItem = (getFieldDecorator) => {
+        const {
+            editing,
+            dataIndex,
+            title,
+            record,
+            ...restProps
+        } = this.props;
+        switch (title) {
+            case '密码':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [
+                            {required: true, message: '请输入密码'},
+                            {
+                                validator: (rule, value, callback) => {
+                                    if (String(value).length < 6) {
+                                        callback("密码长度不足6位");
+                                    }
+                                    if (String(value).length > 18) {
+                                        callback("密码长度超过18位");
+                                    }
+                                    else {
+                                        callback();
+                                    }
+                                }
+                            },],
+                        initialValue: record[dataIndex],
+                    })(<Input placeholder="密码"/>)}
+                </FormItem>;
+            case '性别':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [{
+                            type: 'array',
+                            required: false,
+                            message: `请输入${title}`,
+                        },],
+                        initialValue: [record[dataIndex]],
+                    })(<Cascader options={genderOptions} placeholder="性别"/>)}
+                </FormItem>;
+            case '生日':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [{
+                            type: 'object',
+                            required: false,
+                            message: `请输入${title}`,
+                        },],
+                        initialValue: moment(record[dataIndex]),
+                    })(<DatePicker allowClear/>)}
+                </FormItem>;
+            case '手机号':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [
+                            {required: true, message: '请输入手机号'},
+                            {
+                                validator: (rule, value, callback) => {
+                                    let phone_validator = /^([0-9])+/;
+                                    let is_valid = phone_validator.test(String(value));
+                                    //   const form = this.formRef.props.form;
+                                    //value's type need to transform
+                                    if (String(value).length !== 11) {
+                                        is_valid = false;
+                                    }
+                                    if (!is_valid && !(String(value) === '') && !(value === null)) {
+                                        callback("手机号格式错误");
+                                    }
+                                    else {
+                                        callback();
+                                    }
+                                }
+                            },],
+                        initialValue: record[dataIndex],
+                    })(<Input placeholder="手机号"/>)}
+                </FormItem>;
+            case '邮箱':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [{
+                            type: 'email',
+                            required: true,
+                            message: `邮箱格式错误`,
+                        },],
+                        initialValue: record[dataIndex],
+                    })(<Input placeholder="邮箱"/>)}
+                </FormItem>;
+            case '状态':
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [{
+                            type: 'array',
+                            required: true,
+                            message: `请输入${title}`,
+                        },],
+                        initialValue: [record[dataIndex]],
+                    })(<Cascader options={userStateOptions} placeholder="状态"/>)}
+                </FormItem>;
+            default:
+                return <FormItem style={{margin: 0}}>
+                    {getFieldDecorator(dataIndex, {
+                        rules: [{
+                            required: true,
+                            message: `请输入${title}`,
+                        },],
+                        initialValue: record[dataIndex],
+                    })(<Input />)}
+                </FormItem>;
         }
-        return <Input />;
     };
 
     render() {
@@ -53,19 +166,12 @@ class EditableCell extends React.Component {
                 {(form) => {
                     const { getFieldDecorator } = form;
                     return (
-                        <td {...restProps}>
-                            {editing ? (
-                                <FormItem style={{ margin: 0 }}>
-                                    {getFieldDecorator(dataIndex, {
-                                        rules: [{
-                                            required: true,
-                                            message: `请输入${title}`,
-                                        }],
-                                        initialValue: record[dataIndex],
-                                    })(this.getInput())}
-                                </FormItem>
-                            ) : restProps.children}
-                        </td>
+                        <td {...restProps}>{
+                            editing ?
+                                this.getFormItem(getFieldDecorator)
+                                :
+                                restProps.children
+                        }</td>
                     );
                 }}
             </EditableContext.Consumer>
@@ -88,67 +194,109 @@ const UserForm = Form.create()(
                     onOk={onCreate}
                 >
                     <Form layout="vertical">
-                        {/*<FormItem label="用户id">*/}
-                            {/*{getFieldDecorator('userId', {*/}
-                                {/*rules: [{ required: true, message: '请输入id' }],*/}
-                            {/*})(*/}
-                                {/*<Input type="textarea" placeholder="用户id"/>*/}
-                            {/*)}*/}
-                        {/*</FormItem>*/}
                         <FormItem label="用户名">
                             {getFieldDecorator('username', {
-                                rules: [{ required: true, message: '请输入用户名' }],
+                                rules: [
+                                    {required: true, message: '请输入用户名'},
+                                    {
+                                        validator: (rule, value, callback) => {
+                                            if (String(value).length < 5) {
+                                                callback("用户名长度不足5位");
+                                            }
+                                            if (String(value).length > 12) {
+                                                callback("用户名长度超过12位");
+                                            }
+                                            else {
+                                                callback();
+                                            }
+                                        }
+                                    }],
                             })(
                                 <Input type="textarea" placeholder="用户名"/>
                             )}
                         </FormItem>
                         <FormItem label="密码">
                             {getFieldDecorator('password', {
-                                rules: [{ required: true, message: '请输入密码' }],
+                                rules: [
+                                    {required: true, message: '请输入密码'},
+                                    {
+                                        validator: (rule, value, callback) => {
+                                            if (String(value).length < 6) {
+                                                callback("密码长度不足6位");
+                                            }
+                                            if (String(value).length > 18) {
+                                                callback("密码长度超过18位");
+                                            }
+                                            else {
+                                                callback();
+                                            }
+                                        }
+                                    }],
                             })(
                                 <Input type="textarea" placeholder="密码"/>
                             )}
                         </FormItem>
                         <FormItem label="性别">
                             {getFieldDecorator('gender', {
-                                rules: [{ required: false, message: '请输入性别' }],
+                                rules: [{required: false, message: '请输入性别'}],
                             })(
-                                <Input type="textarea" placeholder="性别"/>
+                                <Cascader options={genderOptions} placeholder="性别"/>
                             )}
                         </FormItem>
                         <FormItem label="生日">
                             {getFieldDecorator('birthday', {
-                                rules: [{ required: false, message: '请输入生日' }],
+                                rules: [{required: false, message: '请输入生日'}],
                             })(
-                                <Input type="textarea" placeholder="生日"/>
+                                <DatePicker allowClear/>
                             )}
                         </FormItem>
                         <FormItem label="昵称">
                             {getFieldDecorator('nickname', {
-                                rules: [{ required: false, message: '请输入昵称' }],
+                                rules: [{required: true, message: '请输入昵称'}],
                             })(
                                 <Input type="textarea" placeholder="昵称"/>
                             )}
                         </FormItem>
                         <FormItem label="手机号">
                             {getFieldDecorator('phone', {
-                                rules: [{ required: true, message: '请输入手机号' }],
+                                rules: [
+                                    {required: true, message: '请输入手机号'},
+                                    {
+                                        validator: (rule, value, callback) => {
+                                            let phone_validator = /^([0-9])+/;
+                                            let is_valid = phone_validator.test(String(value));
+                                            //   const form = this.formRef.props.form;
+                                            //value's type need to transform
+                                            if (String(value).length !== 11) {
+                                                is_valid = false;
+                                            }
+                                            if (!is_valid && !(String(value) === '') && !(value == null)) {
+                                                callback("手机号格式错误");
+                                            }
+                                            else {
+                                                callback()
+                                            }
+                                        }
+                                    }
+                                ],
                             })(
-                                <Input type="textarea" placeholder="手机号" />
+                                <Input type="textarea" placeholder="手机号"/>
                             )}
                         </FormItem>
                         <FormItem label="邮箱">
-                            {getFieldDecorator('email',{
-                                rules:[{ required:true, message:'请输入邮箱'}]
+                            {getFieldDecorator('email', {
+                                rules: [
+                                    {type: 'email', required: true, message: '邮箱格式错误'}
+                                ]
                             })(
                                 <Input type="textarea" placeholder="邮箱"/>
                             )}
                         </FormItem>
                         <FormItem label="状态(0为正常状态，1删除，2禁用)">
-                            {getFieldDecorator('state',{
-                                rules:[{ required:true, message:'请输入用户状态'}]
+                            {getFieldDecorator('state', {
+                                rules: [{required: true, message: '请输入用户状态'}]
                             })(
-                                <Input type="textarea" initialValue="0"/>
+                                <Cascader options={userStateOptions} placeholder="状态"/>
                             )}
                         </FormItem>
                     </Form>
@@ -162,7 +310,7 @@ class UserManage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            data,
+            data: [],
             loading: true,
             editingId: '',
             visible: false,
@@ -180,28 +328,28 @@ class UserManage extends React.Component {
             dataIndex: 'password',
             key: 'password',
             editable: true,
-            width: 160,//'9%',
+            width: 180,//'9%',
             align: 'center'
         }, {
             title: '昵称',
             dataIndex: 'nickname',
             key: 'nickname',
             editable: true,
-            width: 120,//'8%',
+            width: 160,//'8%',
             align: 'center'
         }, {
             title: '性别',
             dataIndex: 'gender',
             key: 'gender',
             editable: true,
-            width: 100,//'8%',
+            width: 140,//'8%',
             align: 'center'
         }, {
             title: '生日',
             dataIndex: 'birthday',
             key: 'birthday',
             editable: true,
-            width: 140,//'10%',
+            width: 160,//'10%',
             align: 'center'
         }, {
             title: '手机号',
@@ -218,11 +366,11 @@ class UserManage extends React.Component {
             width: 200,//'10%',
             align: 'center'
         }, {
-            title: 's',
+            title: '状态',
             dataIndex: 'state',
             key: 'state',
             editable: true,
-            width: 70,//'4%',
+            width: 140,//'4%',
             align: 'center',
             // fixed: 'right',
         }, {
@@ -232,7 +380,9 @@ class UserManage extends React.Component {
             align: 'center',
             // fixed: 'right',
             render: (text, record) => {
-                if(record.username==="admin")return <div><Icon type="lock"/></div>;
+                if (record.username === "admin") {
+                    return <div><Icon type="lock"/></div>;
+                }
                 const editable = this.isEditing(record);
                 return (
                     <div>
@@ -242,7 +392,7 @@ class UserManage extends React.Component {
                                     {
                                         (form) => (
                                             <span>
-                                                <a onClick={() => this.save(form, record.userId)}>
+                                                <a onClick={() => this.save(form, record)}>
                                                     保存
                                                 </a>
                                                 {/*<Divider type="vertical"/>*/}
@@ -263,20 +413,24 @@ class UserManage extends React.Component {
                         )}
                     </div>
                 );
-
             }
         }];
     }
 
     componentDidMount(){
+        this.getAllUsers();
+    }
+
+    getAllUsers() {
         let self = this;
         axios.get("http://localhost:8080/allUsers")
             .then(function (response) {
                 console.log(response);
-                let preData=response.data;
+                let newData = response.data;
+                data = newData;
                 self.setState({
                     loading: false,
-                    data: preData,
+                    data: newData,
                 });
             })
             .catch(function (error) {
@@ -293,6 +447,7 @@ class UserManage extends React.Component {
     };
 
     handleCreate = () => {
+        let self = this;
         const form = this.formRef.props.form;
         form.validateFields((err, values) => {
             if (err) {
@@ -307,12 +462,12 @@ class UserManage extends React.Component {
                 // userId: values.userId,
                 username: values.username,
                 password: values.password,
-                gender: values.gender,
-                birthday: values.birthday,
+                gender: values.gender === 0 ? null : values.gender[0],// Cascade
+                birthday: values.birthday === null ? null : values.birthday,
                 nickname: values.nickname,
                 phone: values.phone,
                 email: values.email,
-                state: values.state,
+                state: values.state[0],// Cascade
             };
 
             let params = new URLSearchParams();
@@ -320,19 +475,15 @@ class UserManage extends React.Component {
             axios.post("/addUser", params)
                 .then(function (response) {
                     console.log(response);
-                    alert(response.data);
+                    message.info(response.data);
+                    self.setState({
+                        visible: false,
+                    });
+                    self.getAllUsers();
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-
-            let newData = this.state.data;
-            newData.unshift(newUser);
-
-            this.setState({
-                visible:false,
-                data:newData,
-            })
         });
     };
 
@@ -348,18 +499,26 @@ class UserManage extends React.Component {
         this.setState({ editingId: userId });
     }
 
-    save(form, userId) {
-        console.log(form);
+    save(form, record) {
+        let self = this;
         form.validateFields((error, row) => {
-            console.log(row);
             if (error) {
                 return;
             }
-            const newData = [...this.state.data];
-            const index = newData.findIndex(item => userId === item.userId);
+            // let newData = [...self.state.data];
+            const index = data.findIndex(item => record.userId === item.userId);
             if (index > -1) {
                 let params = new URLSearchParams();
-                params.append("updateUser", JSON.stringify(row));
+                let newItem = row;
+                newItem.userId = record.userId;
+                newItem.username = record.username;//fill props
+                newItem.gender = newItem.gender.length === 0 ? null : newItem.gender[0];//["male"/"female"]
+                newItem.state = newItem.state[0];//["0"/"1"/"2"]
+                newItem.birthday = newItem.birthday === null ? null : newItem.birthday.format("YYYY-MM-DD");//moment object
+
+                console.log(newItem);
+
+                params.append("updateUser", JSON.stringify(newItem));
                 axios.post("/updateUser", params)
                     .then(function (response) {
                         console.log(response);
@@ -369,15 +528,15 @@ class UserManage extends React.Component {
                         console.log(error);
                     });
 
-                const item = newData[index];
-                newData.splice(index, 1, {
-                    ...item,
-                    ...row,
-                });
-                this.setState({ data: newData, editingId: '' });
+                data.splice(index, 1, newItem);
+
+                let newData = [...self.state.data];
+                const stateIndex = newData.findIndex(item => record.userId === item.userId);
+                newData.splice(stateIndex, 1, newItem);
+                this.setState({data: newData, editingId: ''});
             } else {
-                newData.push(...data);
-                this.setState({ data: newData, editingId: '' });
+                console.log("修改了不在data里的数据！？");
+                this.setState({data: data, editingId: ''});
             }
         });
     }
@@ -464,6 +623,22 @@ class UserManage extends React.Component {
         });
     };
 
+    handleSearch = (value, self) => {
+        if (value === "") {
+            self.setState({data: data});
+        } else {
+            let searchedData = [];
+            data.map(function (item) {
+                if (item.username.indexOf(value) !== -1) {
+                    searchedData.push(item);
+                }
+            });
+            self.setState({
+                data: searchedData
+            });
+        }
+    };
+
     render() {
         const components = {
             body: {
@@ -492,6 +667,11 @@ class UserManage extends React.Component {
         return (
             <div>
                 <Button type="dashed" onClick={this.showModal}><Icon type="plus"/>新增用户</Button>
+                <Search
+                    placeholder="search username"
+                    onSearch={value => this.handleSearch(value,this)}
+                    style={{ width: 160, marginLeft:10}}
+                />
                 <Table
                     components={components}
                     dataSource={this.state.data}

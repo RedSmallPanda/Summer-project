@@ -39,18 +39,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public Boolean updateInfo(User updateUser) {
-        return (
-                userRepository.updateInfo(
-                        updateUser.getPassword(),
-                        updateUser.getGender(),
-                        updateUser.getBirthday(),
-                        updateUser.getNickname(),
-                        updateUser.getPhone(),
-                        updateUser.getEmail(),
-                        updateUser.getState(),
-                        updateUser.getUserId()
-                ) != 0);
+    public Integer updateInfo(User updateUser) {
+        return userRepository.updateInfo(
+                updateUser.getPassword(),
+                updateUser.getGender(),
+                updateUser.getBirthday(),
+                updateUser.getNickname(),
+                updateUser.getPhone(),
+                updateUser.getEmail(),
+                updateUser.getState(),
+                updateUser.getUserId()
+        );
     }
 
     @Override
