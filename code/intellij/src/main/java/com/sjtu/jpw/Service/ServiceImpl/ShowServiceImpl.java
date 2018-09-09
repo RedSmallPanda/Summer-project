@@ -9,6 +9,7 @@ import com.mongodb.DBCollection;
 import com.mongodb.DBObject;
 import com.sjtu.jpw.Repository.ShowsRepository;
 import com.sjtu.jpw.Repository.TicketRepository;
+import com.sjtu.jpw.Service.CommentService;
 import com.sjtu.jpw.Service.MongoDBService;
 import com.sjtu.jpw.Service.ShowService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,8 @@ public class ShowServiceImpl implements ShowService {
     @Autowired
     private TicketRepository ticketRepository;
 
-    @Resource(name="mongoDBService")
-    private MongoDBService mongoDBService;
+    @Resource(name="commentService")
+    private CommentService commentService;
 
     public void addShow(String title, String info, String city, String type, String address,
                         String startDate, String endDate){
@@ -101,6 +102,7 @@ public class ShowServiceImpl implements ShowService {
             Shows show = it.next();
             JsonObject showObject = new JsonObject();
             showObject.addProperty("showId",show.getShowId());
+            commentService.setRate(show.getShowId());
             showObject.addProperty("title",show.getTitle());
             showObject.addProperty("info",show.getInfo());
             showObject.addProperty("city",show.getCity());
