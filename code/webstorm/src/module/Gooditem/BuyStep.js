@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown, message} from 'antd';
+import { Steps, Row, Col, Icon, Table, Button, Radio, Divider, Menu, Dropdown, message, Modal} from 'antd';
 import '../../css/BuyStep.css';
 import axios from "axios/index";
 import { browserHistory} from 'react-router';
@@ -151,10 +151,14 @@ class BuyStep extends Component {
             .then(function (response) {
                 console.log(response);
                 if(response.data[0]===false){
-                    message.error("很抱歉，库存不足，请重新选购！", 1);
-                    browserHistory.push({
-                        pathname:'/home',
-                    })
+
+                    Modal.error({
+                        title: '很抱歉，库存不足！',
+                        content: '请重新选购',
+                        onOk(){browserHistory.push({
+                            pathname:'/home',
+                        });},
+                    });
                 }
                 else{
                     Cookies.set('orderId',response.data[1]);
@@ -263,10 +267,14 @@ class BuyStep extends Component {
             .then(function (response) {
                 console.log(response);
                 if(response.data.length===0){
-                    message.error("请先添加收货地址", 1);
-                    browserHistory.push({
-                        pathname:'/info',
-                    })
+
+                    Modal.error({
+                        title: '收货地址为空！',
+                        content: '请先添加收货地址',
+                        onOk(){browserHistory.push({
+                            pathname:'/info',
+                        });},
+                    });
                 }
                 self.setState({address:response.data});
             })

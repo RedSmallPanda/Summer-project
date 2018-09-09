@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {DatePicker, Select, Button} from 'antd';
+import {DatePicker, Select, Button, Modal} from 'antd';
 
 import { Chart, Geom, Axis, Tooltip, Legend, Coord } from 'bizcharts';
 
 import axios from "axios/index";
 import {message} from "antd/lib/index";
+import {browserHistory} from "react-router";
 
 const {MonthPicker, WeekPicker} = DatePicker;
 
@@ -150,7 +151,10 @@ class SalesData extends Component {
                             self.setState({onShow: 1});
                         }
                         else{
-                            message.error("当前选择的时间段没有销量数据，请重新选择！", 1);
+                            Modal.error({
+                                title: '所选时间段无销售数据！',
+                                content: '请重新选择筛选条件',
+                            });
                         }
                 })
                 .catch(function (error) {

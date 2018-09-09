@@ -128,7 +128,7 @@ public class OrdersServiceImpl implements OrdersService {
         long time = System.currentTimeMillis();
         Timestamp currentTime=new Timestamp(time);
         Refund refund=refundRepository.findFirstByOrderId(orderId);
-        refund.setState("0");
+        refund.setState("1");
         refund.setRefundTime(currentTime);
         refundRepository.save(refund);
     }
