@@ -102,7 +102,6 @@ public class ShowServiceImpl implements ShowService {
             Shows show = it.next();
             JsonObject showObject = new JsonObject();
             showObject.addProperty("showId",show.getShowId());
-            commentService.setRate(show.getShowId());
             showObject.addProperty("title",show.getTitle());
             showObject.addProperty("info",show.getInfo());
             showObject.addProperty("city",show.getCity());
