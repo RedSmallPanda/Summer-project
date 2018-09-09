@@ -4,8 +4,7 @@ import moment from 'moment'
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import 'moment/locale/zh-cn';
 import TickNumPick from "./TickNumPick";
-import DatePick from './DatePick'
-import CommentEditor from "./CommentEditor";
+import DatePick from './DatePick';
 import TicketComment from "./TicketComment";
 import axios from 'axios';
 import { browserHistory} from 'react-router';
