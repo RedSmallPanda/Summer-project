@@ -1,0 +1,23 @@
+
+
+.radioStyle{
+    display: block;
+    height: 30px;
+    line-height: 30px;
+    font-size:20px;
+}
+
+.couponItem{
+    height: 200px;
+    border:1px solid #1890ff;
+    border-radius: 10px;
+    background: transparent;
+    line-height: 80px;
+    font-size: 25px;
+    box-shadow: 3px 3px 3px #888888;
+}
+
+.addRadius{
+    border-top-left-radius:7px;
+    border-top-right-radius:7px;
+}
