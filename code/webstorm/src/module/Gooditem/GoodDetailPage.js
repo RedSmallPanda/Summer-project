@@ -213,7 +213,7 @@ class GoodDetailPage extends Component{
     };
 
     handleShopCart = () =>{
-        if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '') {
+        if (typeof(Cookies.get("username")) === "undefined" || Cookies.get("username") === null || Cookies.get("username") === '' || Cookies.get("username") === 'admin') {
             message.info("登录后才能使用购物车");
             return;
         }
