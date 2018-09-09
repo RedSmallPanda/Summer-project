@@ -3,7 +3,7 @@ import {Button, Col, Collapse, Icon, Input, List, Rate, Row, message, Divider} f
 import {browserHistory} from "react-router";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Avatar from '../MainPages/Avatar';
+import MyAvatar from '../MainPages/Avatar';
 import moment from 'moment'
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -285,7 +285,7 @@ class TicketComment extends Component {
                         >
                             <List.Item.Meta
                                 align='left'
-                                avatar={<Avatar username={item.username}/>}
+                                avatar={<MyAvatar size={60} username={item.username}/>}
                                 title={<span>{item.nickname?item.nickname:item.username}</span>}
                                 description={
                                     <div>
@@ -331,7 +331,7 @@ class TicketComment extends Component {
                                                             ]}
                                                         >
                                                             <List.Item.Meta
-                                                                avatar={<Avatar username={thing.username}/>}
+                                                                avatar={<MyAvatar size={40} username={thing.username}/>}
                                                                 title={<span>{thing.nickname?thing.nickname:thing.username}</span>}
                                                                 description={thing.content}
                                                             />

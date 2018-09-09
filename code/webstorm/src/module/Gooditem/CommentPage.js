@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {Row, Col, Form, Rate, Button, Card, Icon, message} from 'antd';
+import {Row, Col, Form, Rate, Button, Card, Icon, message, Modal} from 'antd';
 import { browserHistory } from 'react-router'
 import axios from 'axios';
 import Cookies from 'js-cookie';
@@ -83,7 +83,12 @@ class DemoCommentPage extends Component {
                     value:values.confirm,
                 });
                 this.addComment(values);
-                message.success("发表成功",1,this.onClose)
+                Modal.success({
+                    title: '发表评论成功',
+                    onOk() {
+                        browserHistory.goBack();
+                    },
+                });
 
             }
         });
