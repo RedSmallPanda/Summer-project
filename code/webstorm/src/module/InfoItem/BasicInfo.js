@@ -234,7 +234,7 @@ class Demo extends Component {
                     >
                         <Popover placement="rightTop" title={text} content={content}>
                             <div style={{width:100,height:100}}>
-                                <MyAvatar username={Cookies.get("username")}/>
+                                <MyAvatar size={100} username={Cookies.get("username")}/>
                             </div>
                         </Popover>
                     </FormItem>

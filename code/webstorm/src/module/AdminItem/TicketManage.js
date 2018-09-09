@@ -720,10 +720,15 @@ class TicketManage extends Component{
                 }
             })
                 .then(function (response) {
-                    console.log(response);
-                    self.setState({
-                        show: response.data
-                    });
+                    if(response.data){
+                        self.setState({
+                            show: response.data
+                        });
+                        message.success("查询成功")
+                    }
+                    else{
+                        message.error("查询结果为空")
+                    }
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -736,10 +741,16 @@ class TicketManage extends Component{
                 }
             })
                 .then(function (response) {
-                    console.log(response);
-                    self.setState({
-                        ticket: response.data
-                    });
+                    if(response.data){
+                        self.setState({
+                            ticket: response.data
+                        });
+                        message.success("查询成功")
+                    }
+                    else{
+                        message.error("查询结果为空")
+                    }
+
                 })
                 .catch(function (error) {
                     console.log(error);
