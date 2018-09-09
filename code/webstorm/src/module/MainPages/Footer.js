@@ -79,8 +79,8 @@ class Footer extends Component {
                 <a onClick={this.about} style={{color: "#d8fcff"}}>关于我们</a>
                 <Divider type="vertical"/>
                 <a onClick={this.help} style={{color: "#d8fcff"}}>帮助</a>
-                <Divider type="vertical"/>
-                <a onClick={this.relocation} style={{color: "#d8fcff"}}>debug：调整位置</a>
+                {/*<Divider type="vertical"/>*/}
+                {/*<a onClick={this.relocation} style={{color: "#d8fcff"}}>debug：调整位置</a>*/}
             </div>)
             :
             <div id="footer" ref="footer" style={{height: 0}}/>;
