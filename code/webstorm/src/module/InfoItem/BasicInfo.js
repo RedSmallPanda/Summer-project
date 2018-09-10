@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import '../../css/BasicInfo.css';
 import {
-    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon, message
+    Form, Radio, Button, Input, DatePicker, Popover, Upload, Icon, message, Modal
 } from 'antd';
 import moment from 'moment';
 import axios from "axios/index";
@@ -173,10 +173,10 @@ class Demo extends Component {
                 params.append("form", JSON.stringify(this.state.formData));
                 axios.post("/userInfo",params)
                     .then(function(response){
-                        if (self.state.formData === response.data) {
+                        if (parseInt(response.data, 10) === 1) {
                             message.success("修改成功");
                         } else {
-                            Modal.error({title: "修改失败!",content:"请检查网络后重试"});
+                            Modal.error({title: "修改失败!", content: "请检查网络后重试"});
                         }
                     })
                     .catch(function (error) {
