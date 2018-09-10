@@ -165,6 +165,7 @@ class Demo extends Component {
 
     handleSubmit = (e) => {
         e.preventDefault();
+        let self = this;
         this.props.form.validateFields((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', this.state.formData);    //Silly method
@@ -172,8 +173,11 @@ class Demo extends Component {
                 params.append("form", JSON.stringify(this.state.formData));
                 axios.post("/userInfo",params)
                     .then(function(response){
-                        console.log(response);
-                        alert(response);
+                        if (self.state.formData === response.data) {
+                            message.success("修改成功");
+                        } else {
+                            Modal.error({title: "修改失败!",content:"请检查网络后重试"});
+                        }
                     })
                     .catch(function (error) {
                         console.log(error);

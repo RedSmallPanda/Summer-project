@@ -46,10 +46,13 @@ public class UserInfoController {
         Gson userGson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
         User updateUser = userGson.fromJson(userJson, User.class);//对于javabean直接给出class实例
 
-        userService.updateInfo(updateUser);
+        if (userService.updateInfo(updateUser) > 0) {
+            out.print(userGson.toJson(updateUser));
+            System.out.println("changed into: " + userGson.toJson(updateUser));
+        }else{
+            out.print(false);
+        }
 
-        out.print(userGson.toJson(updateUser));
-        System.out.println("changed into: " + userGson.toJson(updateUser));
         out.flush();
     }
 }
